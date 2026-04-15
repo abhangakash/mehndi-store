@@ -14,7 +14,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
 
   const total = getTotalPrice()
-  const shipping = total >= 499 ? 0 : 60
+  const shipping = total >= 3 ? 0 : 60
   const grandTotal = total + shipping
   const codAvailable = grandTotal >= 999
 

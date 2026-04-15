@@ -24,8 +24,11 @@ async function getRelatedPosts(currentSlug) {
 }
 
 export async function generateMetadata({ params }) {
-  const post = await getPost(params.slug)
+  const { slug } = await params // ✅ FIX ONLY
+
+  const post = await getPost(slug)
   if (!post) return { title: 'Post Not Found' }
+
   return {
     title: `${post.title} — Shrilekha Mehndi Art`,
     description: post.excerpt,
@@ -33,10 +36,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPostPage({ params }) {
+  const { slug } = await params // ✅ FIX ONLY
+
   const [post, related] = await Promise.all([
-    getPost(params.slug),
-    getRelatedPosts(params.slug),
+    getPost(slug),          // ✅ use slug
+    getRelatedPosts(slug),  // ✅ use slug
   ])
+
   if (!post) notFound()
 
   return (
