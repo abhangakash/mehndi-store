@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { ShoppingCart, Menu, X, Leaf, User, LogOut, Package } from 'lucide-react'
@@ -10,10 +10,15 @@ import toast from 'react-hot-toast'
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const totalItems = useCartStore(s => s.getTotalItems())
   const { user, profile, signOut } = useAuth()
+
+  // Wait for client mount before showing cart count
+  // This prevents hydration mismatch with localStorage
+  useEffect(() => { setMounted(true) }, [])
 
   const links = [
     { href: '/', label: 'Home' },
@@ -32,6 +37,8 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white border-b" style={{ borderColor: 'var(--brand-border)' }}>
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--brand-green)' }}>
             <Leaf size={16} color="white" />
@@ -42,19 +49,23 @@ export default function Navbar() {
           </div>
         </Link>
 
+        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-6">
           {links.map(l => (
-            <Link key={l.href} href={l.href} className="text-sm font-medium transition-colors"
+            <Link key={l.href} href={l.href}
+              className="text-sm font-medium transition-colors"
               style={{ color: pathname === l.href ? 'var(--brand-green)' : 'var(--brand-muted)' }}>
               {l.label}
             </Link>
           ))}
         </div>
 
+        {/* Right side */}
         <div className="flex items-center gap-2">
+          {/* Cart — only show count after client mounts */}
           <Link href="/cart" className="relative p-2 rounded-lg transition-colors hover:bg-gray-50">
             <ShoppingCart size={20} style={{ color: 'var(--brand-green)' }} />
-            {totalItems > 0 && (
+            {mounted && totalItems > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-white text-xs flex items-center justify-center font-medium"
                 style={{ backgroundColor: 'var(--brand-brown)' }}>
                 {totalItems}
@@ -62,6 +73,7 @@ export default function Navbar() {
             )}
           </Link>
 
+          {/* User menu */}
           {user ? (
             <div className="relative">
               <button onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -78,11 +90,13 @@ export default function Navbar() {
                 <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl border shadow-lg py-1 z-50"
                   style={{ borderColor: 'var(--brand-border)' }}>
                   <Link href="/profile" onClick={() => setUserMenuOpen(false)}
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50" style={{ color: 'var(--brand-text)' }}>
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50"
+                    style={{ color: 'var(--brand-text)' }}>
                     <User size={15} /> My Profile
                   </Link>
                   <Link href="/profile?tab=orders" onClick={() => setUserMenuOpen(false)}
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50" style={{ color: 'var(--brand-text)' }}>
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50"
+                    style={{ color: 'var(--brand-text)' }}>
                     <Package size={15} /> My Orders
                   </Link>
                   <div className="border-t my-1" style={{ borderColor: 'var(--brand-border)' }} />
@@ -107,8 +121,10 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t px-4 py-3 flex flex-col gap-3 bg-white" style={{ borderColor: 'var(--brand-border)' }}>
+        <div className="md:hidden border-t px-4 py-3 flex flex-col gap-3 bg-white"
+          style={{ borderColor: 'var(--brand-border)' }}>
           {links.map(l => (
             <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
               className="text-sm font-medium py-1"
@@ -118,11 +134,19 @@ export default function Navbar() {
           ))}
           {user ? (
             <>
-              <Link href="/profile" onClick={() => setMenuOpen(false)} className="text-sm font-medium py-1" style={{ color: 'var(--brand-text)' }}>My Profile</Link>
-              <button onClick={handleSignOut} className="text-sm font-medium py-1 text-left text-red-500">Sign Out</button>
+              <Link href="/profile" onClick={() => setMenuOpen(false)}
+                className="text-sm font-medium py-1" style={{ color: 'var(--brand-text)' }}>
+                My Profile
+              </Link>
+              <button onClick={handleSignOut} className="text-sm font-medium py-1 text-left text-red-500">
+                Sign Out
+              </button>
             </>
           ) : (
-            <Link href="/login" onClick={() => setMenuOpen(false)} className="text-sm font-medium py-1" style={{ color: 'var(--brand-green)' }}>Login / Sign Up</Link>
+            <Link href="/login" onClick={() => setMenuOpen(false)}
+              className="text-sm font-medium py-1" style={{ color: 'var(--brand-green)' }}>
+              Login / Sign Up
+            </Link>
           )}
         </div>
       )}
