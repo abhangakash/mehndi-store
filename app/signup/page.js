@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Leaf, Mail, Lock, Eye, EyeOff, User, ArrowRight, Phone } from 'lucide-react'
 import toast from 'react-hot-toast'
+import Image from 'next/image'
+
 
 export default function SignupPage() {
   const router = useRouter()
@@ -43,9 +45,14 @@ export default function SignupPage() {
       style={{ backgroundColor: 'var(--brand-surface)' }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
-            style={{ backgroundColor: 'var(--brand-green)' }}>
-            <Leaf size={24} color="white" />
+          <div className="w-14 h-14 mx-auto mb-4 relative">
+            <Image
+              src="/art2.png"
+              alt="Shrilekha Mehndi Logo"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
           <h1 className="text-2xl font-semibold mb-1" style={{ color: 'var(--brand-green)' }}>Create account</h1>
           <p className="text-sm" style={{ color: 'var(--brand-muted)' }}>Join Shrilekha Mehndi Art</p>
