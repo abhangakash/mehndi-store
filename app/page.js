@@ -80,171 +80,213 @@ export default async function HomePage() {
     <div>
       <FloatingButtons />
 
-      {/* ===== HERO ===== */}
-      <section style={{ background: 'linear-gradient(135deg, #1a3320 0%, #2d5016 40%, #3a5a40 100%)' }}
-        className="relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #c9a84c 0%, transparent 50%), radial-gradient(circle at 80% 20%, #588157 0%, transparent 40%)' }} />
-        <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 relative">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-5"
-                style={{ backgroundColor: 'rgba(201,168,76,0.2)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.3)' }}>
-                <Sparkles size={12} /> Pune's Trusted Mehndi & Makeup Studio
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-white">
-                Where Every<br />
-                <span style={{ color: '#c9a84c' }}>Design</span> Tells<br />
-                a Story
-              </h1>
-              <p className="text-base mb-8 leading-relaxed text-white/70 max-w-md">
-                Premium natural henna products, bridal mehndi art and professional makeup services.
-                Crafted with love in Pune, delivered across India.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Link href="/products" className="btn-brown text-sm">
-                  Shop Products <ArrowRight size={16} />
-                </Link>
-                <Link href="/packages" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border border-white/30 text-white hover:bg-white/10 transition-colors">
-                  <Palette size={16} /> View Packages
-                </Link>
-              </div>
-              <div className="flex flex-wrap gap-5 mt-8">
-                {[
-                  { icon: <Truck size={14} />, text: 'Free shipping ₹499+' },
-                  { icon: <Shield size={14} />, text: '100% Natural' },
-                  { icon: <Star size={14} />, text: '4.8★ Rated' },
-                  { icon: <Users size={14} />, text: '500+ Happy Customers' },
-                ].map(b => (
-                  <div key={b.text} className="flex items-center gap-1.5 text-xs text-white/60">
-                    <span style={{ color: '#c9a84c' }}>{b.icon}</span>
-                    {b.text}
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Hero cards */}
-            <div className="hidden md:grid grid-cols-2 gap-4">
-              {[
-                { emoji: '🌿', title: 'Natural Henna', sub: 'Pure Rajasthani henna cones', bg: 'rgba(255,255,255,0.08)' },
-                { emoji: '👰', title: 'Bridal Mehndi', sub: 'Intricate bridal designs', bg: 'rgba(201,168,76,0.15)' },
-                { emoji: '💄', title: 'Bridal Makeup', sub: 'Shrilekha Glowup Studio', bg: 'rgba(255,255,255,0.08)' },
-                { emoji: '✨', title: 'Glitter Mehndi', sub: 'Festival & party special', bg: 'rgba(201,168,76,0.15)' },
-              ].map(c => (
-                <div key={c.title} className="rounded-2xl p-5 flex flex-col items-center text-center"
-                  style={{ backgroundColor: c.bg, border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div className="text-4xl mb-2">{c.emoji}</div>
-                  <p className="text-white font-medium text-sm">{c.title}</p>
-                  <p className="text-white/50 text-xs mt-1">{c.sub}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+ {/* ===== HERO SECTION ===== */}
+<section className="relative min-h-screen flex items-center bg-[#0a0f0d] pt-20 pb-12 lg:pt-32 lg:pb-20 overflow-hidden">
+  
+  {/* THE LUXURY "S" WAVE TRANSITION */}
+  <div className="absolute top-0 left-0 w-full z-0 pointer-events-none">
+    {/* Layer 1: Main White Flow */}
+    <svg 
+      viewBox="0 0 1440 700" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg" 
+      className="w-full h-[50vh] lg:h-auto"
+      preserveAspectRatio="none"
+    >
+      <path 
+        fill="white" 
+        d="M0,0H1440V300C1440,300 1250,550 1000,450C750,350 500,650 0,550V0Z"
+      />
+      {/* Layer 2: Gold Accent Path - Gives the "S" its luxury edge */}
+      <path 
+        d="M0,550C500,650 750,350 1000,450C1250,550 1440,300 1440,300" 
+        stroke="#c9a84c" 
+        strokeWidth="2" 
+        strokeOpacity="0.3"
+      />
+    </svg>
+  </div>
 
-      {/* ===== TRUST BAR ===== */}
-      <section className="border-y py-3 overflow-x-auto" style={{ borderColor: 'var(--brand-border)', backgroundColor: 'white' }}>
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center gap-6 md:gap-8 justify-start md:justify-center min-w-max md:min-w-0">
-            {[
-              { icon: <Truck size={16} />, title: 'Free Shipping', sub: 'Orders above ₹499' },
-              { icon: <Shield size={16} />, title: '100% Natural', sub: 'No harmful chemicals' },
-              { icon: <Leaf size={16} />, title: 'Eco Friendly', sub: 'Sustainable packaging' },
-              { icon: <Phone size={16} />, title: 'COD Available', sub: 'Orders above ₹999' },
-              { icon: <Award size={16} />, title: 'Certified Artist', sub: 'Professional services' },
-            ].map(b => (
-              <div key={b.title} className="flex items-center gap-2.5 py-2 flex-shrink-0">
-                <span style={{ color: 'var(--brand-green)' }}>{b.icon}</span>
-                <div>
-                  <div className="text-xs font-semibold" style={{ color: 'var(--brand-text)' }}>{b.title}</div>
-                  <div className="text-xs" style={{ color: 'var(--brand-muted)' }}>{b.sub}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+  {/* Ambient Background Glows */}
+  <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-[#c9a84c] rounded-full blur-[160px] opacity-10 pointer-events-none" />
 
-      {/* ===== SHRILEKHA GLOWUP SECTION ===== */}
-      <section className="py-14 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium mb-4"
-                style={{ backgroundColor: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }}>
-                <Sparkles size={12} /> Introducing Shrilekha Glowup
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 leading-tight" style={{ color: 'var(--brand-text)' }}>
-                Your Complete<br />
-                <span style={{ color: 'var(--brand-brown)' }}>Bridal Beauty</span> Studio
-              </h2>
-              <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--brand-muted)' }}>
-                Shrilekha Glowup is our professional makeup studio in Pune. From pre-bridal sessions to wedding day glam,
-                we make sure you look and feel your absolute best. Combined with our signature mehndi art,
-                we're your one-stop destination for complete bridal beauty.
-              </p>
-              <div className="flex flex-col gap-3 mb-6">
-                {[
-                  'Professional HD & Airbrush makeup',
-                  'Hairstyling & saree draping',
-                  'Pre-bridal skin preparation',
-                  'Mehndi + Makeup combo packages',
-                ].map(f => (
-                  <div key={f} className="flex items-center gap-2">
-                    <CheckCircle size={16} style={{ color: 'var(--brand-green)', flexShrink: 0 }} />
-                    <span className="text-sm" style={{ color: 'var(--brand-text)' }}>{f}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Link href="/packages" className="btn-brown text-sm">
-                  View Packages <ArrowRight size={15} />
-                </Link>
-                <a href="https://wa.me/919623740541?text=Hi! I want to book a makeup appointment"
-                  target="_blank" rel="noreferrer" className="btn-secondary text-sm">
-                  <Phone size={15} /> Book Appointment
-                </a>
-              </div>
-            </div>
-            {/* Makeup service cards */}
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { emoji: '💄', title: 'Bridal Makeup', desc: 'Complete bridal look with HD makeup', color: '#fef9ee', border: '#fde68a' },
-                { emoji: '✨', title: 'Party Makeup', desc: 'Glam looks for every occasion', color: '#f5f3ff', border: '#c4b5fd' },
-                { emoji: '🌸', title: 'Pre-Bridal', desc: 'Skin prep & facial sessions', color: '#fdf2f8', border: '#f9a8d4' },
-                { emoji: '💆', title: 'Hair Styling', desc: 'Traditional & modern hairstyles', color: '#f0fdf4', border: '#86efac' },
-              ].map(s => (
-                <div key={s.title} className="rounded-xl p-4 border"
-                  style={{ backgroundColor: s.color, borderColor: s.border }}>
-                  <div className="text-3xl mb-2">{s.emoji}</div>
-                  <p className="font-semibold text-sm mb-1" style={{ color: 'var(--brand-text)' }}>{s.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'var(--brand-muted)' }}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 w-full">
+    <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      
+      {/* Text Content */}
+      <div className="lg:col-span-5 space-y-6 lg:space-y-10 text-center lg:text-left order-2 lg:order-1 mt-16 lg:mt-0">
+        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl">
+          <span className="flex h-2 w-2 rounded-full bg-[#c9a84c] animate-pulse" />
+          <span className="text-[#0a0f0d] text-[10px] sm:text-xs font-black tracking-[0.3em] uppercase">Pune's Elite Studio</span>
         </div>
-      </section>
+        
+        {/* TYPOGRAPHY: mix-blend-exclusion makes the text flip colors over the wave */}
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.85] tracking-tighter mix-blend-exclusion text-white">
+          BOLD <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c] animate-gradient-x">
+            BEAUTY.
+          </span>
+        </h1>
 
-      {/* ===== CATEGORIES ===== */}
-      <section className="py-12 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="section-title justify-center">Shop by Category</h2>
-            <p className="section-subtitle">Find exactly what you need</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-            {categories.map(cat => (
-              <Link key={cat.id} href={`/products?category=${cat.slug}`}
-                className="card p-4 text-center hover:shadow-md transition-all group hover:border-green-300">
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">🌿</div>
-                <div className="text-xs font-medium" style={{ color: 'var(--brand-green)' }}>{cat.name}</div>
-              </Link>
-            ))}
+        <p className="text-gray-600 lg:text-gray-400 text-base md:text-xl leading-relaxed max-w-md mx-auto lg:mx-0 font-medium">
+          Redefining bridal elegance with organic henna and high-fashion makeup. 
+          Where tradition meets the modern edge.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 pt-4 lg:pt-0">
+          <Link href="/products" className="group relative overflow-hidden bg-[#0a0f0d] text-white lg:bg-[#c9a84c] lg:text-[#0a0f0d] px-10 py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-[0_20px_50px_rgba(201,168,76,0.3)] transition-all">
+            <span className="relative z-10">SHOP COLLECTION</span>
+            <ArrowRight size={20} className="relative z-10 group-hover:translate-x-2 transition-transform" />
+          </Link>
+          <Link href="/packages" className="px-10 py-5 rounded-2xl border-2 border-[#0a0f0d]/10 lg:border-[#c9a84c]/30 text-[#0a0f0d] lg:text-white font-black hover:bg-white/5 transition-all text-center">
+            BOOK SERVICES
+          </Link>
+        </div>
+      </div>
+
+      {/* Visual Bento Grid */}
+      <div className="lg:col-span-7 grid grid-cols-12 gap-4 h-[450px] lg:h-[700px] order-1 lg:order-2">
+        {/* Main Bridal Image */}
+        <div className="col-span-8 relative rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group">
+          <img src="/hero-main.jpg" alt="Bridal Art" className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d] via-transparent to-transparent opacity-80" />
+          <div className="absolute bottom-8 left-8 lg:bottom-12 lg:left-12">
+            <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Signature Artistry</p>
+            <h3 className="text-white text-3xl lg:text-5xl font-black uppercase leading-none tracking-tighter">BRIDAL<br/>MEHNDI</h3>
           </div>
         </div>
-      </section>
+        
+        {/* Side Stack */}
+        <div className="col-span-4 flex flex-col gap-4">
+          <div className="h-[60%] relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
+            <img src="/hero-makeup.jpg" alt="Makeup" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/20" />
+          </div>
+
+          <div className="h-[40%] relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden border-2 border-[#c9a84c]/20 bg-white flex flex-col items-center justify-center p-6 text-center shadow-xl">
+            <div className="w-12 h-12 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-3">
+              <Leaf size={24} className="text-[#c9a84c]" />
+            </div>
+            <p className="text-[#0a0f0d] font-black text-[10px] lg:text-xs uppercase tracking-widest leading-tight">100% Organic<br/>Certified</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{/* ===== TRUST BAR ===== */}
+<section className="bg-white py-14 border-y border-[#0a0f0d]/5 relative z-10">
+  <div className="max-w-7xl mx-auto px-4 sm:px-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16">
+      {[
+        { icon: Truck, label: "EXPRESS DELIVERY", sub: "Pan India Shipping" },
+        { icon: Shield, label: "PURE ORGANIC", sub: "Lab Tested Goods" },
+        { icon: Star, label: "5-STAR RATING", sub: "Trusted by Brides" },
+        { icon: Award, label: "PUNE'S BEST", sub: "Expert Artistry" }
+      ].map((item, i) => (
+        <div key={i} className="flex flex-col items-center lg:items-start text-center lg:text-left gap-4 group">
+          <div className="w-14 h-14 rounded-2xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-500">
+            <item.icon size={28} strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="text-[#0a0f0d] font-black text-sm tracking-tight uppercase">{item.label}</p>
+            <p className="text-gray-400 text-[10px] font-bold tracking-widest uppercase mt-1">{item.sub}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* ===== SHRILEKHA GLOWUP SECTION ===== */}
+<section className="py-20 lg:py-24 bg-[#0a0f0d] relative overflow-hidden">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+      
+      <div className="relative h-[350px] md:h-[500px] order-2 lg:order-1">
+        <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
+          <img src="/glowup-1.jpg" alt="Makeup Studio" className="w-full h-full object-cover" />
+        </div>
+        <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[2rem] md:rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
+          <img src="/glowup-2.jpg" alt="Bridal Prep" className="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <div className="order-1 lg:order-2 space-y-6 text-center lg:text-left">
+        <h2 className="text-4xl md:text-6xl font-black text-white leading-tight uppercase">
+          THE <span className="text-[#c9a84c]">GLOWUP</span> <br />
+          EXPERIENCE
+        </h2>
+        <p className="text-gray-400 text-base md:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+          From the first stroke of henna to the final touch of lipstick, our Pune-based studio 
+          offers a complete transformation sanctuary for the modern bride.
+        </p>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-md mx-auto lg:mx-0">
+          {['HD Makeup', 'Airbrush Tech', 'Saree Draping', 'Hair Styling'].map(item => (
+            <div key={item} className="flex items-center gap-3 p-4 rounded-2xl bg-[#c9a84c]/5 border border-[#c9a84c]/10">
+              <CheckCircle size={18} className="text-[#c9a84c] flex-shrink-0" />
+              <span className="text-white font-bold text-xs uppercase tracking-wider">{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="pt-4">
+          <a href="https://wa.me/919623740541" className="inline-flex items-center gap-3 bg-[#c9a84c] text-[#0a0f0d] px-10 py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
+            BOOK APPOINTMENT <Phone size={18} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ===== MINIMAL CATEGORIES SECTION ===== */}
+<section className="py-12 lg:py-16 bg-[#0a0f0d]">
+  <div className="max-w-7xl mx-auto px-6">
+    
+    {/* Compact Header */}
+    <div className="flex items-center justify-between mb-8">
+      <div>
+        <h2 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter">The Shop</h2>
+        <p className="text-[#c9a84c] font-bold text-[10px] uppercase tracking-widest">Organic Collection</p>
+      </div>
+      <Link href="/products" className="text-white/40 hover:text-[#c9a84c] text-[10px] font-bold uppercase tracking-widest border-b border-white/10 pb-1 transition-all">
+        View All
+      </Link>
+    </div>
+
+    {/* Compact Square Grid */}
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 lg:gap-4">
+      {categories.map((cat) => (
+        <Link 
+          key={cat.id} 
+          href={`/products?category=${cat.slug}`}
+          className="group relative aspect-square rounded-2xl lg:rounded-[2rem] overflow-hidden bg-[#0f1a14] border border-white/5"
+        >
+          <img 
+            src={`/cat-${cat.slug}.jpg`} 
+            alt={cat.name} 
+            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+          />
+          
+          {/* Simple Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+          
+          {/* Centered Minimal Label */}
+          <div className="absolute inset-0 flex items-end justify-center pb-4 lg:pb-6">
+            <span className="text-white font-bold uppercase tracking-widest text-[9px] lg:text-[11px] group-hover:text-[#c9a84c] transition-colors">
+              {cat.name}
+            </span>
+          </div>
+        </Link>
+      ))}
+    </div>
+    
+  </div>
+</section>
 
       {/* ===== FEATURED PRODUCTS ===== */}
       <section className="py-12 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>

@@ -108,7 +108,7 @@ export default function Footer() {
           {/* Policy Links - Now visible on mobile */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
               <Link href="/privacy-policy" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Privacy Policy</Link>
-              <Link href="/terms" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Terms of Service</Link>
+              <Link href="/terms-of-service" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Terms of Service</Link>
               <Link href="/shipping-policy" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Shipping Policy</Link>
           </div>
 
