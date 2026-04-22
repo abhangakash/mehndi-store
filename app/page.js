@@ -288,201 +288,381 @@ export default async function HomePage() {
   </div>
 </section>
 
-      {/* ===== FEATURED PRODUCTS ===== */}
-      <section className="py-12 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="section-title">Featured Products</h2>
-              <p className="section-subtitle">Our most loved henna picks</p>
+    {/* ===== FEATURED PRODUCTS ===== */}
+<section className="py-20 px-4 bg-white relative overflow-hidden">
+  {/* Elegant background accent */}
+  <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
+  
+  <div className="max-w-7xl mx-auto relative z-10">
+    
+    {/* Header Section */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
+          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Elite Collection</span>
+        </div>
+        <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-[0.9]">
+          MOST <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#f3d382]">LOVED.</span>
+        </h2>
+      </div>
+
+      <Link 
+        href="/products" 
+        className="group hidden md:flex items-center gap-3 text-[#0a0f0d] font-black text-xs tracking-widest hover:text-[#c9a84c] transition-all"
+      >
+        EXPLORE ALL
+        <div className="w-10 h-10 rounded-full border border-[#0a0f0d]/10 flex items-center justify-center group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-300">
+          <ArrowRight size={16} />
+        </div>
+      </Link>
+    </div>
+
+    {/* Products Grid: 2 columns on mobile, 3 on desktop */}
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
+      {products.slice(0, 6).map((p) => (
+        <div key={p.id} className="group relative">
+          <div className="transition-all duration-500 ease-out hover:-translate-y-2">
+            <ProductCard product={p} />
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Mobile View All Button - visible only on small screens */}
+    <div className="text-center mt-10 md:hidden px-2">
+      <Link 
+        href="/products" 
+        className="flex items-center justify-center w-full py-4 rounded-xl bg-[#0a0f0d] text-white font-black tracking-widest text-[11px] gap-2 active:scale-[0.98] transition-transform shadow-lg shadow-[#0a0f0d]/20"
+      >
+        VIEW ALL PRODUCTS
+        <ArrowRight size={14} />
+      </Link>
+    </div>
+  </div>
+</section>
+
+     {/* ===== PACKAGES PREVIEW ===== */}
+<section className="py-24 px-4 bg-[#0a0f0d] relative overflow-hidden">
+  {/* Decorative Elements */}
+  <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent opacity-10" />
+  
+  <div className="max-w-7xl mx-auto relative z-10">
+    <div className="text-center mb-16">
+      <div className="inline-flex items-center gap-2 mb-4">
+        <Sparkles size={18} className="text-[#c9a84c]" />
+        <span className="text-[#c9a84c] text-xs font-black uppercase tracking-[0.3em]">Exquisite Services</span>
+      </div>
+      <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4">
+        OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c]">PACKAGES.</span>
+      </h2>
+      <p className="text-gray-400 max-w-2xl mx-auto font-medium text-lg">
+        Premium bridal experiences tailored to your unique style. 
+        From intimate ceremonies to grand celebrations.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {PACKAGES.map((pkg) => (
+        <div 
+          key={pkg.name} 
+          className={`relative group rounded-[2.5rem] border transition-all duration-500 overflow-hidden ${
+            pkg.popular 
+            ? 'bg-white border-[#c9a84c] scale-105 z-20 shadow-[0_20px_50px_rgba(201,168,76,0.15)]' 
+            : 'bg-[#111815] border-white/5 hover:border-[#c9a84c]/50'
+          }`}
+        >
+          {pkg.popular && (
+            <div className="absolute top-0 left-0 right-0 py-2 bg-[#c9a84c] text-center text-[10px] font-black text-[#0a0f0d] uppercase tracking-[0.2em]">
+              Most Requested
             </div>
-            <Link href="/products" className="hidden sm:flex items-center gap-1 text-sm font-medium"
-              style={{ color: 'var(--brand-green)' }}>
-              View all <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3 md:gap-4">
-            {products.map(p => <ProductCard key={p.id} product={p} />)}
-          </div>
-          <div className="text-center mt-6 sm:hidden">
-            <Link href="/products" className="btn-secondary text-sm">
-              View All Products <ArrowRight size={14} />
-            </Link>
-          </div>
-        </div>
-      </section>
+          )}
 
-      {/* ===== PACKAGES PREVIEW ===== */}
-      <section className="py-14 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="section-title">Our Packages</h2>
-            <p className="section-subtitle">Complete mehndi & makeup packages for every occasion</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {PACKAGES.map(pkg => (
-              <div key={pkg.name} className="card overflow-hidden relative"
-                style={{ borderColor: pkg.popular ? pkg.color : 'var(--brand-border)' }}>
-                {pkg.popular && (
-                  <div className="absolute top-0 left-0 right-0 py-1.5 text-center text-xs font-semibold text-white"
-                    style={{ backgroundColor: pkg.color }}>
-                    ⭐ Most Popular
-                  </div>
-                )}
-                <div className={`p-6 ${pkg.popular ? 'pt-10' : ''}`} style={{ backgroundColor: pkg.bg }}>
-                  <div className="text-4xl mb-3">{pkg.icon}</div>
-                  <h3 className="font-bold text-lg mb-1" style={{ color: 'var(--brand-text)' }}>{pkg.name}</h3>
-                  <div className="text-2xl font-bold mb-4" style={{ color: pkg.color }}>
-                    {pkg.price} <span className="text-sm font-normal text-gray-400">onwards</span>
-                  </div>
-                  <ul className="flex flex-col gap-2 mb-5">
-                    {pkg.features.map(f => (
-                      <li key={f} className="flex items-start gap-2 text-sm" style={{ color: 'var(--brand-muted)' }}>
-                        <CheckCircle size={14} className="mt-0.5 flex-shrink-0" style={{ color: pkg.color }} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-<a
-  href={`https://wa.me/919623740541?text=${encodeURIComponent(
-    `Hi! I want to book the ${pkg.name} package`
-  )}`}
-                      target="_blank" rel="noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
-                    style={{ backgroundColor: pkg.color }}>
-                    <Phone size={14} /> Book via WhatsApp
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-6">
-            <Link href="/packages" className="btn-secondary text-sm">
-              See All Packages & Pricing <ArrowRight size={14} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== GALLERY PREVIEW ===== */}
-      <section className="py-14 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="section-title">Our Work</h2>
-              <p className="section-subtitle">A glimpse of our mehndi & makeup portfolio</p>
+          <div className={`p-8 lg:p-10 ${pkg.popular ? 'pt-12' : ''}`}>
+            {/* Icon & Title */}
+            <div className={`w-16 h-16 rounded-2xl mb-6 flex items-center justify-center text-3xl ${
+              pkg.popular ? 'bg-[#0a0f0d]/5' : 'bg-white/5'
+            }`}>
+              {pkg.icon}
             </div>
-            <Link href="/gallery" className="hidden sm:flex items-center gap-1 text-sm font-medium"
-              style={{ color: 'var(--brand-green)' }}>
-              View all <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
-            {GALLERY_ITEMS.map((item, i) => (
-              <div key={i} className="card overflow-hidden group cursor-pointer hover:shadow-lg transition-all">
-                <div className="aspect-square flex items-center justify-center text-6xl relative"
-                  style={{ backgroundColor: i % 2 === 0 ? 'var(--brand-surface)' : '#fef9ee' }}>
-                  {item.emoji}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-end p-3 opacity-0 group-hover:opacity-100">
-                    <span className="badge badge-green text-xs">{item.tag}</span>
-                  </div>
-                </div>
-                <div className="p-3">
-                  <p className="text-xs font-medium" style={{ color: 'var(--brand-text)' }}>{item.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-6 sm:hidden">
-            <Link href="/gallery" className="btn-secondary text-sm">View Gallery</Link>
-          </div>
-        </div>
-      </section>
 
-      {/* ===== TESTIMONIALS ===== */}
-      <section className="py-14 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="section-title">What Our Customers Say</h2>
-            <p className="section-subtitle">Real experiences from real customers</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="card p-5">
-                <div className="flex items-center gap-0.5 mb-3">
-                  {[...Array(t.rating)].map((_, s) => (
-                    <Star key={s} size={13} fill="#c9a84c" color="#c9a84c" />
-                  ))}
-                </div>
-                <p className="text-sm leading-relaxed mb-4 italic" style={{ color: 'var(--brand-muted)' }}>
-                  "{t.text}"
-                </p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>{t.name}</p>
-                    <p className="text-xs flex items-center gap-1" style={{ color: 'var(--brand-muted)' }}>
-                      <MapPin size={10} /> {t.location}
-                    </p>
-                  </div>
-                  <span className="badge badge-green text-xs">{t.service}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <h3 className={`text-2xl font-black mb-2 uppercase tracking-tight ${
+              pkg.popular ? 'text-[#0a0f0d]' : 'text-white'
+            }`}>
+              {pkg.name}
+            </h3>
 
-      {/* ===== WHY US ===== */}
-      <section className="py-14 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="section-title">Why Choose Shrilekha?</h2>
-            <p className="section-subtitle">Trusted by 500+ customers across Maharashtra</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {[
-              { emoji: '🌿', title: 'Pure & Natural', desc: '100% natural henna with no PPD or harmful chemicals. Safe for all skin types including sensitive skin.' },
-              { emoji: '🎨', title: 'Expert Artists', desc: 'Trained professional mehndi and makeup artists with 5+ years experience in bridal services.' },
-              { emoji: '🚚', title: 'Pan India Delivery', desc: 'Fast shipping across India. Free delivery on orders above ₹499. COD available above ₹999.' },
-              { emoji: '💍', title: 'Bridal Specialists', desc: 'Specializing in bridal mehndi and makeup. Complete bridal beauty packages available.' },
-              { emoji: '📸', title: 'Portfolio Ready', desc: 'Every design is photo-ready. We ensure your look is perfect for photos and videos.' },
-              { emoji: '❤️', title: 'Made with Love', desc: 'Every cone, every design, every makeover is crafted with love and attention to detail.' },
-            ].map(f => (
-              <div key={f.title} className="card p-6 hover:shadow-md transition-all">
-                <div className="text-4xl mb-3">{f.emoji}</div>
-                <h3 className="font-semibold mb-2" style={{ color: 'var(--brand-green)' }}>{f.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--brand-muted)' }}>{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <div className="flex items-baseline gap-1 mb-8">
+              <span className={`text-3xl font-black ${pkg.popular ? 'text-[#c9a84c]' : 'text-[#c9a84c]'}`}>
+                {pkg.price}
+              </span>
+              <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Onwards</span>
+            </div>
 
-      {/* ===== CTA BANNER ===== */}
-      <section className="py-14 px-4" style={{ background: 'linear-gradient(135deg, #1a3320, #3a5a40)' }}>
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-            Ready to Look Your Best?
-          </h2>
-          <p className="text-white/70 mb-8 text-sm leading-relaxed">
-            Shop our premium henna products or book a mehndi/makeup appointment in Pune.
-            Free shipping on orders above ₹499.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/products" className="btn-brown text-sm">
-              Shop Products <ArrowRight size={16} />
-            </Link>
-            <Link href="/packages" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border border-white/30 text-white hover:bg-white/10 transition-colors">
-              <Palette size={16} /> Book Service
-            </Link>
-            <a href="https://wa.me/919623740541?text=Hi! I want to know more about your services"
-              target="_blank" rel="noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border border-white/30 text-white hover:bg-white/10 transition-colors">
-              <Phone size={16} /> WhatsApp Us
+            {/* Features List */}
+            <ul className="space-y-4 mb-10">
+              {pkg.features.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-sm font-medium">
+                  <CheckCircle 
+                    size={18} 
+                    className={`mt-0.5 flex-shrink-0 ${pkg.popular ? 'text-[#0a0f0d]' : 'text-[#c9a84c]'}`} 
+                  />
+                  <span className={pkg.popular ? 'text-gray-700' : 'text-gray-400'}>{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Booking Button */}
+            <a
+              href={`https://wa.me/919623740541?text=${encodeURIComponent(
+                `Hi! I want to book the ${pkg.name} package`
+              )}`}
+              target="_blank" 
+              rel="noreferrer"
+              className={`flex items-center justify-center gap-3 w-full py-5 rounded-2xl font-black text-xs tracking-widest transition-all ${
+                pkg.popular 
+                ? 'bg-[#0a0f0d] text-white hover:bg-[#c9a84c] hover:text-[#0a0f0d]' 
+                : 'bg-[#c9a84c] text-[#0a0f0d] hover:bg-white hover:text-[#0a0f0d]'
+              }`}
+            >
+              <Phone size={16} /> BOOK ON WHATSAPP
             </a>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+
+    {/* Footer Link */}
+    <div className="text-center mt-16">
+      <Link 
+        href="/packages" 
+        className="inline-flex items-center gap-2 text-white/50 hover:text-[#c9a84c] font-bold tracking-widest text-xs transition-colors"
+      >
+        VIEW ALL DETAILED PRICING <ChevronRight size={16} />
+      </Link>
+    </div>
+  </div>
+</section>
+
+      {/* ===== GALLERY PREVIEW ===== */}
+<section className="py-24 px-4 bg-white relative">
+  <div className="max-w-7xl mx-auto">
+    
+    {/* Header: Editorial Style */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
+          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">The Portfolio</span>
+        </div>
+        <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-none">
+          CRAFTING <br className="md:hidden" /> 
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a0f0d] via-[#c9a84c] to-[#0a0f0d]">MOMENTS.</span>
+        </h2>
+      </div>
+
+      <Link 
+        href="/gallery" 
+        className="group flex items-center gap-3 text-[#0a0f0d] font-black text-xs tracking-widest hover:text-[#c9a84c] transition-all"
+      >
+        VIEW FULL PORTFOLIO
+        <div className="w-10 h-10 rounded-full border border-[#0a0f0d]/10 flex items-center justify-center group-hover:bg-[#0a0f0d] group-hover:text-white transition-all">
+          <ArrowRight size={16} />
+        </div>
+      </Link>
+    </div>
+
+    {/* Gallery Grid: Using 2 columns on mobile for better visibility */}
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+      {GALLERY_ITEMS.map((item, i) => (
+        <div 
+          key={i} 
+          className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] bg-[#f8f8f8] border border-[#0a0f0d]/5 cursor-pointer"
+        >
+          {/* Content Container */}
+          <div 
+            className={`aspect-square flex flex-col items-center justify-center relative transition-transform duration-700 group-hover:scale-110 ${
+              i % 2 === 0 ? 'bg-[#fcfaf2]' : 'bg-white'
+            }`}
+          >
+            {/* The Emoji/Image Placeholder */}
+            <span className="text-5xl md:text-7xl drop-shadow-xl">{item.emoji}</span>
+            
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d]/80 via-[#0a0f0d]/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-4 md:p-8">
+              <span className="text-[#c9a84c] text-[10px] font-black uppercase tracking-widest mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                {item.tag}
+              </span>
+              <p className="text-white text-sm md:text-lg font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                {item.label}
+              </p>
+            </div>
+          </div>
+
+          {/* Subtle Label for Mobile (always visible if not hovered) */}
+          <div className="md:hidden p-3 bg-white border-t border-[#0a0f0d]/5">
+             <p className="text-[10px] font-black text-[#0a0f0d] uppercase tracking-tighter opacity-60">
+               {item.label}
+             </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Mobile "View All" - centered and elegant */}
+    <div className="mt-12 text-center md:hidden">
+      <Link href="/gallery" className="inline-block text-[#0a0f0d] font-black text-xs tracking-[0.3em] border-b-2 border-[#c9a84c] pb-2">
+        EXPLORE ALL WORKS
+      </Link>
+    </div>
+  </div>
+</section>
+
+      {/* ===== TESTIMONIALS: THE WALL OF LOVE ===== */}
+<section className="py-24 px-4 bg-white relative">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16 space-y-4">
+      <div className="flex justify-center items-center gap-2">
+        <Heart size={16} className="text-[#c9a84c] fill-[#c9a84c]" />
+        <span className="text-[#c9a84c] text-xs font-black uppercase tracking-[0.4em]">Bridal Stories</span>
+      </div>
+      <h2 className="text-5xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter">
+        VOICES OF <span className="italic font-serif text-[#c9a84c]">Elegance.</span>
+      </h2>
+    </div>
+
+    {/* Grid: 1 col on mobile, 2 on tablet, 4 on desktop */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {TESTIMONIALS.map((t, i) => (
+        <div key={i} className="group p-8 rounded-[2rem] bg-[#fcfaf2] border border-[#0a0f0d]/5 hover:bg-[#0a0f0d] transition-all duration-500">
+          <div className="flex items-center gap-1 mb-6">
+            {[...Array(t.rating)].map((_, s) => (
+              <Star key={s} size={14} fill="#c9a84c" className="text-[#c9a84c]" />
+            ))}
+          </div>
+          
+          <p className="text-gray-600 group-hover:text-gray-300 text-sm leading-relaxed mb-8 font-medium transition-colors">
+            "{t.text}"
+          </p>
+
+          <div className="pt-6 border-t border-[#0a0f0d]/5 group-hover:border-white/10 transition-colors">
+            <p className="text-[#0a0f0d] group-hover:text-white font-black text-sm uppercase tracking-tight">
+              {t.name}
+            </p>
+            <div className="flex items-center justify-between mt-1">
+              <p className="text-[#c9a84c] text-[10px] font-bold flex items-center gap-1 uppercase">
+                <MapPin size={10} /> {t.location}
+              </p>
+              <span className="text-[9px] font-black px-2 py-1 bg-[#0a0f0d]/5 group-hover:bg-white/10 text-[#0a0f0d] group-hover:text-[#c9a84c] rounded-md uppercase tracking-tighter">
+                {t.service}
+              </span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* ===== WHY US: THE ELITE STANDARD ===== */}
+<section className="py-24 px-4 bg-[#0a0f0d] rounded-t-[3rem] lg:rounded-t-[5rem]">
+  <div className="max-w-7xl mx-auto">
+    <div className="grid lg:grid-cols-12 gap-16 items-start">
+      
+      {/* Left Sticky Content */}
+      <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-6">
+        <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none">
+          THE <br />
+          <span className="text-[#c9a84c]">SHRILEKHA</span> <br />
+          PROMISE.
+        </h2>
+        <p className="text-gray-400 text-lg font-medium">
+          Trusted by over 500+ brides across Maharashtra for our uncompromising quality and artistic vision.
+        </p>
+        <div className="w-20 h-1 bg-[#c9a84c]" />
+      </div>
+
+      {/* Right Grid Content */}
+      <div className="lg:col-span-8 grid sm:grid-cols-2 gap-8">
+        {[
+          { icon: <Leaf size={32} />, title: 'Pure & Natural', desc: '100% organic henna with no PPD or harmful chemicals. Safe for all skin types.' },
+          { icon: <Palette size={32} />, title: 'Expert Artists', desc: 'Professional artists with 5+ years experience in luxury bridal aesthetics.' },
+          { icon: <Truck size={32} />, title: 'Pan India Delivery', desc: 'Fast shipping across India. Free delivery on orders above ₹499.' },
+          { icon: <Award size={32} />, title: 'Bridal Specialists', desc: 'Specializing in intricate bridal mehndi and high-fashion makeup.' },
+          { icon: <Camera size={32} />, title: 'Portfolio Ready', desc: 'Designs crafted to look flawless under professional camera lighting.' },
+          { icon: <Heart size={32} />, title: 'Made with Love', desc: 'Every cone and every design is handled with meticulous attention to detail.' },
+        ].map((f, i) => (
+          <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-[#c9a84c]/50 transition-all group">
+            <div className="text-[#c9a84c] mb-6 group-hover:scale-110 transition-transform duration-300">
+              {f.icon}
+            </div>
+            <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tight">{f.title}</h3>
+            <p className="text-gray-400 text-sm leading-relaxed font-medium">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+{/* ===== FINAL CTA: SIMPLE & ELITE ===== */}
+<section className="py-20 px-6 bg-white">
+  <div className="max-w-5xl mx-auto">
+    {/* Decorative Top Line */}
+    <div className="w-12 h-[2px] bg-[#c9a84c] mb-10 mx-auto md:mx-0" />
+
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+      <div className="flex-1 space-y-6 text-center md:text-left">
+        <h2 className="text-5xl md:text-7xl font-black text-[#0a0f0d] tracking-tighter leading-none">
+          ELEVATE YOUR <br />
+          <span className="text-[#c9a84c]">AESTHETIC.</span>
+        </h2>
+        <p className="text-gray-500 text-lg md:text-xl font-medium max-w-md mx-auto md:mx-0">
+          From organic supplies to signature bridal transformations. Pune’s luxury standard.
+        </p>
+      </div>
+
+      {/* Clean Button Stack */}
+      <div className="flex flex-col gap-4 w-full md:w-auto">
+        <Link 
+          href="/products" 
+          className="group flex items-center justify-between gap-8 bg-[#0a0f0d] text-white px-8 py-5 rounded-2xl hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all duration-300"
+        >
+          <span className="font-black text-xs tracking-widest uppercase">Shop Collection</span>
+          <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+        </Link>
+
+        <Link 
+          href="/packages" 
+          className="group flex items-center justify-between gap-8 border-2 border-[#0a0f0d] text-[#0a0f0d] px-8 py-5 rounded-2xl hover:bg-[#0a0f0d] hover:text-white transition-all duration-300"
+        >
+          <span className="font-black text-xs tracking-widest uppercase">Book Services</span>
+          <Palette size={20} />
+        </Link>
+      </div>
+    </div>
+
+    {/* Elegant Footer Link */}
+    <div className="mt-16 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="flex items-center gap-4">
+        <div className="flex -space-x-2">
+          {[1,2,3].map(i => (
+            <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[8px] font-bold">
+              {i === 3 ? '50+' : ''}
+            </div>
+          ))}
+        </div>
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Trusted by 500+ Pune Brides</p>
+      </div>
+      
+      <a 
+        href="https://wa.me/919623740541" 
+        className="text-[#c9a84c] font-black text-xs tracking-widest flex items-center gap-2 hover:opacity-70 transition-opacity"
+      >
+        WHATSAPP INQUIRY <Phone size={14} />
+      </a>
+    </div>
+  </div>
+</section>
     </div>
   )
 }

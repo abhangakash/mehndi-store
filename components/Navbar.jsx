@@ -11,7 +11,8 @@ import {
   Camera, 
   Send, 
   MapPin, 
-  Sparkles 
+  Sparkles,
+  LogIn 
 } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { useAuth } from '@/context/AuthContext'
@@ -54,16 +55,9 @@ export default function Navbar() {
   }
 
   return (
-    /* 1. STICKY: This solves your Cart Page overlap issue. 
-       2. BG-TRANSPARENT: This ensures no 'rectangle' background shows.
-    */
     <header className="sticky top-0 z-[100] w-full bg-transparent">
       <div className="mx-auto max-w-7xl px-4 sm:px-8 py-4">
         
-        {/* THE OVAL PILL 
-            - Using a Deep Green (Forest Green) Glass effect 
-            - Gold Border (white/20 + Gold text)
-        */}
         <div className="relative flex items-center justify-between bg-[#0f1a14]/90 backdrop-blur-xl border border-[#c9a84c]/30 rounded-full px-6 py-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.2)] pointer-events-auto">
           
           {/* Mobile Toggle */}
@@ -96,7 +90,6 @@ export default function Navbar() {
                   </Link>
                 )}
                 
-                {/* Dropdown Menu */}
                 {link.children && (
                   <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:translate-y-0 translate-y-2 group-hover:visible transition-all duration-300">
                     <div className="bg-[#0f1a14] border border-[#c9a84c]/20 rounded-2xl p-2 shadow-2xl min-w-[180px]">
@@ -112,8 +105,8 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Icons */}
-          <div className="flex items-center gap-3">
+          {/* Icons & Login Section */}
+          <div className="flex items-center gap-1 sm:gap-3">
             <Link href="/cart" className="relative p-2 text-white hover:text-[#c9a84c] transition-colors">
               <ShoppingCart size={18} strokeWidth={2} />
               {mounted && totalItems > 0 && (
@@ -122,16 +115,29 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            {user && (
-              <Link href="/profile" className="p-2 text-white hover:text-[#c9a84c]">
-                <User size={18} strokeWidth={2} />
-              </Link>
+
+            {mounted && (
+              <>
+                {user ? (
+                  <Link href="/profile" className="p-2 text-white hover:text-[#c9a84c] transition-colors">
+                    <User size={18} strokeWidth={2} />
+                  </Link>
+                ) : (
+                  <Link 
+                    href="/login" 
+                    className="flex items-center gap-2 ml-2 px-4 py-1.5 rounded-full bg-[#c9a84c] text-[#0f1a14] text-[9px] font-black uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-lg"
+                  >
+                    <LogIn size={12} strokeWidth={3} />
+                    <span className="hidden sm:inline">Login</span>
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </div>
       </div>
 
-      {/* MOBILE MENU OVERLAY - Green/Gold Theme */}
+      {/* MOBILE MENU OVERLAY */}
       <div className={`lg:hidden fixed inset-0 bg-[#0f1a14] transition-all duration-500 z-[150] ${
         menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-full'
       }`}>
@@ -139,8 +145,18 @@ export default function Navbar() {
           <X size={28} />
         </button>
 
-        <div className="flex flex-col h-full px-10 pt-32 pb-12">
-          <div className="space-y-10">
+        <div className="flex flex-col h-full px-10 pt-24 pb-12">
+          {/* Mobile Login Row */}
+          {!user && (
+             <Link href="/login" className="flex items-center gap-3 text-[#c9a84c] mb-8 group">
+                <div className="w-10 h-10 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 flex items-center justify-center group-hover:bg-[#c9a84c] group-hover:text-[#0f1a14] transition-all">
+                  <LogIn size={18} />
+                </div>
+                <span className="text-xl font-bold uppercase tracking-widest">Sign In</span>
+             </Link>
+          )}
+
+          <div className="space-y-8">
             {NAV_LINKS.map((link) => (
               <div key={link.label}>
                 {link.children ? (
@@ -149,13 +165,13 @@ export default function Navbar() {
                       <Sparkles size={10} /> {link.label}
                     </p>
                     {link.children.map(child => (
-                      <Link key={child.href} href={child.href} className="block text-3xl font-light text-white tracking-tighter uppercase">
+                      <Link key={child.href} href={child.href} className="block text-2xl font-light text-white tracking-tighter uppercase">
                         {child.label}
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <Link href={link.href} className={`block text-5xl font-light tracking-tighter uppercase ${
+                  <Link href={link.href} className={`block text-4xl font-light tracking-tighter uppercase ${
                     pathname === link.href ? 'text-[#c9a84c]' : 'text-white'
                   }`}>
                     {link.label}
@@ -165,15 +181,11 @@ export default function Navbar() {
             ))}
           </div>
           
-          {/* Mobile Social Dock */}
           <div className="mt-auto flex flex-col gap-8">
             <div className="flex items-center gap-6">
               <a href="#" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]"><Camera size={20} /></a>
               <a href="#" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]"><Send size={20} /></a>
               <a href="#" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]"><MapPin size={20} /></a>
-            </div>
-            <div className="text-white/20 text-[9px] font-bold tracking-[0.3em] pt-6 border-t border-white/5 uppercase">
-              Pune • Maharashtra
             </div>
           </div>
         </div>

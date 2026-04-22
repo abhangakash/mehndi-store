@@ -26,8 +26,19 @@ export default function ProfileContent() {
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({ full_name: '', phone: '' })
 
-  useEffect(() => { if (!loading && !user) router.push('/login') }, [user, loading, router])
-  useEffect(() => { if (profile) setForm({ full_name: profile.full_name || '', phone: profile.phone || '' }) }, [profile])
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login')
+    }
+  }, [user, loading, router])
+
+  // Pre-fill form from profile
+  useEffect(() => {
+    if (profile) {
+      setForm({ full_name: profile.full_name || '', phone: profile.phone || '' })
+    }
+  }, [profile])
 
   const loadOrders = useCallback(async () => {
     if (!user) return
@@ -41,30 +52,50 @@ export default function ProfileContent() {
     setOrdersLoading(false)
   }, [user])
 
-  useEffect(() => { if (tab === 'orders' && user) loadOrders() }, [tab, user, loadOrders])
+  useEffect(() => {
+    if (tab === 'orders' && user) loadOrders()
+  }, [tab, user, loadOrders])
 
   const handleSaveProfile = async () => {
+    // Guard: ensure user exists before accessing user.id
+    if (!user) {
+      toast.error('You are not logged in')
+      router.push('/login')
+      return
+    }
     setSaving(true)
     const { error } = await supabase
       .from('profiles')
       .update({ full_name: form.full_name, phone: form.phone })
       .eq('id', user.id)
-    if (error) toast.error('Failed to save')
-    else { toast.success('Profile updated!'); fetchProfile(user.id); setEditing(false) }
+    if (error) {
+      toast.error('Failed to save profile')
+    } else {
+      toast.success('Profile updated!')
+      fetchProfile(user.id)
+      setEditing(false)
+    }
     setSaving(false)
   }
 
   const handleSignOut = async () => {
     await signOut()
-    toast.success('Signed out')
+    toast.success('Signed out successfully')
     router.push('/')
   }
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--brand-surface)' }}>
-      <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--brand-green)' }} />
-    </div>
-  )
+  // Show loading spinner while auth is resolving
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: 'var(--brand-surface)' }}>
+        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin"
+          style={{ borderColor: 'var(--brand-green)' }} />
+      </div>
+    )
+  }
+
+  // Don't render content if user is null (redirect is in progress)
   if (!user) return null
 
   const initials = (profile?.full_name || user.email || 'U').slice(0, 2).toUpperCase()
@@ -72,22 +103,23 @@ export default function ProfileContent() {
   return (
     <div className="min-h-screen py-10 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="card p-6 mb-5 flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-semibold flex-shrink-0"
+
+        {/* Profile header card */}
+        <div className="card p-5 mb-5 flex items-center gap-4">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
             style={{ backgroundColor: 'var(--brand-green)' }}>
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-semibold truncate" style={{ color: 'var(--brand-text)' }}>
+            <h1 className="font-semibold truncate" style={{ color: 'var(--brand-text)' }}>
               {profile?.full_name || 'My Account'}
             </h1>
             <p className="text-sm truncate" style={{ color: 'var(--brand-muted)' }}>
-              {user.email || user.phone}
+              {user.email || user.phone || '—'}
             </p>
           </div>
           <button onClick={handleSignOut}
-            className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 text-red-500"
+            className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 text-red-500 flex-shrink-0"
             style={{ borderColor: '#fca5a5' }}>
             <LogOut size={14} /> Sign out
           </button>
@@ -131,31 +163,51 @@ export default function ProfileContent() {
                   </button>
                   <button onClick={handleSaveProfile} disabled={saving}
                     className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg text-white"
-                    style={{ backgroundColor: 'var(--brand-green)' }}>
+                    style={{ backgroundColor: 'var(--brand-green)', opacity: saving ? 0.7 : 1 }}>
                     <Save size={13} /> {saving ? 'Saving...' : 'Save'}
                   </button>
                 </div>
               )}
             </div>
+
             <div className="flex flex-col gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>Full Name</label>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>
+                  Full Name
+                </label>
                 {editing
-                  ? <input value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))} placeholder="Your name" />
-                  : <p className="text-sm py-2.5 px-4 rounded-lg" style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-text)' }}>{profile?.full_name || '—'}</p>
+                  ? <input value={form.full_name}
+                      onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))}
+                      placeholder="Your full name" />
+                  : <p className="text-sm py-2.5 px-4 rounded-lg"
+                      style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-text)' }}>
+                      {profile?.full_name || '—'}
+                    </p>
                 }
               </div>
+
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>Email</label>
-                <p className="text-sm py-2.5 px-4 rounded-lg" style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-muted)' }}>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>
+                  Email
+                </label>
+                <p className="text-sm py-2.5 px-4 rounded-lg"
+                  style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-muted)' }}>
                   {user.email || '—'}
                 </p>
               </div>
+
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>Phone</label>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>
+                  Phone
+                </label>
                 {editing
-                  ? <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="9876543210" />
-                  : <p className="text-sm py-2.5 px-4 rounded-lg" style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-text)' }}>{profile?.phone || user.phone || '—'}</p>
+                  ? <input value={form.phone}
+                      onChange={e => setForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
+                      placeholder="9876543210" maxLength={10} />
+                  : <p className="text-sm py-2.5 px-4 rounded-lg"
+                      style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-text)' }}>
+                      {profile?.phone || user.phone || '—'}
+                    </p>
                 }
               </div>
             </div>
@@ -174,7 +226,10 @@ export default function ProfileContent() {
               <div className="card p-10 text-center">
                 <Package size={40} className="mx-auto mb-3" style={{ color: 'var(--brand-muted)' }} />
                 <p className="font-medium mb-1" style={{ color: 'var(--brand-text)' }}>No orders yet</p>
-                <Link href="/products" className="btn-primary text-sm mt-3 inline-flex">Start Shopping</Link>
+                <p className="text-sm mb-4" style={{ color: 'var(--brand-muted)' }}>
+                  Your order history will appear here
+                </p>
+                <Link href="/products" className="btn-primary text-sm">Start Shopping</Link>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
@@ -183,29 +238,43 @@ export default function ProfileContent() {
                   const config = STATUS_CONFIG[status] || STATUS_CONFIG.pending
                   return (
                     <div key={order.id} className="card overflow-hidden">
-                      <div className="p-4 border-b flex items-start justify-between gap-3" style={{ borderColor: 'var(--brand-border)' }}>
+                      <div className="p-4 border-b flex items-start justify-between gap-3"
+                        style={{ borderColor: 'var(--brand-border)' }}>
                         <div>
-                          <p className="text-xs mb-0.5" style={{ color: 'var(--brand-muted)' }}>#{order.id.slice(0, 8).toUpperCase()}</p>
-                          <p className="font-semibold" style={{ color: 'var(--brand-text)' }}>₹{Number(order.total_amount).toFixed(0)}</p>
+                          <p className="text-xs mb-0.5" style={{ color: 'var(--brand-muted)' }}>
+                            #{order.id.slice(0, 8).toUpperCase()}
+                          </p>
+                          <p className="font-semibold" style={{ color: 'var(--brand-text)' }}>
+                            ₹{Number(order.total_amount).toFixed(0)}
+                          </p>
                           <p className="text-xs" style={{ color: 'var(--brand-muted)' }}>
-                            {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            {new Date(order.created_at).toLocaleDateString('en-IN', {
+                              day: 'numeric', month: 'short', year: 'numeric'
+                            })}
                           </p>
                         </div>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium"
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0"
                           style={{ backgroundColor: config.bg, color: config.color }}>
                           {config.icon} {config.label}
                         </span>
                       </div>
+
                       <div className="p-4 border-b" style={{ borderColor: 'var(--brand-border)' }}>
                         {order.order_items?.map(item => (
                           <div key={item.id} className="flex justify-between py-0.5">
-                            <span className="text-sm" style={{ color: 'var(--brand-text)' }}>{item.product_name} × {item.quantity}</span>
-                            <span className="text-sm font-medium" style={{ color: 'var(--brand-brown)' }}>₹{Number(item.total_price).toFixed(0)}</span>
+                            <span className="text-sm" style={{ color: 'var(--brand-text)' }}>
+                              {item.product_name} × {item.quantity}
+                            </span>
+                            <span className="text-sm font-medium" style={{ color: 'var(--brand-brown)' }}>
+                              ₹{Number(item.total_price).toFixed(0)}
+                            </span>
                           </div>
                         ))}
                       </div>
+
                       <div className="p-4 flex items-start gap-2">
-                        <MapPin size={14} className="mt-0.5 flex-shrink-0" style={{ color: 'var(--brand-muted)' }} />
+                        <MapPin size={14} className="mt-0.5 flex-shrink-0"
+                          style={{ color: 'var(--brand-muted)' }} />
                         <p className="text-xs" style={{ color: 'var(--brand-muted)' }}>
                           {order.address}, {order.city} — {order.pincode}
                         </p>
@@ -217,6 +286,7 @@ export default function ProfileContent() {
             )}
           </div>
         )}
+
       </div>
     </div>
   )
