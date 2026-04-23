@@ -24,13 +24,13 @@ async function getCategories() {
 }
 
 const GALLERY_ITEMS = [
-  { emoji: '🌸', label: 'Bridal Mehndi', tag: 'bridal' },
-  { emoji: '🌿', label: 'Arabic Patterns', tag: 'arabic' },
-  { emoji: '✨', label: 'Glitter Mehndi', tag: 'glitter' },
-  { emoji: '🎨', label: 'Bridal Makeup', tag: 'makeup' },
-  { emoji: '💄', label: 'Party Makeup', tag: 'makeup' },
-  { emoji: '🌺', label: 'Rajasthani Mehndi', tag: 'traditional' },
-]
+  { image: '/bridal-mehndi.webp', label: 'Bridal Mehndi', tag: 'bridal' },
+  { image: '/arabic-patterns.webp', label: 'Arabic Patterns', tag: 'arabic' },
+  { image: '/glitter-mehndi.webp', label: 'Glitter Mehndi', tag: 'glitter' },
+  { image: '/bridal-makeup.webp', label: 'Bridal Makeup', tag: 'makeup' },
+  { image: '/party-makeup.webp', label: 'Party Makeup', tag: 'makeup' },
+  { image: '/rajasthani-mehndi.webp', label: 'Rajasthani Mehndi', tag: 'traditional' },
+];
 
 const PACKAGES = [
   {
@@ -148,7 +148,7 @@ export default async function HomePage() {
       <div className="lg:col-span-7 grid grid-cols-12 gap-4 h-[450px] lg:h-[700px] order-1 lg:order-2">
         {/* Main Bridal Image */}
         <div className="col-span-8 relative rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group">
-          <img src="/hero-main.webp" alt="Bridal Art" className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
+          <img src="/hero-makeup.webp" alt="Bridal Art" className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d] via-transparent to-transparent opacity-80" />
           <div className="absolute bottom-8 left-8 lg:bottom-12 lg:left-12">
             <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Signature Artistry</p>
@@ -159,7 +159,7 @@ export default async function HomePage() {
         {/* Side Stack */}
         <div className="col-span-4 flex flex-col gap-4">
           <div className="h-[60%] relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
-            <img src="/hero-makeup.webp" alt="Makeup" className="w-full h-full object-cover" />
+            <img src="/hero-main.webp" alt="Makeup" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/20" />
           </div>
 
@@ -207,10 +207,10 @@ export default async function HomePage() {
       
       <div className="relative h-[350px] md:h-[500px] order-2 lg:order-1">
         <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
-          <img src="/glowup-1.jpg" alt="Makeup Studio" className="w-full h-full object-cover" />
+          <img src="/glowup-1.webp" alt="Makeup Studio" className="w-full h-full object-cover" />
         </div>
         <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[2rem] md:rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
-          <img src="/glowup-2.jpg" alt="Bridal Prep" className="w-full h-full object-cover" />
+          <img src="/glowup-2.webp" alt="Bridal Prep" className="w-full h-full object-cover" />
         </div>
       </div>
 
