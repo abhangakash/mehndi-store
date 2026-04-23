@@ -159,7 +159,7 @@ export default async function HomePage() {
         {/* Side Stack */}
         <div className="col-span-4 flex flex-col gap-4">
           <div className="h-[60%] relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
-            <img src="/hero-makeup.jpg" alt="Makeup" className="w-full h-full object-cover" />
+            <img src="/hero-makeup.webp" alt="Makeup" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/20" />
           </div>
 
