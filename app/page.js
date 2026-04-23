@@ -444,7 +444,7 @@ export default async function HomePage() {
   </div>
 </section>
 
-      {/* ===== GALLERY PREVIEW ===== */}
+{/* ===== GALLERY PREVIEW ===== */}
 <section className="py-24 px-4 bg-white relative">
   <div className="max-w-7xl mx-auto">
     
@@ -472,22 +472,25 @@ export default async function HomePage() {
       </Link>
     </div>
 
-    {/* Gallery Grid: Using 2 columns on mobile for better visibility */}
+    {/* Gallery Grid */}
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
       {GALLERY_ITEMS.map((item, i) => (
         <div 
           key={i} 
           className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] bg-[#f8f8f8] border border-[#0a0f0d]/5 cursor-pointer"
         >
-          {/* Content Container */}
           <div 
             className={`aspect-square flex flex-col items-center justify-center relative transition-transform duration-700 group-hover:scale-110 ${
               i % 2 === 0 ? 'bg-[#fcfaf2]' : 'bg-white'
             }`}
           >
-            {/* The Emoji/Image Placeholder */}
-            <span className="text-5xl md:text-7xl drop-shadow-xl">{item.emoji}</span>
-            
+            {/* ✅ ONLY CHANGE: IMAGE ADDED */}
+            <img
+              src={item.image}
+              alt={item.label}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+
             {/* Overlay Gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d]/80 via-[#0a0f0d]/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-4 md:p-8">
               <span className="text-[#c9a84c] text-[10px] font-black uppercase tracking-widest mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -499,7 +502,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Subtle Label for Mobile (always visible if not hovered) */}
           <div className="md:hidden p-3 bg-white border-t border-[#0a0f0d]/5">
              <p className="text-[10px] font-black text-[#0a0f0d] uppercase tracking-tighter opacity-60">
                {item.label}
@@ -509,7 +511,6 @@ export default async function HomePage() {
       ))}
     </div>
 
-    {/* Mobile "View All" - centered and elegant */}
     <div className="mt-12 text-center md:hidden">
       <Link href="/gallery" className="inline-block text-[#0a0f0d] font-black text-xs tracking-[0.3em] border-b-2 border-[#c9a84c] pb-2">
         EXPLORE ALL WORKS
@@ -517,7 +518,6 @@ export default async function HomePage() {
     </div>
   </div>
 </section>
-
       {/* ===== TESTIMONIALS: THE WALL OF LOVE ===== */}
 <section className="py-24 px-4 bg-white relative">
   <div className="max-w-7xl mx-auto">
