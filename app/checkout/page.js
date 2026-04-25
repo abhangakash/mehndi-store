@@ -237,39 +237,75 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Payment selection - Mobile Optimized */}
-              <div className="card p-4 md:p-6 shadow-sm border-[var(--brand-border)]">
-                <h2 className="font-semibold mb-5 flex items-center gap-2 text-base text-[var(--brand-text)]">
-                  <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
-                </h2>
-                <div className="grid grid-cols-1 gap-3">
-                  <label className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer ${paymentMethod === 'razorpay' ? 'border-[var(--brand-green)] bg-[#f0fdf4]' : 'border-[var(--brand-border)]'}`}>
-                    <input type="radio" name="payment" value="razorpay"
-                      checked={paymentMethod === 'razorpay'} onChange={() => setPaymentMethod('razorpay')} className="mt-1 w-4 h-4 accent-[var(--brand-green)]" />
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-[var(--brand-text)]">Pay Securely Online</p>
-                      <p className="text-xs text-[var(--brand-muted)] mb-3">UPI, Cards, Net Banking</p>
-                      <div className="flex gap-2 flex-wrap">
-                        {['UPI', 'Card', 'Wallets'].map(m => (
-                          <span key={m} className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-white border border-[var(--brand-border)] text-[var(--brand-muted)] font-medium">{m}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </label>
+             {/* Payment method */}
+<div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)]">
+  <h2 className="font-semibold mb-5 flex items-center gap-2 text-base text-[var(--brand-text)]">
+    <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
+  </h2>
+  
+  <div className="space-y-3">
+    {/* Online Payment Option */}
+    <label 
+      onClick={() => setPaymentMethod('razorpay')}
+      className={`relative flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+        paymentMethod === 'razorpay' 
+        ? 'border-[var(--brand-green)] bg-green-50/30' 
+        : 'border-gray-100 hover:border-[var(--brand-border)] bg-white'
+      }`}
+    >
+      <div className="flex items-center gap-4">
+        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+          paymentMethod === 'razorpay' ? 'border-[var(--brand-green)]' : 'border-gray-300'
+        }`}>
+          {paymentMethod === 'razorpay' && <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-green)]" />}
+        </div>
+        
+        <div>
+          <p className="text-sm font-bold text-[var(--brand-text)]">Pay Online</p>
+          <p className="text-xs text-[var(--brand-muted)] mb-2">UPI, Cards, Net Banking, Wallets</p>
+          <div className="flex gap-1.5 flex-wrap">
+            {['UPI', 'Visa', 'GPay'].map(m => (
+              <span key={m} className="text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 font-semibold uppercase tracking-wider">
+                {m}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Shield size={20} className="text-blue-500 opacity-20 hidden sm:block" />
+    </label>
 
-                  <label className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all ${codAvailable ? 'cursor-pointer' : 'opacity-60 cursor-not-allowed'} ${paymentMethod === 'cod' ? 'border-[var(--brand-green)] bg-[#f0fdf4]' : 'border-[var(--brand-border)]'}`}>
-                    <input type="radio" name="payment" value="cod" disabled={!codAvailable}
-                      checked={paymentMethod === 'cod'} onChange={() => codAvailable && setPaymentMethod('cod')} className="mt-1 w-4 h-4 accent-[var(--brand-green)]" />
-                    <div>
-                      <p className="text-sm font-bold text-[var(--brand-text)]">Cash on Delivery</p>
-                      <p className="text-xs text-[var(--brand-muted)]">
-                        {codAvailable ? 'Pay when your package arrives' : 'Available on orders above ₹999 only'}
-                      </p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
+    {/* COD Option */}
+    <label 
+      onClick={() => codAvailable && setPaymentMethod('cod')}
+      className={`relative flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-200 ${
+        !codAvailable 
+          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-gray-100' 
+          : paymentMethod === 'cod' 
+            ? 'border-[var(--brand-green)] bg-green-50/30 cursor-pointer' 
+            : 'border-gray-100 hover:border-[var(--brand-border)] bg-white cursor-pointer'
+      }`}
+    >
+      <div className="flex items-center gap-4">
+        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+          paymentMethod === 'cod' ? 'border-[var(--brand-green)]' : 'border-gray-300'
+        }`}>
+          {paymentMethod === 'cod' && <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-green)]" />}
+        </div>
+        
+        <div>
+          <p className="text-sm font-bold text-[var(--brand-text)]">Cash on Delivery</p>
+          <p className={`text-xs ${!codAvailable ? 'text-orange-600 font-medium' : 'text-[var(--brand-muted)]'}`}>
+            {codAvailable 
+              ? 'Pay in cash upon delivery' 
+              : 'Minimum order ₹999 required'
+            }
+          </p>
+        </div>
+      </div>
+    </label>
+  </div>
+</div>
 
             {/* Right Column: Order Summary - Sticky */}
             <div className="lg:col-span-4">
