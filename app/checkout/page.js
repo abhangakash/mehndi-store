@@ -237,7 +237,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-            {/* Payment method section */}
+          {/* Payment method section */}
 <div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)] bg-white">
   <div className="flex items-center justify-between mb-6">
     <h2 className="font-semibold flex items-center gap-2 text-base text-[var(--brand-text)]">
@@ -247,85 +247,123 @@ export default function CheckoutPage() {
       <Shield size={12} /> SECURE
     </div>
   </div>
-  
+
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {/* Online Payment Option */}
-    <div 
+    
+    {/* Online Payment */}
+    <div
       onClick={() => setPaymentMethod('razorpay')}
-      className={`group relative flex flex-col p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
-        paymentMethod === 'razorpay' 
-        ? 'border-[var(--brand-green)] bg-green-50/30 shadow-md ring-1 ring-[var(--brand-green)]' 
-        : 'border-gray-100 hover:border-gray-200 bg-white'
+      className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
+        paymentMethod === 'razorpay'
+          ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)]'
+          : 'border-gray-200 hover:border-gray-300 bg-white'
       }`}
     >
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-2.5 rounded-xl ${paymentMethod === 'razorpay' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-500'}`}>
-          <CreditCard size={22} />
-        </div>
-        {paymentMethod === 'razorpay' && (
-          <div className="bg-[var(--brand-green)] rounded-full p-0.5">
-            <CheckCircle2 size={18} className="text-white" />
-          </div>
-        )}
-      </div>
-      
       <div>
-        <p className="font-bold text-[var(--brand-text)] text-base mb-1">Online Payment</p>
-        <p className="text-xs text-[var(--brand-muted)] mb-4">Cards, Netbanking & UPI</p>
-        
-        {/* Brand Icons Row */}
-        <div className="flex gap-3 items-center opacity-80 group-hover:opacity-100 transition-opacity">
-          {/* Custom SVG Icons for Brands */}
-          <svg className="h-4 w-auto fill-[#5f259f]" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg> {/* Generic PhonePe color placeholder */}
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" alt="GPay" className="h-3.5" />
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="h-3" />
-          <div className="h-3 w-[1px] bg-gray-200 mx-1"></div>
-          <div className="flex gap-1">
-             <div className="w-5 h-3 bg-[#1a1f71] rounded-sm"></div> {/* Visa Color */}
-             <div className="w-5 h-3 bg-[#eb001b] rounded-sm"></div> {/* Mastercard Color */}
+        <div className="flex justify-between items-start mb-4">
+          <div className={`p-2.5 rounded-xl ${
+            paymentMethod === 'razorpay'
+              ? 'bg-[var(--brand-green)] text-white'
+              : 'bg-gray-100 text-gray-500'
+          }`}>
+            <CreditCard size={22} />
           </div>
+
+          {paymentMethod === 'razorpay' && (
+            <div className="bg-[var(--brand-green)] rounded-full p-0.5">
+              <CheckCircle2 size={18} className="text-white" />
+            </div>
+          )}
         </div>
+
+        <p className="font-bold text-[var(--brand-text)] text-base mb-1">
+          Pay Online
+        </p>
+        <p className="text-xs text-[var(--brand-muted)] mb-4">
+          UPI, Cards, Netbanking
+        </p>
+      </div>
+
+      {/* Brand Logos */}
+      <div className="flex flex-wrap items-center gap-3">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg"
+          alt="GPay"
+          className="h-5 sm:h-6 w-auto"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/5/5e/PhonePe_Logo.svg"
+          alt="PhonePe"
+          className="h-5 sm:h-6 w-auto"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg"
+          alt="Paytm"
+          className="h-5 sm:h-6 w-auto"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+          alt="Visa"
+          className="h-5 sm:h-6 w-auto"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
+          alt="Mastercard"
+          className="h-5 sm:h-6 w-auto"
+        />
       </div>
     </div>
 
-    {/* COD Option */}
-    <div 
+    {/* COD */}
+    <div
       onClick={() => codAvailable && setPaymentMethod('cod')}
-      className={`group relative flex flex-col p-5 rounded-2xl border-2 transition-all duration-300 ${
-        !codAvailable 
-          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-dashed border-gray-200' 
-          : paymentMethod === 'cod' 
-            ? 'border-[var(--brand-green)] bg-green-50/30 shadow-md ring-1 ring-[var(--brand-green)] cursor-pointer' 
-            : 'border-gray-100 hover:border-gray-200 bg-white cursor-pointer'
+      className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 ${
+        !codAvailable
+          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-dashed border-gray-200'
+          : paymentMethod === 'cod'
+            ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)] cursor-pointer'
+            : 'border-gray-200 hover:border-gray-300 bg-white cursor-pointer'
       }`}
     >
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-2.5 rounded-xl ${paymentMethod === 'cod' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-500'}`}>
-          <Truck size={22} />
-        </div>
-        {paymentMethod === 'cod' && codAvailable && (
-          <div className="bg-[var(--brand-green)] rounded-full p-0.5">
-            <CheckCircle2 size={18} className="text-white" />
-          </div>
-        )}
-      </div>
-      
       <div>
-        <p className="font-bold text-[var(--brand-text)] text-base mb-1">Cash on Delivery</p>
-        <p className={`text-xs leading-relaxed ${!codAvailable ? 'text-orange-600 font-semibold' : 'text-[var(--brand-muted)]'}`}>
-          {codAvailable 
-            ? 'Pay with cash upon delivery' 
-            : 'Unlocks at ₹999 or more'
-          }
+        <div className="flex justify-between items-start mb-4">
+          <div className={`p-2.5 rounded-xl ${
+            paymentMethod === 'cod'
+              ? 'bg-[var(--brand-green)] text-white'
+              : 'bg-gray-100 text-gray-500'
+          }`}>
+            <Truck size={22} />
+          </div>
+
+          {paymentMethod === 'cod' && codAvailable && (
+            <div className="bg-[var(--brand-green)] rounded-full p-0.5">
+              <CheckCircle2 size={18} className="text-white" />
+            </div>
+          )}
+        </div>
+
+        <p className="font-bold text-[var(--brand-text)] text-base mb-1">
+          Cash on Delivery
+        </p>
+
+        <p className={`text-xs ${
+          !codAvailable
+            ? 'text-orange-600 font-semibold'
+            : 'text-[var(--brand-muted)]'
+        }`}>
+          {codAvailable
+            ? 'Pay when your order arrives'
+            : 'Available above ₹999'}
         </p>
       </div>
-      
+
       {!codAvailable && (
         <div className="absolute top-2 right-2">
           <Lock size={12} className="text-gray-400" />
         </div>
       )}
     </div>
+
   </div>
 </div>
 
