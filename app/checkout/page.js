@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useCartStore } from '@/store/cartStore'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
-import { MapPin, Phone, User, Mail, Calendar, Shield, Truck, Lock, Tag, ShoppingBag, ChevronRight } from 'lucide-react'
+import { MapPin, Phone, User, Mail, Calendar, Shield, Truck, Lock, Tag, ShoppingBag, ChevronRight, CheckCircle2, CreditCard } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 
@@ -237,75 +237,79 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-             {/* Payment method */}
-<div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)]">
-  <h2 className="font-semibold mb-5 flex items-center gap-2 text-base text-[var(--brand-text)]">
-    <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
-  </h2>
-  
-  <div className="space-y-3">
-    {/* Online Payment Option */}
-    <label 
-      onClick={() => setPaymentMethod('razorpay')}
-      className={`relative flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-        paymentMethod === 'razorpay' 
-        ? 'border-[var(--brand-green)] bg-green-50/30' 
-        : 'border-gray-100 hover:border-[var(--brand-border)] bg-white'
-      }`}
-    >
-      <div className="flex items-center gap-4">
-        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-          paymentMethod === 'razorpay' ? 'border-[var(--brand-green)]' : 'border-gray-300'
-        }`}>
-          {paymentMethod === 'razorpay' && <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-green)]" />}
-        </div>
-        
-        <div>
-          <p className="text-sm font-bold text-[var(--brand-text)]">Pay Online</p>
-          <p className="text-xs text-[var(--brand-muted)] mb-2">UPI, Cards, Net Banking, Wallets</p>
-          <div className="flex gap-1.5 flex-wrap">
-            {['UPI', 'Visa', 'GPay'].map(m => (
-              <span key={m} className="text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 font-semibold uppercase tracking-wider">
-                {m}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-      <Shield size={20} className="text-blue-500 opacity-20 hidden sm:block" />
-    </label>
+              {/* Payment method */}
+              <div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)] bg-white">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="font-semibold flex items-center gap-2 text-base text-[var(--brand-text)]">
+                    <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
+                  </h2>
+                  <Shield size={16} className="text-[var(--brand-muted)]" />
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Online Payment Option */}
+                  <div 
+                    onClick={() => setPaymentMethod('razorpay')}
+                    className={`group relative flex flex-col p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer h-full ${
+                      paymentMethod === 'razorpay' 
+                      ? 'border-[var(--brand-green)] bg-green-50/20 ring-1 ring-[var(--brand-green)]' 
+                      : 'border-gray-100 hover:border-gray-200 bg-white'
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className={`p-2 rounded-lg ${paymentMethod === 'razorpay' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                        <CreditCard size={20} />
+                      </div>
+                      {paymentMethod === 'razorpay' && <CheckCircle2 size={20} className="text-[var(--brand-green)]" />}
+                    </div>
+                    
+                    <div>
+                      <p className="font-bold text-[var(--brand-text)] text-sm mb-1">Pay Online</p>
+                      <p className="text-xs text-[var(--brand-muted)] leading-relaxed mb-4">
+                        Instant confirmation via UPI, Cards, or Net Banking
+                      </p>
+                      
+                      <div className="flex gap-1.5 flex-wrap mt-auto">
+                        {['UPI', 'VISA', 'GPAY'].map(m => (
+                          <span key={m} className="text-[9px] px-1.5 py-0.5 rounded bg-white border border-gray-200 text-gray-500 font-bold tracking-tight">
+                            {m}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
 
-    {/* COD Option */}
-    <label 
-      onClick={() => codAvailable && setPaymentMethod('cod')}
-      className={`relative flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-200 ${
-        !codAvailable 
-          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-gray-100' 
-          : paymentMethod === 'cod' 
-            ? 'border-[var(--brand-green)] bg-green-50/30 cursor-pointer' 
-            : 'border-gray-100 hover:border-[var(--brand-border)] bg-white cursor-pointer'
-      }`}
-    >
-      <div className="flex items-center gap-4">
-        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-          paymentMethod === 'cod' ? 'border-[var(--brand-green)]' : 'border-gray-300'
-        }`}>
-          {paymentMethod === 'cod' && <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-green)]" />}
-        </div>
-        
-        <div>
-          <p className="text-sm font-bold text-[var(--brand-text)]">Cash on Delivery</p>
-          <p className={`text-xs ${!codAvailable ? 'text-orange-600 font-medium' : 'text-[var(--brand-muted)]'}`}>
-            {codAvailable 
-              ? 'Pay in cash upon delivery' 
-              : 'Minimum order ₹999 required'
-            }
-          </p>
-        </div>
-      </div>
-    </label>
-  </div>
-</div>
+                  {/* COD Option */}
+                  <div 
+                    onClick={() => codAvailable && setPaymentMethod('cod')}
+                    className={`group relative flex flex-col p-4 rounded-xl border-2 transition-all duration-200 h-full ${
+                      !codAvailable 
+                        ? 'opacity-60 cursor-not-allowed bg-gray-50 border-gray-100' 
+                        : paymentMethod === 'cod' 
+                          ? 'border-[var(--brand-green)] bg-green-50/20 ring-1 ring-[var(--brand-green)] cursor-pointer' 
+                          : 'border-gray-100 hover:border-gray-200 bg-white cursor-pointer'
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className={`p-2 rounded-lg ${paymentMethod === 'cod' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                        <Truck size={20} />
+                      </div>
+                      {paymentMethod === 'cod' && codAvailable && <CheckCircle2 size={20} className="text-[var(--brand-green)]" />}
+                    </div>
+                    
+                    <div>
+                      <p className="font-bold text-[var(--brand-text)] text-sm mb-1">Cash on Delivery</p>
+                      <p className={`text-xs leading-relaxed ${!codAvailable ? 'text-orange-600 font-medium' : 'text-[var(--brand-muted)]'}`}>
+                        {codAvailable 
+                          ? 'Hand over cash at the time of delivery' 
+                          : 'Available for orders above ₹999 only'
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Right Column: Order Summary - Sticky */}
             <div className="lg:col-span-4">
