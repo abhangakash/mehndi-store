@@ -173,7 +173,7 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            {/* Left Column: Forms */}
+            {/* Left Column */}
             <div className="lg:col-span-8 flex flex-col gap-6">
               
               {/* Personal Details */}
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex flex-col">
                       <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">
-                        <Calendar size={13} className="inline mr-1" />Preferred Delivery Date
+                        <Calendar size={13} className="inline mr-1" />Delivery Date
                       </label>
                       <input className="w-full h-11 px-3 border rounded-md" type="date" value={form.booking_date}
                         onChange={e => set('booking_date', e.target.value)}
@@ -237,142 +237,89 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-          {/* Payment method section */}
-<div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)] bg-white">
-  <div className="flex items-center justify-between mb-6">
-    <h2 className="font-semibold flex items-center gap-2 text-base text-[var(--brand-text)]">
-      <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
-    </h2>
-    <div className="flex items-center gap-1 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-      <Shield size={12} /> SECURE
-    </div>
-  </div>
+              {/* Payment method section */}
+              <div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)] bg-white">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="font-semibold flex items-center gap-2 text-base text-[var(--brand-text)]">
+                    <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
+                  </h2>
+                  <div className="flex items-center gap-1 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                    <Shield size={12} /> SECURE
+                  </div>
+                </div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    
-    {/* Online Payment */}
-    <div
-      onClick={() => setPaymentMethod('razorpay')}
-      className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
-        paymentMethod === 'razorpay'
-          ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)]'
-          : 'border-gray-200 hover:border-gray-300 bg-white'
-      }`}
-    >
-      <div>
-        <div className="flex justify-between items-start mb-4">
-          <div className={`p-2.5 rounded-xl ${
-            paymentMethod === 'razorpay'
-              ? 'bg-[var(--brand-green)] text-white'
-              : 'bg-gray-100 text-gray-500'
-          }`}>
-            <CreditCard size={22} />
-          </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Online Payment */}
+                  <div
+                    onClick={() => setPaymentMethod('razorpay')}
+                    className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
+                      paymentMethod === 'razorpay'
+                        ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)]'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-4">
+                        <div className={`p-2.5 rounded-xl ${paymentMethod === 'razorpay' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-500'}`}>
+                          <CreditCard size={22} />
+                        </div>
+                        {paymentMethod === 'razorpay' && (
+                          <div className="bg-[var(--brand-green)] rounded-full p-0.5">
+                            <CheckCircle2 size={18} className="text-white" />
+                          </div>
+                        )}
+                      </div>
+                      <p className="font-bold text-[var(--brand-text)] text-base mb-1">Pay Online</p>
+                      <p className="text-xs text-[var(--brand-muted)] mb-4">UPI, Cards, Netbanking</p>
+                    </div>
 
-          {paymentMethod === 'razorpay' && (
-            <div className="bg-[var(--brand-green)] rounded-full p-0.5">
-              <CheckCircle2 size={18} className="text-white" />
+                    <div className="flex flex-wrap items-center gap-3">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" alt="GPay" className="h-4 w-auto" />
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo.png" alt="UPI" className="h-3 w-auto" />
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/PhonePe_Logo.svg" alt="PhonePe" className="h-4 w-auto" />
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="h-3 w-auto" />
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg" alt="Visa" className="h-3 w-auto" />
+                    </div>
+                  </div>
+
+                  {/* COD */}
+                  <div
+                    onClick={() => codAvailable && setPaymentMethod('cod')}
+                    className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 ${
+                      !codAvailable
+                        ? 'opacity-50 cursor-not-allowed bg-gray-50 border-dashed border-gray-200'
+                        : paymentMethod === 'cod'
+                          ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)] cursor-pointer'
+                          : 'border-gray-200 hover:border-gray-300 bg-white cursor-pointer'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-4">
+                        <div className={`p-2.5 rounded-xl ${paymentMethod === 'cod' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-500'}`}>
+                          <Truck size={22} />
+                        </div>
+                        {paymentMethod === 'cod' && codAvailable && (
+                          <div className="bg-[var(--brand-green)] rounded-full p-0.5">
+                            <CheckCircle2 size={18} className="text-white" />
+                          </div>
+                        )}
+                      </div>
+                      <p className="font-bold text-[var(--brand-text)] text-base mb-1">Cash on Delivery</p>
+                      <p className={`text-xs ${!codAvailable ? 'text-orange-600 font-semibold' : 'text-[var(--brand-muted)]'}`}>
+                        {codAvailable ? 'Pay when order arrives' : 'Available above ₹999'}
+                      </p>
+                    </div>
+                    {!codAvailable && <div className="absolute top-2 right-2"><Lock size={12} className="text-gray-400" /></div>}
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
 
-        <p className="font-bold text-[var(--brand-text)] text-base mb-1">
-          Pay Online
-        </p>
-        <p className="text-xs text-[var(--brand-muted)] mb-4">
-          UPI, Cards, Netbanking
-        </p>
-      </div>
-
-      {/* Brand Logos */}
-      <div className="flex flex-wrap items-center gap-3">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg"
-          alt="GPay"
-          className="h-5 sm:h-6 w-auto"
-        />
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/5/5e/PhonePe_Logo.svg"
-          alt="PhonePe"
-          className="h-5 sm:h-6 w-auto"
-        />
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg"
-          alt="Paytm"
-          className="h-5 sm:h-6 w-auto"
-        />
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
-          alt="Visa"
-          className="h-5 sm:h-6 w-auto"
-        />
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
-          alt="Mastercard"
-          className="h-5 sm:h-6 w-auto"
-        />
-      </div>
-    </div>
-
-    {/* COD */}
-    <div
-      onClick={() => codAvailable && setPaymentMethod('cod')}
-      className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 ${
-        !codAvailable
-          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-dashed border-gray-200'
-          : paymentMethod === 'cod'
-            ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)] cursor-pointer'
-            : 'border-gray-200 hover:border-gray-300 bg-white cursor-pointer'
-      }`}
-    >
-      <div>
-        <div className="flex justify-between items-start mb-4">
-          <div className={`p-2.5 rounded-xl ${
-            paymentMethod === 'cod'
-              ? 'bg-[var(--brand-green)] text-white'
-              : 'bg-gray-100 text-gray-500'
-          }`}>
-            <Truck size={22} />
-          </div>
-
-          {paymentMethod === 'cod' && codAvailable && (
-            <div className="bg-[var(--brand-green)] rounded-full p-0.5">
-              <CheckCircle2 size={18} className="text-white" />
-            </div>
-          )}
-        </div>
-
-        <p className="font-bold text-[var(--brand-text)] text-base mb-1">
-          Cash on Delivery
-        </p>
-
-        <p className={`text-xs ${
-          !codAvailable
-            ? 'text-orange-600 font-semibold'
-            : 'text-[var(--brand-muted)]'
-        }`}>
-          {codAvailable
-            ? 'Pay when your order arrives'
-            : 'Available above ₹999'}
-        </p>
-      </div>
-
-      {!codAvailable && (
-        <div className="absolute top-2 right-2">
-          <Lock size={12} className="text-gray-400" />
-        </div>
-      )}
-    </div>
-
-  </div>
-</div>
-
-            {/* Right Column: Order Summary - Sticky */}
+            {/* Right Column: Order Summary */}
             <div className="lg:col-span-4">
               <div className="lg:sticky lg:top-24 space-y-4">
                 <div className="card p-5 md:p-6 shadow-md border-[var(--brand-border)] bg-white">
                   <h2 className="font-bold text-lg mb-4 text-[var(--brand-text)]">Order Summary</h2>
-
                   <div className="divide-y divide-[var(--brand-border)]">
                     <div className="py-3 max-h-60 overflow-y-auto space-y-3 mb-2">
                       {items.map(item => (
@@ -380,13 +327,10 @@ export default function CheckoutPage() {
                           <span className="text-[var(--brand-text)] leading-tight flex-1">
                             {item.name} <span className="text-[var(--brand-muted)] ml-1">× {item.quantity}</span>
                           </span>
-                          <span className="font-semibold text-[var(--brand-brown)] whitespace-nowrap">
-                            ₹{(item.price * item.quantity).toFixed(0)}
-                          </span>
+                          <span className="font-semibold text-[var(--brand-brown)] whitespace-nowrap">₹{(item.price * item.quantity).toFixed(0)}</span>
                         </div>
                       ))}
                     </div>
-
                     <div className="py-4 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-[var(--brand-muted)]">Subtotal</span>
@@ -398,15 +342,7 @@ export default function CheckoutPage() {
                           {shipping === 0 ? 'FREE' : `₹${shipping}`}
                         </span>
                       </div>
-                      
-                      {shipping > 0 && (
-                        <div className="bg-amber-50 text-amber-800 p-3 rounded-lg text-xs flex gap-2 items-center mt-2 border border-amber-100">
-                          <Tag size={14} className="flex-shrink-0" />
-                          <span>Add <b>₹{(499 - total).toFixed(0)}</b> more for <b>Free Shipping</b></span>
-                        </div>
-                      )}
                     </div>
-
                     <div className="pt-4 mb-6">
                       <div className="flex justify-between items-center">
                         <span className="font-bold text-lg text-[var(--brand-text)]">Total Amount</span>
@@ -414,30 +350,17 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   </div>
-
-                  <button type="submit" disabled={loading}
-                    className="w-full btn-primary py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-transform active:scale-[0.98]"
-                    style={{ opacity: loading ? 0.7 : 1 }}>
-                    {loading ? (
-                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    ) : paymentMethod === 'razorpay' 
-                      ? `Pay ₹${grandTotal.toFixed(0)}` 
-                      : 'Confirm COD Order'}
+                  <button type="submit" disabled={loading} className="w-full btn-primary py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-transform active:scale-[0.98]" style={{ opacity: loading ? 0.7 : 1 }}>
+                    {loading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : paymentMethod === 'razorpay' ? `Pay ₹${grandTotal.toFixed(0)}` : 'Confirm COD Order'}
                   </button>
-
-                  <div className="mt-4 space-y-2">
-                    <div className="flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-[var(--brand-muted)] font-bold">
-                      <Shield size={12} className="text-blue-500" /> 100% Secure Transaction
-                    </div>
+                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-[var(--brand-muted)] font-bold">
+                    <Shield size={12} className="text-blue-500" /> 100% Secure Transaction
                   </div>
                 </div>
-
-                {/* Additional Info Cards for Trust */}
                 <div className="hidden lg:block p-4 bg-[var(--brand-surface)] rounded-xl border border-dashed border-[var(--brand-border)]">
-                    <div className="flex gap-3 items-center text-xs text-[var(--brand-muted)]">
-                        <Truck size={16} />
-                        <span>Expected delivery: 3-5 business days</span>
-                    </div>
+                  <div className="flex gap-3 items-center text-xs text-[var(--brand-muted)]">
+                    <Truck size={16} /> <span>Expected delivery: 3-5 business days</span>
+                  </div>
                 </div>
               </div>
             </div>
