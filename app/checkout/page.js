@@ -273,13 +273,13 @@ export default function CheckoutPage() {
                       <p className="text-xs text-[var(--brand-muted)] mb-4">UPI, Cards, Netbanking</p>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" alt="GPay" className="h-4 w-auto" />
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo.png" alt="UPI" className="h-3 w-auto" />
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/PhonePe_Logo.svg" alt="PhonePe" className="h-4 w-auto" />
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" alt="Paytm" className="h-3 w-auto" />
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg" alt="Visa" className="h-3 w-auto" />
-                    </div>
+                   <div className="flex flex-wrap items-center gap-3">
+  <img src="https://cdn.simpleicons.org/googlepay" alt="GPay" className="h-4" />
+  <img src="https://cdn.simpleicons.org/upi" alt="UPI" className="h-4" />
+  <img src="https://cdn.simpleicons.org/phonepe" alt="PhonePe" className="h-4" />
+  <img src="https://cdn.simpleicons.org/paytm" alt="Paytm" className="h-4" />
+  <img src="https://cdn.simpleicons.org/visa" alt="Visa" className="h-4" />
+</div>
                   </div>
 
                   {/* COD */}
