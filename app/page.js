@@ -79,95 +79,102 @@ export default async function HomePage() {
   return (
     <div>
       <FloatingButtons />
+{/* ===== HERO SECTION ===== */}
+<section className="relative min-h-[100svh] flex items-center bg-[#0a0f0d] pt-24 pb-12 md:pt-28 md:pb-16 lg:pt-32 lg:pb-20 overflow-hidden">
 
- {/* ===== HERO SECTION ===== */}
-<section className="relative min-h-screen flex items-center bg-[#0a0f0d] pt-20 pb-12 lg:pt-32 lg:pb-20 overflow-hidden">
-  
-  {/* THE LUXURY "S" WAVE TRANSITION */}
+  {/* S-Wave */}
   <div className="absolute top-0 left-0 w-full z-0 pointer-events-none">
-    {/* Layer 1: Main White Flow */}
-    <svg 
-      viewBox="0 0 1440 700" 
-      fill="none" 
-      xmlns="http://www.w3.org/2000/svg" 
-      className="w-full h-[50vh] lg:h-auto"
+    <svg
+      viewBox="0 0 1440 700"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-[40vh] md:h-[45vh] lg:h-auto"
       preserveAspectRatio="none"
     >
-      <path 
-        fill="white" 
-        d="M0,0H1440V300C1440,300 1250,550 1000,450C750,350 500,650 0,550V0Z"
-      />
-      {/* Layer 2: Gold Accent Path - Gives the "S" its luxury edge */}
-      <path 
-        d="M0,550C500,650 750,350 1000,450C1250,550 1440,300 1440,300" 
-        stroke="#c9a84c" 
-        strokeWidth="2" 
-        strokeOpacity="0.3"
-      />
+      <path fill="white" d="M0,0H1440V300C1440,300 1250,550 1000,450C750,350 500,650 0,550V0Z" />
+      <path d="M0,550C500,650 750,350 1000,450C1250,550 1440,300 1440,300"
+        stroke="#c9a84c" strokeWidth="2" strokeOpacity="0.3" />
     </svg>
   </div>
 
-  {/* Ambient Background Glows */}
+  {/* Ambient glow */}
   <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-[#c9a84c] rounded-full blur-[160px] opacity-10 pointer-events-none" />
 
-  <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 w-full">
-    <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-      
-      {/* Text Content */}
-      <div className="lg:col-span-5 space-y-6 lg:space-y-10 text-center lg:text-left order-2 lg:order-1 mt-16 lg:mt-0">
-        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-16 items-center">
+
+      {/* ===== TEXT CONTENT ===== */}
+      <div className="lg:col-span-5 flex flex-col gap-5 md:gap-6 lg:gap-10 text-center lg:text-left order-2 lg:order-1 mt-4 md:mt-6 lg:mt-0">
+
+        {/* Badge */}
+        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl self-center lg:self-start">
           <span className="flex h-2 w-2 rounded-full bg-[#c9a84c] animate-pulse" />
-          <span className="text-[#0a0f0d] text-[10px] sm:text-xs font-black tracking-[0.3em] uppercase">Pune's Elite Studio</span>
+          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.3em] uppercase">Pune's Elite Studio</span>
         </div>
-        
-        {/* TYPOGRAPHY: mix-blend-exclusion makes the text flip colors over the wave */}
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.85] tracking-tighter mix-blend-exclusion text-white">
+
+        {/* Headline — scale down on tablet */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.85] tracking-tighter mix-blend-exclusion text-white">
           BOLD <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c] animate-gradient-x">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c]">
             BEAUTY.
           </span>
         </h1>
 
-        <p className="text-gray-600 lg:text-gray-400 text-base md:text-xl leading-relaxed max-w-md mx-auto lg:mx-0 font-medium">
-          Redefining bridal elegance with organic henna and high-fashion makeup. 
+        <p className="text-gray-600 lg:text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-sm md:max-w-md mx-auto lg:mx-0 font-medium">
+          Redefining bridal elegance with organic henna and high-fashion makeup.
           Where tradition meets the modern edge.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 pt-4 lg:pt-0">
-          <Link href="/products" className="group relative overflow-hidden bg-[#0a0f0d] text-white lg:bg-[#c9a84c] lg:text-[#0a0f0d] px-10 py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-[0_20px_50px_rgba(201,168,76,0.3)] transition-all">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 lg:pt-0">
+          <Link href="/products"
+            className="group relative overflow-hidden bg-[#0a0f0d] text-white lg:bg-[#c9a84c] lg:text-[#0a0f0d] px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-[0_20px_50px_rgba(201,168,76,0.3)] transition-all text-sm md:text-base">
             <span className="relative z-10">SHOP COLLECTION</span>
-            <ArrowRight size={20} className="relative z-10 group-hover:translate-x-2 transition-transform" />
+            <ArrowRight size={18} className="relative z-10 group-hover:translate-x-2 transition-transform" />
           </Link>
-          <Link href="/packages" className="px-10 py-5 rounded-2xl border-2 border-[#0a0f0d]/10 lg:border-[#c9a84c]/30 text-[#0a0f0d] lg:text-white font-black hover:bg-white/5 transition-all text-center">
+          <Link href="/packages"
+            className="px-8 md:px-10 py-4 md:py-5 rounded-2xl border-2 border-[#0a0f0d]/10 lg:border-[#c9a84c]/30 text-[#0a0f0d] lg:text-white font-black hover:bg-white/5 transition-all text-center text-sm md:text-base">
             BOOK SERVICES
           </Link>
         </div>
       </div>
 
-      {/* Visual Bento Grid */}
-      <div className="lg:col-span-7 grid grid-cols-12 gap-4 h-[450px] lg:h-[700px] order-1 lg:order-2">
-        {/* Main Bridal Image */}
-        <div className="col-span-8 relative rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group">
-          <img src="/hero-makeup.webp" alt="Bridal Art" className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d] via-transparent to-transparent opacity-80" />
-          <div className="absolute bottom-8 left-8 lg:bottom-12 lg:left-12">
-            <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Signature Artistry</p>
-            <h3 className="text-white text-3xl lg:text-5xl font-black uppercase leading-none tracking-tighter">BRIDAL<br/>MEHNDI</h3>
-          </div>
-        </div>
-        
-        {/* Side Stack */}
-        <div className="col-span-4 flex flex-col gap-4">
-          <div className="h-[60%] relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
-            <img src="/hero-main.webp" alt="Makeup" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/20" />
+      {/* ===== BENTO GRID ===== */}
+      {/* On mobile: stacked, fixed height. On tablet: 2-col, taller. On desktop: full bento */}
+      <div className="lg:col-span-7 order-1 lg:order-2">
+
+        {/* Mobile / Tablet layout — simple 2-col */}
+        <div className="grid grid-cols-12 gap-3 md:gap-4 h-[300px] sm:h-[380px] md:h-[420px] lg:h-[700px]">
+
+          {/* Main image */}
+          <div className="col-span-8 relative rounded-[1.5rem] md:rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group">
+            <img src="/hero-makeup.webp" alt="Bridal Art"
+              className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d] via-transparent to-transparent opacity-80" />
+            <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 lg:bottom-12 lg:left-12">
+              <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[8px] md:text-[10px] mb-1 md:mb-3">
+                Signature Artistry
+              </p>
+              <h3 className="text-white text-xl md:text-3xl lg:text-5xl font-black uppercase leading-none tracking-tighter">
+                BRIDAL<br />MEHNDI
+              </h3>
+            </div>
           </div>
 
-          <div className="h-[40%] relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden border-2 border-[#c9a84c]/20 bg-white flex flex-col items-center justify-center p-6 text-center shadow-xl">
-            <div className="w-12 h-12 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-3">
-              <Leaf size={24} className="text-[#c9a84c]" />
+          {/* Side stack */}
+          <div className="col-span-4 flex flex-col gap-3 md:gap-4">
+            <div className="flex-1 relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
+              <img src="/hero-main.webp" alt="Makeup" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/20" />
             </div>
-            <p className="text-[#0a0f0d] font-black text-[10px] lg:text-xs uppercase tracking-widest leading-tight">100% Organic<br/>Certified</p>
+            <div className="h-[30%] relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border-2 border-[#c9a84c]/20 bg-white flex flex-col items-center justify-center p-3 md:p-6 text-center shadow-xl">
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-1 md:mb-3">
+                <Leaf size={16} className="text-[#c9a84c] md:hidden" />
+                <Leaf size={24} className="text-[#c9a84c] hidden md:block" />
+              </div>
+              <p className="text-[#0a0f0d] font-black text-[8px] md:text-[10px] lg:text-xs uppercase tracking-widest leading-tight">
+                100% Organic<br />Certified
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -177,22 +184,24 @@ export default async function HomePage() {
 </section>
 
 {/* ===== TRUST BAR ===== */}
-<section className="bg-white py-14 border-y border-[#0a0f0d]/5 relative z-10">
-  <div className="max-w-7xl mx-auto px-4 sm:px-8">
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16">
+<section className="bg-white py-10 md:py-14 border-y border-[#0a0f0d]/5 relative z-10">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* 2-col on mobile, 4-col on md+ */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-16">
       {[
-        { icon: Truck, label: "EXPRESS DELIVERY", sub: "Pan India Shipping" },
-        { icon: Shield, label: "PURE ORGANIC", sub: "Lab Tested Goods" },
-        { icon: Star, label: "5-STAR RATING", sub: "Trusted by Brides" },
-        { icon: Award, label: "PUNE'S BEST", sub: "Expert Artistry" }
+        { icon: Truck, label: 'EXPRESS DELIVERY', sub: 'Pan India Shipping' },
+        { icon: Shield, label: 'PURE ORGANIC', sub: 'Lab Tested Goods' },
+        { icon: Star, label: '5-STAR RATING', sub: 'Trusted by Brides' },
+        { icon: Award, label: "PUNE'S BEST", sub: 'Expert Artistry' },
       ].map((item, i) => (
-        <div key={i} className="flex flex-col items-center lg:items-start text-center lg:text-left gap-4 group">
-          <div className="w-14 h-14 rounded-2xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-500">
-            <item.icon size={28} strokeWidth={1.5} />
+        <div key={i} className="flex flex-col items-center md:items-start text-center md:text-left gap-3 md:gap-4 group">
+          <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-500">
+            <item.icon size={22} strokeWidth={1.5} className="md:hidden" />
+            <item.icon size={28} strokeWidth={1.5} className="hidden md:block" />
           </div>
           <div>
-            <p className="text-[#0a0f0d] font-black text-sm tracking-tight uppercase">{item.label}</p>
-            <p className="text-gray-400 text-[10px] font-bold tracking-widest uppercase mt-1">{item.sub}</p>
+            <p className="text-[#0a0f0d] font-black text-xs md:text-sm tracking-tight uppercase">{item.label}</p>
+            <p className="text-gray-400 text-[9px] md:text-[10px] font-bold tracking-widest uppercase mt-1">{item.sub}</p>
           </div>
         </div>
       ))}
@@ -200,42 +209,59 @@ export default async function HomePage() {
   </div>
 </section>
 
-{/* ===== SHRILEKHA GLOWUP SECTION ===== */}
-<section className="py-20 lg:py-24 bg-[#0a0f0d] relative overflow-hidden">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6">
-    <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-      
-      <div className="relative h-[350px] md:h-[500px] order-2 lg:order-1">
-        <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[2rem] md:rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
-          <img src="/glowup-1.webp" alt="Makeup Studio" className="w-full h-full object-cover" />
+{/* ===== GLOWUP SECTION ===== */}
+<section className="py-14 md:py-20 lg:py-24 bg-[#0a0f0d] relative overflow-hidden">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
+
+      {/* Images — on mobile stack vertically, on tablet go side by side, on desktop overlap */}
+      <div className="relative order-2 lg:order-1">
+        {/* Mobile / Tablet: simple 2-image row */}
+        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:hidden h-[240px] sm:h-[280px] md:h-[340px]">
+          <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418]">
+            <img src="/glowup-1.webp" alt="Makeup Studio" className="w-full h-full object-cover" />
+          </div>
+          <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418] mt-6 md:mt-10">
+            <img src="/glowup-2.webp" alt="Bridal Prep" className="w-full h-full object-cover" />
+          </div>
         </div>
-        <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[2rem] md:rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
-          <img src="/glowup-2.webp" alt="Bridal Prep" className="w-full h-full object-cover" />
+
+        {/* Desktop: overlapping rotated cards */}
+        <div className="hidden lg:block relative h-[500px]">
+          <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
+            <img src="/glowup-1.webp" alt="Makeup Studio" className="w-full h-full object-cover" />
+          </div>
+          <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
+            <img src="/glowup-2.webp" alt="Bridal Prep" className="w-full h-full object-cover" />
+          </div>
         </div>
       </div>
 
-      <div className="order-1 lg:order-2 space-y-6 text-center lg:text-left">
-        <h2 className="text-4xl md:text-6xl font-black text-white leading-tight uppercase">
+      {/* Text */}
+      <div className="order-1 lg:order-2 flex flex-col gap-5 md:gap-6 text-center lg:text-left">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight uppercase">
           THE <span className="text-[#c9a84c]">GLOWUP</span> <br />
           EXPERIENCE
         </h2>
-        <p className="text-gray-400 text-base md:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
-          From the first stroke of henna to the final touch of lipstick, our Pune-based studio 
+        <p className="text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+          From the first stroke of henna to the final touch of lipstick, our Pune-based studio
           offers a complete transformation sanctuary for the modern bride.
         </p>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-md mx-auto lg:mx-0">
+
+        <div className="grid grid-cols-2 gap-3 max-w-sm md:max-w-md mx-auto lg:mx-0">
           {['HD Makeup', 'Airbrush Tech', 'Saree Draping', 'Hair Styling'].map(item => (
-            <div key={item} className="flex items-center gap-3 p-4 rounded-2xl bg-[#c9a84c]/5 border border-[#c9a84c]/10">
-              <CheckCircle size={18} className="text-[#c9a84c] flex-shrink-0" />
-              <span className="text-white font-bold text-xs uppercase tracking-wider">{item}</span>
+            <div key={item} className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl bg-[#c9a84c]/5 border border-[#c9a84c]/10">
+              <CheckCircle size={15} className="text-[#c9a84c] flex-shrink-0 md:hidden" />
+              <CheckCircle size={18} className="text-[#c9a84c] flex-shrink-0 hidden md:block" />
+              <span className="text-white font-bold text-[10px] md:text-xs uppercase tracking-wider">{item}</span>
             </div>
           ))}
         </div>
 
-        <div className="pt-4">
-          <a href="https://wa.me/919623740541" className="inline-flex items-center gap-3 bg-[#c9a84c] text-[#0a0f0d] px-10 py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
-            BOOK APPOINTMENT <Phone size={18} />
+        <div className="pt-2 md:pt-4">
+          <a href="https://wa.me/919623740541"
+            className="inline-flex items-center gap-3 bg-[#c9a84c] text-[#0a0f0d] px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
+            BOOK APPOINTMENT <Phone size={16} className="md:hidden" /><Phone size={18} className="hidden md:block" />
           </a>
         </div>
       </div>
@@ -243,48 +269,44 @@ export default async function HomePage() {
   </div>
 </section>
 
-{/* ===== MINIMAL CATEGORIES SECTION ===== */}
-<section className="py-12 lg:py-16 bg-[#0a0f0d]">
-  <div className="max-w-7xl mx-auto px-6">
-    
-    {/* Compact Header */}
-    <div className="flex items-center justify-between mb-8">
+{/* ===== CATEGORIES SECTION ===== */}
+<section className="py-10 md:py-12 lg:py-16 bg-[#0a0f0d]">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    {/* Header */}
+    <div className="flex items-center justify-between mb-6 md:mb-8">
       <div>
-        <h2 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter">The Shop</h2>
-        <p className="text-[#c9a84c] font-bold text-[10px] uppercase tracking-widest">Organic Collection</p>
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter">The Shop</h2>
+        <p className="text-[#c9a84c] font-bold text-[9px] md:text-[10px] uppercase tracking-widest mt-0.5">Organic Collection</p>
       </div>
-      <Link href="/products" className="text-white/40 hover:text-[#c9a84c] text-[10px] font-bold uppercase tracking-widest border-b border-white/10 pb-1 transition-all">
+      <Link href="/products"
+        className="text-white/40 hover:text-[#c9a84c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest border-b border-white/10 pb-1 transition-all">
         View All
       </Link>
     </div>
 
-    {/* Compact Square Grid */}
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 lg:gap-4">
+    {/* Grid — 2-col mobile, 3-col tablet, 5-col desktop */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-2.5 md:gap-3 lg:gap-4">
       {categories.map((cat) => (
-        <Link 
-          key={cat.id} 
+        <Link
+          key={cat.id}
           href={`/products?category=${cat.slug}`}
-          className="group relative aspect-square rounded-2xl lg:rounded-[2rem] overflow-hidden bg-[#0f1a14] border border-white/5"
-        >
-          <img 
-            src={`/cat-${cat.slug}.jpg`} 
-            alt={cat.name} 
-            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+          className="group relative aspect-square rounded-xl md:rounded-2xl lg:rounded-[2rem] overflow-hidden bg-[#0f1a14] border border-white/5">
+          <img
+            src={`/cat-${cat.slug}.jpg`}
+            alt={cat.name}
+            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
           />
-          
-          {/* Simple Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          
-          {/* Centered Minimal Label */}
-          <div className="absolute inset-0 flex items-end justify-center pb-4 lg:pb-6">
-            <span className="text-white font-bold uppercase tracking-widest text-[9px] lg:text-[11px] group-hover:text-[#c9a84c] transition-colors">
+          <div className="absolute inset-0 flex items-end justify-center pb-3 md:pb-4 lg:pb-6">
+            <span className="text-white font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] group-hover:text-[#c9a84c] transition-colors text-center px-1">
               {cat.name}
             </span>
           </div>
         </Link>
       ))}
     </div>
-    
+
   </div>
 </section>
 
