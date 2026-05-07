@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore()
   const total = getTotalPrice()
-  const shipping = total >= 499 ? 0 : 60
+  const shipping = total >= 499 ? 0 : 0
   const grandTotal = total + shipping
 
   if (items.length === 0) {
