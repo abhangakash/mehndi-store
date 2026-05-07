@@ -90,8 +90,16 @@ export default function CheckoutPage() {
               user_id: user?.id || null,
             }),
           })
-          const { orderId: savedId, error: verifyError } = await verifyRes.json()
-          if (verifyError) { toast.error('Payment verification failed'); return }
+          const data = await verifyRes.json()
+
+console.log("VERIFY RESPONSE:", data)
+
+if (!verifyRes.ok) {
+  toast.error(data.error || "Payment verification failed")
+  return
+}
+
+const savedId = data.orderId
           clearCart()
           toast.success('Order placed successfully!')
           router.push(`/order-confirmation/${savedId}`)

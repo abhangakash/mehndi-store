@@ -52,7 +52,7 @@ export async function POST(req) {
 
     // Server-side total recalculation — never trust client
     const recalcSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    const recalcShipping = recalcSubtotal >= 499 ? 0 : 60
+    const recalcShipping = recalcSubtotal >= 499 ? 0 : 0
     const recalcTotal = recalcSubtotal + recalcShipping
 
     if (Math.abs(recalcTotal - total) > 1) {
