@@ -22,7 +22,7 @@ export default function CheckoutPage() {
   }, [items, router, mounted])
 
   const total = mounted ? getTotalPrice() : 0
-  const shipping = total >= 499 ? 0 : 60
+  const shipping = total >= 499 ? 0 : 0
   const grandTotal = total + shipping
   const codAvailable = grandTotal >= 999
 
