@@ -3,7 +3,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/context/AuthContext'
-import { User, Package, LogOut, Edit2, Save, X, MapPin, Clock, Truck, CheckCircle, XCircle } from 'lucide-react'
+import {
+  User, Package, LogOut, Edit2, Save, X, MapPin,
+  Clock, Truck, CheckCircle, XCircle, Plus, Home,
+  Briefcase, Star, Trash2, Check
+} from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 
@@ -15,221 +19,399 @@ const STATUS_CONFIG = {
   cancelled: { label: 'Cancelled', color: '#dc2626', bg: '#fee2e2', icon: <XCircle size={13} /> },
 }
 
+const LABEL_OPTIONS = ['Home', 'Office', 'Other']
+const LABEL_ICONS = { Home, Office: Briefcase, Other: MapPin }
+
+function AddressCard({ addr, onEdit, onDelete, onSetDefault }) {
+  const LabelIcon = LABEL_ICONS[addr.label] || MapPin
+  return (
+    <div className="rounded-xl border-2 p-4 relative transition-all"
+      style={{
+        borderColor: addr.is_default ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
+        backgroundColor: addr.is_default ? 'rgba(15,26,14,0.02)' : 'white',
+      }}>
+      {addr.is_default && (
+        <div className="absolute top-3 right-3">
+          <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-black"
+            style={{ backgroundColor: '#0f1a0e', color: '#c9a84c', fontSize: '9px' }}>
+            <Star size={8} fill="#c9a84c" /> DEFAULT
+          </span>
+        </div>
+      )}
+      <div className="flex items-center gap-2 mb-2">
+        <LabelIcon size={13} style={{ color: '#c9a84c' }} />
+        <span className="text-xs font-black uppercase tracking-wider" style={{ color: '#0f1a0e' }}>
+          {addr.label}
+        </span>
+      </div>
+      <p className="text-sm font-semibold mb-0.5" style={{ color: '#0f1a0e' }}>{addr.full_name}</p>
+      <p className="text-xs leading-relaxed mb-0.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
+        {addr.address}, {addr.city}, {addr.state} — {addr.pincode}
+      </p>
+      <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>📞 {addr.phone}</p>
+
+      <div className="flex items-center gap-2 mt-3 pt-3 border-t" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
+        {!addr.is_default && (
+          <button onClick={() => onSetDefault(addr.id)}
+            className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-gray-50"
+            style={{ color: 'rgba(15,26,14,0.4)' }}>
+            <Check size={11} /> Set Default
+          </button>
+        )}
+        <button onClick={() => onEdit(addr)}
+          className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-gray-50"
+          style={{ color: 'rgba(15,26,14,0.5)' }}>
+          <Edit2 size={11} /> Edit
+        </button>
+        <button onClick={() => onDelete(addr.id)}
+          className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors hover:bg-red-50 ml-auto"
+          style={{ color: '#dc2626' }}>
+          <Trash2 size={11} /> Delete
+        </button>
+      </div>
+    </div>
+  )
+}
+
+const EMPTY_ADDR = { label: 'Home', full_name: '', phone: '', address: '', city: '', state: '', pincode: '', is_default: false }
+
 export default function ProfileContent() {
   const { user, profile, loading, signOut, fetchProfile } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [tab, setTab] = useState(searchParams.get('tab') === 'orders' ? 'orders' : 'profile')
+  const [tab, setTab] = useState(searchParams.get('tab') === 'orders' ? 'orders' : searchParams.get('tab') === 'addresses' ? 'addresses' : 'profile')
+
   const [orders, setOrders] = useState([])
   const [ordersLoading, setOrdersLoading] = useState(false)
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({ full_name: '', phone: '' })
 
-  // Redirect if not logged in
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login')
-    }
-  }, [user, loading, router])
+  // Addresses
+  const [addresses, setAddresses] = useState([])
+  const [addrLoading, setAddrLoading] = useState(false)
+  const [showAddrForm, setShowAddrForm] = useState(false)
+  const [addrForm, setAddrForm] = useState(EMPTY_ADDR)
+  const [editingAddrId, setEditingAddrId] = useState(null)
+  const [addrSaving, setAddrSaving] = useState(false)
 
-  // Pre-fill form from profile
-  useEffect(() => {
-    if (profile) {
-      setForm({ full_name: profile.full_name || '', phone: profile.phone || '' })
-    }
-  }, [profile])
+  useEffect(() => { if (!loading && !user) router.push('/login') }, [user, loading, router])
+  useEffect(() => { if (profile) setForm({ full_name: profile.full_name || '', phone: profile.phone || '' }) }, [profile])
 
   const loadOrders = useCallback(async () => {
     if (!user) return
     setOrdersLoading(true)
-    const { data } = await supabase
-      .from('orders')
-      .select('*, order_items(*)')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+    const { data } = await supabase.from('orders').select('*, order_items(*)').eq('user_id', user.id).order('created_at', { ascending: false })
     setOrders(data || [])
     setOrdersLoading(false)
   }, [user])
 
-  useEffect(() => {
-    if (tab === 'orders' && user) loadOrders()
-  }, [tab, user, loadOrders])
+  const loadAddresses = useCallback(async () => {
+    if (!user) return
+    setAddrLoading(true)
+    const { data } = await supabase.from('addresses').select('*').eq('user_id', user.id).order('is_default', { ascending: false }).order('created_at', { ascending: false })
+    setAddresses(data || [])
+    setAddrLoading(false)
+  }, [user])
+
+  useEffect(() => { if (tab === 'orders' && user) loadOrders() }, [tab, user, loadOrders])
+  useEffect(() => { if (tab === 'addresses' && user) loadAddresses() }, [tab, user, loadAddresses])
 
   const handleSaveProfile = async () => {
-    // Guard: ensure user exists before accessing user.id
-    if (!user) {
-      toast.error('You are not logged in')
-      router.push('/login')
-      return
-    }
+    if (!user) { router.push('/login'); return }
     setSaving(true)
-    const { error } = await supabase
-      .from('profiles')
-      .update({ full_name: form.full_name, phone: form.phone })
-      .eq('id', user.id)
-    if (error) {
-      toast.error('Failed to save profile')
-    } else {
-      toast.success('Profile updated!')
-      fetchProfile(user.id)
-      setEditing(false)
-    }
+    const { error } = await supabase.from('profiles').update({ full_name: form.full_name, phone: form.phone }).eq('id', user.id)
+    if (error) toast.error('Failed to save')
+    else { toast.success('Profile updated!'); fetchProfile(user.id); setEditing(false) }
     setSaving(false)
   }
 
-  const handleSignOut = async () => {
-    await signOut()
-    toast.success('Signed out successfully')
-    router.push('/')
+  const handleSaveAddress = async () => {
+    if (!addrForm.full_name || !addrForm.phone || !addrForm.address || !addrForm.city || !addrForm.state || !addrForm.pincode) {
+      toast.error('Please fill all address fields'); return
+    }
+    setAddrSaving(true)
+    try {
+      if (addrForm.is_default) {
+        // Unset other defaults first
+        await supabase.from('addresses').update({ is_default: false }).eq('user_id', user.id)
+      }
+      if (editingAddrId) {
+        await supabase.from('addresses').update({ ...addrForm }).eq('id', editingAddrId)
+        toast.success('Address updated!')
+      } else {
+        const isFirst = addresses.length === 0
+        await supabase.from('addresses').insert({ ...addrForm, user_id: user.id, is_default: isFirst || addrForm.is_default })
+        toast.success('Address saved!')
+      }
+      setShowAddrForm(false)
+      setEditingAddrId(null)
+      setAddrForm(EMPTY_ADDR)
+      loadAddresses()
+    } catch (err) {
+      toast.error('Failed to save address')
+    }
+    setAddrSaving(false)
   }
 
-  // Show loading spinner while auth is resolving
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: 'var(--brand-surface)' }}>
-        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin"
-          style={{ borderColor: 'var(--brand-green)' }} />
-      </div>
-    )
+  const handleEditAddress = (addr) => {
+    setAddrForm({ label: addr.label, full_name: addr.full_name, phone: addr.phone, address: addr.address, city: addr.city, state: addr.state, pincode: addr.pincode, is_default: addr.is_default })
+    setEditingAddrId(addr.id)
+    setShowAddrForm(true)
   }
 
-  // Don't render content if user is null (redirect is in progress)
+  const handleDeleteAddress = async (id) => {
+    await supabase.from('addresses').delete().eq('id', id)
+    toast.success('Address deleted')
+    loadAddresses()
+  }
+
+  const handleSetDefault = async (id) => {
+    await supabase.from('addresses').update({ is_default: false }).eq('user_id', user.id)
+    await supabase.from('addresses').update({ is_default: true }).eq('id', id)
+    toast.success('Default address updated!')
+    loadAddresses()
+  }
+
+  const handleSignOut = async () => { await signOut(); toast.success('Signed out'); router.push('/') }
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0a0f0d' }}>
+      <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#c9a84c]" />
+    </div>
+  )
   if (!user) return null
 
   const initials = (profile?.full_name || user.email || 'U').slice(0, 2).toUpperCase()
 
-  return (
-    <div className="min-h-screen py-10 px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
-      <div className="max-w-3xl mx-auto">
+  const TABS = [
+    { key: 'profile', label: 'Profile', icon: <User size={14} /> },
+    { key: 'addresses', label: 'Addresses', icon: <MapPin size={14} /> },
+    { key: 'orders', label: 'Orders', icon: <Package size={14} /> },
+  ]
 
-        {/* Profile header card */}
-        <div className="card p-5 mb-5 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0"
-            style={{ backgroundColor: 'var(--brand-green)' }}>
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: '#0a0f0d' }}>
+      {/* Header */}
+      <div className="px-4 pt-8 pb-5 max-w-3xl mx-auto">
+        <div className="rounded-2xl p-5 flex items-center gap-4" style={{ backgroundColor: '#fcfaf6' }}>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-black flex-shrink-0"
+            style={{ backgroundColor: '#0f1a0e' }}>
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="font-semibold truncate" style={{ color: 'var(--brand-text)' }}>
+            <h1 className="font-black text-base truncate" style={{ color: '#0f1a0e' }}>
               {profile?.full_name || 'My Account'}
             </h1>
-            <p className="text-sm truncate" style={{ color: 'var(--brand-muted)' }}>
-              {user.email || user.phone || '—'}
-            </p>
+            <p className="text-xs truncate" style={{ color: 'rgba(15,26,14,0.4)' }}>{user.email}</p>
           </div>
           <button onClick={handleSignOut}
-            className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border hover:bg-red-50 text-red-500 flex-shrink-0"
+            className="flex items-center gap-1.5 text-xs font-black px-3 py-2 rounded-xl border transition-colors hover:bg-red-50 text-red-500 flex-shrink-0"
             style={{ borderColor: '#fca5a5' }}>
-            <LogOut size={14} /> Sign out
+            <LogOut size={13} /> Sign out
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-5">
-          {[
-            { key: 'profile', label: 'Profile', icon: <User size={15} /> },
-            { key: 'orders', label: 'My Orders', icon: <Package size={15} /> },
-          ].map(t => (
+        <div className="flex gap-2 mt-4">
+          {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wide transition-all"
               style={{
-                backgroundColor: tab === t.key ? 'var(--brand-green)' : 'white',
-                color: tab === t.key ? 'white' : 'var(--brand-muted)',
-                border: `1px solid ${tab === t.key ? 'var(--brand-green)' : 'var(--brand-border)'}`,
+                backgroundColor: tab === t.key ? '#c9a84c' : 'rgba(255,255,255,0.06)',
+                color: tab === t.key ? '#0f1a0e' : 'rgba(255,255,255,0.5)',
               }}>
               {t.icon} {t.label}
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Profile tab */}
+      <div className="px-4 pb-10 max-w-3xl mx-auto">
+        {/* ===== PROFILE TAB ===== */}
         {tab === 'profile' && (
-          <div className="card p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="font-semibold" style={{ color: 'var(--brand-text)' }}>Account Details</h2>
-              {!editing ? (
-                <button onClick={() => setEditing(true)}
-                  className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg"
-                  style={{ color: 'var(--brand-green)', border: '1px solid var(--brand-green)' }}>
-                  <Edit2 size={13} /> Edit
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button onClick={() => setEditing(false)}
-                    className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg border"
-                    style={{ borderColor: 'var(--brand-border)', color: 'var(--brand-muted)' }}>
-                    <X size={13} /> Cancel
+          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+            <div className="px-5 py-4 flex items-center justify-between"
+              style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Account Details</p>
+              {!editing
+                ? <button onClick={() => setEditing(true)}
+                    className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-xl"
+                    style={{ color: '#0f1a0e', border: '1.5px solid #0f1a0e' }}>
+                    <Edit2 size={12} /> Edit
                   </button>
-                  <button onClick={handleSaveProfile} disabled={saving}
-                    className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-lg text-white"
-                    style={{ backgroundColor: 'var(--brand-green)', opacity: saving ? 0.7 : 1 }}>
-                    <Save size={13} /> {saving ? 'Saving...' : 'Save'}
-                  </button>
-                </div>
-              )}
+                : <div className="flex gap-2">
+                    <button onClick={() => setEditing(false)} className="text-xs font-black px-3 py-1.5 rounded-xl border"
+                      style={{ borderColor: 'rgba(15,26,14,0.1)', color: 'rgba(15,26,14,0.5)' }}>Cancel</button>
+                    <button onClick={handleSaveProfile} disabled={saving}
+                      className="flex items-center gap-1 text-xs font-black px-3 py-1.5 rounded-xl text-white"
+                      style={{ backgroundColor: '#0f1a0e' }}>
+                      <Save size={12} /> {saving ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+              }
             </div>
-
-            <div className="flex flex-col gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>
-                  Full Name
-                </label>
-                {editing
-                  ? <input value={form.full_name}
-                      onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))}
-                      placeholder="Your full name" />
-                  : <p className="text-sm py-2.5 px-4 rounded-lg"
-                      style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-text)' }}>
-                      {profile?.full_name || '—'}
-                    </p>
-                }
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>
-                  Email
-                </label>
-                <p className="text-sm py-2.5 px-4 rounded-lg"
-                  style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-muted)' }}>
-                  {user.email || '—'}
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--brand-text)' }}>
-                  Phone
-                </label>
-                {editing
-                  ? <input value={form.phone}
-                      onChange={e => setForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
-                      placeholder="9876543210" maxLength={10} />
-                  : <p className="text-sm py-2.5 px-4 rounded-lg"
-                      style={{ backgroundColor: 'var(--brand-surface)', color: 'var(--brand-text)' }}>
-                      {profile?.phone || user.phone || '—'}
-                    </p>
-                }
-              </div>
+            <div className="p-5 flex flex-col gap-4">
+              {[
+                { label: 'Full Name', value: profile?.full_name, field: 'full_name', type: 'text', placeholder: 'Your name' },
+                { label: 'Email', value: user.email, readonly: true },
+                { label: 'Phone', value: profile?.phone || user.phone, field: 'phone', type: 'tel', placeholder: '9876543210' },
+              ].map(f => (
+                <div key={f.label}>
+                  <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                    {f.label}
+                  </label>
+                  {editing && !f.readonly && f.field
+                    ? <input type={f.type || 'text'} value={form[f.field]} placeholder={f.placeholder}
+                        onChange={e => setForm(fm => ({ ...fm, [f.field]: e.target.value }))} />
+                    : <p className="text-sm font-medium py-2.5 px-4 rounded-xl"
+                        style={{ backgroundColor: 'rgba(15,26,14,0.04)', color: f.readonly ? 'rgba(15,26,14,0.4)' : '#0f1a0e' }}>
+                        {f.value || '—'}
+                      </p>
+                  }
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* Orders tab */}
+        {/* ===== ADDRESSES TAB ===== */}
+        {tab === 'addresses' && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                {addresses.length} saved address{addresses.length !== 1 ? 'es' : ''}
+              </p>
+              <button onClick={() => { setShowAddrForm(true); setEditingAddrId(null); setAddrForm(EMPTY_ADDR) }}
+                className="flex items-center gap-1.5 text-xs font-black px-4 py-2.5 rounded-xl text-white transition-all"
+                style={{ backgroundColor: '#c9a84c', color: '#0f1a0e' }}>
+                <Plus size={13} /> Add Address
+              </button>
+            </div>
+
+            {/* Address form */}
+            {showAddrForm && (
+              <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="px-5 py-4 flex items-center justify-between"
+                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                    {editingAddrId ? 'Edit Address' : 'New Address'}
+                  </p>
+                  <button onClick={() => { setShowAddrForm(false); setEditingAddrId(null) }}>
+                    <X size={16} style={{ color: 'rgba(15,26,14,0.4)' }} />
+                  </button>
+                </div>
+                <div className="p-5 flex flex-col gap-4">
+                  {/* Label picker */}
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Label</label>
+                    <div className="flex gap-2">
+                      {LABEL_OPTIONS.map(l => {
+                        const LI = LABEL_ICONS[l] || MapPin
+                        return (
+                          <button key={l} type="button" onClick={() => setAddrForm(f => ({ ...f, label: l }))}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wide border-2 transition-all"
+                            style={{
+                              borderColor: addrForm.label === l ? '#0f1a0e' : 'rgba(15,26,14,0.1)',
+                              backgroundColor: addrForm.label === l ? '#0f1a0e' : 'white',
+                              color: addrForm.label === l ? 'white' : 'rgba(15,26,14,0.4)',
+                            }}>
+                            <LI size={11} /> {l}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
+                      <input value={addrForm.full_name} onChange={e => setAddrForm(f => ({ ...f, full_name: e.target.value }))} placeholder="Priya Sharma" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Phone *</label>
+                      <input type="tel" value={addrForm.phone} onChange={e => setAddrForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} placeholder="9876543210" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Address *</label>
+                    <textarea value={addrForm.address} onChange={e => setAddrForm(f => ({ ...f, address: e.target.value }))} placeholder="House/flat no, street, area..." rows={2} />
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>City *</label>
+                      <input value={addrForm.city} onChange={e => setAddrForm(f => ({ ...f, city: e.target.value }))} placeholder="Pune" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>State *</label>
+                      <input value={addrForm.state} onChange={e => setAddrForm(f => ({ ...f, state: e.target.value }))} placeholder="Maharashtra" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Pincode *</label>
+                      <input value={addrForm.pincode} onChange={e => setAddrForm(f => ({ ...f, pincode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} placeholder="411001" />
+                    </div>
+                  </div>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" checked={addrForm.is_default} onChange={e => setAddrForm(f => ({ ...f, is_default: e.target.checked }))} className="w-auto" />
+                    <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.6)' }}>Set as default address</span>
+                  </label>
+                  <div className="flex gap-3">
+                    <button onClick={handleSaveAddress} disabled={addrSaving}
+                      className="flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all"
+                      style={{ backgroundColor: '#0f1a0e' }}>
+                      {addrSaving ? 'Saving...' : editingAddrId ? 'Update Address' : 'Save Address'}
+                    </button>
+                    <button onClick={() => { setShowAddrForm(false); setEditingAddrId(null) }}
+                      className="px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest border transition-all"
+                      style={{ borderColor: 'rgba(15,26,14,0.1)', color: 'rgba(15,26,14,0.5)' }}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {addrLoading ? (
+              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
+              </div>
+            ) : addresses.length === 0 && !showAddrForm ? (
+              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
+                <MapPin size={36} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.2)' }} />
+                <p className="font-black text-sm mb-1" style={{ color: '#0f1a0e' }}>No saved addresses</p>
+                <p className="text-xs mb-4" style={{ color: 'rgba(15,26,14,0.4)' }}>Add an address for faster checkout</p>
+                <button onClick={() => setShowAddrForm(true)}
+                  className="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white"
+                  style={{ backgroundColor: '#0f1a0e' }}>
+                  <Plus size={12} className="inline mr-1" /> Add Address
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {addresses.map(addr => (
+                  <AddressCard key={addr.id} addr={addr}
+                    onEdit={handleEditAddress}
+                    onDelete={handleDeleteAddress}
+                    onSetDefault={handleSetDefault} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ===== ORDERS TAB ===== */}
         {tab === 'orders' && (
           <div>
             {ordersLoading ? (
-              <div className="card p-10 text-center">
-                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto"
-                  style={{ borderColor: 'var(--brand-green)' }} />
+              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
               </div>
             ) : orders.length === 0 ? (
-              <div className="card p-10 text-center">
-                <Package size={40} className="mx-auto mb-3" style={{ color: 'var(--brand-muted)' }} />
-                <p className="font-medium mb-1" style={{ color: 'var(--brand-text)' }}>No orders yet</p>
-                <p className="text-sm mb-4" style={{ color: 'var(--brand-muted)' }}>
-                  Your order history will appear here
-                </p>
-                <Link href="/products" className="btn-primary text-sm">Start Shopping</Link>
+              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
+                <Package size={36} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.2)' }} />
+                <p className="font-black text-sm mb-1" style={{ color: '#0f1a0e' }}>No orders yet</p>
+                <Link href="/products" className="inline-block mt-3 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white"
+                  style={{ backgroundColor: '#0f1a0e' }}>Start Shopping</Link>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
@@ -237,47 +419,40 @@ export default function ProfileContent() {
                   const status = order.order_status || 'pending'
                   const config = STATUS_CONFIG[status] || STATUS_CONFIG.pending
                   return (
-                    <div key={order.id} className="card overflow-hidden">
-                      <div className="p-4 border-b flex items-start justify-between gap-3"
-                        style={{ borderColor: 'var(--brand-border)' }}>
+                    <div key={order.id} className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+                      <div className="p-4 flex items-start justify-between gap-3" style={{ borderBottom: '1px solid rgba(15,26,14,0.06)' }}>
                         <div>
-                          <p className="text-xs mb-0.5" style={{ color: 'var(--brand-muted)' }}>
+                          <p className="text-xs mb-0.5 font-black uppercase tracking-wider" style={{ color: 'rgba(15,26,14,0.4)' }}>
                             #{order.id.slice(0, 8).toUpperCase()}
                           </p>
-                          <p className="font-semibold" style={{ color: 'var(--brand-text)' }}>
-                            ₹{Number(order.total_amount).toFixed(0)}
-                          </p>
-                          <p className="text-xs" style={{ color: 'var(--brand-muted)' }}>
-                            {new Date(order.created_at).toLocaleDateString('en-IN', {
-                              day: 'numeric', month: 'short', year: 'numeric'
-                            })}
+                          <p className="font-black text-base" style={{ color: '#c9a84c' }}>₹{Number(order.total_amount).toFixed(0)}</p>
+                          <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                            {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </p>
                         </div>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0"
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-black flex-shrink-0"
                           style={{ backgroundColor: config.bg, color: config.color }}>
                           {config.icon} {config.label}
                         </span>
                       </div>
-
-                      <div className="p-4 border-b" style={{ borderColor: 'var(--brand-border)' }}>
+                      <div className="p-4 border-b" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
                         {order.order_items?.map(item => (
                           <div key={item.id} className="flex justify-between py-0.5">
-                            <span className="text-sm" style={{ color: 'var(--brand-text)' }}>
-                              {item.product_name} × {item.quantity}
-                            </span>
-                            <span className="text-sm font-medium" style={{ color: 'var(--brand-brown)' }}>
-                              ₹{Number(item.total_price).toFixed(0)}
-                            </span>
+                            <span className="text-xs" style={{ color: '#0f1a0e' }}>{item.product_name} × {item.quantity}</span>
+                            <span className="text-xs font-black" style={{ color: '#c9a84c' }}>₹{Number(item.total_price).toFixed(0)}</span>
                           </div>
                         ))}
                       </div>
-
-                      <div className="p-4 flex items-start gap-2">
-                        <MapPin size={14} className="mt-0.5 flex-shrink-0"
-                          style={{ color: 'var(--brand-muted)' }} />
-                        <p className="text-xs" style={{ color: 'var(--brand-muted)' }}>
-                          {order.address}, {order.city} — {order.pincode}
-                        </p>
+                      <div className="px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-start gap-2">
+                          <MapPin size={13} className="mt-0.5 flex-shrink-0" style={{ color: 'rgba(15,26,14,0.3)' }} />
+                          <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                            {order.city}, {order.state}
+                          </p>
+                        </div>
+                        <a href={`/api/send-invoice?orderId=${order.id}`} target="_blank" rel="noreferrer"
+                          className="text-xs font-black uppercase tracking-wide underline"
+                          style={{ color: '#c9a84c' }}>Invoice</a>
                       </div>
                     </div>
                   )
@@ -286,7 +461,6 @@ export default function ProfileContent() {
             )}
           </div>
         )}
-
       </div>
     </div>
   )

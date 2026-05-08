@@ -21,7 +21,6 @@ function validateItems(items) {
   return null
 }
 
-// Helper: send order confirmation email via our own API
 async function sendConfirmationEmail(orderId, baseUrl) {
   try {
     await fetch(`${baseUrl}/api/send-order-email`, {
@@ -30,7 +29,6 @@ async function sendConfirmationEmail(orderId, baseUrl) {
       body: JSON.stringify({ type: 'confirmation', orderId }),
     })
   } catch (err) {
-    // Don't fail the order if email fails — just log
     console.error('Email send failed (non-critical):', err.message)
   }
 }
@@ -39,47 +37,68 @@ export async function POST(req) {
   try {
     const body = await req.json()
     const {
-      razorpay_order_id, razorpay_payment_id, razorpay_signature,
-      cod, customer, items, total, user_id,
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      cod,
+      customer,
+      items,
+      total,
+      user_id,
     } = body
 
-    // Validate inputs
+    // ── Validate inputs ──────────────────────────────────────────
     const customerError = validateCustomer(customer)
     if (customerError) return NextResponse.json({ error: customerError }, { status: 400 })
 
     const itemsError = validateItems(items)
     if (itemsError) return NextResponse.json({ error: itemsError }, { status: 400 })
 
-    // Server-side total recalculation — never trust client
+    // ── Server-side total recalculation ──────────────────────────
     const recalcSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    const recalcShipping = recalcSubtotal >= 499 ? 0 : 0
+    const recalcShipping = recalcSubtotal >= 499 ? 0 : 60
     const recalcTotal = recalcSubtotal + recalcShipping
 
+    // Allow ₹1 rounding difference
     if (Math.abs(recalcTotal - total) > 1) {
+      console.error(`Total mismatch: client=${total} server=${recalcTotal}`)
       return NextResponse.json({ error: 'Order total mismatch — please refresh and try again' }, { status: 400 })
     }
 
-    // Verify Razorpay signature for online payments
+    // ── Razorpay signature verification ─────────────────────────
     if (!cod) {
       if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
         return NextResponse.json({ error: 'Missing payment details' }, { status: 400 })
       }
-      const expected = crypto
-        .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
-        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+
+      const secret = process.env.RAZORPAY_KEY_SECRET
+      if (!secret) {
+        console.error('RAZORPAY_KEY_SECRET is not set in environment variables!')
+        return NextResponse.json({ error: 'Payment configuration error — contact support' }, { status: 500 })
+      }
+
+      const body = `${razorpay_order_id}|${razorpay_payment_id}`
+      const expectedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(body)
         .digest('hex')
-      if (expected !== razorpay_signature) {
-        console.error('Razorpay signature mismatch')
-        return NextResponse.json({ error: 'Payment verification failed' }, { status: 400 })
+
+      console.log('Received signature:', razorpay_signature)
+      console.log('Expected signature:', expectedSignature)
+      console.log('Match:', expectedSignature === razorpay_signature)
+
+      if (expectedSignature !== razorpay_signature) {
+        console.error('Razorpay signature mismatch — possible fraud or wrong secret key')
+        return NextResponse.json({ error: 'Payment verification failed. Your payment was captured — please contact us on WhatsApp at +91 96237 40541 with your payment ID: ' + razorpay_payment_id }, { status: 400 })
       }
     }
 
-    // COD minimum order check
+    // ── COD minimum ──────────────────────────────────────────────
     if (cod && recalcTotal < 999) {
       return NextResponse.json({ error: 'COD available only on orders above ₹999' }, { status: 400 })
     }
 
-    // Save order
+    // ── Save order ───────────────────────────────────────────────
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .insert({
@@ -105,28 +124,39 @@ export async function POST(req) {
       .select()
       .single()
 
-    if (orderError) throw new Error(orderError.message)
+    if (orderError) {
+      console.error('Order insert error:', orderError)
+      throw new Error('Failed to save order: ' + orderError.message)
+    }
 
-    // Save order items
-    await supabaseAdmin.from('order_items').insert(
-      items.map(item => ({
-        order_id: order.id,
-        product_id: item.id,
-        product_name: item.name,
-        product_image: item.image_url || null,
-        quantity: item.quantity,
-        unit_price: item.price,
-        total_price: item.price * item.quantity,
-      }))
-    )
+    // ── Save order items ─────────────────────────────────────────
+    const { error: itemsInsertError } = await supabaseAdmin
+      .from('order_items')
+      .insert(
+        items.map(item => ({
+          order_id: order.id,
+          product_id: item.id,
+          product_name: item.name,
+          product_image: item.image_url || null,
+          quantity: item.quantity,
+          unit_price: item.price,
+          total_price: item.price * item.quantity,
+        }))
+      )
 
-    // Send confirmation email (non-blocking — won't fail the order)
+    if (itemsInsertError) {
+      console.error('Order items insert error (non-critical):', itemsInsertError)
+    }
+
+    // ── Send confirmation email (non-blocking) ───────────────────
     const baseUrl = req.headers.get('origin') || `https://${req.headers.get('host')}`
-    await sendConfirmationEmail(order.id, baseUrl)
+    sendConfirmationEmail(order.id, baseUrl) // intentionally not awaited
 
     return NextResponse.json({ orderId: order.id })
   } catch (err) {
-    console.error('Verify payment error:', err)
-    return NextResponse.json({ error: 'Something went wrong. Please contact support.' }, { status: 500 })
+    console.error('Verify payment critical error:', err)
+    return NextResponse.json({
+      error: 'Something went wrong saving your order. If payment was deducted, please WhatsApp us at +91 96237 40541 with your payment details.'
+    }, { status: 500 })
   }
 }

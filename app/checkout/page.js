@@ -3,55 +3,150 @@ import { useState, useEffect } from 'react'
 import { useCartStore } from '@/store/cartStore'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
-import { MapPin, Phone, User, Mail, Calendar, Shield, Truck, Lock, Tag, ShoppingBag, ChevronRight, CheckCircle2, CreditCard } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import {
+  MapPin, Phone, User, Mail, Calendar,
+  Shield, Truck, Lock, Tag, ShoppingBag,
+  CheckCircle, Plus, ChevronDown, ChevronUp, Home, Briefcase
+} from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+
+const LABEL_ICONS = { Home: Home, Office: Briefcase, Other: MapPin }
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart } = useCartStore()
   const { user, profile } = useAuth()
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+
   const [mounted, setMounted] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
 
-  useEffect(() => { setMounted(true) }, [])
-
-  useEffect(() => {
-    if (mounted && items.length === 0) router.push('/cart')
-  }, [items, router, mounted])
-
-  const total = mounted ? getTotalPrice() : 0
-  const shipping = total >= 499 ? 0 : 0
-  const grandTotal = total + shipping
-  const codAvailable = grandTotal >= 999
+  // Saved addresses
+  const [savedAddresses, setSavedAddresses] = useState([])
+  const [selectedAddressId, setSelectedAddressId] = useState(null)
+  const [showNewForm, setShowNewForm] = useState(false)
+  const [saveThisAddress, setSaveThisAddress] = useState(false)
+  const [addressesLoading, setAddressesLoading] = useState(false)
 
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
     address: '', city: '', state: '', pincode: '', booking_date: '',
   })
 
+  useEffect(() => { setMounted(true) }, [])
+
+  // Redirect if cart empty
   useEffect(() => {
-    if (profile) {
+    if (mounted && items.length === 0) router.push('/cart')
+  }, [items, mounted, router])
+
+  // Pre-fill personal info from profile
+  useEffect(() => {
+    if (profile || user) {
       setForm(f => ({
         ...f,
-        name: profile.full_name || '',
-        phone: profile.phone || '',
+        name: profile?.full_name || '',
+        phone: profile?.phone || '',
         email: user?.email || '',
       }))
     }
   }, [profile, user])
 
+  // Load saved addresses for logged-in users
+  useEffect(() => {
+    if (user) {
+      loadAddresses()
+    } else {
+      setShowNewForm(true)
+    }
+  }, [user])
+
+  const loadAddresses = async () => {
+    setAddressesLoading(true)
+    const { data } = await supabase
+      .from('addresses')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('is_default', { ascending: false })
+      .order('created_at', { ascending: false })
+    setSavedAddresses(data || [])
+    // Auto-select default address
+    const def = (data || []).find(a => a.is_default)
+    if (def) {
+      setSelectedAddressId(def.id)
+      fillFormFromAddress(def)
+      setShowNewForm(false)
+    } else if ((data || []).length === 0) {
+      setShowNewForm(true)
+    }
+    setAddressesLoading(false)
+  }
+
+  const fillFormFromAddress = (addr) => {
+    setForm(f => ({
+      ...f,
+      name: addr.full_name,
+      phone: addr.phone,
+      address: addr.address,
+      city: addr.city,
+      state: addr.state,
+      pincode: addr.pincode,
+    }))
+  }
+
+  const selectAddress = (addr) => {
+    setSelectedAddressId(addr.id)
+    fillFormFromAddress(addr)
+    setShowNewForm(false)
+  }
+
+  const handleAddNew = () => {
+    setSelectedAddressId(null)
+    setForm(f => ({
+      ...f,
+      address: '', city: '', state: '', pincode: '',
+      name: profile?.full_name || '',
+      phone: profile?.phone || '',
+    }))
+    setShowNewForm(true)
+  }
+
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const total = mounted ? getTotalPrice() : 0
+  const shipping = total >= 499 ? 0 : 0
+  const grandTotal = total + shipping
+  const codAvailable = grandTotal >= 999
 
   const validate = () => {
     if (!form.name.trim()) { toast.error('Please enter your name'); return false }
-    if (!form.phone.trim() || form.phone.length < 10) { toast.error('Enter valid 10-digit phone'); return false }
+    if (!form.phone.trim() || form.phone.length < 10) { toast.error('Enter valid 10-digit phone number'); return false }
     if (!form.address.trim()) { toast.error('Please enter your address'); return false }
     if (!form.city.trim()) { toast.error('Please enter your city'); return false }
     if (!form.state.trim()) { toast.error('Please enter your state'); return false }
     if (!form.pincode.trim() || form.pincode.length !== 6) { toast.error('Enter valid 6-digit pincode'); return false }
     return true
+  }
+
+  const saveAddressIfNeeded = async () => {
+    if (!user || !saveThisAddress || selectedAddressId) return
+    try {
+      await supabase.from('addresses').insert({
+        user_id: user.id,
+        label: 'Home',
+        full_name: form.name.trim(),
+        phone: form.phone.trim(),
+        address: form.address.trim(),
+        city: form.city.trim(),
+        state: form.state.trim(),
+        pincode: form.pincode.trim(),
+        is_default: savedAddresses.length === 0,
+      })
+    } catch (err) {
+      console.error('Failed to save address:', err)
+    }
   }
 
   const handleRazorpay = async () => {
@@ -72,41 +167,47 @@ export default function CheckoutPage() {
         name: 'Shrilekha Mehndi Art',
         description: `Order for ${form.name}`,
         order_id: orderId,
-        prefill: { name: form.name, email: form.email, contact: form.phone },
-        theme: { color: '#3a5a40' },
+        prefill: { name: form.name, email: form.email, contact: `+91${form.phone}` },
+        theme: { color: '#0f1a0e' },
         handler: async (response) => {
-          const verifyRes = await fetch('/api/verify-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              customer: form,
-              items: items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity, image_url: i.image_url })),
-              subtotal: total,
-              shipping,
-              total: grandTotal,
-              user_id: user?.id || null,
-            }),
-          })
-          const data = await verifyRes.json()
-
-console.log("VERIFY RESPONSE:", data)
-
-if (!verifyRes.ok) {
-  toast.error(data.error || "Payment verification failed")
-  return
-}
-
-const savedId = data.orderId
-          clearCart()
-          toast.success('Order placed successfully!')
-          router.push(`/order-confirmation/${savedId}`)
+          try {
+            await saveAddressIfNeeded()
+            const verifyRes = await fetch('/api/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                customer: form,
+                items: items.map(i => ({
+                  id: i.id, name: i.name, price: i.price,
+                  quantity: i.quantity, image_url: i.image_url || null,
+                })),
+                subtotal: total,
+                shipping,
+                total: grandTotal,
+                user_id: user?.id || null,
+              }),
+            })
+            const { orderId: savedId, error: verifyError } = await verifyRes.json()
+            if (verifyError) {
+              toast.error(verifyError, { duration: 8000 })
+              return
+            }
+            clearCart()
+            toast.success('Order placed successfully!')
+            router.push(`/order-confirmation/${savedId}`)
+          } catch (err) {
+            toast.error('Payment done but order save failed. WhatsApp us at +91 96237 40541')
+          }
         },
       }
+
       const rzp = new window.Razorpay(options)
-      rzp.on('payment.failed', () => toast.error('Payment failed. Please try again.'))
+      rzp.on('payment.failed', (response) => {
+        toast.error(`Payment failed: ${response.error.description}`)
+      })
       rzp.open()
     } catch (err) {
       toast.error(err.message || 'Something went wrong')
@@ -117,13 +218,17 @@ const savedId = data.orderId
   const handleCOD = async () => {
     setLoading(true)
     try {
+      await saveAddressIfNeeded()
       const res = await fetch('/api/verify-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cod: true,
           customer: form,
-          items: items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity, image_url: i.image_url })),
+          items: items.map(i => ({
+            id: i.id, name: i.name, price: i.price,
+            quantity: i.quantity, image_url: i.image_url || null,
+          })),
           subtotal: total,
           shipping,
           total: grandTotal,
@@ -150,19 +255,19 @@ const savedId = data.orderId
 
   if (!mounted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--brand-surface)]">
-        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[var(--brand-green)]" />
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0a0f0d' }}>
+        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#c9a84c]" />
       </div>
     )
   }
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-[var(--brand-surface)]">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#0a0f0d' }}>
         <div className="text-center">
-          <ShoppingBag size={48} className="mx-auto mb-4 text-[var(--brand-muted)]" />
-          <p className="font-medium mb-4 text-[var(--brand-text)]">Your cart is empty</p>
-          <Link href="/products" className="btn-primary text-sm px-8">Browse Products</Link>
+          <ShoppingBag size={48} className="mx-auto mb-4 text-white/20" />
+          <p className="font-black text-white mb-4 uppercase tracking-widest">Cart is empty</p>
+          <Link href="/products" className="btn-primary text-sm">Browse Products</Link>
         </div>
       </div>
     )
@@ -171,207 +276,291 @@ const savedId = data.orderId
   return (
     <>
       <script src="https://checkout.razorpay.com/v1/checkout.js" async />
-      <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
-        <div className="flex items-center gap-2 mb-6 md:mb-8 overflow-x-auto whitespace-nowrap pb-2">
-            <span className="text-[var(--brand-muted)] text-sm">Cart</span>
-            <ChevronRight size={14} className="text-[var(--brand-muted)]" />
-            <span className="text-[var(--brand-text)] font-semibold text-sm">Checkout</span>
+      <div className="min-h-screen" style={{ backgroundColor: '#0a0f0d' }}>
+
+        {/* Header */}
+        <div className="px-4 pt-8 pb-4 text-center">
+          <h1 className="text-2xl font-black uppercase tracking-tight text-white">Checkout</h1>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: 'rgba(201,168,76,0.6)' }}>
+            Secure • Fast • Easy
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            {/* Left Column */}
-            <div className="lg:col-span-8 flex flex-col gap-6">
-              
-              {/* Personal Details */}
-              <div className="card p-4 md:p-6 shadow-sm border-[var(--brand-border)]">
-                <h2 className="font-semibold mb-5 flex items-center gap-2 text-base text-[var(--brand-text)]">
-                  <User size={18} className="text-[var(--brand-green)]" /> Personal Details
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">Full Name *</label>
-                    <input className="w-full h-11 px-3 border rounded-md" value={form.name} onChange={e => set('name', e.target.value)} placeholder="Priya Sharma" />
+        <form onSubmit={handleSubmit} className="max-w-5xl mx-auto px-4 pb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+            {/* ===== LEFT: Forms ===== */}
+            <div className="md:col-span-2 flex flex-col gap-4">
+
+              {/* Personal info */}
+              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="px-5 py-3.5 flex items-center gap-2"
+                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+                  <User size={14} style={{ color: '#c9a84c' }} />
+                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                    Personal Details
+                  </p>
+                </div>
+                <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
+                    <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Priya Sharma" />
                   </div>
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">
-                      <Phone size={13} className="inline mr-1" />Phone *
-                    </label>
-                    <input className="w-full h-11 px-3 border rounded-md" type="tel" value={form.phone} onChange={e => set('phone', e.target.value.replace(/\D/g, '').slice(0, 10))} placeholder="9876543210" maxLength={10} />
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Phone *</label>
+                    <input type="tel" value={form.phone}
+                      onChange={e => set('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
+                      placeholder="9876543210" maxLength={10} />
                   </div>
-                  <div className="sm:col-span-2 flex flex-col">
-                    <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">
-                      <Mail size={13} className="inline mr-1" />Email Address
-                    </label>
-                    <input className="w-full h-11 px-3 border rounded-md" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Email (for order updates)</label>
+                    <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
                   </div>
                 </div>
               </div>
 
-              {/* Delivery Address */}
-              <div className="card p-4 md:p-6 shadow-sm border-[var(--brand-border)]">
-                <h2 className="font-semibold mb-5 flex items-center gap-2 text-base text-[var(--brand-text)]">
-                  <MapPin size={18} className="text-[var(--brand-green)]" /> Delivery Address
-                </h2>
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">Full Address *</label>
-                    <textarea className="w-full p-3 border rounded-md" value={form.address} onChange={e => set('address', e.target.value)}
-                      placeholder="House/flat no, street, area, landmark..." rows={2} />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col">
-                      <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">City *</label>
-                      <input className="w-full h-11 px-3 border rounded-md" value={form.city} onChange={e => set('city', e.target.value)} placeholder="Pune" />
+              {/* ===== DELIVERY ADDRESS ===== */}
+              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="px-5 py-3.5 flex items-center gap-2"
+                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+                  <MapPin size={14} style={{ color: '#c9a84c' }} />
+                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                    Delivery Address
+                  </p>
+                </div>
+
+                <div className="p-5">
+                  {/* Saved addresses — only for logged-in users */}
+                  {user && (
+                    <div className="mb-5">
+                      {addressesLoading ? (
+                        <div className="h-12 rounded-xl animate-pulse" style={{ backgroundColor: 'rgba(15,26,14,0.05)' }} />
+                      ) : savedAddresses.length > 0 ? (
+                        <>
+                          <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                            Saved Addresses
+                          </p>
+                          <div className="flex flex-col gap-2 mb-3">
+                            {savedAddresses.map(addr => {
+                              const LabelIcon = LABEL_ICONS[addr.label] || MapPin
+                              const isSelected = selectedAddressId === addr.id
+                              return (
+                                <button key={addr.id} type="button"
+                                  onClick={() => selectAddress(addr)}
+                                  className="flex items-start gap-3 p-3.5 rounded-xl border-2 text-left transition-all"
+                                  style={{
+                                    borderColor: isSelected ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
+                                    backgroundColor: isSelected ? 'rgba(15,26,14,0.04)' : 'white',
+                                  }}>
+                                  {/* Radio */}
+                                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5"
+                                    style={{ borderColor: isSelected ? '#0f1a0e' : 'rgba(15,26,14,0.2)' }}>
+                                    {isSelected && (
+                                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#0f1a0e' }} />
+                                    )}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-0.5">
+                                      <LabelIcon size={12} style={{ color: '#c9a84c' }} />
+                                      <span className="text-xs font-black uppercase tracking-wider" style={{ color: '#0f1a0e' }}>
+                                        {addr.label}
+                                      </span>
+                                      {addr.is_default && (
+                                        <span className="text-xs px-1.5 py-0.5 rounded-full font-bold"
+                                          style={{ backgroundColor: '#dcfce7', color: '#15803d', fontSize: '9px' }}>
+                                          Default
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-xs font-semibold" style={{ color: '#0f1a0e' }}>{addr.full_name}</p>
+                                    <p className="text-xs truncate" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                                      {addr.address}, {addr.city}, {addr.state} — {addr.pincode}
+                                    </p>
+                                    <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>📞 {addr.phone}</p>
+                                  </div>
+                                </button>
+                              )
+                            })}
+                          </div>
+
+                          {/* Add new address toggle */}
+                          <button type="button" onClick={() => showNewForm ? setShowNewForm(false) : handleAddNew()}
+                            className="flex items-center gap-2 text-xs font-black uppercase tracking-widest py-2.5 px-4 rounded-xl border-2 border-dashed w-full justify-center transition-all"
+                            style={{
+                              borderColor: showNewForm ? '#0f1a0e' : 'rgba(15,26,14,0.15)',
+                              color: showNewForm ? '#0f1a0e' : 'rgba(15,26,14,0.4)',
+                            }}>
+                            <Plus size={13} /> {showNewForm ? 'Cancel new address' : 'Add new address'}
+                          </button>
+                        </>
+                      ) : null}
                     </div>
-                    <div className="flex flex-col">
-                      <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">State *</label>
-                      <input className="w-full h-11 px-3 border rounded-md" value={form.state} onChange={e => set('state', e.target.value)} placeholder="Maharashtra" />
+                  )}
+
+                  {/* New address form — always shown for guests, toggled for logged-in */}
+                  {(showNewForm || !user) && (
+                    <div className="flex flex-col gap-4">
+                      <div>
+                        <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Address *</label>
+                        <textarea value={form.address} onChange={e => set('address', e.target.value)}
+                          placeholder="House/flat no, street, area, landmark..." rows={3} />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>City *</label>
+                          <input value={form.city} onChange={e => set('city', e.target.value)} placeholder="Pune" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>State *</label>
+                          <input value={form.state} onChange={e => set('state', e.target.value)} placeholder="Maharashtra" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Pincode *</label>
+                          <input value={form.pincode}
+                            onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            placeholder="411001" maxLength={6} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                            <Calendar size={11} className="inline mr-1" />Preferred Date
+                          </label>
+                          <input type="date" value={form.booking_date}
+                            onChange={e => set('booking_date', e.target.value)}
+                            min={new Date().toISOString().split('T')[0]} />
+                        </div>
+                      </div>
+
+                      {/* Save address checkbox — only for logged-in users */}
+                      {user && (
+                        <label className="flex items-center gap-2.5 cursor-pointer">
+                          <input type="checkbox" checked={saveThisAddress}
+                            onChange={e => setSaveThisAddress(e.target.checked)} className="w-auto" />
+                          <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.6)' }}>
+                            Save this address for future orders
+                          </span>
+                        </label>
+                      )}
                     </div>
-                    <div className="flex flex-col">
-                      <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">Pincode *</label>
-                      <input className="w-full h-11 px-3 border rounded-md" value={form.pincode} onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))} placeholder="411001" maxLength={6} />
-                    </div>
-                    <div className="flex flex-col">
-                      <label className="text-sm font-medium mb-1.5 text-[var(--brand-text)]">
-                        <Calendar size={13} className="inline mr-1" />Delivery Date
+                  )}
+
+                  {/* If selected existing address — show date picker only */}
+                  {!showNewForm && selectedAddressId && (
+                    <div className="mt-4">
+                      <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                        <Calendar size={11} className="inline mr-1" />Preferred Delivery Date
                       </label>
-                      <input className="w-full h-11 px-3 border rounded-md" type="date" value={form.booking_date}
+                      <input type="date" value={form.booking_date}
                         onChange={e => set('booking_date', e.target.value)}
                         min={new Date().toISOString().split('T')[0]} />
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
-              {/* Payment method section */}
-              <div className="card p-5 md:p-6 shadow-sm border-[var(--brand-border)] bg-white">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-semibold flex items-center gap-2 text-base text-[var(--brand-text)]">
-                    <Lock size={18} className="text-[var(--brand-green)]" /> Payment Method
-                  </h2>
-                  <div className="flex items-center gap-1 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-                    <Shield size={12} /> SECURE
-                  </div>
+              {/* Payment method */}
+              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="px-5 py-3.5 flex items-center gap-2"
+                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+                  <Lock size={14} style={{ color: '#c9a84c' }} />
+                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                    Payment Method
+                  </p>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Online Payment */}
-                  <div
-                    onClick={() => setPaymentMethod('razorpay')}
-                    className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 cursor-pointer ${
-                      paymentMethod === 'razorpay'
-                        ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)]'
-                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex justify-between items-start mb-4">
-                        <div className={`p-2.5 rounded-xl ${paymentMethod === 'razorpay' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-500'}`}>
-                          <CreditCard size={22} />
-                        </div>
-                        {paymentMethod === 'razorpay' && (
-                          <div className="bg-[var(--brand-green)] rounded-full p-0.5">
-                            <CheckCircle2 size={18} className="text-white" />
-                          </div>
-                        )}
+                <div className="p-5 flex flex-col gap-3">
+                  <label className="flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
+                    style={{
+                      borderColor: paymentMethod === 'razorpay' ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
+                      backgroundColor: paymentMethod === 'razorpay' ? 'rgba(15,26,14,0.03)' : 'white',
+                    }}>
+                    <input type="radio" name="payment" value="razorpay"
+                      checked={paymentMethod === 'razorpay'} onChange={() => setPaymentMethod('razorpay')} className="w-auto mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm font-black" style={{ color: '#0f1a0e' }}>Pay Online</p>
+                      <p className="text-xs mt-0.5" style={{ color: 'rgba(15,26,14,0.5)' }}>UPI, Cards, Net Banking via Razorpay</p>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {['UPI', 'GPay', 'PhonePe', 'Card', 'Net Banking'].map(m => (
+                          <span key={m} className="text-xs px-2 py-0.5 rounded-full font-medium"
+                            style={{ backgroundColor: 'rgba(15,26,14,0.05)', color: 'rgba(15,26,14,0.5)', fontSize: '10px' }}>{m}</span>
+                        ))}
                       </div>
-                      <p className="font-bold text-[var(--brand-text)] text-base mb-1">Pay Online</p>
-                      <p className="text-xs text-[var(--brand-muted)] mb-4">UPI, Cards, Netbanking</p>
                     </div>
+                  </label>
 
-                   <div className="flex flex-wrap items-center gap-3">
-  <img src="https://cdn.simpleicons.org/googlepay" alt="GPay" className="h-4" />
-  <img src="https://cdn.simpleicons.org/upi" alt="UPI" className="h-4" />
-  <img src="https://cdn.simpleicons.org/phonepe" alt="PhonePe" className="h-4" />
-  <img src="https://cdn.simpleicons.org/paytm" alt="Paytm" className="h-4" />
-  <img src="https://cdn.simpleicons.org/visa" alt="Visa" className="h-4" />
-</div>
-                  </div>
-
-                  {/* COD */}
-                  <div
-                    onClick={() => codAvailable && setPaymentMethod('cod')}
-                    className={`group relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all duration-300 ${
-                      !codAvailable
-                        ? 'opacity-50 cursor-not-allowed bg-gray-50 border-dashed border-gray-200'
-                        : paymentMethod === 'cod'
-                          ? 'border-[var(--brand-green)] bg-green-50/40 shadow-md ring-1 ring-[var(--brand-green)] cursor-pointer'
-                          : 'border-gray-200 hover:border-gray-300 bg-white cursor-pointer'
-                    }`}
-                  >
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border-2 transition-all ${codAvailable ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed'}`}
+                    style={{
+                      borderColor: paymentMethod === 'cod' ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
+                      backgroundColor: paymentMethod === 'cod' ? 'rgba(15,26,14,0.03)' : 'white',
+                    }}>
+                    <input type="radio" name="payment" value="cod" disabled={!codAvailable}
+                      checked={paymentMethod === 'cod'} onChange={() => codAvailable && setPaymentMethod('cod')} className="w-auto mt-0.5" />
                     <div>
-                      <div className="flex justify-between items-start mb-4">
-                        <div className={`p-2.5 rounded-xl ${paymentMethod === 'cod' ? 'bg-[var(--brand-green)] text-white' : 'bg-gray-100 text-gray-500'}`}>
-                          <Truck size={22} />
-                        </div>
-                        {paymentMethod === 'cod' && codAvailable && (
-                          <div className="bg-[var(--brand-green)] rounded-full p-0.5">
-                            <CheckCircle2 size={18} className="text-white" />
-                          </div>
-                        )}
-                      </div>
-                      <p className="font-bold text-[var(--brand-text)] text-base mb-1">Cash on Delivery</p>
-                      <p className={`text-xs ${!codAvailable ? 'text-orange-600 font-semibold' : 'text-[var(--brand-muted)]'}`}>
-                        {codAvailable ? 'Pay when order arrives' : 'Available above ₹999'}
+                      <p className="text-sm font-black" style={{ color: '#0f1a0e' }}>Cash on Delivery</p>
+                      <p className="text-xs mt-0.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                        {codAvailable ? 'Pay when your order arrives' : 'Available on orders above ₹999'}
                       </p>
                     </div>
-                    {!codAvailable && <div className="absolute top-2 right-2"><Lock size={12} className="text-gray-400" /></div>}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* ===== RIGHT: Order summary ===== */}
+            <div className="md:col-span-1">
+              <div className="rounded-2xl overflow-hidden md:sticky md:top-20" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="px-5 py-3.5" style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Order Summary</p>
+                </div>
+                <div className="p-5">
+                  <div className="flex flex-col gap-2 mb-4 max-h-44 overflow-y-auto">
+                    {items.map(item => (
+                      <div key={item.id} className="flex justify-between text-sm gap-2">
+                        <span className="truncate flex-1 text-xs" style={{ color: '#0f1a0e' }}>
+                          {item.name} × {item.quantity}
+                        </span>
+                        <span className="font-black flex-shrink-0 text-xs" style={{ color: '#c9a84c' }}>
+                          ₹{(item.price * item.quantity).toFixed(0)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="border-t pt-3 flex flex-col gap-2 mb-4" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
+                    <div className="flex justify-between text-xs" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                      <span>Subtotal</span><span>₹{total.toFixed(0)}</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span style={{ color: 'rgba(15,26,14,0.5)' }}>Shipping</span>
+                      <span style={{ color: shipping === 0 ? '#15803d' : '#0f1a0e', fontWeight: shipping === 0 ? 800 : 400 }}>
+                        {shipping === 0 ? 'FREE' : `₹${shipping}`}
+                      </span>
+                    </div>
+                    {shipping > 0 && (
+                      <div className="flex items-start gap-1.5 p-2 rounded-lg text-xs"
+                        style={{ backgroundColor: '#fef3c7', color: '#d97706' }}>
+                        <Tag size={11} className="mt-0.5 flex-shrink-0" />
+                        Add ₹{(499 - total).toFixed(0)} more for free shipping
+                      </div>
+                    )}
+                    <div className="flex justify-between font-black text-base pt-2 border-t"
+                      style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
+                      <span style={{ color: '#0f1a0e' }}>Total</span>
+                      <span style={{ color: '#c9a84c' }}>₹{grandTotal.toFixed(0)}</span>
+                    </div>
+                  </div>
+
+                  <button type="submit" disabled={loading}
+                    className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-3"
+                    style={{ backgroundColor: loading ? 'rgba(15,26,14,0.5)' : '#0f1a0e', boxShadow: '0 8px 24px rgba(15,26,14,0.2)' }}>
+                    {loading ? 'Processing...' : paymentMethod === 'razorpay' ? `🔒 Pay ₹${grandTotal.toFixed(0)}` : 'Place COD Order'}
+                  </button>
+
+                  <div className="flex items-center justify-center gap-1.5 text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                    <Shield size={11} /> Secured by Razorpay
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Order Summary */}
-            <div className="lg:col-span-4">
-              <div className="lg:sticky lg:top-24 space-y-4">
-                <div className="card p-5 md:p-6 shadow-md border-[var(--brand-border)] bg-white">
-                  <h2 className="font-bold text-lg mb-4 text-[var(--brand-text)]">Order Summary</h2>
-                  <div className="divide-y divide-[var(--brand-border)]">
-                    <div className="py-3 max-h-60 overflow-y-auto space-y-3 mb-2">
-                      {items.map(item => (
-                        <div key={item.id} className="flex justify-between text-sm items-start gap-3">
-                          <span className="text-[var(--brand-text)] leading-tight flex-1">
-                            {item.name} <span className="text-[var(--brand-muted)] ml-1">× {item.quantity}</span>
-                          </span>
-                          <span className="font-semibold text-[var(--brand-brown)] whitespace-nowrap">₹{(item.price * item.quantity).toFixed(0)}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="py-4 space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-[var(--brand-muted)]">Subtotal</span>
-                        <span className="text-[var(--brand-text)]">₹{total.toFixed(0)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-[var(--brand-muted)]">Shipping</span>
-                        <span className={`font-medium ${shipping === 0 ? 'text-green-600' : 'text-[var(--brand-text)]'}`}>
-                          {shipping === 0 ? 'FREE' : `₹${shipping}`}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="pt-4 mb-6">
-                      <div className="flex justify-between items-center">
-                        <span className="font-bold text-lg text-[var(--brand-text)]">Total Amount</span>
-                        <span className="font-bold text-xl text-[var(--brand-brown)]">₹{grandTotal.toFixed(0)}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <button type="submit" disabled={loading} className="w-full btn-primary py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-transform active:scale-[0.98]" style={{ opacity: loading ? 0.7 : 1 }}>
-                    {loading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : paymentMethod === 'razorpay' ? `Pay ₹${grandTotal.toFixed(0)}` : 'Confirm COD Order'}
-                  </button>
-                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-[var(--brand-muted)] font-bold">
-                    <Shield size={12} className="text-blue-500" /> 100% Secure Transaction
-                  </div>
-                </div>
-                <div className="hidden lg:block p-4 bg-[var(--brand-surface)] rounded-xl border border-dashed border-[var(--brand-border)]">
-                  <div className="flex gap-3 items-center text-xs text-[var(--brand-muted)]">
-                    <Truck size={16} /> <span>Expected delivery: 3-5 business days</span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </form>
       </div>
