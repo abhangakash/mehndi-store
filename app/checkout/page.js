@@ -255,7 +255,7 @@ export default function CheckoutPage() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0a0f0d' }}>
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#c9a84c]" />
       </div>
     )
@@ -263,10 +263,10 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#0a0f0d' }}>
+      <div className="min-h-screen flex items-center justify-center px-4 bg-white">
         <div className="text-center">
-          <ShoppingBag size={48} className="mx-auto mb-4 text-white/20" />
-          <p className="font-black text-white mb-4 uppercase tracking-widest">Cart is empty</p>
+          <ShoppingBag size={48} className="mx-auto mb-4 text-black/10" />
+          <p className="font-black text-black mb-4 uppercase tracking-widest">Cart is empty</p>
           <Link href="/products" className="btn-primary text-sm">Browse Products</Link>
         </div>
       </div>
@@ -276,119 +276,114 @@ export default function CheckoutPage() {
   return (
     <>
       <script src="https://checkout.razorpay.com/v1/checkout.js" async />
-      <div className="min-h-screen" style={{ backgroundColor: '#0a0f0d' }}>
+      <div className="min-h-screen bg-white">
 
         {/* Header */}
         <div className="px-4 pt-8 pb-4 text-center">
-          <h1 className="text-2xl font-black uppercase tracking-tight text-white">Checkout</h1>
-          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: 'rgba(201,168,76,0.6)' }}>
+          <h1 className="text-2xl font-black uppercase tracking-tight text-black">Checkout</h1>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#c9a84c' }}>
             Secure • Fast • Easy
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="max-w-5xl mx-auto px-4 pb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {/* ===== LEFT: Forms ===== */}
-            <div className="md:col-span-2 flex flex-col gap-4">
+            <div className="lg:col-span-2 flex flex-col gap-6">
 
               {/* Personal info */}
-              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
-                <div className="px-5 py-3.5 flex items-center gap-2"
-                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+              <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
+                <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
                   <User size={14} style={{ color: '#c9a84c' }} />
-                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                  <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                     Personal Details
                   </p>
                 </div>
                 <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
-                    <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Priya Sharma" />
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Full Name *</label>
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" value={form.name} onChange={e => set('name', e.target.value)} placeholder="Priya Sharma" />
                   </div>
                   <div>
-                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Phone *</label>
-                    <input type="tel" value={form.phone}
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Phone *</label>
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" type="tel" value={form.phone}
                       onChange={e => set('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
                       placeholder="9876543210" maxLength={10} />
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Email (for order updates)</label>
-                    <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Email (for order updates)</label>
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
                   </div>
                 </div>
               </div>
 
               {/* ===== DELIVERY ADDRESS ===== */}
-              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
-                <div className="px-5 py-3.5 flex items-center gap-2"
-                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+              <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
+                <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
                   <MapPin size={14} style={{ color: '#c9a84c' }} />
-                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                  <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                     Delivery Address
                   </p>
                 </div>
 
                 <div className="p-5">
-                  {/* Saved addresses — only for logged-in users */}
+                  {/* Saved addresses */}
                   {user && (
                     <div className="mb-5">
                       {addressesLoading ? (
-                        <div className="h-12 rounded-xl animate-pulse" style={{ backgroundColor: 'rgba(15,26,14,0.05)' }} />
+                        <div className="h-12 rounded-xl animate-pulse bg-gray-50" />
                       ) : savedAddresses.length > 0 ? (
                         <>
-                          <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                          <p className="text-xs font-black uppercase tracking-widest mb-3 text-gray-400">
                             Saved Addresses
                           </p>
-                          <div className="flex flex-col gap-2 mb-3">
+                          <div className="flex flex-col gap-3 mb-3">
                             {savedAddresses.map(addr => {
                               const LabelIcon = LABEL_ICONS[addr.label] || MapPin
                               const isSelected = selectedAddressId === addr.id
                               return (
                                 <button key={addr.id} type="button"
                                   onClick={() => selectAddress(addr)}
-                                  className="flex items-start gap-3 p-3.5 rounded-xl border-2 text-left transition-all"
+                                  className="flex items-start gap-3 p-4 rounded-xl border-2 text-left transition-all"
                                   style={{
-                                    borderColor: isSelected ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
-                                    backgroundColor: isSelected ? 'rgba(15,26,14,0.04)' : 'white',
+                                    borderColor: isSelected ? '#0f1a0e' : '#f3f4f6',
+                                    backgroundColor: isSelected ? '#fafafa' : 'white',
                                   }}>
-                                  {/* Radio */}
                                   <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5"
-                                    style={{ borderColor: isSelected ? '#0f1a0e' : 'rgba(15,26,14,0.2)' }}>
+                                    style={{ borderColor: isSelected ? '#0f1a0e' : '#d1d5db' }}>
                                     {isSelected && (
-                                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#0f1a0e' }} />
+                                      <div className="w-2 h-2 rounded-full bg-[#0f1a0e]" />
                                     )}
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-0.5">
                                       <LabelIcon size={12} style={{ color: '#c9a84c' }} />
-                                      <span className="text-xs font-black uppercase tracking-wider" style={{ color: '#0f1a0e' }}>
+                                      <span className="text-xs font-black uppercase tracking-wider text-black">
                                         {addr.label}
                                       </span>
                                       {addr.is_default && (
-                                        <span className="text-xs px-1.5 py-0.5 rounded-full font-bold"
-                                          style={{ backgroundColor: '#dcfce7', color: '#15803d', fontSize: '9px' }}>
+                                        <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-green-100 text-green-700">
                                           Default
                                         </span>
                                       )}
                                     </div>
-                                    <p className="text-xs font-semibold" style={{ color: '#0f1a0e' }}>{addr.full_name}</p>
-                                    <p className="text-xs truncate" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                                    <p className="text-sm font-semibold text-black">{addr.full_name}</p>
+                                    <p className="text-xs text-gray-500 leading-relaxed">
                                       {addr.address}, {addr.city}, {addr.state} — {addr.pincode}
                                     </p>
-                                    <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>📞 {addr.phone}</p>
+                                    <p className="text-xs text-gray-400 mt-1">📞 {addr.phone}</p>
                                   </div>
                                 </button>
                               )
                             })}
                           </div>
 
-                          {/* Add new address toggle */}
                           <button type="button" onClick={() => showNewForm ? setShowNewForm(false) : handleAddNew()}
-                            className="flex items-center gap-2 text-xs font-black uppercase tracking-widest py-2.5 px-4 rounded-xl border-2 border-dashed w-full justify-center transition-all"
+                            className="flex items-center gap-2 text-xs font-black uppercase tracking-widest py-3 px-4 rounded-xl border-2 border-dashed w-full justify-center transition-all bg-white hover:bg-gray-50"
                             style={{
-                              borderColor: showNewForm ? '#0f1a0e' : 'rgba(15,26,14,0.15)',
-                              color: showNewForm ? '#0f1a0e' : 'rgba(15,26,14,0.4)',
+                              borderColor: showNewForm ? '#0f1a0e' : '#e5e7eb',
+                              color: showNewForm ? '#0f1a0e' : '#9ca3af',
                             }}>
                             <Plus size={13} /> {showNewForm ? 'Cancel new address' : 'Add new address'}
                           </button>
@@ -397,45 +392,43 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {/* New address form — always shown for guests, toggled for logged-in */}
                   {(showNewForm || !user) && (
                     <div className="flex flex-col gap-4">
                       <div>
-                        <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Address *</label>
-                        <textarea value={form.address} onChange={e => set('address', e.target.value)}
+                        <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Full Address *</label>
+                        <textarea className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" value={form.address} onChange={e => set('address', e.target.value)}
                           placeholder="House/flat no, street, area, landmark..." rows={3} />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>City *</label>
-                          <input value={form.city} onChange={e => set('city', e.target.value)} placeholder="Pune" />
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">City *</label>
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.city} onChange={e => set('city', e.target.value)} placeholder="Pune" />
                         </div>
                         <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>State *</label>
-                          <input value={form.state} onChange={e => set('state', e.target.value)} placeholder="Maharashtra" />
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">State *</label>
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.state} onChange={e => set('state', e.target.value)} placeholder="Maharashtra" />
                         </div>
                         <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Pincode *</label>
-                          <input value={form.pincode}
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Pincode *</label>
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.pincode}
                             onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))}
                             placeholder="411001" maxLength={6} />
                         </div>
                         <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">
                             <Calendar size={11} className="inline mr-1" />Preferred Date
                           </label>
-                          <input type="date" value={form.booking_date}
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" type="date" value={form.booking_date}
                             onChange={e => set('booking_date', e.target.value)}
                             min={new Date().toISOString().split('T')[0]} />
                         </div>
                       </div>
 
-                      {/* Save address checkbox — only for logged-in users */}
                       {user && (
-                        <label className="flex items-center gap-2.5 cursor-pointer">
+                        <label className="flex items-center gap-2.5 cursor-pointer mt-2">
                           <input type="checkbox" checked={saveThisAddress}
-                            onChange={e => setSaveThisAddress(e.target.checked)} className="w-auto" />
-                          <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.6)' }}>
+                            onChange={e => setSaveThisAddress(e.target.checked)} className="rounded border-gray-300 text-[#0f1a0e] focus:ring-[#0f1a0e]" />
+                          <span className="text-xs font-bold text-gray-500">
                             Save this address for future orders
                           </span>
                         </label>
@@ -443,13 +436,12 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {/* If selected existing address — show date picker only */}
                   {!showNewForm && selectedAddressId && (
                     <div className="mt-4">
-                      <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                      <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">
                         <Calendar size={11} className="inline mr-1" />Preferred Delivery Date
                       </label>
-                      <input type="date" value={form.booking_date}
+                      <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" type="date" value={form.booking_date}
                         onChange={e => set('booking_date', e.target.value)}
                         min={new Date().toISOString().split('T')[0]} />
                     </div>
@@ -458,29 +450,27 @@ export default function CheckoutPage() {
               </div>
 
               {/* Payment method */}
-              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
-                <div className="px-5 py-3.5 flex items-center gap-2"
-                  style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+              <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
+                <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
                   <Lock size={14} style={{ color: '#c9a84c' }} />
-                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                  <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                     Payment Method
                   </p>
                 </div>
                 <div className="p-5 flex flex-col gap-3">
                   <label className="flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
                     style={{
-                      borderColor: paymentMethod === 'razorpay' ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
-                      backgroundColor: paymentMethod === 'razorpay' ? 'rgba(15,26,14,0.03)' : 'white',
+                      borderColor: paymentMethod === 'razorpay' ? '#0f1a0e' : '#f3f4f6',
+                      backgroundColor: paymentMethod === 'razorpay' ? '#fafafa' : 'white',
                     }}>
                     <input type="radio" name="payment" value="razorpay"
-                      checked={paymentMethod === 'razorpay'} onChange={() => setPaymentMethod('razorpay')} className="w-auto mt-0.5" />
+                      checked={paymentMethod === 'razorpay'} onChange={() => setPaymentMethod('razorpay')} className="mt-1 text-[#0f1a0e] focus:ring-[#0f1a0e]" />
                     <div className="flex-1">
-                      <p className="text-sm font-black" style={{ color: '#0f1a0e' }}>Pay Online</p>
-                      <p className="text-xs mt-0.5" style={{ color: 'rgba(15,26,14,0.5)' }}>UPI, Cards, Net Banking via Razorpay</p>
+                      <p className="text-sm font-black text-black">Pay Online</p>
+                      <p className="text-xs text-gray-500 mt-0.5">UPI, Cards, Net Banking via Razorpay</p>
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         {['UPI', 'GPay', 'PhonePe', 'Card', 'Net Banking'].map(m => (
-                          <span key={m} className="text-xs px-2 py-0.5 rounded-full font-medium"
-                            style={{ backgroundColor: 'rgba(15,26,14,0.05)', color: 'rgba(15,26,14,0.5)', fontSize: '10px' }}>{m}</span>
+                          <span key={m} className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500">{m}</span>
                         ))}
                       </div>
                     </div>
@@ -488,14 +478,14 @@ export default function CheckoutPage() {
 
                   <label className={`flex items-start gap-3 p-4 rounded-xl border-2 transition-all ${codAvailable ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed'}`}
                     style={{
-                      borderColor: paymentMethod === 'cod' ? '#0f1a0e' : 'rgba(15,26,14,0.08)',
-                      backgroundColor: paymentMethod === 'cod' ? 'rgba(15,26,14,0.03)' : 'white',
+                      borderColor: paymentMethod === 'cod' ? '#0f1a0e' : '#f3f4f6',
+                      backgroundColor: paymentMethod === 'cod' ? '#fafafa' : 'white',
                     }}>
                     <input type="radio" name="payment" value="cod" disabled={!codAvailable}
-                      checked={paymentMethod === 'cod'} onChange={() => codAvailable && setPaymentMethod('cod')} className="w-auto mt-0.5" />
+                      checked={paymentMethod === 'cod'} onChange={() => codAvailable && setPaymentMethod('cod')} className="mt-1 text-[#0f1a0e] focus:ring-[#0f1a0e]" />
                     <div>
-                      <p className="text-sm font-black" style={{ color: '#0f1a0e' }}>Cash on Delivery</p>
-                      <p className="text-xs mt-0.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                      <p className="text-sm font-black text-black">Cash on Delivery</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
                         {codAvailable ? 'Pay when your order arrives' : 'Available on orders above ₹999'}
                       </p>
                     </div>
@@ -505,57 +495,58 @@ export default function CheckoutPage() {
             </div>
 
             {/* ===== RIGHT: Order summary ===== */}
-            <div className="md:col-span-1">
-              <div className="rounded-2xl overflow-hidden md:sticky md:top-20" style={{ backgroundColor: '#fcfaf6' }}>
-                <div className="px-5 py-3.5" style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
-                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Order Summary</p>
+            <div className="lg:col-span-1">
+              <div className="rounded-2xl border border-gray-100 overflow-hidden lg:sticky lg:top-24 bg-white shadow-lg">
+                <div className="px-5 py-4 border-b border-gray-50 bg-gray-50/50">
+                  <p className="text-xs font-black uppercase tracking-widest text-gray-500">Order Summary</p>
                 </div>
                 <div className="p-5">
-                  <div className="flex flex-col gap-2 mb-4 max-h-44 overflow-y-auto">
+                  <div className="flex flex-col gap-3 mb-6 max-h-60 overflow-y-auto pr-1">
                     {items.map(item => (
-                      <div key={item.id} className="flex justify-between text-sm gap-2">
-                        <span className="truncate flex-1 text-xs" style={{ color: '#0f1a0e' }}>
-                          {item.name} × {item.quantity}
+                      <div key={item.id} className="flex justify-between gap-4">
+                        <span className="text-xs text-black font-medium leading-tight">
+                          {item.name} <span className="text-gray-400">× {item.quantity}</span>
                         </span>
-                        <span className="font-black flex-shrink-0 text-xs" style={{ color: '#c9a84c' }}>
+                        <span className="text-xs font-black text-[#c9a84c] flex-shrink-0">
                           ₹{(item.price * item.quantity).toFixed(0)}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="border-t pt-3 flex flex-col gap-2 mb-4" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
-                    <div className="flex justify-between text-xs" style={{ color: 'rgba(15,26,14,0.5)' }}>
-                      <span>Subtotal</span><span>₹{total.toFixed(0)}</span>
+                  <div className="space-y-3 mb-6 pt-4 border-t border-gray-50">
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>Subtotal</span>
+                      <span className="text-black">₹{total.toFixed(0)}</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span style={{ color: 'rgba(15,26,14,0.5)' }}>Shipping</span>
-                      <span style={{ color: shipping === 0 ? '#15803d' : '#0f1a0e', fontWeight: shipping === 0 ? 800 : 400 }}>
+                      <span className="text-gray-500">Shipping</span>
+                      <span className={shipping === 0 ? 'text-green-600 font-bold' : 'text-black font-medium'}>
                         {shipping === 0 ? 'FREE' : `₹${shipping}`}
                       </span>
                     </div>
                     {shipping > 0 && (
-                      <div className="flex items-start gap-1.5 p-2 rounded-lg text-xs"
-                        style={{ backgroundColor: '#fef3c7', color: '#d97706' }}>
-                        <Tag size={11} className="mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start gap-2 p-2.5 rounded-xl text-[10px] bg-amber-50 text-amber-700 font-bold border border-amber-100/50">
+                        <Tag size={12} className="flex-shrink-0" />
                         Add ₹{(499 - total).toFixed(0)} more for free shipping
                       </div>
                     )}
-                    <div className="flex justify-between font-black text-base pt-2 border-t"
-                      style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
-                      <span style={{ color: '#0f1a0e' }}>Total</span>
-                      <span style={{ color: '#c9a84c' }}>₹{grandTotal.toFixed(0)}</span>
+                    <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-2">
+                      <span className="font-black text-xs uppercase tracking-widest text-black">Total Amount</span>
+                      <span className="font-black text-lg text-[#c9a84c]">₹{grandTotal.toFixed(0)}</span>
                     </div>
                   </div>
 
                   <button type="submit" disabled={loading}
-                    className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-3"
-                    style={{ backgroundColor: loading ? 'rgba(15,26,14,0.5)' : '#0f1a0e', boxShadow: '0 8px 24px rgba(15,26,14,0.2)' }}>
-                    {loading ? 'Processing...' : paymentMethod === 'razorpay' ? `🔒 Pay ₹${grandTotal.toFixed(0)}` : 'Place COD Order'}
+                    className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-4 shadow-xl shadow-black/10"
+                    style={{ backgroundColor: loading ? '#9ca3af' : '#0f1a0e' }}>
+                    {loading ? (
+                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : paymentMethod === 'razorpay' ? `🔒 Pay ₹${grandTotal.toFixed(0)}` : 'Place COD Order'}
                   </button>
 
-                  <div className="flex items-center justify-center gap-1.5 text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
-                    <Shield size={11} /> Secured by Razorpay
+                  <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                    <Shield size={12} className="text-green-500" /> 100% Secured by Razorpay
                   </div>
                 </div>
               </div>

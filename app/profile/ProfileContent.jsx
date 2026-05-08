@@ -87,7 +87,6 @@ export default function ProfileContent() {
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({ full_name: '', phone: '' })
 
-  // Addresses
   const [addresses, setAddresses] = useState([])
   const [addrLoading, setAddrLoading] = useState(false)
   const [showAddrForm, setShowAddrForm] = useState(false)
@@ -133,7 +132,6 @@ export default function ProfileContent() {
     setAddrSaving(true)
     try {
       if (addrForm.is_default) {
-        // Unset other defaults first
         await supabase.from('addresses').update({ is_default: false }).eq('user_id', user.id)
       }
       if (editingAddrId) {
@@ -176,7 +174,7 @@ export default function ProfileContent() {
   const handleSignOut = async () => { await signOut(); toast.success('Signed out'); router.push('/') }
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0a0f0d' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#ffffff' }}>
       <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#c9a84c]" />
     </div>
   )
@@ -191,10 +189,10 @@ export default function ProfileContent() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0a0f0d' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* Header */}
       <div className="px-4 pt-8 pb-5 max-w-3xl mx-auto">
-        <div className="rounded-2xl p-5 flex items-center gap-4" style={{ backgroundColor: '#fcfaf6' }}>
+        <div className="rounded-2xl p-5 flex items-center gap-4 border" style={{ backgroundColor: '#fcfaf6', borderColor: 'rgba(15,26,14,0.06)' }}>
           <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-black flex-shrink-0"
             style={{ backgroundColor: '#0f1a0e' }}>
             {initials}
@@ -213,13 +211,13 @@ export default function ProfileContent() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-4 overflow-x-auto no-scrollbar">
           {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wide transition-all"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wide transition-all whitespace-nowrap"
               style={{
-                backgroundColor: tab === t.key ? '#c9a84c' : 'rgba(255,255,255,0.06)',
-                color: tab === t.key ? '#0f1a0e' : 'rgba(255,255,255,0.5)',
+                backgroundColor: tab === t.key ? '#c9a84c' : 'rgba(15,26,14,0.05)',
+                color: tab === t.key ? '#0f1a0e' : 'rgba(15,26,14,0.5)',
               }}>
               {t.icon} {t.label}
             </button>
@@ -228,9 +226,8 @@ export default function ProfileContent() {
       </div>
 
       <div className="px-4 pb-10 max-w-3xl mx-auto">
-        {/* ===== PROFILE TAB ===== */}
         {tab === 'profile' && (
-          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+          <div className="rounded-2xl overflow-hidden border" style={{ backgroundColor: '#fcfaf6', borderColor: 'rgba(15,26,14,0.06)' }}>
             <div className="px-5 py-4 flex items-center justify-between"
               style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
               <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Account Details</p>
@@ -263,9 +260,11 @@ export default function ProfileContent() {
                   </label>
                   {editing && !f.readonly && f.field
                     ? <input type={f.type || 'text'} value={form[f.field]} placeholder={f.placeholder}
+                        className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none transition-all text-sm font-medium"
+                        style={{ borderColor: 'rgba(15,26,14,0.1)' }}
                         onChange={e => setForm(fm => ({ ...fm, [f.field]: e.target.value }))} />
-                    : <p className="text-sm font-medium py-2.5 px-4 rounded-xl"
-                        style={{ backgroundColor: 'rgba(15,26,14,0.04)', color: f.readonly ? 'rgba(15,26,14,0.4)' : '#0f1a0e' }}>
+                    : <p className="text-sm font-medium py-2.5 px-4 rounded-xl border"
+                        style={{ backgroundColor: 'white', borderColor: 'rgba(15,26,14,0.04)', color: f.readonly ? 'rgba(15,26,14,0.4)' : '#0f1a0e' }}>
                         {f.value || '—'}
                       </p>
                   }
@@ -275,45 +274,42 @@ export default function ProfileContent() {
           </div>
         )}
 
-        {/* ===== ADDRESSES TAB ===== */}
         {tab === 'addresses' && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.4)' }}>
                 {addresses.length} saved address{addresses.length !== 1 ? 'es' : ''}
               </p>
               <button onClick={() => { setShowAddrForm(true); setEditingAddrId(null); setAddrForm(EMPTY_ADDR) }}
-                className="flex items-center gap-1.5 text-xs font-black px-4 py-2.5 rounded-xl text-white transition-all"
+                className="flex items-center gap-1.5 text-xs font-black px-4 py-2.5 rounded-xl transition-all"
                 style={{ backgroundColor: '#c9a84c', color: '#0f1a0e' }}>
                 <Plus size={13} /> Add Address
               </button>
             </div>
 
-            {/* Address form */}
             {showAddrForm && (
-              <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: '#fcfaf6' }}>
+              <div className="rounded-2xl overflow-hidden mb-6 border shadow-sm" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(15,26,14,0.08)' }}>
                 <div className="px-5 py-4 flex items-center justify-between"
                   style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
-                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+                  <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#0f1a0e' }}>
                     {editingAddrId ? 'Edit Address' : 'New Address'}
                   </p>
                   <button onClick={() => { setShowAddrForm(false); setEditingAddrId(null) }}>
                     <X size={16} style={{ color: 'rgba(15,26,14,0.4)' }} />
                   </button>
                 </div>
-                <div className="p-5 flex flex-col gap-4">
-                  {/* Label picker */}
+                <div className="p-5 flex flex-col gap-5">
                   <div>
-                    <label className="block text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.5)' }}>Label</label>
-                    <div className="flex gap-2">
+                    <label className="block text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(15,26,14,0.5)' }}>Label</label>
+                    <div className="flex flex-wrap gap-2">
                       {LABEL_OPTIONS.map(l => {
                         const LI = LABEL_ICONS[l] || MapPin
                         return (
                           <button key={l} type="button" onClick={() => setAddrForm(f => ({ ...f, label: l }))}
-                            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wide border-2 transition-all"
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wide border-2 transition-all"
                             style={{
-                              borderColor: addrForm.label === l ? '#0f1a0e' : 'rgba(15,26,14,0.1)',
-                              backgroundColor: addrForm.label === l ? '#0f1a0e' : 'white',
+                              borderColor: addrForm.label === l ? '#0f1a0e' : 'rgba(15,26,14,0.06)',
+                              backgroundColor: addrForm.label === l ? '#0f1a0e' : 'transparent',
                               color: addrForm.label === l ? 'white' : 'rgba(15,26,14,0.4)',
                             }}>
                             <LI size={11} /> {l}
@@ -324,46 +320,62 @@ export default function ProfileContent() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
-                      <input value={addrForm.full_name} onChange={e => setAddrForm(f => ({ ...f, full_name: e.target.value }))} placeholder="Priya Sharma" />
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
+                      <input className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none text-sm transition-all"
+                             style={{ borderColor: 'rgba(15,26,14,0.06)' }}
+                             value={addrForm.full_name} onChange={e => setAddrForm(f => ({ ...f, full_name: e.target.value }))} placeholder="Full Name" />
                     </div>
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Phone *</label>
-                      <input type="tel" value={addrForm.phone} onChange={e => setAddrForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} placeholder="9876543210" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Address *</label>
-                    <textarea value={addrForm.address} onChange={e => setAddrForm(f => ({ ...f, address: e.target.value }))} placeholder="House/flat no, street, area..." rows={2} />
-                  </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>City *</label>
-                      <input value={addrForm.city} onChange={e => setAddrForm(f => ({ ...f, city: e.target.value }))} placeholder="Pune" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>State *</label>
-                      <input value={addrForm.state} onChange={e => setAddrForm(f => ({ ...f, state: e.target.value }))} placeholder="Maharashtra" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Pincode *</label>
-                      <input value={addrForm.pincode} onChange={e => setAddrForm(f => ({ ...f, pincode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} placeholder="411001" />
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Phone *</label>
+                      <input className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none text-sm transition-all"
+                             style={{ borderColor: 'rgba(15,26,14,0.06)' }}
+                             type="tel" value={addrForm.phone} onChange={e => setAddrForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} placeholder="Phone Number" />
                     </div>
                   </div>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" checked={addrForm.is_default} onChange={e => setAddrForm(f => ({ ...f, is_default: e.target.checked }))} className="w-auto" />
-                    <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.6)' }}>Set as default address</span>
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Address *</label>
+                    <textarea className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none text-sm transition-all resize-none"
+                              style={{ borderColor: 'rgba(15,26,14,0.06)' }}
+                              value={addrForm.address} onChange={e => setAddrForm(f => ({ ...f, address: e.target.value }))} placeholder="House/flat no, street, area..." rows={2} />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>City *</label>
+                      <input className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none text-sm transition-all"
+                             style={{ borderColor: 'rgba(15,26,14,0.06)' }}
+                             value={addrForm.city} onChange={e => setAddrForm(f => ({ ...f, city: e.target.value }))} placeholder="City" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>State *</label>
+                      <input className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none text-sm transition-all"
+                             style={{ borderColor: 'rgba(15,26,14,0.06)' }}
+                             value={addrForm.state} onChange={e => setAddrForm(f => ({ ...f, state: e.target.value }))} placeholder="State" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="block text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>Pincode *</label>
+                      <input className="w-full px-4 py-2.5 rounded-xl border-2 focus:border-[#0f1a0e] outline-none text-sm transition-all"
+                             style={{ borderColor: 'rgba(15,26,14,0.06)' }}
+                             value={addrForm.pincode} onChange={e => setAddrForm(f => ({ ...f, pincode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} placeholder="Pincode" />
+                    </div>
+                  </div>
+                  
+                  {/* ALIGNMENT FIX: items-center and w-auto */}
+                  <label className="flex items-center gap-2 cursor-pointer w-max">
+                    <input type="checkbox" checked={addrForm.is_default} onChange={e => setAddrForm(f => ({ ...f, is_default: e.target.checked }))} 
+                      className="w-4 h-4 rounded border-gray-300 text-[#0f1a0e] focus:ring-[#0f1a0e]" />
+                    <span className="text-xs font-bold leading-none" style={{ color: 'rgba(15,26,14,0.6)' }}>Set as default address</span>
                   </label>
-                  <div className="flex gap-3">
+
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <button onClick={handleSaveAddress} disabled={addrSaving}
-                      className="flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all"
+                      className="flex-1 order-2 sm:order-1 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all shadow-md active:scale-95"
                       style={{ backgroundColor: '#0f1a0e' }}>
                       {addrSaving ? 'Saving...' : editingAddrId ? 'Update Address' : 'Save Address'}
                     </button>
                     <button onClick={() => { setShowAddrForm(false); setEditingAddrId(null) }}
-                      className="px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest border transition-all"
-                      style={{ borderColor: 'rgba(15,26,14,0.1)', color: 'rgba(15,26,14,0.5)' }}>
+                      className="flex-1 order-1 sm:order-2 px-5 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest border-2 transition-all hover:bg-gray-50"
+                      style={{ borderColor: 'rgba(15,26,14,0.08)', color: 'rgba(15,26,14,0.5)' }}>
                       Cancel
                     </button>
                   </div>
@@ -372,22 +384,22 @@ export default function ProfileContent() {
             )}
 
             {addrLoading ? (
-              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
+              <div className="rounded-2xl p-10 text-center border" style={{ backgroundColor: '#fcfaf6' }}>
                 <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
               </div>
             ) : addresses.length === 0 && !showAddrForm ? (
-              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
-                <MapPin size={36} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.2)' }} />
+              <div className="rounded-2xl p-10 text-center border" style={{ backgroundColor: '#fcfaf6' }}>
+                <MapPin size={36} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.1)' }} />
                 <p className="font-black text-sm mb-1" style={{ color: '#0f1a0e' }}>No saved addresses</p>
                 <p className="text-xs mb-4" style={{ color: 'rgba(15,26,14,0.4)' }}>Add an address for faster checkout</p>
                 <button onClick={() => setShowAddrForm(true)}
-                  className="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white"
+                  className="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white"
                   style={{ backgroundColor: '#0f1a0e' }}>
                   <Plus size={12} className="inline mr-1" /> Add Address
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {addresses.map(addr => (
                   <AddressCard key={addr.id} addr={addr}
                     onEdit={handleEditAddress}
@@ -399,18 +411,17 @@ export default function ProfileContent() {
           </div>
         )}
 
-        {/* ===== ORDERS TAB ===== */}
         {tab === 'orders' && (
           <div>
             {ordersLoading ? (
-              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
+              <div className="rounded-2xl p-10 text-center border" style={{ backgroundColor: '#fcfaf6' }}>
                 <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
               </div>
             ) : orders.length === 0 ? (
-              <div className="rounded-2xl p-10 text-center" style={{ backgroundColor: '#fcfaf6' }}>
-                <Package size={36} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.2)' }} />
+              <div className="rounded-2xl p-10 text-center border" style={{ backgroundColor: '#fcfaf6' }}>
+                <Package size={36} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.1)' }} />
                 <p className="font-black text-sm mb-1" style={{ color: '#0f1a0e' }}>No orders yet</p>
-                <Link href="/products" className="inline-block mt-3 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white"
+                <Link href="/products" className="inline-block mt-3 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white"
                   style={{ backgroundColor: '#0f1a0e' }}>Start Shopping</Link>
               </div>
             ) : (
@@ -419,8 +430,8 @@ export default function ProfileContent() {
                   const status = order.order_status || 'pending'
                   const config = STATUS_CONFIG[status] || STATUS_CONFIG.pending
                   return (
-                    <div key={order.id} className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
-                      <div className="p-4 flex items-start justify-between gap-3" style={{ borderBottom: '1px solid rgba(15,26,14,0.06)' }}>
+                    <div key={order.id} className="rounded-2xl overflow-hidden border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(15,26,14,0.06)' }}>
+                      <div className="p-4 flex items-start justify-between gap-3" style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fcfaf6' }}>
                         <div>
                           <p className="text-xs mb-0.5 font-black uppercase tracking-wider" style={{ color: 'rgba(15,26,14,0.4)' }}>
                             #{order.id.slice(0, 8).toUpperCase()}
@@ -435,15 +446,15 @@ export default function ProfileContent() {
                           {config.icon} {config.label}
                         </span>
                       </div>
-                      <div className="p-4 border-b" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
+                      <div className="p-4 border-b bg-white" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
                         {order.order_items?.map(item => (
-                          <div key={item.id} className="flex justify-between py-0.5">
+                          <div key={item.id} className="flex justify-between py-1">
                             <span className="text-xs" style={{ color: '#0f1a0e' }}>{item.product_name} × {item.quantity}</span>
                             <span className="text-xs font-black" style={{ color: '#c9a84c' }}>₹{Number(item.total_price).toFixed(0)}</span>
                           </div>
                         ))}
                       </div>
-                      <div className="px-4 py-3 flex items-center justify-between">
+                      <div className="px-4 py-3 flex items-center justify-between bg-white">
                         <div className="flex items-start gap-2">
                           <MapPin size={13} className="mt-0.5 flex-shrink-0" style={{ color: 'rgba(15,26,14,0.3)' }} />
                           <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
