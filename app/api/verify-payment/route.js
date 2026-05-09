@@ -56,7 +56,7 @@ export async function POST(req) {
 
     // ── Server-side total recalculation ──────────────────────────
     const recalcSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    const recalcShipping = recalcSubtotal >= 499 ? 0 : 60
+    const recalcShipping = recalcSubtotal >= 499 ? 0 : 0
     const recalcTotal = recalcSubtotal + recalcShipping
 
     // Allow ₹1 rounding difference
