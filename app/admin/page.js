@@ -1,112 +1,229 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
-import { Plus, Edit2, Eye, EyeOff } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { supabaseAdmin } from '@/lib/supabase'
+import Link from 'next/link'
+import {
+  Package, ShoppingBag, TrendingUp, Users,
+  ArrowRight, Clock, CheckCircle, Truck, XCircle,
+  AlertCircle, IndianRupee
+} from 'lucide-react'
 
-const EMPTY = { name: '', slug: '', short_description: '', description: '', price: '', original_price: '', stock: '', weight_grams: '', ingredients: '', usage_instructions: '', image_url: '', category_id: '', is_featured: false, is_active: true }
+async function getDashboardData() {
+  const [
+    { count: totalProducts },
+    { count: totalOrders },
+    { count: pendingOrders },
+    { count: confirmedOrders },
+    { count: shippedOrders },
+    { data: revenueData },
+    { data: recentOrders },
+    { count: lowStock },
+  ] = await Promise.all([
+    supabaseAdmin.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    supabaseAdmin.from('orders').select('*', { count: 'exact', head: true }),
+    supabaseAdmin.from('orders').select('*', { count: 'exact', head: true }).eq('order_status', 'pending'),
+    supabaseAdmin.from('orders').select('*', { count: 'exact', head: true }).eq('order_status', 'confirmed'),
+    supabaseAdmin.from('orders').select('*', { count: 'exact', head: true }).eq('order_status', 'shipped'),
+    supabaseAdmin.from('orders').select('total_amount').eq('payment_status', 'paid'),
+    supabaseAdmin.from('orders').select('id, customer_name, total_amount, order_status, payment_method, created_at').order('created_at', { ascending: false }).limit(5),
+    supabaseAdmin.from('products').select('*', { count: 'exact', head: true }).lt('stock', 5).eq('is_active', true),
+  ])
 
-export default function AdminProductsPage() {
-  const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
-  const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState(EMPTY)
-  const [editing, setEditing] = useState(null)
-  const [saving, setSaving] = useState(false)
+  const totalRevenue = (revenueData || []).reduce((s, o) => s + Number(o.total_amount), 0)
 
-  useEffect(() => { fetchAll() }, [])
-
-  async function fetchAll() {
-    const [{ data: p }, { data: c }] = await Promise.all([
-      supabase.from('products').select('*, categories(name)').order('created_at', { ascending: false }),
-      supabase.from('categories').select('*'),
-    ])
-    setProducts(p || [])
-    setCategories(c || [])
+  return {
+    totalProducts: totalProducts || 0,
+    totalOrders: totalOrders || 0,
+    pendingOrders: pendingOrders || 0,
+    confirmedOrders: confirmedOrders || 0,
+    shippedOrders: shippedOrders || 0,
+    totalRevenue,
+    recentOrders: recentOrders || [],
+    lowStock: lowStock || 0,
   }
+}
 
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
-  const autoSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+const STATUS_CONFIG = {
+  pending:   { label: 'Pending',   color: '#d97706', bg: '#fef3c7', icon: Clock },
+  confirmed: { label: 'Confirmed', color: '#1d4ed8', bg: '#dbeafe', icon: CheckCircle },
+  shipped:   { label: 'Shipped',   color: '#7c3aed', bg: '#ede9fe', icon: Truck },
+  delivered: { label: 'Delivered', color: '#15803d', bg: '#dcfce7', icon: CheckCircle },
+  cancelled: { label: 'Cancelled', color: '#dc2626', bg: '#fee2e2', icon: XCircle },
+}
 
-  const handleSave = async (e) => {
-    e.preventDefault()
-    if (!form.name || !form.price || !form.stock) return toast.error('Name, price and stock are required')
-    setSaving(true)
-    const payload = { ...form, slug: form.slug || autoSlug(form.name), price: Number(form.price), original_price: form.original_price ? Number(form.original_price) : null, stock: Number(form.stock), weight_grams: form.weight_grams ? Number(form.weight_grams) : null, category_id: form.category_id || null }
-    const { error } = editing
-      ? await supabase.from('products').update(payload).eq('id', editing)
-      : await supabase.from('products').insert(payload)
-    if (error) toast.error(error.message)
-    else { toast.success(editing ? 'Updated!' : 'Product added!'); setShowForm(false); setEditing(null); setForm(EMPTY); fetchAll() }
-    setSaving(false)
-  }
+export default async function AdminDashboard() {
+  const data = await getDashboardData()
 
-  const toggleActive = async (id, val) => { await supabase.from('products').update({ is_active: !val }).eq('id', id); fetchAll(); toast.success(val ? 'Hidden' : 'Visible') }
+  const STAT_CARDS = [
+    {
+      label: 'Total Revenue',
+      value: `₹${data.totalRevenue.toLocaleString('en-IN')}`,
+      sub: 'from paid orders',
+      icon: IndianRupee,
+      color: '#c9a84c',
+      bg: '#fef9ee',
+    },
+    {
+      label: 'Total Orders',
+      value: data.totalOrders,
+      sub: `${data.pendingOrders} pending`,
+      icon: ShoppingBag,
+      color: '#1d4ed8',
+      bg: '#dbeafe',
+      alert: data.pendingOrders > 0,
+    },
+    {
+      label: 'Active Products',
+      value: data.totalProducts,
+      sub: data.lowStock > 0 ? `⚠️ ${data.lowStock} low stock` : 'All stocked',
+      icon: Package,
+      color: '#15803d',
+      bg: '#dcfce7',
+      alert: data.lowStock > 0,
+    },
+    {
+      label: 'Needs Shipping',
+      value: data.confirmedOrders,
+      sub: `${data.shippedOrders} already shipped`,
+      icon: Truck,
+      color: '#7c3aed',
+      bg: '#ede9fe',
+      alert: data.confirmedOrders > 0,
+    },
+  ]
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <div className="flex items-center justify-between mb-6">
-        <div><h1 className="section-title mb-0">Products</h1><p className="text-sm" style={{ color: 'var(--brand-muted)' }}>{products.length} products</p></div>
-        <button onClick={() => { setShowForm(true); setEditing(null); setForm(EMPTY) }} className="btn-primary text-sm"><Plus size={16} /> Add Product</button>
+    <div className="min-h-screen" style={{ backgroundColor: '#0a0f0d' }}>
+
+      {/* Header */}
+      <div className="px-4 sm:px-6 pt-8 pb-6 max-w-6xl mx-auto">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-black uppercase tracking-tight text-white">Admin Dashboard</h1>
+            <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: 'rgba(201,168,76,0.6)' }}>
+              Shrilekha Mehndi Art & Glowup
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link href="/admin/products"
+              className="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-white transition-all"
+              style={{ backgroundColor: '#c9a84c', color: '#0f1a0e' }}>
+              + Add Product
+            </Link>
+          </div>
+        </div>
       </div>
 
-      {showForm && (
-        <div className="card p-6 mb-6">
-          <h2 className="font-semibold mb-5" style={{ color: 'var(--brand-text)' }}>{editing ? 'Edit Product' : 'New Product'}</h2>
-          <form onSubmit={handleSave} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Name *</label>
-              <input value={form.name} onChange={e => { set('name', e.target.value); set('slug', autoSlug(e.target.value)) }} placeholder="Product name" />
-            </div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Price ₹ *</label><input type="number" value={form.price} onChange={e => set('price', e.target.value)} placeholder="49" /></div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Original Price ₹</label><input type="number" value={form.original_price} onChange={e => set('original_price', e.target.value)} placeholder="65 (optional)" /></div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Stock *</label><input type="number" value={form.stock} onChange={e => set('stock', e.target.value)} placeholder="100" /></div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Category</label>
-              <select value={form.category_id} onChange={e => set('category_id', e.target.value)}>
-                <option value="">Select category</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-            </div>
-            <div className="sm:col-span-2"><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Short Description</label><input value={form.short_description} onChange={e => set('short_description', e.target.value)} placeholder="One line summary" /></div>
-            <div className="sm:col-span-2"><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Description</label><textarea value={form.description} onChange={e => set('description', e.target.value)} rows={3} placeholder="Full description..." /></div>
-            <div className="sm:col-span-2"><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Image URL</label><input value={form.image_url} onChange={e => set('image_url', e.target.value)} placeholder="https://..." /></div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Ingredients</label><input value={form.ingredients} onChange={e => set('ingredients', e.target.value)} placeholder="Natural henna powder..." /></div>
-            <div><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Weight (grams)</label><input type="number" value={form.weight_grams} onChange={e => set('weight_grams', e.target.value)} placeholder="25" /></div>
-            <div className="sm:col-span-2"><label className="block text-sm font-medium mb-1" style={{ color: 'var(--brand-text)' }}>Usage Instructions</label><textarea value={form.usage_instructions} onChange={e => set('usage_instructions', e.target.value)} rows={2} placeholder="How to use..." /></div>
-            <div className="sm:col-span-2 flex items-center gap-6">
-              <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--brand-text)' }}><input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)} className="w-auto" /> Featured</label>
-              <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--brand-text)' }}><input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} className="w-auto" /> Active</label>
-            </div>
-            <div className="sm:col-span-2 flex gap-3">
-              <button type="submit" disabled={saving} className="btn-primary text-sm">{saving ? 'Saving...' : editing ? 'Update' : 'Add Product'}</button>
-              <button type="button" onClick={() => { setShowForm(false); setEditing(null) }} className="btn-secondary text-sm">Cancel</button>
-            </div>
-          </form>
-        </div>
-      )}
+      <div className="px-4 sm:px-6 pb-10 max-w-6xl mx-auto flex flex-col gap-6">
 
-      <div className="flex flex-col gap-3">
-        {products.map(p => (
-          <div key={p.id} className="card p-4 flex items-center gap-4" style={{ opacity: p.is_active ? 1 : 0.6 }}>
-            <div className="w-14 h-14 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden" style={{ backgroundColor: 'var(--brand-surface)' }}>
-              {p.image_url ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" /> : <span className="text-2xl">🌿</span>}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm truncate" style={{ color: 'var(--brand-text)' }}>{p.name}</p>
-              <p className="text-xs" style={{ color: 'var(--brand-muted)' }}>{p.categories?.name} · Stock: {p.stock}</p>
-              <p className="text-sm font-semibold" style={{ color: 'var(--brand-brown)' }}>₹{p.price}</p>
-            </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <button onClick={() => toggleActive(p.id, p.is_active)} className="p-2 rounded-lg hover:bg-gray-50">
-                {p.is_active ? <Eye size={16} style={{ color: 'var(--brand-green)' }} /> : <EyeOff size={16} style={{ color: 'var(--brand-muted)' }} />}
-              </button>
-              <button onClick={() => { setForm({ ...p, category_id: p.category_id || '', original_price: p.original_price || '', weight_grams: p.weight_grams || '' }); setEditing(p.id); setShowForm(true) }} className="p-2 rounded-lg hover:bg-gray-50">
-                <Edit2 size={16} style={{ color: 'var(--brand-muted)' }} />
-              </button>
-            </div>
+        {/* Stat cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          {STAT_CARDS.map(s => {
+            const Icon = s.icon
+            return (
+              <div key={s.label} className="rounded-2xl p-4 md:p-5" style={{ backgroundColor: '#fcfaf6' }}>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: s.bg }}>
+                    <Icon size={18} style={{ color: s.color }} />
+                  </div>
+                  {s.alert && (
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+                  )}
+                </div>
+                <p className="text-2xl md:text-3xl font-black" style={{ color: '#0f1a0e' }}>{s.value}</p>
+                <p className="text-xs font-black uppercase tracking-wider mt-0.5" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                  {s.label}
+                </p>
+                <p className="text-xs mt-1" style={{ color: s.alert ? '#dc2626' : 'rgba(15,26,14,0.3)' }}>
+                  {s.sub}
+                </p>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Quick actions */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { href: '/admin/orders', label: 'Manage Orders', icon: ShoppingBag, color: '#1d4ed8' },
+            { href: '/admin/products', label: 'Manage Products', icon: Package, color: '#15803d' },
+            { href: '/admin/orders?status=pending', label: 'Pending Orders', icon: Clock, color: '#d97706', badge: data.pendingOrders },
+            { href: '/admin/orders?status=confirmed', label: 'Ready to Ship', icon: Truck, color: '#7c3aed', badge: data.confirmedOrders },
+          ].map(a => {
+            const Icon = a.icon
+            return (
+              <Link key={a.href} href={a.href}
+                className="rounded-2xl p-4 flex flex-col gap-2 hover:shadow-md transition-all group relative"
+                style={{ backgroundColor: '#fcfaf6' }}>
+                {a.badge > 0 && (
+                  <span className="absolute top-3 right-3 w-5 h-5 rounded-full text-white text-xs flex items-center justify-center font-black"
+                    style={{ backgroundColor: '#dc2626', fontSize: '9px' }}>
+                    {a.badge}
+                  </span>
+                )}
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: `${a.color}18` }}>
+                  <Icon size={18} style={{ color: a.color }} />
+                </div>
+                <p className="text-xs font-black uppercase tracking-wide" style={{ color: '#0f1a0e' }}>{a.label}</p>
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform"
+                  style={{ color: 'rgba(15,26,14,0.3)' }} />
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* Recent orders */}
+        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
+          <div className="px-5 py-4 flex items-center justify-between"
+            style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
+              Recent Orders
+            </p>
+            <Link href="/admin/orders" className="text-xs font-black uppercase tracking-wider"
+              style={{ color: '#c9a84c' }}>
+              View All →
+            </Link>
           </div>
-        ))}
+          <div className="divide-y" style={{ '--tw-divide-opacity': 1 }}>
+            {data.recentOrders.length === 0 ? (
+              <div className="p-8 text-center">
+                <ShoppingBag size={32} className="mx-auto mb-2" style={{ color: 'rgba(15,26,14,0.15)' }} />
+                <p className="text-sm" style={{ color: 'rgba(15,26,14,0.3)' }}>No orders yet</p>
+              </div>
+            ) : data.recentOrders.map(order => {
+              const status = STATUS_CONFIG[order.order_status] || STATUS_CONFIG.pending
+              const StatusIcon = status.icon
+              return (
+                <div key={order.id} className="px-5 py-4 flex items-center gap-3 hover:bg-gray-50 transition-colors">
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: status.bg }}>
+                    <StatusIcon size={15} style={{ color: status.color }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-black truncate" style={{ color: '#0f1a0e' }}>{order.customer_name}</p>
+                      <span className="text-xs font-bold flex-shrink-0" style={{ color: 'rgba(15,26,14,0.3)' }}>
+                        #{order.id.slice(0, 6).toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                      {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} ·{' '}
+                      {order.payment_method === 'cod' ? 'COD' : 'Online'}
+                    </p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <p className="font-black text-sm" style={{ color: '#c9a84c' }}>₹{Number(order.total_amount).toFixed(0)}</p>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+                      style={{ backgroundColor: status.bg, color: status.color, fontSize: '9px' }}>
+                      {status.label}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
       </div>
     </div>
   )
