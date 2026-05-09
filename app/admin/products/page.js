@@ -380,7 +380,7 @@ export default function AdminProductsPage() {
           />
         )}
 
-        {/* Product list */}
+{/* Product list */}
         {loading ? (
           <div className="text-center py-20">
             <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
@@ -406,4 +406,71 @@ export default function AdminProductsPage() {
                     opacity: product.is_active ? 1 : 0.6,
                   }}>
 
-            {
+                  {/* Image */}
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center"
+                    style={{ backgroundColor: 'rgba(15,26,14,0.05)' }}>
+                    {product.image_url
+                      ? <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                      : <Package size={20} style={{ color: 'rgba(15,26,14,0.2)' }} />
+                    }
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start gap-2 mb-0.5">
+                      <p className="font-black text-sm truncate" style={{ color: '#0f1a0e' }}>{product.name}</p>
+                      {product.is_featured && <Star size={12} fill="#c9a84c" color="#c9a84c" className="flex-shrink-0 mt-0.5" />}
+                    </div>
+                    <p className="text-xs truncate mb-1" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                      {product.categories?.name || 'No category'}
+                    </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-black text-sm" style={{ color: '#c9a84c' }}>₹{product.price}</span>
+                      {product.original_price && (
+                        <span className="text-xs line-through" style={{ color: 'rgba(15,26,14,0.3)' }}>₹{product.original_price}</span>
+                      )}
+                      {discount && (
+                        <span className="text-xs px-1.5 py-0.5 rounded-full font-black"
+                          style={{ backgroundColor: '#fef3c7', color: '#d97706', fontSize: '9px' }}>
+                          {discount}% OFF
+                        </span>
+                      )}
+                      <span className="text-xs px-1.5 py-0.5 rounded-full font-bold"
+                        style={{
+                          backgroundColor: isLow ? '#fee2e2' : product.stock === 0 ? '#fee2e2' : '#dcfce7',
+                          color: isLow || product.stock === 0 ? '#dc2626' : '#15803d',
+                          fontSize: '9px',
+                        }}>
+                        {product.stock === 0 ? 'OUT OF STOCK' : isLow ? `⚠️ ${product.stock} left` : `${product.stock} in stock`}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <button onClick={() => handleEdit(product)}
+                      className="p-2 rounded-xl hover:bg-gray-100 transition-colors" title="Edit">
+                      <Edit2 size={14} style={{ color: 'rgba(15,26,14,0.5)' }} />
+                    </button>
+                    <button onClick={() => handleToggleActive(product.id, product.is_active)}
+                      className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
+                      title={product.is_active ? 'Hide from store' : 'Show in store'}>
+                      {product.is_active
+                        ? <Eye size={14} style={{ color: '#15803d' }} />
+                        : <EyeOff size={14} style={{ color: 'rgba(15,26,14,0.3)' }} />
+                      }
+                    </button>
+                    <button onClick={() => handleDelete(product.id, product.name)}
+                      className="p-2 rounded-xl hover:bg-red-50 transition-colors" title="Delete">
+                      <Trash2 size={14} style={{ color: '#dc2626' }} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
