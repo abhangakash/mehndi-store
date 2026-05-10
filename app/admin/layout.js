@@ -27,10 +27,10 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#0a0f0d' }}>
+    <div className="min-h-screen flex pt-16 lg:pt-20" style={{ backgroundColor: '#0a0f0d' }}>
 
       {/* ===== SIDEBAR — desktop ===== */}
-      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-0 h-screen"
+      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-20 h-[calc(100vh-80px)]"
         style={{ backgroundColor: '#0f1a0e', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
         {/* Logo */}
         <div className="px-5 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -83,7 +83,7 @@ export default function AdminLayout({ children }) {
       </aside>
 
       {/* ===== MOBILE TOP BAR ===== */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3"
+      <div className="lg:hidden fixed top-16 left-0 right-0 z-50 flex items-center justify-between px-4 py-3"
         style={{ backgroundColor: '#0f1a0e', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center"
@@ -103,7 +103,7 @@ export default function AdminLayout({ children }) {
         <>
           <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)} />
-          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-64 z-50 flex flex-col"
+          <div className="lg:hidden fixed left-0 top-16 bottom-0 w-64 z-50 flex flex-col"
             style={{ backgroundColor: '#0f1a0e' }}>
             <div className="px-5 py-5 border-b flex items-center justify-between"
               style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -161,5 +161,4 @@ export default function AdminLayout({ children }) {
       </main>
     </div>
   )
-        }
-
+                   }
