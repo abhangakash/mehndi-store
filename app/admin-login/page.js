@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: 'var(--brand-surface)' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 pt-24" style={{ backgroundColor: 'var(--brand-surface)' }}>
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--brand-brown)' }}>
