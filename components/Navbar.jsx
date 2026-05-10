@@ -32,6 +32,9 @@ export default function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const pathname = usePathname()
+if (pathname.startsWith('/admin')) {
+  return null
+}
   const router = useRouter()
   const totalItems = useCartStore(s => s.getTotalItems())
   const { user, profile, signOut } = useAuth()
