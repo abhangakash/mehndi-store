@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const BASE = 'https://mehndi.zevette.com'
-const FROM = 'Shrilekha Mehndi Art <orders@resend.dev>'
+const FROM = 'Shrilekha Mehndi Art <orders@zevette.com>'
 
 function header(title, subtitle, bgColor = 'linear-gradient(135deg,#0f1a0e,#1a3020)', emoji = '') {
   return `<div style="background:${bgColor};padding:32px;text-align:center">
