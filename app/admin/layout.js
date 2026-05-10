@@ -27,10 +27,10 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="min-h-screen flex pt-20 lg:pt-24" style={{ backgroundColor: '#0a0f0d' }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#0a0f0d' }}>
 
       {/* ===== SIDEBAR — desktop ===== */}
-      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-24 h-[calc(100vh-96px)]"
+      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-0 h-screen"
         style={{ backgroundColor: '#0f1a0e', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
         {/* Logo */}
         <div className="px-5 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -52,6 +52,7 @@ export default function AdminLayout({ children }) {
           {NAV.map(item => {
             const Icon = item.icon
             const active = isActive(item.href, item.exact)
+
             return (
               <Link key={item.href} href={item.href}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all"
@@ -74,6 +75,7 @@ export default function AdminLayout({ children }) {
             style={{ color: 'rgba(255,255,255,0.3)' }}>
             <ExternalLink size={14} /> View Store
           </Link>
+
           <button onClick={handleLogout}
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all hover:bg-red-500/10 w-full text-left"
             style={{ color: 'rgba(220,38,38,0.6)' }}>
@@ -83,17 +85,22 @@ export default function AdminLayout({ children }) {
       </aside>
 
       {/* ===== MOBILE TOP BAR ===== */}
-      <div className="lg:hidden fixed top-24 left-0 right-0 z-50 flex items-center justify-between px-4 py-3"
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3"
         style={{ backgroundColor: '#0f1a0e', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center"
             style={{ backgroundColor: 'rgba(201,168,76,0.15)' }}>
             <Leaf size={13} style={{ color: '#c9a84c' }} />
           </div>
-          <p className="text-xs font-black uppercase tracking-widest text-white">Admin</p>
+
+          <p className="text-xs font-black uppercase tracking-widest text-white">
+            Admin
+          </p>
         </div>
+
         <button onClick={() => setSidebarOpen(true)}
-          className="p-2 rounded-xl" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          className="p-2 rounded-xl"
+          style={{ color: 'rgba(255,255,255,0.5)' }}>
           <Menu size={20} />
         </button>
       </div>
@@ -103,8 +110,10 @@ export default function AdminLayout({ children }) {
         <>
           <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)} />
-          <div className="lg:hidden fixed left-0 top-24 bottom-0 w-64 z-50 flex flex-col"
+
+          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-64 z-50 flex flex-col"
             style={{ backgroundColor: '#0f1a0e' }}>
+
             <div className="px-5 py-5 border-b flex items-center justify-between"
               style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
               <div className="flex items-center gap-2.5">
@@ -112,19 +121,30 @@ export default function AdminLayout({ children }) {
                   style={{ backgroundColor: 'rgba(201,168,76,0.15)' }}>
                   <Leaf size={16} style={{ color: '#c9a84c' }} />
                 </div>
+
                 <div>
-                  <p className="text-xs font-black uppercase tracking-widest text-white">Shrilekha</p>
-                  <p className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'rgba(201,168,76,0.6)' }}>Admin Panel</p>
+                  <p className="text-xs font-black uppercase tracking-widest text-white">
+                    Shrilekha
+                  </p>
+
+                  <p className="text-[9px] font-bold uppercase tracking-wider"
+                    style={{ color: 'rgba(201,168,76,0.6)' }}>
+                    Admin Panel
+                  </p>
                 </div>
               </div>
-              <button onClick={() => setSidebarOpen(false)} style={{ color: 'rgba(255,255,255,0.4)' }}>
+
+              <button onClick={() => setSidebarOpen(false)}
+                style={{ color: 'rgba(255,255,255,0.4)' }}>
                 <X size={18} />
               </button>
             </div>
+
             <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
               {NAV.map(item => {
                 const Icon = item.icon
                 const active = isActive(item.href, item.exact)
+
                 return (
                   <Link key={item.href} href={item.href}
                     onClick={() => setSidebarOpen(false)}
@@ -138,13 +158,16 @@ export default function AdminLayout({ children }) {
                 )
               })}
             </nav>
+
             <div className="px-3 py-4 border-t flex flex-col gap-1"
               style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-              <Link href="/" target="_blank" onClick={() => setSidebarOpen(false)}
+              <Link href="/" target="_blank"
+                onClick={() => setSidebarOpen(false)}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider"
                 style={{ color: 'rgba(255,255,255,0.3)' }}>
                 <ExternalLink size={14} /> View Store
               </Link>
+
               <button onClick={handleLogout}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-left"
                 style={{ color: 'rgba(220,38,38,0.6)' }}>
@@ -156,9 +179,9 @@ export default function AdminLayout({ children }) {
       )}
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1 min-w-0 lg:pt-6 pt-0 overflow-x-hidden">
+      <main className="flex-1 min-w-0 lg:pt-6 pt-20 overflow-x-hidden">
         {children}
       </main>
     </div>
   )
-                    }
+                                                    }
