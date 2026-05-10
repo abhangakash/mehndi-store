@@ -27,10 +27,10 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="min-h-screen flex pt-16 lg:pt-20" style={{ backgroundColor: '#0a0f0d' }}>
+    <div className="min-h-screen flex pt-20 lg:pt-24" style={{ backgroundColor: '#0a0f0d' }}>
 
       {/* ===== SIDEBAR — desktop ===== */}
-      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-20 h-[calc(100vh-80px)]"
+      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 sticky top-24 h-[calc(100vh-96px)]"
         style={{ backgroundColor: '#0f1a0e', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
         {/* Logo */}
         <div className="px-5 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -156,9 +156,9 @@ export default function AdminLayout({ children }) {
       )}
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1 min-w-0 lg:pt-0 pt-14 overflow-x-hidden">
+      <main className="flex-1 min-w-0 lg:pt-6 pt-20 overflow-x-hidden">
         {children}
       </main>
     </div>
   )
-                   }
+                    }
