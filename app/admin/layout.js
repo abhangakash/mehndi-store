@@ -83,7 +83,7 @@ export default function AdminLayout({ children }) {
       </aside>
 
       {/* ===== MOBILE TOP BAR ===== */}
-      <div className="lg:hidden fixed top-16 left-0 right-0 z-50 flex items-center justify-between px-4 py-3"
+      <div className="lg:hidden fixed top-24 left-0 right-0 z-50 flex items-center justify-between px-4 py-3"
         style={{ backgroundColor: '#0f1a0e', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center"
@@ -103,7 +103,7 @@ export default function AdminLayout({ children }) {
         <>
           <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)} />
-          <div className="lg:hidden fixed left-0 top-16 bottom-0 w-64 z-50 flex flex-col"
+          <div className="lg:hidden fixed left-0 top-24 bottom-0 w-64 z-50 flex flex-col"
             style={{ backgroundColor: '#0f1a0e' }}>
             <div className="px-5 py-5 border-b flex items-center justify-between"
               style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -156,7 +156,7 @@ export default function AdminLayout({ children }) {
       )}
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1 min-w-0 lg:pt-6 pt-20 overflow-x-hidden">
+      <main className="flex-1 min-w-0 lg:pt-6 pt-0 overflow-x-hidden">
         {children}
       </main>
     </div>
