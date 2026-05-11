@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useCartStore } from '@/store/cartStore'
 import ProductCard from './ProductCard'
 import toast from 'react-hot-toast'
+import ReviewForm from './ReviewForm'
 import {
   ShoppingCart, Zap, Star, ChevronDown, ChevronUp,
   Truck, RefreshCw, Shield, Phone, Package,
@@ -15,7 +16,7 @@ function StarRating({ rating, size = 16, interactive = false, onRate }) {
   const [hover, setHover] = useState(0)
   return (
     <div className="flex items-center gap-0.5">
-      {[1,2,3,4,5].map(s => (
+      {[1, 2, 3, 4, 5].map(s => (
         <button key={s} type="button"
           onClick={() => interactive && onRate && onRate(s)}
           onMouseEnter={() => interactive && setHover(s)}
@@ -33,9 +34,9 @@ function StarRating({ rating, size = 16, interactive = false, onRate }) {
 function Accordion({ title, icon, children, defaultOpen = false, badge }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
-    <div className="border-b" style={{ borderColor: 'var(--brand-border)' }}>
+    <div className="border-b last:border-0" style={{ borderColor: 'var(--brand-border)' }}>
       <button onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-4 text-left gap-3">
+        className="w-full flex items-center justify-between py-4 px-4 text-left gap-3">
         <div className="flex items-center gap-2.5">
           {icon && <span style={{ color: 'var(--brand-green)' }}>{icon}</span>}
           <span className="font-medium text-sm" style={{ color: 'var(--brand-text)' }}>{title}</span>
@@ -49,7 +50,7 @@ function Accordion({ title, icon, children, defaultOpen = false, badge }) {
           : <ChevronDown size={16} style={{ color: 'var(--brand-muted)', flexShrink: 0 }} />}
       </button>
       {open && (
-        <div className="pb-5 text-sm leading-relaxed" style={{ color: 'var(--brand-muted)' }}>
+        <div className="px-4 pb-5 text-sm leading-relaxed" style={{ color: 'var(--brand-muted)' }}>
           {children}
         </div>
       )}
@@ -110,10 +111,9 @@ export default function ProductDetail({ product, reviews, related }) {
         <span style={{ color: 'var(--brand-text)' }} className="truncate max-w-32">{product.name}</span>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12">
         {/* ===== IMAGE SECTION ===== */}
         <div className="flex flex-col gap-3">
-          {/* Main image */}
           <div className="card overflow-hidden relative group"
             style={{ backgroundColor: 'var(--brand-surface)', aspectRatio: '1/1' }}>
             {images[activeImg] ? (
@@ -124,7 +124,6 @@ export default function ProductDetail({ product, reviews, related }) {
                 <span className="text-9xl">🌿</span>
               </div>
             )}
-            {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-1.5">
               {discount && (
                 <span className="badge badge-brown text-xs font-semibold">
@@ -145,7 +144,6 @@ export default function ProductDetail({ product, reviews, related }) {
                   style={{ color: 'var(--brand-muted)' }}>Out of Stock</span>
               </div>
             )}
-            {/* Share + wishlist */}
             <div className="absolute top-3 right-3 flex flex-col gap-2">
               <button onClick={handleShare}
                 className="w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-white transition-colors">
@@ -157,7 +155,6 @@ export default function ProductDetail({ product, reviews, related }) {
               </button>
             </div>
           </div>
-          {/* Thumbnails */}
           {images.length > 1 && (
             <div className="flex gap-2">
               {images.map((img, i) => (
@@ -178,7 +175,6 @@ export default function ProductDetail({ product, reviews, related }) {
 
         {/* ===== PRODUCT INFO ===== */}
         <div className="flex flex-col gap-4">
-          {/* Category + name */}
           {product.categories && (
             <Link href={`/products?category=${product.categories.slug}`}>
               <span className="badge badge-green">{product.categories.name}</span>
@@ -189,7 +185,6 @@ export default function ProductDetail({ product, reviews, related }) {
             {product.name}
           </h1>
 
-          {/* Rating row */}
           <div className="flex items-center gap-3 flex-wrap">
             {avgRating ? (
               <>
@@ -204,12 +199,10 @@ export default function ProductDetail({ product, reviews, related }) {
             )}
           </div>
 
-          {/* Short description */}
           <p className="text-sm leading-relaxed" style={{ color: 'var(--brand-muted)' }}>
             {product.short_description || product.description}
           </p>
 
-          {/* Price */}
           <div className="flex items-center gap-3 py-3 border-y" style={{ borderColor: 'var(--brand-border)' }}>
             <span className="text-3xl font-bold" style={{ color: 'var(--brand-brown)' }}>
               ₹{product.price}
@@ -224,7 +217,6 @@ export default function ProductDetail({ product, reviews, related }) {
             )}
           </div>
 
-          {/* Stock + weight */}
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-1.5">
               {product.stock > 0 ? (
@@ -243,15 +235,8 @@ export default function ProductDetail({ product, reviews, related }) {
                 <Tag size={12} /> {product.weight_grams}g
               </div>
             )}
-            {product.stock < 10 && product.stock > 0 && (
-              <span className="text-xs px-2 py-0.5 rounded-full animate-pulse"
-                style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
-                🔥 Almost gone!
-              </span>
-            )}
           </div>
 
-          {/* Quantity selector */}
           {product.stock > 0 && (
             <div className="flex items-center gap-4">
               <span className="text-sm font-medium" style={{ color: 'var(--brand-text)' }}>Quantity</span>
@@ -278,7 +263,6 @@ export default function ProductDetail({ product, reviews, related }) {
             </div>
           )}
 
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-2.5">
             <button onClick={handleAddToCart} disabled={product.stock === 0}
               className="btn-secondary flex-1 justify-center py-3 text-sm"
@@ -292,7 +276,6 @@ export default function ProductDetail({ product, reviews, related }) {
             </button>
           </div>
 
-          {/* WhatsApp order */}
           <a href={`https://wa.me/919623740541?text=Hi! I want to order: ${product.name} (₹${product.price}) — Qty: ${qty}`}
             target="_blank" rel="noreferrer"
             className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium border transition-colors hover:bg-green-50"
@@ -300,7 +283,6 @@ export default function ProductDetail({ product, reviews, related }) {
             <Phone size={15} /> Order via WhatsApp
           </a>
 
-          {/* Trust grid */}
           <div className="grid grid-cols-2 gap-2 pt-2">
             {[
               { icon: <Truck size={14} />, text: 'Free shipping ₹499+' },
@@ -321,22 +303,22 @@ export default function ProductDetail({ product, reviews, related }) {
       </div>
 
       {/* ===== ACCORDION DETAILS ===== */}
-      <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-14">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-14">
         <div>
           <h2 className="text-lg font-semibold mb-4" style={{ color: 'var(--brand-text)' }}>Product Details</h2>
-          <div className="card overflow-hidden">
+          <div className="card overflow-hidden border shadow-sm" style={{ borderColor: 'var(--brand-border)' }}>
             <Accordion title="Usage Instructions" icon={<Leaf size={16} />} defaultOpen>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {(product.usage_instructions || 'Apply on clean dry skin. Leave for 2–4 hours for best results. Scrape off without water. Avoid contact with water for 12 hours after removal for darkest color.')
                   .split('. ')
                   .filter(Boolean)
                   .map((step, i) => (
-                    <div key={i} className="flex items-start gap-2.5">
-                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 mt-0.5 text-white"
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5 text-white"
                         style={{ backgroundColor: 'var(--brand-green)' }}>
                         {i + 1}
                       </span>
-                      <span>{step.trim()}{step.trim().endsWith('.') ? '' : '.'}</span>
+                      <span className="leading-snug">{step.trim()}{step.trim().endsWith('.') ? '' : '.'}</span>
                     </div>
                   ))
                 }
@@ -346,7 +328,7 @@ export default function ProductDetail({ product, reviews, related }) {
             {product.ingredients && (
               <Accordion title="Ingredients" icon={<Leaf size={16} />}>
                 <div className="flex items-start gap-2">
-                  <Leaf size={13} className="mt-0.5 flex-shrink-0" style={{ color: 'var(--brand-green)' }} />
+                  <Leaf size={13} className="mt-1 flex-shrink-0" style={{ color: 'var(--brand-green)' }} />
                   <span>{product.ingredients}</span>
                 </div>
               </Accordion>
@@ -360,30 +342,31 @@ export default function ProductDetail({ product, reviews, related }) {
                   { icon: <Package size={13} />, text: 'Free shipping on orders above ₹499' },
                   { icon: <CheckCircle size={13} />, text: 'COD available on orders above ₹999' },
                   { icon: <Clock size={13} />, text: 'Orders shipped within 24 hours of payment' },
-                ].map(i => (
-                  <div key={i.text} className="flex items-start gap-2">
-                    <span className="mt-0.5 flex-shrink-0" style={{ color: 'var(--brand-green)' }}>{i.icon}</span>
-                    <span>{i.text}</span>
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5">
+                    <span className="mt-0.5 flex-shrink-0" style={{ color: 'var(--brand-green)' }}>{item.icon}</span>
+                    <span className="leading-snug">{item.text}</span>
                   </div>
                 ))}
               </div>
             </Accordion>
 
             <Accordion title="Return & Refund Policy" icon={<RefreshCw size={16} />}>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2.5">
                 <p>• Returns accepted within <strong>7 days</strong> of delivery for unused, sealed products</p>
                 <p>• Damaged or wrong item — contact us within <strong>48 hours</strong> with photos</p>
                 <p>• Refund processed in <strong>5–7 business days</strong> to original payment method</p>
-                <p>• WhatsApp us at <a href="https://wa.me/919623740541" className="underline" style={{ color: 'var(--brand-green)' }}>+91 96237 40541</a> to initiate returns</p>
+                <p>• WhatsApp us at <a href="https://wa.me/919623740541" className="underline font-medium" style={{ color: 'var(--brand-green)' }}>+91 96237 40541</a> to initiate returns</p>
               </div>
             </Accordion>
 
             <Accordion title="Payment Options" icon={<Shield size={16} />}>
               <div className="grid grid-cols-2 gap-2">
                 {['UPI / GPay', 'PhonePe', 'Credit Card', 'Debit Card', 'Net Banking', 'Wallets', 'Cash on Delivery', 'WhatsApp Order'].map(m => (
-                  <div key={m} className="flex items-center gap-1.5 text-xs p-2 rounded-lg"
+                  <div key={m} className="flex items-center gap-1.5 text-[10px] p-2 rounded-lg border border-black/5"
                     style={{ backgroundColor: 'var(--brand-surface)' }}>
-                    <CheckCircle size={11} style={{ color: 'var(--brand-green)' }} /> {m}
+                    <CheckCircle size={11} className="flex-shrink-0" style={{ color: 'var(--brand-green)' }} /> 
+                    <span className="truncate">{m}</span>
                   </div>
                 ))}
               </div>
@@ -405,23 +388,22 @@ export default function ProductDetail({ product, reviews, related }) {
           </div>
 
           {reviews.length === 0 ? (
-            <div className="card p-8 text-center">
+            <div className="card p-8 text-center border shadow-sm">
               <Star size={32} className="mx-auto mb-2" style={{ color: '#e5e7eb' }} />
               <p className="font-medium mb-1 text-sm" style={{ color: 'var(--brand-text)' }}>No reviews yet</p>
               <p className="text-xs" style={{ color: 'var(--brand-muted)' }}>Be the first to review this product!</p>
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {/* Rating summary */}
               {avgRating && (
-                <div className="card p-5 flex items-center gap-5">
+                <div className="card p-5 flex items-center gap-5 border shadow-sm">
                   <div className="text-center">
                     <div className="text-4xl font-bold" style={{ color: 'var(--brand-brown)' }}>{avgRating}</div>
                     <StarRating rating={Math.round(parseFloat(avgRating))} size={13} />
                     <div className="text-xs mt-1" style={{ color: 'var(--brand-muted)' }}>{reviews.length} reviews</div>
                   </div>
                   <div className="flex-1">
-                    {[5,4,3,2,1].map(star => {
+                    {[5, 4, 3, 2, 1].map(star => {
                       const count = reviews.filter(r => r.rating === star).length
                       const pct = (count / reviews.length) * 100
                       return (
@@ -440,9 +422,8 @@ export default function ProductDetail({ product, reviews, related }) {
                 </div>
               )}
 
-              {/* Review cards */}
               {reviews.map(r => (
-                <div key={r.id} className="card p-4">
+                <div key={r.id} className="card p-4 border shadow-sm">
                   <div className="flex items-start justify-between mb-2 gap-2">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0"
@@ -467,6 +448,9 @@ export default function ProductDetail({ product, reviews, related }) {
               ))}
             </div>
           )}
+          <div className="mt-6">
+            <ReviewForm productId={product.id} />
+          </div>
         </div>
       </div>
 
