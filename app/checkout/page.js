@@ -13,8 +13,8 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 
 const LABEL_ICONS = { Home: Home, Office: Briefcase, Other: MapPin }
-const SHIPPING_THRESHOLD = 499
-const FLAT_SHIPPING_CHARGE = 50 // Fixed from being hardcoded to 0
+// Free shipping across all orders
+const FLAT_SHIPPING_CHARGE = 0 
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart } = useCartStore()
@@ -124,7 +124,7 @@ export default function CheckoutPage() {
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const total = mounted ? getTotalPrice() : 0
-  const shipping = total >= SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_CHARGE
+  const shipping = FLAT_SHIPPING_CHARGE
   const grandTotal = total + shipping
   const codAvailable = grandTotal >= 999
 
@@ -182,7 +182,7 @@ export default function CheckoutPage() {
         prefill: { name: form.name, email: form.email, contact: `+91${form.phone}` },
         theme: { color: '#0f1a0e' },
         modal: {
-          ondismiss: () => setLoading(false) // Reset loading state if window closed
+          ondismiss: () => setLoading(false)
         },
         handler: async (response) => {
           setLoading(true)
@@ -539,16 +539,8 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex justify-between text-xs">
                       <span className="text-gray-500">Shipping</span>
-                      <span className={shipping === 0 ? 'text-green-600 font-bold' : 'text-black font-medium'}>
-                        {shipping === 0 ? 'FREE' : `₹${shipping}`}
-                      </span>
+                      <span className="text-green-600 font-bold">FREE</span>
                     </div>
-                    {shipping > 0 && (
-                      <div className="flex items-start gap-2 p-2.5 rounded-xl text-[10px] bg-amber-50 text-amber-700 font-bold border border-amber-100/50">
-                        <Tag size={12} className="flex-shrink-0" />
-                        Add ₹{(SHIPPING_THRESHOLD - total).toFixed(0)} more for free shipping
-                      </div>
-                    )}
                     <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-2">
                       <span className="font-black text-xs uppercase tracking-widest text-black">Total Amount</span>
                       <span className="font-black text-lg text-[#c9a84c]">₹{grandTotal.toFixed(0)}</span>
