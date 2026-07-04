@@ -138,7 +138,7 @@ export default function LoginPage() {
           <div className="lg:hidden text-center mb-8">
             <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
               style={{ backgroundColor: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
-              <Image src="/art2.png" alt="Crabveda" width={32} height={32} className="object-contain" />
+              <Image src="/logo.jpeg" alt="Crabveda" width={32} height={32} className="object-contain" />
             </div>
             <h1 className="font-black text-lg uppercase tracking-widest" style={{ color: '#0f1a0e' }}>
               Crabveda
