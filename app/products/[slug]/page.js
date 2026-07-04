@@ -38,7 +38,7 @@ export async function generateMetadata({ params }) {
   const product = await getProduct(slug)
   if (!product) return { title: 'Product Not Found' }
   return {
-    title: `${product.name} — Shrilekha Mehndi Art`,
+    title: `${product.name} — CrabVeda`,
     description: product.short_description,
   }
 }

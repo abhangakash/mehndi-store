@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
     e.stopPropagation() // Prevents the link from firing when clicking the button
     addItem(product)
     toast.success(`${product.name} added!`, { 
-      icon: '🌿', 
+      icon: '🦀', 
       style: { borderRadius: '10px', fontSize: '14px' } 
     })
   }
@@ -33,7 +33,7 @@ export default function ProductCard({ product }) {
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-3xl sm:text-5xl">🌿</div>
+            <div className="w-full h-full flex items-center justify-center text-3xl sm:text-5xl">🦀</div>
           )}
           
           {/* Badges - Adjusted for mobile */}
@@ -61,7 +61,7 @@ export default function ProductCard({ product }) {
         {/* Content Section */}
         <div className="p-3 sm:p-4 flex flex-col flex-1">
           <p className="text-[10px] sm:text-xs mb-1 font-medium uppercase tracking-wider" style={{ color: 'var(--brand-muted)' }}>
-            {product.categories?.name || 'Mehndi Product'}
+            {product.categories?.name || 'Ayurvedic Care'}
           </p>
           
           <h3 className="font-semibold text-sm sm:text-base mb-1 line-clamp-1 sm:line-clamp-2" style={{ color: 'var(--brand-text)' }}>

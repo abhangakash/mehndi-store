@@ -9,34 +9,74 @@ import GoogleAnalytics from '@/components/GoogleAnalytics'
 import './globals.css'
 
 export const metadata = {
-  metadataBase: new URL('https://mehndi.zevette.com'),
+  metadataBase: new URL('https://crabveda.com'),
   title: {
-    default: 'Shrilekha Mehndi Art & Glowup Studio — Pune',
-    template: '%s — Shrilekha Mehndi Art',
+    default: 'CrabVeda Ayurvedic Crab Oil',
+    template: '%s — CrabVeda',
   },
-  description: 'Premium natural henna products, bridal mehndi art and professional makeup services in Pune. Free shipping above ₹499. Book bridal packages on WhatsApp.',
-  keywords: ['mehndi', 'henna', 'bridal mehndi Pune', 'makeup artist Pune', 'henna cones', 'natural henna', 'Shrilekha', 'Glowup Studio', 'bridal makeup Pune'],
-  authors: [{ name: 'Shrilekha Mehndi Art' }],
-  creator: 'Shrilekha Mehndi Art',
+  description:
+    'CrabVeda Ayurvedic Crab Oil is a premium Ayurvedic formulation for joint and muscle care. Enriched with Crab Extract, Mahanarayan Taila, Ashwagandha, Shallaki, Nirgundi, Rasna, Erand Mool, Devdar, Guggul, Til Taila, and other Ayurvedic herbs to help relieve joint pain, stiffness, inflammation, and support mobility and natural healing.',
+  keywords: [
+    'CrabVeda',
+    'Ayurvedic Crab Oil',
+    'Crab Oil',
+    'Joint Pain Relief Oil',
+    'Muscle Pain Relief',
+    'Ayurvedic Pain Relief',
+    'Joint Care',
+    'Knee Pain Oil',
+    'Back Pain Oil',
+    'Shoulder Pain Relief',
+    'Arthritis Oil',
+    'Massage Oil',
+    'Ayurvedic Herbs',
+    'Crab Extract',
+    'Mahanarayan Taila',
+    'Ashwagandha',
+    'Shallaki',
+    'Nirgundi',
+    'Rasna',
+    'Guggul',
+    'Til Taila',
+  ],
+  authors: [{ name: 'CrabVeda' }],
+  creator: 'CrabVeda',
+  publisher: 'CrabVeda',
+  applicationName: 'CrabVeda',
+  alternates: {
+    canonical: 'https://crabveda.com',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://mehndi.zevette.com',
-    siteName: 'Shrilekha Mehndi Art & Glowup Studio',
-    title: 'Shrilekha Mehndi Art & Glowup Studio — Pune',
-    description: 'Premium natural henna products, bridal mehndi art and professional makeup services in Pune.',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Shrilekha Mehndi Art' }],
+    url: 'https://crabveda.com',
+    siteName: 'CrabVeda',
+    title: 'CrabVeda Ayurvedic Crab Oil',
+    description:
+      'Premium Ayurvedic Crab Oil formulated with Crab Extract and traditional Ayurvedic herbs for joint and muscle care.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'CrabVeda Ayurvedic Crab Oil',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Shrilekha Mehndi Art & Glowup Studio',
-    description: 'Premium natural henna products & bridal services in Pune.',
+    title: 'CrabVeda Ayurvedic Crab Oil',
+    description:
+      'Premium Ayurvedic Crab Oil for joint and muscle care.',
     images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 }
 
@@ -54,7 +94,13 @@ export default function RootLayout({ children }) {
           <FloatingButtons />
           <Toaster
             position="top-right"
-            toastOptions={{ style: { borderRadius: '12px', fontSize: '13px', fontWeight: 600 } }}
+            toastOptions={{
+              style: {
+                borderRadius: '12px',
+                fontSize: '13px',
+                fontWeight: 600,
+              },
+            }}
           />
         </AuthProvider>
       </body>

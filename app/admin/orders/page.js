@@ -10,11 +10,11 @@ import toast from 'react-hot-toast'
 
 const STATUS_OPTIONS = ['all', 'pending', 'confirmed', 'shipped', 'delivered', 'cancelled']
 const STATUS_CONFIG = {
-  pending:   { label: 'Pending',   color: '#d97706', bg: '#fef3c7', icon: Clock },
+  pending:   { label: 'Pending',   color: '#b45309', bg: '#fef3c7', icon: Clock },
   confirmed: { label: 'Confirmed', color: '#1d4ed8', bg: '#dbeafe', icon: CheckCircle },
-  shipped:   { label: 'Shipped',   color: '#7c3aed', bg: '#ede9fe', icon: Truck },
-  delivered: { label: 'Delivered', color: '#15803d', bg: '#dcfce7', icon: CheckCircle },
-  cancelled: { label: 'Cancelled', color: '#dc2626', bg: '#fee2e2', icon: XCircle },
+  shipped:   { label: 'Shipped',   color: '#6d28d9', bg: '#ede9fe', icon: Truck },
+  delivered: { label: 'Delivered', color: '#047857', bg: '#dcfce7', icon: CheckCircle },
+  cancelled: { label: 'Cancelled', color: '#b91c1c', bg: '#fee2e2', icon: XCircle },
 }
 
 function OrderRow({ order, onStatusChange, onSendEmail }) {
@@ -34,8 +34,7 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
   }
 
   return (
-    <div className="rounded-2xl overflow-hidden mb-3"
-      style={{ backgroundColor: '#fcfaf6', border: '1.5px solid rgba(15,26,14,0.06)' }}>
+    <div className="rounded-2xl overflow-hidden mb-3 bg-white border border-slate-200/80 shadow-xs">
       <div className="p-4 flex items-start gap-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{ backgroundColor: status.bg }}>
@@ -45,28 +44,28 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-1">
             <div>
-              <p className="font-black text-sm" style={{ color: '#0f1a0e' }}>{order.customer_name}</p>
-              <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
+              <p className="font-bold text-sm text-slate-900">{order.customer_name}</p>
+              <p className="text-xs text-slate-400 mt-0.5">
                 #{order.id.slice(0, 8).toUpperCase()} ·{' '}
                 {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
               </p>
             </div>
             <div className="text-right flex-shrink-0">
-              <p className="font-black text-base" style={{ color: '#c9a84c' }}>
+              <p className="font-bold text-base text-emerald-700">
                 ₹{Number(order.total_amount).toFixed(0)}
               </p>
-              <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
+              <p className="text-xs text-slate-400">
                 {order.payment_method === 'cod' ? 'COD' : 'Online'} · {order.payment_status}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-3 text-xs" style={{ color: 'rgba(15,26,14,0.5)' }}>
-            <a href={`tel:${order.phone}`} className="flex items-center gap-1">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs text-slate-500">
+            <a href={`tel:${order.phone}`} className="flex items-center gap-1 hover:text-emerald-700 transition-colors">
               <Phone size={11} /> {order.phone}
             </a>
             {order.email && (
-              <a href={`mailto:${order.email}`} className="flex items-center gap-1">
+              <a href={`mailto:${order.email}`} className="flex items-center gap-1 hover:text-emerald-700 transition-colors">
                 <Mail size={11} /> {order.email}
               </a>
             )}
@@ -76,25 +75,25 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
           </div>
 
           {/* Action bar */}
-          <div className="flex flex-wrap items-center gap-2">
-            {/* STATUS DROPDOWN — now calls API */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {/* STATUS DROPDOWN */}
             <div className="relative">
               <select
                 value={currentStatus}
                 onChange={e => handleStatusChange(e.target.value)}
                 disabled={updating}
-                className="text-xs font-black uppercase pr-6 pl-3 py-1.5 rounded-xl appearance-none cursor-pointer border-0"
+                className="text-xs font-bold uppercase pr-7 pl-3 py-1.5 rounded-xl appearance-none cursor-pointer border bg-white focus:outline-none"
                 style={{
                   backgroundColor: status.bg,
                   color: status.color,
-                  border: `1.5px solid ${status.color}40`,
+                  borderColor: `${status.color}30`,
                   opacity: updating ? 0.6 : 1,
                 }}>
                 {Object.entries(STATUS_CONFIG).map(([key, val]) => (
-                  <option key={key} value={key}>{val.label}</option>
+                  <option key={key} value={key} className="bg-white text-slate-800 normal-case font-medium">{val.label}</option>
                 ))}
               </select>
-              <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+              <ChevronDown size={11} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
                 style={{ color: status.color }} />
               {updating && (
                 <div className="absolute inset-0 flex items-center justify-center rounded-xl"
@@ -106,62 +105,57 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
             </div>
 
             <button onClick={() => onSendEmail(order.id, 'shipped')}
-              className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-xl hover:bg-blue-50 transition-colors"
-              style={{ color: '#1d4ed8', border: '1.5px solid rgba(29,78,216,0.2)' }}>
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-blue-200 text-blue-700 hover:bg-blue-50 transition-colors">
               <Send size={11} /> Shipped Email
             </button>
 
-            <a href={`https://wa.me/91${order.phone}?text=Hi ${order.customer_name}! Your order %23${order.id.slice(0,8).toUpperCase()} from Shrilekha Mehndi Art is now ${currentStatus}. 🌿`}
+            <a href={`https://wa.me/91${order.phone}?text=Hi ${order.customer_name}! Your order %23${order.id.slice(0,8).toUpperCase()} from Crabveda Pain Relief Oil is now ${currentStatus}. 🌿`}
               target="_blank" rel="noreferrer"
-              className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-xl hover:bg-green-50 transition-colors"
-              style={{ color: '#15803d', border: '1.5px solid rgba(21,128,61,0.2)' }}>
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition-colors">
               <Phone size={11} /> WhatsApp
             </a>
 
             <a href={`/api/send-invoice?orderId=${order.id}`} target="_blank" rel="noreferrer"
-              className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-xl hover:bg-gray-50 transition-colors"
-              style={{ color: 'rgba(15,26,14,0.5)', border: '1.5px solid rgba(15,26,14,0.1)' }}>
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors">
               <Download size={11} /> Invoice
             </a>
 
             <button onClick={() => setExpanded(!expanded)}
-              className="flex items-center gap-1 text-xs font-bold ml-auto"
-              style={{ color: '#c9a84c' }}>
+              className="flex items-center gap-1 text-xs font-bold ml-auto text-emerald-700 hover:text-emerald-800 transition-colors">
               {expanded ? 'Hide' : 'Details'}
-              <ChevronDown size={11} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
+              <ChevronDown size={12} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
             </button>
           </div>
         </div>
       </div>
 
       {expanded && (
-        <div className="px-4 pb-4 border-t" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
+        <div className="px-4 pb-4 border-t border-slate-100 bg-slate-50/50">
           <div className="mt-4 grid sm:grid-cols-2 gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.4)' }}>Items</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Items</p>
               {order.order_items?.map(item => (
-                <div key={item.id} className="flex justify-between text-xs py-0.5">
-                  <span style={{ color: '#0f1a0e' }}>{item.product_name} × {item.quantity}</span>
-                  <span className="font-black" style={{ color: '#c9a84c' }}>₹{Number(item.total_price).toFixed(0)}</span>
+                <div key={item.id} className="flex justify-between text-xs py-1">
+                  <span className="text-slate-700">{item.product_name} × {item.quantity}</span>
+                  <span className="font-bold text-slate-900">₹{Number(item.total_price).toFixed(0)}</span>
                 </div>
               ))}
-              <div className="border-t mt-1.5 pt-1.5 flex justify-between text-xs font-black"
-                style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
+              <div className="border-t border-slate-200 mt-1.5 pt-1.5 flex justify-between text-xs font-bold text-slate-900">
                 <span>Total</span>
-                <span style={{ color: '#c9a84c' }}>₹{Number(order.total_amount).toFixed(0)}</span>
+                <span className="text-emerald-700">₹{Number(order.total_amount).toFixed(0)}</span>
               </div>
             </div>
             <div>
-              <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(15,26,14,0.4)' }}>Address</p>
-              <p className="text-xs leading-relaxed" style={{ color: 'rgba(15,26,14,0.6)' }}>
-                {order.customer_name}<br />
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Shipping Destination</p>
+              <p className="text-xs leading-relaxed text-slate-600">
+                <span className="font-semibold text-slate-800">{order.customer_name}</span><br />
                 {order.address}<br />
-                {order.city}, {order.state} — {order.pincode}<br />
+                {order.city}, {order.state} — <span className="font-mono">{order.pincode}</span><br />
                 📞 {order.phone}
                 {order.email && <><br />✉️ {order.email}</>}
               </p>
               {order.booking_date && (
-                <p className="text-xs mt-2 font-bold" style={{ color: '#d97706' }}>
+                <p className="text-xs mt-2.5 font-semibold text-amber-700">
                   📅 Preferred: {new Date(order.booking_date).toLocaleDateString('en-IN')}
                 </p>
               )}
@@ -195,7 +189,6 @@ export default function AdminOrdersPage() {
 
   useEffect(() => { fetchOrders() }, [fetchOrders])
 
-  // Uses API route — actually saves to DB
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const res = await fetch('/api/update-order-status', {
@@ -247,53 +240,52 @@ export default function AdminOrdersPage() {
   }, {})
 
   return (
-    <div className="px-4 sm:px-6 py-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between gap-3 mb-5">
+    <div className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
+      <div className="flex items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-xl font-black uppercase tracking-tight text-white">Orders</h1>
-          <p className="text-xs font-bold uppercase tracking-widest mt-0.5" style={{ color: 'rgba(201,168,76,0.6)' }}>
-            {filtered.length} orders shown
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Order Registers</h1>
+          <p className="text-xs font-semibold uppercase tracking-wider mt-1 text-slate-400">
+            {filtered.length} listings retrieved
           </p>
         </div>
         <button onClick={fetchOrders}
-          className="p-2.5 rounded-xl hover:bg-white/10 transition-colors"
-          style={{ color: 'rgba(255,255,255,0.4)' }}>
-          <RefreshCw size={16} />
+          className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition-colors shadow-sm">
+          <RefreshCw size={15} />
         </button>
       </div>
 
-      {/* Search */}
-      <div className="relative mb-4">
-        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2"
-          style={{ color: 'rgba(255,255,255,0.3)' }} />
+      {/* Search Input Bar */}
+      <div className="relative mb-5">
+        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
         <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Search by name, phone, email or order ID..."
-          className="w-full pl-10 pr-10 py-3 rounded-xl text-sm text-white outline-none"
-          style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.08)' }} />
+          placeholder="Search by customer details, contact profile, or token ID..."
+          className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 outline-none focus:border-emerald-600/40 focus:ring-1 focus:ring-emerald-600/10 text-slate-800 placeholder-slate-400 shadow-xs" />
         {search && (
-          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2">
-            <X size={14} style={{ color: 'rgba(255,255,255,0.3)' }} />
+          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <X size={14} />
           </button>
         )}
       </div>
 
       {/* Status filter tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-1 mb-5">
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-none">
         {STATUS_OPTIONS.map(s => {
           const config = STATUS_CONFIG[s]
+          const isSelected = statusFilter === s
           return (
             <button key={s} onClick={() => setStatusFilter(s)}
-              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wide transition-all"
+              className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wide transition-all border shadow-xs"
               style={{
-                backgroundColor: statusFilter === s ? (config?.bg || '#c9a84c') : 'rgba(255,255,255,0.06)',
-                color: statusFilter === s ? (config?.color || '#0f1a0e') : 'rgba(255,255,255,0.4)',
+                backgroundColor: isSelected ? (config?.bg || '#dcfce7') : '#ffffff',
+                color: isSelected ? (config?.color || '#047857') : '#64748b',
+                borderColor: isSelected ? 'transparent' : '#e2e8f0',
               }}>
-              {s === 'all' ? 'All' : config?.label}
+              {s === 'all' ? 'All Ledger' : config?.label}
               {counts[s] > 0 && (
-                <span className="text-xs px-1.5 py-0.5 rounded-full font-black"
+                <span className="text-[10px] px-1.5 py-0.5 rounded-md font-bold"
                   style={{
-                    backgroundColor: statusFilter === s ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.1)',
-                    fontSize: '9px',
+                    backgroundColor: isSelected ? 'rgba(0,0,0,0.06)' : '#f1f5f9',
+                    color: isSelected ? 'inherit' : '#475569',
                   }}>
                   {counts[s]}
                 </span>
@@ -304,19 +296,24 @@ export default function AdminOrdersPage() {
       </div>
 
       {loading ? (
-        <div className="text-center py-20">
-          <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
+        <div className="text-center py-24">
+          <div className="w-9 h-9 border-2 border-slate-200 border-t-emerald-700 rounded-full animate-spin mx-auto" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-2xl p-12 text-center" style={{ backgroundColor: '#fcfaf6' }}>
-          <Package size={40} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.15)' }} />
-          <p className="font-black text-sm" style={{ color: '#0f1a0e' }}>No orders found</p>
+        <div className="rounded-2xl p-16 text-center bg-white border border-slate-200 shadow-sm">
+          <Package size={40} className="mx-auto mb-3 text-slate-300" />
+          <p className="font-bold text-sm text-slate-700">No order matches found</p>
+          <p className="text-xs text-slate-400 mt-1">Try expanding your tab context or adjusting search text parameters.</p>
         </div>
-      ) : filtered.map(order => (
-        <OrderRow key={order.id} order={order}
-          onStatusChange={handleStatusChange}
-          onSendEmail={handleSendEmail} />
-      ))}
+      ) : (
+        <div className="space-y-1">
+          {filtered.map(order => (
+            <OrderRow key={order.id} order={order}
+              onStatusChange={handleStatusChange}
+              onSendEmail={handleSendEmail} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

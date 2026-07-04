@@ -24,12 +24,12 @@ async function getCategories() {
 }
 
 const GALLERY_ITEMS = [
-  { image: '/bridal-mehndi.webp', label: 'Bridal Mehndi', tag: 'bridal' },
-  { image: '/arabic-patterns.webp', label: 'Arabic Patterns', tag: 'arabic' },
-  { image: '/glitter-mehndi.webp', label: 'Glitter Mehndi', tag: 'glitter' },
-  { image: '/bridal-makeup.webp', label: 'Bridal Makeup', tag: 'makeup' },
-  { image: '/party-makeup.webp', label: 'Party Makeup', tag: 'makeup' },
-  { image: '/rajasthani-mehndi.webp', label: 'Rajasthani Mehndi', tag: 'traditional' },
+  { image: '/img13.webp', label: 'Joint Pain Relief', tag: 'joints' },
+  { image: '/img14.webp', label: 'Muscle Recovery', tag: 'muscles' },
+  { image: '/img15.webp', label: '100% Organic Herbs', tag: 'ingredients' },
+  { image: '/img11.webp', label: 'Therapeutic Massage', tag: 'application' },
+  { image: '/img16.webp', label: 'CrabVeda 200ml Bottle', tag: 'product' },
+  { image: '/img12.webp', label: 'Inflammation Reduction', tag: 'healing' },
 ];
 
 const PACKAGES = [
@@ -68,9 +68,9 @@ const TESTIMONIALS = [
 ]
 
 export const metadata = {
-  title: 'Shrilekha Mehndi Art & Glowup Studio — Pune',
-  description: 'Premium mehndi art and professional bridal makeup studio in Pune. Shop natural henna cones, bridal mehndi packages and makeup services. Free shipping above ₹499.',
-  keywords: 'mehndi, henna, bridal mehndi Pune, makeup artist Pune, henna cones, Shrilekha',
+  title: 'CrabVeda — Ayurvedic Crab Oil for Joint & Muscle Care',
+  description: 'Premium Ayurvedic Crab Oil to relieve joint pain, stiffness, and inflammation. Natural healing for improved mobility and flexibility. Shop CrabVeda 200ml bottles online.',
+  keywords: 'CrabVeda, crab oil, Ayurvedic oil, joint pain relief, muscle care, inflammation remedy, natural healing, stiffness relief, mobility',
 }
 
 export default async function HomePage() {
@@ -80,7 +80,7 @@ export default async function HomePage() {
     <div>
       <FloatingButtons />
 {/* ===== HERO SECTION ===== */}
-<section className="relative min-h-[100svh] flex items-center bg-[#0a0f0d] pt-24 pb-12 md:pt-28 md:pb-16 lg:pt-32 lg:pb-20 overflow-hidden">
+<section className="relative min-h-[1svh] flex items-center bg-[#0a0f0d] pt-1 pb-12 md:pt-28 md:pb-16 lg:pt-3 lg:pb-20 overflow-hidden">
 
   {/* S-Wave */}
   <div className="absolute top-0 left-0 w-full z-0 pointer-events-none">
@@ -109,64 +109,57 @@ export default async function HomePage() {
         {/* Badge */}
         <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl self-center lg:self-start">
           <span className="flex h-2 w-2 rounded-full bg-[#c9a84c] animate-pulse" />
-          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.3em] uppercase">Pune's Elite Studio</span>
+          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.3em] uppercase">Premium Wellness</span>
         </div>
 
         {/* Headline — scale down on tablet */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.85] tracking-tighter mix-blend-exclusion text-white">
           BOLD <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c]">
-            BEAUTY.
+            RELIEF.
           </span>
         </h1>
 
         <p className="text-gray-600 lg:text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-sm md:max-w-md mx-auto lg:mx-0 font-medium">
-          Redefining bridal elegance with organic henna and high-fashion makeup.
-          Where tradition meets the modern edge.
+          Redefining pain management with highly concentrated Ayurvedic extracts. 
+          Where ancient holistic wisdom meets targeted joint restoration.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 lg:pt-0">
           <Link href="/products"
-            className="group relative overflow-hidden bg-[#0a0f0d] text-white lg:bg-[#c9a84c] lg:text-[#0a0f0d] px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-[0_20px_50px_rgba(201,168,76,0.3)] transition-all text-sm md:text-base">
+            className="group relative overflow-hidden bg-[#0a0f0d] text-white lg:bg-[#c9a84c] lg:text-[#0a0f0d] px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-[0_20px_50px_rgba(201,168,76,0.3)] transition-all text-sm md:text-base w-full sm:w-auto">
             <span className="relative z-10">SHOP COLLECTION</span>
             <ArrowRight size={18} className="relative z-10 group-hover:translate-x-2 transition-transform" />
-          </Link>
-          <Link href="/packages"
-            className="px-8 md:px-10 py-4 md:py-5 rounded-2xl border-2 border-[#0a0f0d]/10 lg:border-[#c9a84c]/30 text-[#0a0f0d] lg:text-white font-black hover:bg-white/5 transition-all text-center text-sm md:text-base">
-            BOOK SERVICES
           </Link>
         </div>
       </div>
 
-      {/* ===== BENTO GRID ===== */}
-      {/* On mobile: stacked, fixed height. On tablet: 2-col, taller. On desktop: full bento */}
+      {/* ===== BENTO GRID (OPTIMIZED FOR MOBILE) ===== */}
       <div className="lg:col-span-7 order-1 lg:order-2">
+        <div className="grid grid-cols-12 gap-3 md:gap-4 h-auto lg:h-[700px]">
 
-        {/* Mobile / Tablet layout — simple 2-col */}
-        <div className="grid grid-cols-12 gap-3 md:gap-4 h-[300px] sm:h-[380px] md:h-[420px] lg:h-[700px]">
-
-          {/* Main image */}
-          <div className="col-span-8 relative rounded-[1.5rem] md:rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group">
-            <img src="/hero-makeup.webp" alt="Bridal Art"
+          {/* Main image - Full width on mobile for cleaner impact */}
+          <div className="col-span-12 lg:col-span-8 relative rounded-[1.5rem] md:rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group h-[260px] sm:h-[320px] md:h-[400px] lg:h-full">
+            <img src="/img2.jpeg" alt="Therapeutic Oil Formulation"
               className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d] via-transparent to-transparent opacity-80" />
             <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 lg:bottom-12 lg:left-12">
               <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[8px] md:text-[10px] mb-1 md:mb-3">
-                Signature Artistry
+                Targeted Care
               </p>
               <h3 className="text-white text-xl md:text-3xl lg:text-5xl font-black uppercase leading-none tracking-tighter">
-                BRIDAL<br />MEHNDI
+                CRABVEDA<br />OIL
               </h3>
             </div>
           </div>
 
-          {/* Side stack */}
-          <div className="col-span-4 flex flex-col gap-3 md:gap-4">
-            <div className="flex-1 relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
-              <img src="/hero-main.webp" alt="Makeup" className="w-full h-full object-cover" />
+          {/* Side items - Adapts elegantly next to each other on smaller screens */}
+          <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4">
+            <div className="w-1/2 lg:w-full h-[120px] lg:flex-1 relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
+              <img src="/img8.png" alt="Herbal Ingredients" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/20" />
             </div>
-            <div className="h-[30%] relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border-2 border-[#c9a84c]/20 bg-white flex flex-col items-center justify-center p-3 md:p-6 text-center shadow-xl">
+            <div className="w-1/2 lg:w-full lg:h-[30%] relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border-2 border-[#c9a84c]/20 bg-white flex flex-col items-center justify-center p-3 md:p-6 text-center shadow-xl">
               <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-1 md:mb-3">
                 <Leaf size={16} className="text-[#c9a84c] md:hidden" />
                 <Leaf size={24} className="text-[#c9a84c] hidden md:block" />
@@ -176,6 +169,7 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
+          
         </div>
       </div>
 
@@ -186,13 +180,12 @@ export default async function HomePage() {
 {/* ===== TRUST BAR ===== */}
 <section className="bg-white py-10 md:py-14 border-y border-[#0a0f0d]/5 relative z-10">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    {/* 2-col on mobile, 4-col on md+ */}
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-16">
       {[
         { icon: Truck, label: 'EXPRESS DELIVERY', sub: 'Pan India Shipping' },
         { icon: Shield, label: 'PURE ORGANIC', sub: 'Lab Tested Goods' },
-        { icon: Star, label: '5-STAR RATING', sub: 'Trusted by Brides' },
-        { icon: Award, label: "PUNE'S BEST", sub: 'Expert Artistry' },
+        { icon: Star, label: '5-STAR RATINGS', sub: 'Trusted Recovery' },
+        { icon: Award, label: "AYURVEDIC POTENCY", sub: 'Expert Formulation' },
       ].map((item, i) => (
         <div key={i} className="flex flex-col items-center md:items-start text-center md:text-left gap-3 md:gap-4 group">
           <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-500">
@@ -208,8 +201,7 @@ export default async function HomePage() {
     </div>
   </div>
 </section>
-
-{/* ===== GLOWUP SECTION ===== */}
+{/* ===== RECOVERY SECTION ===== */}
 <section className="py-14 md:py-20 lg:py-24 bg-[#0a0f0d] relative overflow-hidden">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
@@ -219,20 +211,20 @@ export default async function HomePage() {
         {/* Mobile / Tablet: simple 2-image row */}
         <div className="grid grid-cols-2 gap-3 md:gap-4 lg:hidden h-[240px] sm:h-[280px] md:h-[340px]">
           <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418]">
-            <img src="/glowup-1.webp" alt="Makeup Studio" className="w-full h-full object-cover" />
+            <img src="/img13.webp" alt="Ayurvedic Extraction" className="w-full h-full object-cover" />
           </div>
           <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418] mt-6 md:mt-10">
-            <img src="/glowup-2.webp" alt="Bridal Prep" className="w-full h-full object-cover" />
+            <img src="/img16.webp" alt="Therapeutic Massage" className="w-full h-full object-cover" />
           </div>
         </div>
 
         {/* Desktop: overlapping rotated cards */}
         <div className="hidden lg:block relative h-[500px]">
           <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
-            <img src="/glowup-1.webp" alt="Makeup Studio" className="w-full h-full object-cover" />
+            <img src="/img13.webp" alt="Ayurvedic Extraction" className="w-full h-full object-cover" />
           </div>
           <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
-            <img src="/glowup-2.webp" alt="Bridal Prep" className="w-full h-full object-cover" />
+            <img src="/img16.webp" alt="Therapeutic Massage" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>
@@ -240,16 +232,16 @@ export default async function HomePage() {
       {/* Text */}
       <div className="order-1 lg:order-2 flex flex-col gap-5 md:gap-6 text-center lg:text-left">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight uppercase">
-          THE <span className="text-[#c9a84c]">GLOWUP</span> <br />
+          THE <span className="text-[#c9a84c]">RECOVERY</span> <br />
           EXPERIENCE
         </h2>
         <p className="text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
-          From the first stroke of henna to the final touch of lipstick, our Pune-based studio
-          offers a complete transformation sanctuary for the modern bride.
+          From deep muscle soreness to persistent joint discomfort, our authentic Ayurvedic blends
+          offer a profound healing sanctuary for long-lasting pain relief and mobility.
         </p>
 
         <div className="grid grid-cols-2 gap-3 max-w-sm md:max-w-md mx-auto lg:mx-0">
-          {['HD Makeup', 'Airbrush Tech', 'Saree Draping', 'Hair Styling'].map(item => (
+          {['Joint Care', 'Muscle Relief', '100% Organic', 'Fast Acting'].map(item => (
             <div key={item} className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl bg-[#c9a84c]/5 border border-[#c9a84c]/10">
               <CheckCircle size={15} className="text-[#c9a84c] flex-shrink-0 md:hidden" />
               <CheckCircle size={18} className="text-[#c9a84c] flex-shrink-0 hidden md:block" />
@@ -259,9 +251,9 @@ export default async function HomePage() {
         </div>
 
         <div className="pt-2 md:pt-4">
-          <a href="https://wa.me/919623740541"
+          <a href="https://wa.me/919921297518"
             className="inline-flex items-center gap-3 bg-[#c9a84c] text-[#0a0f0d] px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
-            BOOK APPOINTMENT <Phone size={16} className="md:hidden" /><Phone size={18} className="hidden md:block" />
+            CONSULT NOW <Phone size={16} className="md:hidden" /><Phone size={18} className="hidden md:block" />
           </a>
         </div>
       </div>
@@ -269,48 +261,8 @@ export default async function HomePage() {
   </div>
 </section>
 
-{/* ===== CATEGORIES SECTION ===== */}
-<section className="py-10 md:py-12 lg:py-16 bg-[#0a0f0d]">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    {/* Header */}
-    <div className="flex items-center justify-between mb-6 md:mb-8">
-      <div>
-        <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter">The Shop</h2>
-        <p className="text-[#c9a84c] font-bold text-[9px] md:text-[10px] uppercase tracking-widest mt-0.5">Organic Collection</p>
-      </div>
-      <Link href="/products"
-        className="text-white/40 hover:text-[#c9a84c] text-[9px] md:text-[10px] font-bold uppercase tracking-widest border-b border-white/10 pb-1 transition-all">
-        View All
-      </Link>
-    </div>
-
-    {/* Grid — 2-col mobile, 3-col tablet, 5-col desktop */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-2.5 md:gap-3 lg:gap-4">
-      {categories.map((cat) => (
-        <Link
-          key={cat.id}
-          href={`/products?category=${cat.slug}`}
-          className="group relative aspect-square rounded-xl md:rounded-2xl lg:rounded-[2rem] overflow-hidden bg-[#0f1a14] border border-white/5">
-          <img
-            src={`/cat-${cat.slug}.jpg`}
-            alt={cat.name}
-            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute inset-0 flex items-end justify-center pb-3 md:pb-4 lg:pb-6">
-            <span className="text-white font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] group-hover:text-[#c9a84c] transition-colors text-center px-1">
-              {cat.name}
-            </span>
-          </div>
-        </Link>
-      ))}
-    </div>
-
-  </div>
-</section>
-
-    {/* ===== FEATURED PRODUCTS ===== */}
+{/* ===== FEATURED PRODUCTS ===== */}
 <section className="py-20 px-4 bg-white relative overflow-hidden">
   {/* Elegant background accent */}
   <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
@@ -322,10 +274,10 @@ export default async function HomePage() {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
-          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Elite Collection</span>
+          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Healing Collection</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-[0.9]">
-          MOST <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#f3d382]">LOVED.</span>
+          PURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#f3d382]">RELIEF.</span>
         </h2>
       </div>
 
@@ -364,9 +316,8 @@ export default async function HomePage() {
   </div>
 </section>
 
-     {/* ===== PACKAGES PREVIEW ===== */}
+     {/* ===== PACKAGES PREVIEW ===== 
 <section className="py-24 px-4 bg-[#0a0f0d] relative overflow-hidden">
-  {/* Decorative Elements */}
   <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent opacity-10" />
   
   <div className="max-w-7xl mx-auto relative z-10">
@@ -401,7 +352,6 @@ export default async function HomePage() {
           )}
 
           <div className={`p-8 lg:p-10 ${pkg.popular ? 'pt-12' : ''}`}>
-            {/* Icon & Title */}
             <div className={`w-16 h-16 rounded-2xl mb-6 flex items-center justify-center text-3xl ${
               pkg.popular ? 'bg-[#0a0f0d]/5' : 'bg-white/5'
             }`}>
@@ -421,7 +371,6 @@ export default async function HomePage() {
               <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Onwards</span>
             </div>
 
-            {/* Features List */}
             <ul className="space-y-4 mb-10">
               {pkg.features.map((f) => (
                 <li key={f} className="flex items-start gap-3 text-sm font-medium">
@@ -434,7 +383,6 @@ export default async function HomePage() {
               ))}
             </ul>
 
-            {/* Booking Button */}
             <a
               href={`https://wa.me/919623740541?text=${encodeURIComponent(
                 `Hi! I want to book the ${pkg.name} package`
@@ -454,7 +402,6 @@ export default async function HomePage() {
       ))}
     </div>
 
-    {/* Footer Link */}
     <div className="text-center mt-16">
       <Link 
         href="/packages" 
@@ -475,11 +422,11 @@ export default async function HomePage() {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
-          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">The Portfolio</span>
+          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Our Sourcing</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-none">
-          CRAFTING <br className="md:hidden" /> 
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a0f0d] via-[#c9a84c] to-[#0a0f0d]">MOMENTS.</span>
+          RESTORING <br className="md:hidden" /> 
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a0f0d] via-[#c9a84c] to-[#0a0f0d]">VITALITY.</span>
         </h2>
       </div>
 
@@ -487,7 +434,7 @@ export default async function HomePage() {
         href="/gallery" 
         className="group flex items-center gap-3 text-[#0a0f0d] font-black text-xs tracking-widest hover:text-[#c9a84c] transition-all"
       >
-        VIEW FULL PORTFOLIO
+        VIEW FULL JOURNEY
         <div className="w-10 h-10 rounded-full border border-[#0a0f0d]/10 flex items-center justify-center group-hover:bg-[#0a0f0d] group-hover:text-white transition-all">
           <ArrowRight size={16} />
         </div>
@@ -532,30 +479,29 @@ export default async function HomePage() {
         </div>
       ))}
     </div>
-
-    <div className="mt-12 text-center md:hidden">
-      <Link href="/gallery" className="inline-block text-[#0a0f0d] font-black text-xs tracking-[0.3em] border-b-2 border-[#c9a84c] pb-2">
-        EXPLORE ALL WORKS
-      </Link>
-    </div>
   </div>
 </section>
       {/* ===== TESTIMONIALS: THE WALL OF LOVE ===== */}
-<section className="py-24 px-4 bg-white relative">
+<section className="py-2 px-4 bg-white relative">
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-16 space-y-4">
       <div className="flex justify-center items-center gap-2">
         <Heart size={16} className="text-[#c9a84c] fill-[#c9a84c]" />
-        <span className="text-[#c9a84c] text-xs font-black uppercase tracking-[0.4em]">Bridal Stories</span>
+        <span className="text-[#c9a84c] text-xs font-black uppercase tracking-[0.4em]">Real Stories</span>
       </div>
       <h2 className="text-5xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter">
-        VOICES OF <span className="italic font-serif text-[#c9a84c]">Elegance.</span>
+        VOICES OF <span className="italic font-serif text-[#c9a84c]">Relief.</span>
       </h2>
     </div>
 
     {/* Grid: 1 col on mobile, 2 on tablet, 4 on desktop */}
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {TESTIMONIALS.map((t, i) => (
+      {[
+        { name: "Ramesh Patil", location: "Pune, MH", rating: 5, text: "I have been suffering from knee pain for 5 years. After using CrabVeda for just 3 weeks, the difference is unbelievable. I can walk without pain now.", condition: "Knee Pain" },
+        { name: "Sunita Deshpande", location: "Nashik, MH", rating: 5, text: "My husband has severe arthritis. We tried many oils but nothing worked as well as CrabVeda. The relief is fast and long-lasting. Bahut accha product hai!", condition: "Arthritis" },
+        { name: "Anil Sharma", location: "Mumbai, MH", rating: 5, text: "As a gym trainer, muscle soreness is a daily issue. CrabVeda Crab Oil has become my go-to recovery product. Natural, effective and smells great too.", condition: "Muscle Soreness" },
+        { name: "Meena Joshi", location: "Kolhapur, MH", rating: 5, text: "My mother-in-law was unable to move her shoulder properly. After regular use of CrabVeda oil, her mobility has improved so much. We ordered 2 more bottles!", condition: "Joint Mobility" }
+      ].map((t, i) => (
         <div key={i} className="group p-8 rounded-[2rem] bg-[#fcfaf2] border border-[#0a0f0d]/5 hover:bg-[#0a0f0d] transition-all duration-500">
           <div className="flex items-center gap-1 mb-6">
             {[...Array(t.rating)].map((_, s) => (
@@ -576,7 +522,7 @@ export default async function HomePage() {
                 <MapPin size={10} /> {t.location}
               </p>
               <span className="text-[9px] font-black px-2 py-1 bg-[#0a0f0d]/5 group-hover:bg-white/10 text-[#0a0f0d] group-hover:text-[#c9a84c] rounded-md uppercase tracking-tighter">
-                {t.service}
+                {t.condition}
               </span>
             </div>
           </div>
@@ -595,11 +541,11 @@ export default async function HomePage() {
       <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-6">
         <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none">
           THE <br />
-          <span className="text-[#c9a84c]">SHRILEKHA</span> <br />
+          <span className="text-[#c9a84c]">CRABVEDA</span> <br />
           PROMISE.
         </h2>
         <p className="text-gray-400 text-lg font-medium">
-          Trusted by over 500+ brides across Maharashtra for our uncompromising quality and artistic vision.
+          Trusted by over 5000+ individuals across India for target-deep recovery and long-lasting joint comfort.
         </p>
         <div className="w-20 h-1 bg-[#c9a84c]" />
       </div>
@@ -607,12 +553,12 @@ export default async function HomePage() {
       {/* Right Grid Content */}
       <div className="lg:col-span-8 grid sm:grid-cols-2 gap-8">
         {[
-          { icon: <Leaf size={32} />, title: 'Pure & Natural', desc: '100% organic henna with no PPD or harmful chemicals. Safe for all skin types.' },
-          { icon: <Palette size={32} />, title: 'Expert Artists', desc: 'Professional artists with 5+ years experience in luxury bridal aesthetics.' },
-          { icon: <Truck size={32} />, title: 'Pan India Delivery', desc: 'Fast shipping across India. Free delivery on orders above ₹499.' },
-          { icon: <Award size={32} />, title: 'Bridal Specialists', desc: 'Specializing in intricate bridal mehndi and high-fashion makeup.' },
-          { icon: <Camera size={32} />, title: 'Portfolio Ready', desc: 'Designs crafted to look flawless under professional camera lighting.' },
-          { icon: <Heart size={32} />, title: 'Made with Love', desc: 'Every cone and every design is handled with meticulous attention to detail.' },
+          { icon: <Leaf size={32} />, title: 'Pure & Ayurvedic', desc: '100% natural compounds with zero side effects. Safe, authentic, and completely toxin-free.' },
+          { icon: <Palette size={32} />, title: 'Deep Absorption', desc: 'Fast-acting formula engineered for rapid, target-deep penetration into stiff joints.' },
+          { icon: <Truck size={32} />, title: 'Free Pan-India Delivery', desc: 'Enjoy reliable, completely free shipping right to your doorstep anywhere in India.' },
+          { icon: <Award size={32} />, title: '98% Recovery Rate', desc: 'Clinically tested efficacy backed by thousands of verified clinical relief success stories.' },
+          { icon: <Camera size={32} />, title: 'Restores Mobility', desc: 'Specially crafted to reduce painful inflammation and rebuild flexible, long-term mobility.' },
+          { icon: <Heart size={32} />, title: 'Made with Care', desc: 'Meticulously processed to ensure premium therapeutic strength and maximum comfort.' },
         ].map((f, i) => (
           <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-[#c9a84c]/50 transition-all group">
             <div className="text-[#c9a84c] mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -635,11 +581,11 @@ export default async function HomePage() {
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
       <div className="flex-1 space-y-6 text-center md:text-left">
         <h2 className="text-5xl md:text-7xl font-black text-[#0a0f0d] tracking-tighter leading-none">
-          ELEVATE YOUR <br />
-          <span className="text-[#c9a84c]">AESTHETIC.</span>
+          RECLAIM YOUR <br />
+          <span className="text-[#c9a84c]">MOBILITY.</span>
         </h2>
         <p className="text-gray-500 text-lg md:text-xl font-medium max-w-md mx-auto md:mx-0">
-          From organic supplies to signature bridal transformations. Pune’s luxury standard.
+          From target-deep relief to natural long-term wellness. India's clinical Ayurvedic standard.
         </p>
       </div>
 
@@ -649,16 +595,16 @@ export default async function HomePage() {
           href="/products" 
           className="group flex items-center justify-between gap-8 bg-[#0a0f0d] text-white px-8 py-5 rounded-2xl hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all duration-300"
         >
-          <span className="font-black text-xs tracking-widest uppercase">Shop Collection</span>
+          <span className="font-black text-xs tracking-widest uppercase">Shop Pain Relief Oil</span>
           <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
         </Link>
 
         <Link 
-          href="/packages" 
+          href="https://wa.me/919921297518" 
           className="group flex items-center justify-between gap-8 border-2 border-[#0a0f0d] text-[#0a0f0d] px-8 py-5 rounded-2xl hover:bg-[#0a0f0d] hover:text-white transition-all duration-300"
         >
-          <span className="font-black text-xs tracking-widest uppercase">Book Services</span>
-          <Palette size={20} />
+          <span className="font-black text-xs tracking-widest uppercase">Consult via WhatsApp</span>
+          <Phone size={20} />
         </Link>
       </div>
     </div>
@@ -669,18 +615,18 @@ export default async function HomePage() {
         <div className="flex -space-x-2">
           {[1,2,3].map(i => (
             <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[8px] font-bold">
-              {i === 3 ? '50+' : ''}
+              {i === 3 ? '4.9★' : ''}
             </div>
           ))}
         </div>
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Trusted by 500+ Pune Brides</p>
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Trusted by 5000+ Verified Users</p>
       </div>
       
       <a 
-        href="https://wa.me/919623740541" 
+        href="https://wa.me/919921297518" 
         className="text-[#c9a84c] font-black text-xs tracking-widest flex items-center gap-2 hover:opacity-70 transition-opacity"
       >
-        WHATSAPP INQUIRY <Phone size={14} />
+        WHATSAPP ORDER INQUIRY <Phone size={14} />
       </a>
     </div>
   </div>

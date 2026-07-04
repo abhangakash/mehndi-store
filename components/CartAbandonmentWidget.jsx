@@ -75,7 +75,7 @@ export default function CartAbandonmentWidget() {
             {items.length > 2 && <p className="text-xs" style={{ color: 'rgba(15,26,14,0.3)' }}>+{items.length - 2} more</p>}
           </div>
           <div className="flex flex-col gap-2">
-            <a href={`https://wa.me/919623740541?text=${buildWhatsAppMessage()}`}
+            <a href={`https://wa.me/919921297518?text=${buildWhatsAppMessage()}`}
               target="_blank" rel="noreferrer" onClick={handleDismiss}
               className="flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-white"
               style={{ backgroundColor: '#25D366' }}>

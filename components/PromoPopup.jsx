@@ -11,19 +11,19 @@ const POPUP_CONFIG = {
   delay: 10000,
   // How many days before showing again to same visitor
   cooldownDays: 3,
-  storageKey: 'shrilekha_popup_last_shown',
+  storageKey: 'crabveda_popup_last_shown',
 }
 
 const POPUP_CONTENT = {
-  badge: '🎉 Limited Time Offer',
-  title: 'Bridal Package Special',
-  subtitle: 'Book This Month & Save',
-  highlight: '20% OFF',
-  highlightSub: 'on all bridal combos',
-  description: 'Complete bridal mehndi + makeup combo starting at ₹5,600 (was ₹7,000). Limited slots available for wedding season!',
-  ctaPrimary: { label: 'Book via WhatsApp', href: 'https://wa.me/919623740541?text=Hi! I want to book the bridal combo with 20% off offer' },
-  ctaSecondary: { label: 'View All Packages', href: '/packages' },
-  features: ['Full bridal mehndi (hands + feet)', 'HD bridal makeup', 'Hairstyling included', 'Free touch-up kit'],
+  badge: '🎉 Special Launch Offer',
+  title: 'Crabveda Pain Relief',
+  subtitle: 'Relieve Pain, Reclaim Life',
+  highlight: 'BUY 2 GET 1',
+  highlightSub: 'FREE on all bottles',
+  description: 'Pure, fast-absorbing Ayurvedic Crab Oil clinically tested for joint mobility, arthritis, and chronic knee pain. Free Pan-India Delivery included!',
+  ctaPrimary: { label: 'Order via WhatsApp', href: 'https://wa.me/919921297518?text=Hi! I want to order Crabveda Pain Relief Oil with the Buy 2 Get 1 Free offer' },
+  ctaSecondary: { label: 'Shop Online', href: '/products' },
+  features: ['100% Ayurvedic Formula', 'Deep Target Absorption', 'Relieves Joint Stiffness', '5000+ Verified Users'],
   tag: 'offer', // 'offer' | 'class' | 'new' | 'event'
 }
 
@@ -125,10 +125,10 @@ export default function PromoPopup() {
                 </p>
               </div>
               <div className="text-right flex-shrink-0">
-                <div className="text-3xl font-black leading-none" style={{ color: '#c9a84c' }}>
+                <div className="text-2xl font-black leading-none" style={{ color: '#c9a84c' }}>
                   {POPUP_CONTENT.highlight}
                 </div>
-                <div className="text-xs mt-0.5" style={{ color: 'rgba(15,26,14,0.4)' }}>
+                <div className="text-[10px] mt-0.5 font-bold uppercase" style={{ color: 'rgba(15,26,14,0.4)' }}>
                   {POPUP_CONTENT.highlightSub}
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function PromoPopup() {
             {/* Feature list */}
             <div className="grid grid-cols-2 gap-1.5 mb-5">
               {POPUP_CONTENT.features.map(f => (
-                <div key={f} className="flex items-center gap-1.5 text-xs"
+                <div key={f} className="flex items-center gap-1.5 text-xs font-medium"
                   style={{ color: 'rgba(15,26,14,0.6)' }}>
                   <span className="text-green-600">✓</span> {f}
                 </div>
@@ -153,7 +153,7 @@ export default function PromoPopup() {
               style={{ backgroundColor: '#fef3c7' }}>
               <span className="text-base">⏰</span>
               <p className="text-xs font-bold" style={{ color: '#d97706' }}>
-                Limited slots! Offer valid till end of month only.
+                Stock running low! Offer valid for a limited time only.
               </p>
             </div>
           </div>
@@ -188,4 +188,3 @@ export default function PromoPopup() {
     </>
   )
 }
-

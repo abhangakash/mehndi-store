@@ -28,7 +28,7 @@ export default function ContactForm() {
     setLoading(true)
     // Build WhatsApp message as fallback (no backend needed)
     const msg = `*New Inquiry from Website*\n\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email || 'Not provided'}\nType: ${form.type || 'General'}\n\nMessage:\n${form.message}`
-    const waUrl = `https://wa.me/919623740541?text=${encodeURIComponent(msg)}`
+    const waUrl = `https://wa.me/919921297518?text=${encodeURIComponent(msg)}`
     setTimeout(() => {
       setLoading(false)
       setSent(true)

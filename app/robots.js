@@ -7,7 +7,7 @@ export default function robots() {
         disallow: ['/admin', '/admin-login', '/api/', '/profile', '/checkout', '/cart'],
       },
     ],
-    sitemap: 'https://mehndi.zevette.com/sitemap.xml',
-    host: 'https://mehndi.zevette.com',
+    sitemap: 'https://crabveda.com/sitemap.xml',
+    host: 'https://crabveda.com',
   }
 }

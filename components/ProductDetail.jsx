@@ -73,7 +73,7 @@ export default function ProductDetail({ product, reviews, related }) {
   const handleAddToCart = () => {
     addItem(product, qty)
     toast.success(`${product.name} added to cart!`, {
-      icon: '🌿',
+      icon: '🦀',
       style: { borderRadius: '10px', fontSize: '14px' },
     })
   }
@@ -121,7 +121,7 @@ export default function ProductDetail({ product, reviews, related }) {
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <span className="text-9xl">🌿</span>
+                <span className="text-9xl">🦀</span>
               </div>
             )}
             <div className="absolute top-3 left-3 flex flex-col gap-1.5">
@@ -166,7 +166,7 @@ export default function ProductDetail({ product, reviews, related }) {
                   }}>
                   {img
                     ? <img src={img} alt="" className="w-full h-full object-cover" />
-                    : <div className="w-full h-full flex items-center justify-center text-2xl">🌿</div>}
+                    : <div className="w-full h-full flex items-center justify-center text-2xl">🦀</div>}
                 </button>
               ))}
             </div>
@@ -232,7 +232,7 @@ export default function ProductDetail({ product, reviews, related }) {
             </div>
             {product.weight_grams && (
               <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--brand-muted)' }}>
-                <Tag size={12} /> {product.weight_grams}g
+                <Tag size={12} /> {product.weight_grams}ml
               </div>
             )}
           </div>
@@ -276,7 +276,7 @@ export default function ProductDetail({ product, reviews, related }) {
             </button>
           </div>
 
-          <a href={`https://wa.me/919623740541?text=Hi! I want to order: ${product.name} (₹${product.price}) — Qty: ${qty}`}
+          <a href={`https://wa.me/919921297518?text=Hi! I want to order: ${product.name} (₹${product.price}) — Qty: ${qty}`}
             target="_blank" rel="noreferrer"
             className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium border transition-colors hover:bg-green-50"
             style={{ borderColor: '#86efac', color: '#15803d' }}>
@@ -309,7 +309,7 @@ export default function ProductDetail({ product, reviews, related }) {
           <div className="card overflow-hidden border shadow-sm" style={{ borderColor: 'var(--brand-border)' }}>
             <Accordion title="Usage Instructions" icon={<Leaf size={16} />} defaultOpen>
               <div className="flex flex-col gap-3">
-                {(product.usage_instructions || 'Apply on clean dry skin. Leave for 2–4 hours for best results. Scrape off without water. Avoid contact with water for 12 hours after removal for darkest color.')
+                {(product.usage_instructions || 'Apply sufficient oil on affected area. Massage gently for 10–15 minutes. Use twice daily.')
                   .split('. ')
                   .filter(Boolean)
                   .map((step, i) => (
@@ -338,7 +338,6 @@ export default function ProductDetail({ product, reviews, related }) {
               <div className="flex flex-col gap-3">
                 {[
                   { icon: <Truck size={13} />, text: 'Standard delivery: 3–7 business days across India' },
-                  { icon: <MapPin size={13} />, text: 'Pune delivery: 1–2 business days' },
                   { icon: <Package size={13} />, text: 'Free shipping on orders above ₹499' },
                   { icon: <CheckCircle size={13} />, text: 'COD available on orders above ₹999' },
                   { icon: <Clock size={13} />, text: 'Orders shipped within 24 hours of payment' },
@@ -356,7 +355,7 @@ export default function ProductDetail({ product, reviews, related }) {
                 <p>• Returns accepted within <strong>7 days</strong> of delivery for unused, sealed products</p>
                 <p>• Damaged or wrong item — contact us within <strong>48 hours</strong> with photos</p>
                 <p>• Refund processed in <strong>5–7 business days</strong> to original payment method</p>
-                <p>• WhatsApp us at <a href="https://wa.me/919623740541" className="underline font-medium" style={{ color: 'var(--brand-green)' }}>+91 96237 40541</a> to initiate returns</p>
+                <p>• WhatsApp us at <a href="https://wa.me/919921297518" className="underline font-medium" style={{ color: 'var(--brand-green)' }}>+91 99212 97518</a> to initiate returns</p>
               </div>
             </Accordion>
 

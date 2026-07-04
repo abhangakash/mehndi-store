@@ -2,29 +2,30 @@ import * as React from 'react'
 
 // Beautiful HTML email template for order confirmation
 // Works with Resend + react-email
-export function OrderConfirmationEmail({ order, items }) {
-  const subtotal = Number(order.subtotal || 0)
-  const shipping = Number(order.shipping_amount || 0)
-  const total = Number(order.total_amount || 0)
+export function OrderConfirmationEmail({ order = {}, items = [] }) {
+  const subtotal = Number(order?.subtotal || 0)
+  const shipping = Number(order?.shipping_amount || 0)
+  const total = Number(order?.total_amount || 0)
+  const safeItems = Array.isArray(items) ? items : []
 
   return (
-    <html>
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Order Confirmed — Shrilekha Mehndi Art</title>
+        <title>Order Confirmed — CrabVeda</title>
       </head>
       <body style={{ margin: 0, padding: 0, backgroundColor: '#f5f0e8', fontFamily: "'Segoe UI', Arial, sans-serif" }}>
-        <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: '#f5f0e8', padding: '32px 16px' }}>
+        <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ backgroundColor: '#f5f0e8', padding: '32px 16px' }}>
           <tr>
             <td align="center">
-              <table width="100%" style={{ maxWidth: '560px', backgroundColor: '#ffffff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+              <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ maxWidth: '560px', backgroundColor: '#ffffff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
 
                 {/* Header */}
                 <tr>
                   <td style={{ background: 'linear-gradient(135deg, #0f1a0e, #1a3020)', padding: '32px 32px 24px', textAlign: 'center' }}>
                     <p style={{ margin: 0, fontSize: '10px', fontWeight: 800, letterSpacing: '0.3em', color: '#c9a84c', textTransform: 'uppercase', marginBottom: '8px' }}>
-                      ✦ Shrilekha Mehndi Art & Glowup ✦
+                      ✦ CrabVeda ✦
                     </p>
                     <h1 style={{ margin: 0, fontSize: '28px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
                       Order Confirmed!
@@ -38,11 +39,13 @@ export function OrderConfirmationEmail({ order, items }) {
                 {/* Order ID + Date */}
                 <tr>
                   <td style={{ padding: '24px 32px', backgroundColor: '#fef9ee', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                    <table width="100%" cellPadding="0" cellSpacing="0">
+                    <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
                       <tr>
                         <td>
                           <p style={{ margin: 0, fontSize: '10px', fontWeight: 800, color: 'rgba(15,26,14,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Order ID</p>
-                          <p style={{ margin: '4px 0 0', fontSize: '16px', fontWeight: 900, color: '#0f1a0e' }}>#{(order.id || '').slice(0, 8).toUpperCase()}</p>
+                          <p style={{ margin: '4px 0 0', fontSize: '16px', fontWeight: 900, color: '#0f1a0e' }}>
+                            #{ (order?.id || '').slice(0, 8).toUpperCase() }
+                          </p>
                         </td>
                         <td align="right">
                           <p style={{ margin: 0, fontSize: '10px', fontWeight: 800, color: 'rgba(15,26,14,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Date</p>
@@ -59,7 +62,7 @@ export function OrderConfirmationEmail({ order, items }) {
                 <tr>
                   <td style={{ padding: '28px 32px 16px' }}>
                     <p style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: '#0f1a0e' }}>
-                      Hi {order.customer_name} 👋
+                      Hi {order?.customer_name || 'Customer'} 👋
                     </p>
                     <p style={{ margin: '8px 0 0', fontSize: '14px', color: 'rgba(15,26,14,0.6)', lineHeight: '1.6' }}>
                       Your order has been confirmed and is being prepared for dispatch. We'll send you another update when it's shipped!
@@ -73,15 +76,17 @@ export function OrderConfirmationEmail({ order, items }) {
                     <p style={{ margin: '0 0 12px', fontSize: '11px', fontWeight: 800, color: 'rgba(15,26,14,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                       Items Ordered
                     </p>
-                    <table width="100%" cellPadding="0" cellSpacing="0" style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.06)' }}>
-                      {(items || []).map((item, i) => (
+                    <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      {safeItems.map((item, i) => (
                         <tr key={i} style={{ backgroundColor: i % 2 === 0 ? '#ffffff' : '#fafaf7' }}>
                           <td style={{ padding: '12px 16px' }}>
-                            <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: '#0f1a0e' }}>{item.product_name}</p>
-                            <p style={{ margin: '2px 0 0', fontSize: '11px', color: 'rgba(15,26,14,0.4)' }}>Qty: {item.quantity}</p>
+                            <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: '#0f1a0e' }}>{item?.product_name || 'Ayurvedic Treatment Item'}</p>
+                            <p style={{ margin: '2px 0 0', fontSize: '11px', color: 'rgba(15,26,14,0.4)' }}>Qty: {item?.quantity || 1}</p>
                           </td>
                           <td align="right" style={{ padding: '12px 16px' }}>
-                            <p style={{ margin: 0, fontSize: '14px', fontWeight: 800, color: '#c9a84c' }}>₹{Number(item.total_price).toFixed(0)}</p>
+                            <p style={{ margin: 0, fontSize: '14px', fontWeight: 800, color: '#c9a84c' }}>
+                              ₹{Number(item?.total_price || 0).toFixed(0)}
+                            </p>
                           </td>
                         </tr>
                       ))}
@@ -92,7 +97,7 @@ export function OrderConfirmationEmail({ order, items }) {
                 {/* Price summary */}
                 <tr>
                   <td style={{ padding: '0 32px 24px' }}>
-                    <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: '#fafaf7', borderRadius: '12px', padding: '16px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <table width="100%" cellPadding="0" cellSpacing="0" role="presentation" style={{ backgroundColor: '#fafaf7', borderRadius: '12px', padding: '16px', border: '1px solid rgba(0,0,0,0.06)' }}>
                       <tr>
                         <td><p style={{ margin: '0 0 6px', fontSize: '13px', color: 'rgba(15,26,14,0.5)' }}>Subtotal</p></td>
                         <td align="right"><p style={{ margin: '0 0 6px', fontSize: '13px', color: '#0f1a0e' }}>₹{subtotal.toFixed(0)}</p></td>
@@ -122,11 +127,11 @@ export function OrderConfirmationEmail({ order, items }) {
                       Delivery Address
                     </p>
                     <div style={{ backgroundColor: '#f0fdf4', borderRadius: '12px', padding: '16px', border: '1px solid rgba(21,128,61,0.15)' }}>
-                      <p style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0f1a0e' }}>{order.customer_name}</p>
+                      <p style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0f1a0e' }}>{order?.customer_name || 'Customer'}</p>
                       <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'rgba(15,26,14,0.6)', lineHeight: '1.5' }}>
-                        {order.address}<br />
-                        {order.city}, {order.state} — {order.pincode}<br />
-                        📞 {order.phone}
+                        {order?.address}<br />
+                        {order?.city}, {order?.state} — {order?.pincode}<br />
+                        📞 {order?.phone}
                       </p>
                     </div>
                   </td>
@@ -135,12 +140,12 @@ export function OrderConfirmationEmail({ order, items }) {
                 {/* Payment + delivery */}
                 <tr>
                   <td style={{ padding: '0 32px 24px' }}>
-                    <table width="100%" cellPadding="0" cellSpacing="0">
+                    <table width="100%" cellPadding="0" cellSpacing="0" role="presentation">
                       <tr>
                         <td style={{ width: '48%', backgroundColor: '#fef9ee', borderRadius: '12px', padding: '14px', border: '1px solid rgba(201,168,76,0.2)' }}>
                           <p style={{ margin: '0 0 4px', fontSize: '10px', fontWeight: 800, color: 'rgba(15,26,14,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Payment</p>
                           <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: '#0f1a0e' }}>
-                            {order.payment_method === 'cod' ? '💵 Cash on Delivery' : '✅ Paid Online'}
+                            {order?.payment_method === 'cod' ? '💵 Cash on Delivery' : '✅ Paid Online'}
                           </p>
                         </td>
                         <td style={{ width: '4%' }} />
@@ -156,13 +161,13 @@ export function OrderConfirmationEmail({ order, items }) {
                 {/* CTA Button */}
                 <tr>
                   <td style={{ padding: '0 32px 32px', textAlign: 'center' }}>
-                    <a href={`https://shrilekha.com/track-order`}
+                    <a href="https://crabveda.com/track-order"
                       style={{ display: 'inline-block', backgroundColor: '#0f1a0e', color: '#ffffff', textDecoration: 'none', padding: '14px 32px', borderRadius: '50px', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                       Track Your Order →
                     </a>
                     <p style={{ margin: '12px 0 0', fontSize: '12px', color: 'rgba(15,26,14,0.4)' }}>
                       Or WhatsApp us at{' '}
-                      <a href="https://wa.me/919623740541" style={{ color: '#c9a84c', fontWeight: 700 }}>+91 96237 40541</a>
+                      <a href="https://wa.me/919921297518" style={{ color: '#c9a84c', fontWeight: 700, textDecoration: 'none' }}>+91 99212 97518</a>
                     </p>
                   </td>
                 </tr>
@@ -171,13 +176,13 @@ export function OrderConfirmationEmail({ order, items }) {
                 <tr>
                   <td style={{ backgroundColor: '#0f1a0e', padding: '20px 32px', textAlign: 'center' }}>
                     <p style={{ margin: 0, fontSize: '10px', fontWeight: 800, color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.3em' }}>
-                      Shrilekha Mehndi Art & Glowup Studio
+                      CrabVeda Joint & Muscle Care
                     </p>
                     <p style={{ margin: '4px 0 0', fontSize: '11px', color: 'rgba(255,255,255,0.35)' }}>
-                      Pune, Maharashtra · info@shrilekha.com
+                      crabveda.com · crabveda@gmail.com
                     </p>
                     <p style={{ margin: '8px 0 0', fontSize: '11px', color: 'rgba(255,255,255,0.2)' }}>
-                      ✦ Where Every Design Tells A Story ✦
+                      ✦ Ayurvedic Crab Oil for Natural Healing ✦
                     </p>
                   </td>
                 </tr>
@@ -189,36 +194,4 @@ export function OrderConfirmationEmail({ order, items }) {
       </body>
     </html>
   )
-}
-
-// Plain text fallback
-export function orderConfirmationText({ order, items }) {
-  return `
-ORDER CONFIRMED — Shrilekha Mehndi Art & Glowup Studio
-
-Hi ${order.customer_name},
-
-Your order #${(order.id || '').slice(0, 8).toUpperCase()} has been confirmed!
-
-ITEMS:
-${(items || []).map(i => `• ${i.product_name} × ${i.quantity} — ₹${Number(i.total_price).toFixed(0)}`).join('\n')}
-
-Subtotal: ₹${Number(order.subtotal).toFixed(0)}
-Shipping: ${Number(order.shipping_amount) === 0 ? 'FREE' : `₹${Number(order.shipping_amount).toFixed(0)}`}
-TOTAL: ₹${Number(order.total_amount).toFixed(0)}
-
-DELIVERY ADDRESS:
-${order.customer_name}
-${order.address}, ${order.city}, ${order.state} — ${order.pincode}
-Phone: ${order.phone}
-
-Payment: ${order.payment_method === 'cod' ? 'Cash on Delivery' : 'Paid Online'}
-Estimated Delivery: 3–7 business days
-
-Track your order: https://shrilekha.com/track-order
-Need help? WhatsApp: +91 96237 40541
-
-Thank you for shopping with Shrilekha Mehndi Art!
-— Pune, Maharashtra
-`.trim()
 }

@@ -11,10 +11,10 @@ import toast from 'react-hot-toast'
 import Image from 'next/image'
 
 const BENEFITS = [
-  'Save your delivery addresses',
-  'View full order history',
-  'Faster checkout every time',
-  'Exclusive member offers',
+  'Track restoration & delivery status',
+  'Review targeted order history',
+  'Accelerated secure checkouts',
+  'Access exclusive wellness offers',
 ]
 
 export default function SignupPage() {
@@ -48,11 +48,14 @@ export default function SignupPage() {
     setLoading(false)
   }
 
-  const inputStyle = {
+  const baseInputStyle = {
     backgroundColor: 'white',
     border: '1.5px solid rgba(15,26,14,0.08)',
     color: '#0f1a0e',
     boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    paddingTop: '1rem',
+    paddingBottom: '1rem',
+    paddingRight: '1rem',
   }
 
   const handleFocus = e => e.target.style.borderColor = '#c9a84c'
@@ -84,15 +87,15 @@ export default function SignupPage() {
 
         <div className="relative z-10 flex flex-col items-center text-center">
           <div className="relative mb-8">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)' }}>
-              <Image src="/art2.png" alt="Shrilekha" width={48} height={48} className="object-contain brightness-110" />
-            </div>
-          </div>
+  <div className="w-20 h-20 rounded-full flex items-center justify-center overflow-hidden"
+    style={{ backgroundColor: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)' }}>
+    <Image src="/logo.jpeg" alt="Crabveda" width={80} height={80} className="w-full h-full object-cover brightness-110 rounded-full" />
+  </div>
+</div>
 
           <div className="mb-3 flex items-center gap-3">
             <div className="h-px w-6" style={{ backgroundColor: 'rgba(201,168,76,0.3)' }} />
-            <span className="text-xs font-bold uppercase tracking-[0.4em]" style={{ color: '#c9a84c' }}>Join the Studio</span>
+            <span className="text-xs font-bold uppercase tracking-[0.4em]" style={{ color: '#c9a84c' }}>Authentic Ayurveda</span>
             <div className="h-px w-6" style={{ backgroundColor: 'rgba(201,168,76,0.3)' }} />
           </div>
 
@@ -107,7 +110,7 @@ export default function SignupPage() {
                   style={{ backgroundColor: 'rgba(201,168,76,0.15)' }}>
                   <CheckCircle size={11} style={{ color: '#c9a84c' }} />
                 </div>
-                <span className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{b}</span>
+                <span className="text-sm text-left" style={{ color: 'rgba(255,255,255,0.5)' }}>{b}</span>
               </div>
             ))}
           </div>
@@ -116,7 +119,7 @@ export default function SignupPage() {
             style={{ backgroundColor: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.1)' }}>
             <p className="text-xs leading-relaxed text-center"
               style={{ color: 'rgba(255,255,255,0.35)' }}>
-              Join 500+ customers who shop premium natural henna products from Shrilekha Mehndi Art, Pune.
+              Join thousands who rely on Crabveda for elite, concentrated pain relief oils and natural recovery solutions.
             </p>
           </div>
         </div>
@@ -124,7 +127,7 @@ export default function SignupPage() {
         <div className="absolute bottom-8 left-0 right-0 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.3em]"
             style={{ color: 'rgba(201,168,76,0.3)' }}>
-            ✦ Where Every Design Tells A Story ✦
+            ✦ Pure Relief. Restored Vitality. ✦
           </p>
         </div>
       </div>
@@ -138,19 +141,19 @@ export default function SignupPage() {
           <div className="lg:hidden text-center mb-8">
             <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
               style={{ backgroundColor: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
-              <Image src="/art2.png" alt="Shrilekha" width={32} height={32} className="object-contain" />
+              <Image src="/art2.png" alt="Crabveda" width={32} height={32} className="object-contain" />
             </div>
-            <h1 className="font-black text-lg uppercase tracking-widest" style={{ color: '#0f1a0e' }}>Shrilekha</h1>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] mt-0.5" style={{ color: '#c9a84c' }}>Mehndi Art & Glowup</p>
+            <h1 className="font-black text-lg uppercase tracking-widest" style={{ color: '#0f1a0e' }}>Crabveda</h1>
+            <p className="text-xs font-bold uppercase tracking-[0.3em] mt-0.5" style={{ color: '#c9a84c' }}>Pain Relief & Recovery</p>
           </div>
 
           {/* Form header */}
           <div className="mb-6">
             <h2 className="text-2xl font-black uppercase tracking-tight" style={{ color: '#0f1a0e' }}>
-              Join the Studio
+              Begin Recovery
             </h2>
             <p className="text-xs font-medium mt-1.5" style={{ color: 'rgba(15,26,14,0.4)' }}>
-              Create your free account — takes less than a minute
+              Create your account — takes less than a minute
             </p>
           </div>
 
@@ -161,13 +164,15 @@ export default function SignupPage() {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest mb-2"
                 style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
-              <div className="relative">
-                <User size={15} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{ color: '#c9a84c' }} />
+              <div className="relative w-full" style={{ display: 'block' }}>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
+                  <User size={16} style={{ color: '#c9a84c' }} />
+                </div>
                 <input type="text" value={name} onChange={e => setName(e.target.value)}
                   placeholder="Priya Sharma"
-                  className="w-full pl-11 pr-4 py-3 text-sm rounded-2xl outline-none transition-all"
-                  style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
+                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
+                  style={{ ...baseInputStyle, paddingLeft: '3.5rem' }} 
+                  onFocus={handleFocus} onBlur={handleBlur} />
               </div>
             </div>
 
@@ -175,13 +180,15 @@ export default function SignupPage() {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest mb-2"
                 style={{ color: 'rgba(15,26,14,0.5)' }}>Email Address *</label>
-              <div className="relative">
-                <Mail size={15} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{ color: '#c9a84c' }} />
+              <div className="relative w-full" style={{ display: 'block' }}>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
+                  <Mail size={16} style={{ color: '#c9a84c' }} />
+                </div>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-11 pr-4 py-3 text-sm rounded-2xl outline-none transition-all"
-                  style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
+                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
+                  style={{ ...baseInputStyle, paddingLeft: '3.5rem' }} 
+                  onFocus={handleFocus} onBlur={handleBlur} />
               </div>
             </div>
 
@@ -189,18 +196,18 @@ export default function SignupPage() {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest mb-2"
                 style={{ color: 'rgba(15,26,14,0.5)' }}>
-                Phone <span style={{ color: 'rgba(15,26,14,0.3)' }}>(optional — for order tracking)</span>
+                Phone <span style={{ color: 'rgba(15,26,14,0.3)' }}>(optional — for tracking)</span>
               </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none">
-                  <Phone size={13} style={{ color: '#c9a84c' }} />
-                  <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.3)' }}>+91</span>
+              <div className="relative w-full" style={{ display: 'block' }}>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 pointer-events-none">
+                  <Phone size={14} style={{ color: '#c9a84c' }} />
+                  <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.4)' }}>+91</span>
                 </div>
                 <input type="tel" value={phone}
                   onChange={e => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   placeholder="9876543210" maxLength={10}
-                  className="w-full pr-4 py-3 text-sm rounded-2xl outline-none transition-all"
-                  style={{ ...inputStyle, paddingLeft: '4rem' }}
+                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
+                  style={{ ...baseInputStyle, paddingLeft: '4.8rem' }}
                   onFocus={handleFocus} onBlur={handleBlur} />
               </div>
             </div>
@@ -209,15 +216,17 @@ export default function SignupPage() {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest mb-2"
                 style={{ color: 'rgba(15,26,14,0.5)' }}>Password *</label>
-              <div className="relative">
-                <Lock size={15} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{ color: '#c9a84c' }} />
+              <div className="relative w-full" style={{ display: 'block' }}>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
+                  <Lock size={16} style={{ color: '#c9a84c' }} />
+                </div>
                 <input type={showPassword ? 'text' : 'password'} value={password}
                   onChange={e => setPassword(e.target.value)} placeholder="Min 6 characters"
-                  className="w-full pl-11 pr-12 py-3 text-sm rounded-2xl outline-none transition-all"
-                  style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
+                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
+                  style={{ ...baseInputStyle, paddingLeft: '3.5rem', paddingRight: '3rem' }} 
+                  onFocus={handleFocus} onBlur={handleBlur} />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 transition-colors flex items-center justify-center"
                   style={{ color: 'rgba(15,26,14,0.3)' }}>
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -228,19 +237,22 @@ export default function SignupPage() {
             <div>
               <label className="block text-xs font-black uppercase tracking-widest mb-2"
                 style={{ color: 'rgba(15,26,14,0.5)' }}>Confirm Password *</label>
-              <div className="relative">
-                <Lock size={15} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{ color: password && confirm && password === confirm ? '#15803d' : '#c9a84c' }} />
+              <div className="relative w-full" style={{ display: 'block' }}>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
+                  <Lock size={16} style={{ color: password && confirm && password === confirm ? '#15803d' : '#c9a84c' }} />
+                </div>
                 <input type={showConfirm ? 'text' : 'password'} value={confirm}
                   onChange={e => setConfirm(e.target.value)} placeholder="Re-enter password"
-                  className="w-full pl-11 pr-12 py-3 text-sm rounded-2xl outline-none transition-all"
+                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
                   style={{
-                    ...inputStyle,
+                    ...baseInputStyle,
+                    paddingLeft: '3.5rem',
+                    paddingRight: '3rem',
                     borderColor: confirm && password !== confirm ? '#fca5a5' : 'rgba(15,26,14,0.08)',
                   }}
                   onFocus={handleFocus} onBlur={handleBlur} />
                 <button type="button" onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 transition-colors flex items-center justify-center"
                   style={{ color: 'rgba(15,26,14,0.3)' }}>
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

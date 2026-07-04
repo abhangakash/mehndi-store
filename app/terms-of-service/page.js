@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { FileText, ArrowLeft } from 'lucide-react'
 
 export const metadata = {
-  title: 'Terms of Service — Shrilekha Mehndi Art',
-  description: 'Terms and conditions for using Shrilekha Mehndi Art & Glowup services and website.',
+  title: 'Terms of Service — Crabveda Oil',
+  description: 'Terms and conditions for using Crabveda Pain Relief Oil website and purchasing products.',
 }
 
 export default function TermsPage() {
@@ -25,52 +25,42 @@ export default function TermsPage() {
       </div>
       <div className="card p-6 md:p-8 flex flex-col gap-8">
         <PolicySection title="1. Acceptance of Terms">
-          <p>By accessing and using the Shrilekha Mehndi Art website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+          <p>By accessing and using the Crabveda Oil website, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
         </PolicySection>
-        <PolicySection title="2. Products & Services">
+        <PolicySection title="2. Products">
           <ul>
             <li>All product descriptions, images and prices are subject to change without notice</li>
             <li>We reserve the right to limit quantities of products sold</li>
-            <li>Colors of products may vary slightly from images displayed on screen</li>
-            <li>Service availability (mehndi/makeup) is subject to artist availability and location</li>
+            <li>Colors and packaging of products may vary slightly from images displayed on screen</li>
           </ul>
         </PolicySection>
         <PolicySection title="3. Orders & Payments">
           <ul>
-            <li>Orders are confirmed only upon successful payment</li>
-            <li>We accept UPI, credit/debit cards, net banking and Cash on Delivery (orders above ₹999)</li>
+            <li>Orders are confirmed only upon successful online payment</li>
+            <li>We accept online payments only (UPI, credit/debit cards, net banking, and wallets). Cash on Delivery (COD) is not available</li>
             <li>All prices are in Indian Rupees (₹) and inclusive of applicable taxes</li>
             <li>We reserve the right to cancel orders in case of pricing errors or stock unavailability</li>
           </ul>
         </PolicySection>
-        <PolicySection title="4. Service Bookings">
+        <PolicySection title="4. Product Usage & Sensitivity">
           <ul>
-            <li>Mehndi and makeup appointments require advance booking via WhatsApp</li>
-            <li>A confirmation is provided via WhatsApp message</li>
-            <li>Cancellations must be made at least 24 hours before the appointment</li>
-            <li>Late cancellations may incur a fee of 20% of the package price</li>
-            <li>Travel charges may apply for locations outside Pune city limits</li>
+            <li>Crabveda Oil is formulated as a pain relief oil; however, individual skin reactions may vary</li>
+            <li>Customers with known skin allergies or hyper-sensitive skin should perform a patch test before regular use</li>
+            <li>Crabveda Oil is not liable for any allergic or adverse reactions if proper precautions or patch tests are not performed</li>
+            <li>Consult a medical professional if you have chronic medical conditions before introducing new pain relief applications</li>
           </ul>
         </PolicySection>
-        <PolicySection title="5. Allergies & Skin Sensitivity">
-          <ul>
-            <li>All mehndi products contain natural henna; however, individual reactions may vary</li>
-            <li>Customers with known skin allergies should perform a patch test before use</li>
-            <li>Shrilekha Mehndi Art is not liable for any allergic reactions if proper precautions are not taken</li>
-            <li>Inform your artist of any skin conditions before your appointment</li>
-          </ul>
+        <PolicySection title="5. Intellectual Property">
+          <p>All content on this website including text, images, product formulations, designs and logos are the intellectual property of Crabveda Oil. You may not reproduce, distribute or use our content without written permission.</p>
         </PolicySection>
-        <PolicySection title="6. Intellectual Property">
-          <p>All content on this website including text, images, designs and logos are the intellectual property of Shrilekha Mehndi Art. You may not reproduce, distribute or use our content without written permission.</p>
+        <PolicySection title="6. Limitation of Liability">
+          <p>Crabveda Oil shall not be liable for any indirect, incidental or consequential damages arising from the use of our products. Our liability is strictly limited to the amount paid for the specific product purchased.</p>
         </PolicySection>
-        <PolicySection title="7. Limitation of Liability">
-          <p>Shrilekha Mehndi Art shall not be liable for any indirect, incidental or consequential damages arising from the use of our products or services. Our liability is limited to the amount paid for the specific product or service.</p>
-        </PolicySection>
-        <PolicySection title="8. Governing Law">
+        <PolicySection title="7. Governing Law">
           <p>These Terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Pune, Maharashtra.</p>
         </PolicySection>
-        <PolicySection title="9. Contact">
-          <p>For questions about these Terms, contact us at info@shrilekha.com or WhatsApp +91 96237 40541.</p>
+        <PolicySection title="8. Contact">
+          <p>For questions about these Terms, contact us at crabveda@gmail.com or WhatsApp +91 99212 97518.</p>
         </PolicySection>
       </div>
     </div>

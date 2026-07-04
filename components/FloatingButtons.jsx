@@ -19,7 +19,7 @@ export default function FloatingButtons() {
       {expanded && (
         <>
           {/* Instagram */}
-          <a href="https://www.instagram.com/shrilekha_mehandi_art/"
+          <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu"
             target="_blank" rel="noreferrer"
             aria-label="Follow on Instagram"
             className="flex items-center gap-2 pl-3 pr-4 h-10 rounded-full shadow-lg text-white text-xs font-medium transition-all hover:scale-105 active:scale-95 animate-in"
@@ -33,7 +33,7 @@ export default function FloatingButtons() {
           </a>
 
           {/* WhatsApp */}
-          <a href="https://wa.me/919623740541?text=Hi! I want to know more about Shrilekha Mehndi Art"
+          <a href="https://wa.me/919921297518?text=Hi! I want to know more about crabveda oil"
             target="_blank" rel="noreferrer"
             aria-label="Chat on WhatsApp"
             className="flex items-center gap-2 pl-3 pr-4 h-10 rounded-full shadow-lg text-white text-xs font-medium transition-all hover:scale-105 active:scale-95"

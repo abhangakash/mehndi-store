@@ -134,7 +134,7 @@ function OrderCard({ order }) {
               style={{ backgroundColor: '#0f1a0e' }}>
               <Download size={12} /> Invoice
             </a>
-            <a href={`https://wa.me/919623740541?text=Hi! I need help with my order %23${order.id.slice(0,8).toUpperCase()}`}
+            <a href={`https://wa.me/919921297518?text=Hi! I need help with my order %23${order.id.slice(0,8).toUpperCase()}`}
               target="_blank" rel="noreferrer"
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wide text-white"
               style={{ backgroundColor: '#25D366' }}>
@@ -274,7 +274,7 @@ export default function ProfileContent() {
           {[
             { href: '/track-order', icon: <MapPin size={18} />, label: 'Track Order', color: '#7c3aed', bg: '#ede9fe' },
             { href: '/products', icon: <ShoppingBag size={18} />, label: 'Shop Now', color: '#15803d', bg: '#dcfce7' },
-            { href: 'https://wa.me/919623740541', icon: <Phone size={18} />, label: 'Get Help', color: '#15803d', bg: '#dcfce7', external: true },
+            { href: 'https://wa.me/919921297518', icon: <Phone size={18} />, label: 'Get Help', color: '#15803d', bg: '#dcfce7', external: true },
           ].map(a => (
             <Link key={a.label} href={a.href} target={a.external ? '_blank' : undefined} rel={a.external ? 'noreferrer' : undefined}
               className="flex flex-col items-center gap-2 p-3 rounded-2xl transition-all hover:shadow-md"

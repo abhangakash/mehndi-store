@@ -72,41 +72,41 @@ export default function LoginPage() {
         {/* Center logo */}
         <div className="relative z-10 flex flex-col items-center text-center">
           <div className="relative mb-8">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)' }}>
-              <Image src="/art2.png" alt="Shrilekha" width={56} height={56}
-                className="object-contain brightness-110" />
-            </div>
-            <div className="absolute -inset-3 rounded-full"
-              style={{ border: '1px solid rgba(201,168,76,0.1)' }} />
-          </div>
+  <div className="w-24 h-24 rounded-full flex items-center justify-center overflow-hidden"
+    style={{ backgroundColor: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)' }}>
+    <Image src="/logo.jpeg" alt="Crabveda" width={96} height={96}
+      className="w-full h-full object-cover brightness-110 rounded-full" />
+  </div>
+  <div className="absolute -inset-3 rounded-full pointer-events-none"
+    style={{ border: '1px solid rgba(201,168,76,0.1)' }} />
+</div>
 
           <div className="mb-3 flex items-center gap-3">
             <div className="h-px w-8" style={{ backgroundColor: 'rgba(201,168,76,0.3)' }} />
             <span className="text-xs font-bold uppercase tracking-[0.4em]"
               style={{ color: '#c9a84c' }}>
-              Est. Pune, India
+              Est. Solapur, India
             </span>
             <div className="h-px w-8" style={{ backgroundColor: 'rgba(201,168,76,0.3)' }} />
           </div>
 
           <h2 className="text-4xl font-black uppercase tracking-widest text-white mb-2">
-            Shrilekha
+            Crabveda
           </h2>
           <p className="text-sm font-light tracking-[0.3em] uppercase mb-8"
             style={{ color: 'rgba(201,168,76,0.7)' }}>
-            Mehndi Art & Glowup Studio
+            Natural Pain Relief Oils
           </p>
 
           <p className="text-sm leading-relaxed text-center max-w-xs"
             style={{ color: 'rgba(255,255,255,0.4)' }}>
-            Where every design tells a story. Premium henna products & professional bridal beauty services.
+            Where ancient healing meets recovery. Premium concentrated Ayurvedic formulations for complete wellness.
           </p>
 
           {/* Stats row */}
           <div className="grid grid-cols-3 gap-6 mt-10 w-full max-w-xs">
             {[
-              { num: '500+', label: 'Clients' },
+              { num: '500+', label: 'Recoveries' },
               { num: '5★', label: 'Rated' },
               { num: '5+', label: 'Years' },
             ].map(s => (
@@ -124,7 +124,7 @@ export default function LoginPage() {
         <div className="absolute bottom-8 left-0 right-0 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.3em]"
             style={{ color: 'rgba(201,168,76,0.3)' }}>
-            ✦ Where Every Design Tells A Story ✦
+            ✦ Pure Relief. Restored Vitality. ✦
           </p>
         </div>
       </div>
@@ -138,13 +138,13 @@ export default function LoginPage() {
           <div className="lg:hidden text-center mb-8">
             <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
               style={{ backgroundColor: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
-              <Image src="/art2.png" alt="Shrilekha" width={32} height={32} className="object-contain" />
+              <Image src="/art2.png" alt="Crabveda" width={32} height={32} className="object-contain" />
             </div>
             <h1 className="font-black text-lg uppercase tracking-widest" style={{ color: '#0f1a0e' }}>
-              Shrilekha
+              Crabveda
             </h1>
             <p className="text-xs font-bold uppercase tracking-[0.3em] mt-0.5" style={{ color: '#c9a84c' }}>
-              Mehndi Art & Glowup
+              Pain Relief & Wellness
             </p>
           </div>
 
@@ -156,7 +156,7 @@ export default function LoginPage() {
             <p className="text-xs font-medium mt-1.5" style={{ color: 'rgba(15,26,14,0.4)' }}>
               {forgotMode
                 ? 'Enter your email to receive a password reset link'
-                : 'Sign in to your Shrilekha account'}
+                : 'Sign in to your Crabveda account'}
             </p>
           </div>
 
@@ -170,16 +170,19 @@ export default function LoginPage() {
                 style={{ color: 'rgba(15,26,14,0.5)' }}>
                 Email Address
               </label>
-              <div className="relative">
-                <Mail size={15} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{ color: '#c9a84c' }} />
+              <div className="relative w-full" style={{ display: 'block' }}>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
+                  <Mail size={16} style={{ color: '#c9a84c' }} />
+                </div>
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-11 pr-4 py-3.5 text-sm rounded-2xl outline-none transition-all"
+                  className="w-full py-4 text-sm rounded-2xl outline-none transition-all block relative z-0"
                   style={{
+                    paddingLeft: '3.5rem', /* Forces spacing regardless of global CSS overrides */
+                    paddingRight: '1rem',
                     backgroundColor: 'white',
                     border: '1.5px solid rgba(15,26,14,0.08)',
                     color: '#0f1a0e',
@@ -200,21 +203,24 @@ export default function LoginPage() {
                     Password
                   </label>
                   <button type="button" onClick={() => setForgotMode(true)}
-                    className="text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="text-xs font-bold uppercase tracking-wider transition-colors relative z-10"
                     style={{ color: '#c9a84c' }}>
                     Forgot?
                   </button>
                 </div>
-                <div className="relative">
-                  <Lock size={15} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                    style={{ color: '#c9a84c' }} />
+                <div className="relative w-full" style={{ display: 'block' }}>
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
+                    <Lock size={16} style={{ color: '#c9a84c' }} />
+                  </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full pl-11 pr-12 py-3.5 text-sm rounded-2xl outline-none transition-all"
+                    className="w-full py-4 text-sm rounded-2xl outline-none transition-all block relative z-0"
                     style={{
+                      paddingLeft: '3.5rem', /* Forces spacing regardless of global CSS overrides */
+                      paddingRight: '3rem',
                       backgroundColor: 'white',
                       border: '1.5px solid rgba(15,26,14,0.08)',
                       color: '#0f1a0e',
@@ -224,7 +230,7 @@ export default function LoginPage() {
                     onBlur={e => e.target.style.borderColor = 'rgba(15,26,14,0.08)'}
                   />
                   <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center transition-colors"
                     style={{ color: 'rgba(15,26,14,0.3)' }}>
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -256,13 +262,12 @@ export default function LoginPage() {
 
             {forgotMode && (
               <button type="button" onClick={() => setForgotMode(false)}
-                className="text-xs font-bold uppercase tracking-widest text-center transition-colors"
+                className="text-xs font-bold uppercase tracking-widest text-center transition-colors mt-2"
                 style={{ color: 'rgba(15,26,14,0.4)' }}>
-                ← Back to login
+                {`← Back to login`}
               </button>
             )}
           </form>
-
           {/* Divider */}
           {!forgotMode && (
             <>
@@ -291,7 +296,7 @@ export default function LoginPage() {
               {/* Sign up link */}
               <p className="text-center text-xs font-medium mt-6"
                 style={{ color: 'rgba(15,26,14,0.4)' }}>
-                New to Shrilekha?{' '}
+                New to Crabveda?{' '}
                 <Link href="/signup"
                   className="font-black uppercase tracking-wide border-b pb-0.5 transition-colors"
                   style={{ color: '#0f1a0e', borderColor: '#c9a84c' }}>

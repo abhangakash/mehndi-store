@@ -9,29 +9,62 @@ export function ShippedEmail({ order, trackingNumber }) {
           <tr>
             <td align="center">
               <table width="100%" style={{ maxWidth: '560px', backgroundColor: '#ffffff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+                {/* Header Banner */}
                 <tr>
-                  <td style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)', padding: '32px', textAlign: 'center' }}>
+                  <td style={{ background: 'linear-gradient(135deg, #0f1a0e, #1a3020)', padding: '32px', textAlign: 'center' }}>
                     <p style={{ margin: 0, fontSize: '32px' }}>🚚</p>
                     <h1 style={{ margin: '12px 0 0', fontSize: '24px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase' }}>
                       Your Order is on the Way!
                     </h1>
                     <p style={{ margin: '8px 0 0', fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>
-                      Order #{(order.id || '').slice(0, 8).toUpperCase()}
+                      Order #{ (order.id || '').slice(0, 8).toUpperCase() }
                     </p>
                   </td>
                 </tr>
+
+                {/* Main Content Body */}
                 <tr>
                   <td style={{ padding: '28px 32px' }}>
                     <p style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#0f1a0e' }}>Hi {order.customer_name} 👋</p>
                     <p style={{ margin: '8px 0 20px', fontSize: '14px', color: 'rgba(15,26,14,0.6)', lineHeight: '1.6' }}>
-                      Great news! Your order has been shipped and is on its way to you. Expected delivery in 2–3 business days.
+                      Great news! Your order has been shipped and is on its way to you. Expected delivery in 3–7 business days.
                     </p>
+
+                    {/* Tracking Section */}
                     {trackingNumber && (
-                      <div style={{ backgroundColor: '#eff6ff', borderRadius: '12px', padding: '16px', border: '1px solid rgba(59,130,246,0.2)', marginBottom: '20px' }}>
-                        <p style={{ margin: '0 0 4px', fontSize: '11px', fontWeight: 800, color: 'rgba(29,78,216,0.6)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Tracking Number</p>
-                        <p style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#1d4ed8' }}>{trackingNumber}</p>
+                      <div style={{ backgroundColor: '#fef9ee', borderRadius: '12px', padding: '16px', border: '1px solid rgba(201,168,76,0.2)', marginBottom: '20px' }}>
+                        <p style={{ margin: '0 0 4px', fontSize: '11px', fontWeight: 800, color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Tracking Number</p>
+                        <p style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#0f1a0e' }}>{trackingNumber}</p>
                       </div>
                     )}
+
+                    {/* Order Summary Table */}
+                    {order.order_items && order.order_items.length > 0 && (
+                      <div style={{ marginBottom: '20px', border: '1px solid rgba(0,0,0,0.06)', borderRadius: '12px', overflow: 'hidden' }}>
+                        <table width="100%" cellPadding="0" cellSpacing="0" style={{ borderCollapse: 'collapse', fontSize: '13px' }}>
+                          <thead>
+                            <tr style={{ backgroundColor: '#fafaf7', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                              <th align="left" style={{ padding: '12px 16px', fontWeight: 800, color: 'rgba(15,26,14,0.5)', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em' }}>Item Summary</th>
+                              <th align="right" style={{ padding: '12px 16px', fontWeight: 800, color: 'rgba(15,26,14,0.5)', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em' }}>Qty</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {order.order_items.map((item, idx) => (
+                              <tr key={idx} style={{ borderBottom: idx !== order.order_items.length - 1 ? '1px solid rgba(0,0,0,0.04)' : 'none' }}>
+                                <td style={{ padding: '12px 16px', color: '#0f1a0e', fontWeight: 600 }}>
+                                  {item.products?.name || item.product_name}
+                                </td>
+                                <td align="right" style={{ padding: '12px 16px', color: 'rgba(15,26,14,0.6)', fontWeight: 700 }}>
+                                  {item.quantity}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+
+                    {/* Delivery Address Block */}
                     <div style={{ backgroundColor: '#fafaf7', borderRadius: '12px', padding: '16px', border: '1px solid rgba(0,0,0,0.06)' }}>
                       <p style={{ margin: '0 0 4px', fontSize: '11px', fontWeight: 800, color: 'rgba(15,26,14,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Delivering To</p>
                       <p style={{ margin: 0, fontSize: '13px', color: '#0f1a0e', lineHeight: '1.5' }}>
@@ -40,18 +73,22 @@ export function ShippedEmail({ order, trackingNumber }) {
                     </div>
                   </td>
                 </tr>
+
+                {/* Interactive Action Button */}
                 <tr>
                   <td style={{ padding: '0 32px 32px', textAlign: 'center' }}>
-                    <a href="https://shrilekha.com/track-order"
-                      style={{ display: 'inline-block', backgroundColor: '#1d4ed8', color: '#ffffff', textDecoration: 'none', padding: '14px 32px', borderRadius: '50px', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                    <a href="https://crabveda.com/track-order"
+                      style={{ display: 'inline-block', backgroundColor: '#0f1a0e', color: '#ffffff', textDecoration: 'none', padding: '14px 32px', borderRadius: '50px', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                       Track Order →
                     </a>
                   </td>
                 </tr>
+
+                {/* Footer Brand Banner */}
                 <tr>
                   <td style={{ backgroundColor: '#0f1a0e', padding: '20px 32px', textAlign: 'center' }}>
-                    <p style={{ margin: 0, fontSize: '10px', fontWeight: 800, color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.3em' }}>Shrilekha Mehndi Art & Glowup</p>
-                    <p style={{ margin: '4px 0 0', fontSize: '11px', color: 'rgba(255,255,255,0.3)' }}>Pune · +91 96237 40541</p>
+                    <p style={{ margin: 0, fontSize: '10px', fontWeight: 800, color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.3em' }}>CrabVeda Joint & Muscle Care</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '11px', color: 'rgba(255,255,255,0.3)' }}>crabveda.com · +91 99212 97518</p>
                   </td>
                 </tr>
               </table>

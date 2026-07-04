@@ -20,38 +20,38 @@ export default function Footer() {
           {/* Brand Identity Section */}
           <div className="lg:col-span-5 space-y-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 relative">
-                <Image
-                  src="/art2.png"
-                  alt="Shrilekha Mehndi Logo"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white">Shrilekha Mehndi Art</span>
+              <div className="w-10 h-10 relative rounded-full overflow-hidden">
+  <Image
+    src="/logo.jpeg"
+    alt="Crabveda logo"
+    fill
+    className="object-cover"
+  />
+</div>
+              <span className="text-xl font-bold tracking-tight text-white">Crabveda Oil</span>
             </div>
             <p className="text-gray-400 max-w-sm text-base leading-relaxed">
-              Elevating the ancient art of Henna for the modern world. Our organic products are handcrafted in small batches to ensure the deepest stains.
+              Traditional wisdom. Natural relief. Formulated for joint mobility and deep inflammation recovery
             </p>
             
             {/* COLORFUL SOCIAL ICONS (Always Visible) */}
             <div className="flex items-center gap-4 pt-2">
               {/* Instagram */}
-              <a href="https://www.instagram.com/shrilekha_mehandi_art" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
+              <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
                 <div className="p-2.5 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] shadow-lg shadow-black/20">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                 </div>
               </a>
 
               {/* Facebook */}
-              <a href="https://facebook.com/shrilekhamehndi" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
+              <a href="https://www.facebook.com/share/1BE5Lhjuqk/" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
                 <div className="p-2.5 rounded-xl bg-[#1877F2] shadow-lg shadow-black/20">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 </div>
               </a>
 
               {/* WhatsApp */}
-              <a href="https://wa.me/919623740541" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
+              <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
                 <div className="p-2.5 rounded-xl bg-[#25D366] shadow-lg shadow-black/20">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3z"/></svg>
                 </div>
@@ -64,7 +64,7 @@ export default function Footer() {
             <div>
               <h4 className="text-amber-200 font-semibold text-xs uppercase tracking-[0.2em] mb-6">Experience</h4>
               <ul className="space-y-4">
-                {[{h:'/',l:'Home'},{h:'/products',l:'Shop All'},{h:'/blog',l:'Henna Artistry'}].map(link => (
+                {[{h:'/',l:'Home'},{h:'/products',l:'Shop All'}].map(link => (
                   <li key={link.l}>
                     <Link href={link.h} className="text-gray-400 hover:text-white flex items-center group text-sm transition-colors">
                       <ChevronRight size={12} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
@@ -91,11 +91,11 @@ export default function Footer() {
               <div className="space-y-4 text-sm text-gray-400">
                 <div className="flex items-start gap-3">
                   <MapPin size={16} className="text-amber-200 mt-0.5 shrink-0" />
-                  <span>Pune, Maharashtra 411038</span>
+                  <span>Solapur Maharashtra 413203</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone size={16} className="text-amber-200 shrink-0" />
-                  <a href="tel:+919623740541" className="hover:text-white transition-colors">+91 96237 40541</a>
+                  <a href="tel:+919623740541" className="hover:text-white transition-colors">+91 9921297518</a>
                 </div>
               </div>
             </div>
@@ -113,14 +113,14 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-between w-full items-center gap-6">
-            <p className="text-[10px] text-gray-600 uppercase tracking-widest font-medium">© {currentYear} Shrilekha Mehndi Art</p>
+            <p className="text-[10px] text-gray-600 uppercase tracking-widest font-medium">© {currentYear} CrabVeda Oil</p>
             
             <div className="flex items-center gap-3">
               <span className="text-[9px] md:text-[10px] py-1.5 px-3 rounded-full bg-white/5 border border-white/10 text-amber-100/60 uppercase tracking-tighter">
-                🌿 Free Shipping Above ₹499
+                🌿 Free Shipping on all orders.
               </span>
               <span className="text-[9px] md:text-[10px] py-1.5 px-3 rounded-full bg-white/5 border border-white/10 text-amber-100/60 uppercase tracking-tighter">
-                📦 COD Above ₹999
+                📦 Online secure payment.
               </span>
             </div>
           </div>

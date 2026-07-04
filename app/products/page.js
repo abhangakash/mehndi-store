@@ -16,8 +16,8 @@ async function getCategories() {
 }
 
 export const metadata = {
-  title: 'Shop Mehndi Products — Shrilekha Mehndi Art',
-  description: 'Shop premium natural henna cones, bridal mehndi kits, dispensers and accessories. Free shipping above ₹499.',
+  title: 'Shop CrabVeda — Ayurvedic Joint & Muscle Care Oil',
+  description: 'Experience natural relief with CrabVeda Ayurvedic Crab Oil. Formulated with authentic herbs to reduce inflammation, relieve stiffness, and improve joint mobility.',
 }
 
 export default async function ProductsPage({ searchParams }) {

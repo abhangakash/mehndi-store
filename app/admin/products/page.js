@@ -25,172 +25,173 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
   const inputCls = "w-full px-4 py-3 text-sm rounded-xl outline-none transition-all"
   const inputStyle = {
     backgroundColor: 'white',
-    border: '1.5px solid rgba(15,26,14,0.08)',
-    color: '#0f1a0e',
+    border: '1.5px solid #e2e8f0',
+    color: '#0f172a',
   }
 
   return (
-    <div className="rounded-2xl overflow-hidden mb-5" style={{ backgroundColor: '#fcfaf6', border: '1.5px solid rgba(201,168,76,0.3)' }}>
-      <div className="px-5 py-4 flex items-center justify-between"
-        style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
-        <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
-          {isEdit ? 'Edit Product' : 'New Product'}
+    <div className="rounded-2xl overflow-hidden mb-5 bg-white border border-slate-200 shadow-sm">
+      <div className="px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
+        <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+          {isEdit ? 'Modify Product File' : 'Register New Wellness Product'}
         </p>
-        <button onClick={onCancel}><X size={16} style={{ color: 'rgba(15,26,14,0.4)' }} /></button>
+        <button onClick={onCancel}><X size={16} className="text-slate-400 hover:text-slate-600" /></button>
       </div>
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Name */}
         <div className="sm:col-span-2">
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Product Name *</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Product Name *</label>
           <input className={inputCls} style={inputStyle}
             value={form.name}
             onChange={e => { set('name', e.target.value); if (!isEdit) set('slug', slugify(e.target.value)) }}
-            placeholder="e.g. Natural Henna Cone Premium" />
+            placeholder="e.g. Crabveda Ortho Healing Oil Premium" />
         </div>
 
         {/* Slug */}
         <div className="sm:col-span-2">
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
-            URL Slug * <span style={{ color: 'rgba(15,26,14,0.3)', fontWeight: 400, textTransform: 'none' }}>(auto-generated, edit if needed)</span>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+            URL Slug * <span className="text-slate-400 font-normal normal-case">(auto-generated, edit if needed)</span>
           </label>
           <input className={inputCls} style={inputStyle}
-            value={form.slug} onChange={e => set('slug', e.target.value)} placeholder="natural-henna-cone-premium" />
+            value={form.slug} onChange={e => set('slug', e.target.value)} placeholder="crabveda-ortho-healing-oil-premium" />
         </div>
 
         {/* Price + Original Price */}
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Price ₹ *</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Price ₹ *</label>
           <input className={inputCls} style={inputStyle}
-            type="number" value={form.price} onChange={e => set('price', e.target.value)} placeholder="49" />
+            type="number" value={form.price} onChange={e => set('price', e.target.value)} placeholder="599" />
         </div>
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
-            Original Price ₹ <span style={{ color: 'rgba(15,26,14,0.3)', fontWeight: 400, textTransform: 'none' }}>(for showing discount)</span>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+            Original Price ₹ <span className="text-slate-400 font-normal normal-case">(for showing discount tag)</span>
           </label>
           <input className={inputCls} style={inputStyle}
-            type="number" value={form.original_price} onChange={e => set('original_price', e.target.value)} placeholder="65 (optional)" />
+            type="number" value={form.original_price} onChange={e => set('original_price', e.target.value)} placeholder="799 (optional)" />
         </div>
 
         {/* Stock + Weight */}
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Stock Qty *</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Stock Qty *</label>
           <input className={inputCls} style={inputStyle}
             type="number" value={form.stock} onChange={e => set('stock', e.target.value)} placeholder="100" />
         </div>
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Weight (grams)</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Weight (ml / grams)</label>
           <input className={inputCls} style={inputStyle}
-            type="number" value={form.weight_grams} onChange={e => set('weight_grams', e.target.value)} placeholder="25" />
+            type="number" value={form.weight_grams} onChange={e => set('weight_grams', e.target.value)} placeholder="100" />
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Category</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Category Assignment</label>
           <div className="relative">
             <select className={`${inputCls} appearance-none pr-8 cursor-pointer`} style={inputStyle}
               value={form.category_id} onChange={e => set('category_id', e.target.value)}>
-              <option value="">Select category...</option>
+              <option value="">Select store category...</option>
               {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
-            <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: 'rgba(15,26,14,0.4)' }} />
+            <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
           </div>
         </div>
 
         {/* Short description */}
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Short Description</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Short Description</label>
           <input className={inputCls} style={inputStyle}
-            value={form.short_description} onChange={e => set('short_description', e.target.value)} placeholder="One line summary for product cards" />
+            value={form.short_description} onChange={e => set('short_description', e.target.value)} placeholder="One line summary for product showcase cards" />
         </div>
 
         {/* Full description */}
         <div className="sm:col-span-2">
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Full Description</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Therapeutic Description</label>
           <textarea className={inputCls} style={inputStyle} rows={3}
-            value={form.description} onChange={e => set('description', e.target.value)} placeholder="Detailed product description..." />
+            value={form.description} onChange={e => set('description', e.target.value)} placeholder="Detailed formulation benefits, herbal base notes..." />
         </div>
 
         {/* Main image URL */}
         <div className="sm:col-span-2">
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
-            Main Image URL *
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+            Primary Asset Image URL *
           </label>
           <input className={inputCls} style={inputStyle}
             value={form.image_url} onChange={e => set('image_url', e.target.value)}
             placeholder="https://your-supabase.co/storage/v1/object/public/product-images/..." />
-          {form.image_url && (
-            <div className="mt-2 w-16 h-16 rounded-xl overflow-hidden border" style={{ borderColor: 'rgba(15,26,14,0.1)' }}>
-              <img src={form.image_url} alt="Preview" className="w-full h-full object-cover"
-                onError={e => e.target.style.display = 'none'} />
+          {form.image_url ? (
+            <div className="mt-2.5 w-16 h-16 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+              <img 
+                src={form.image_url} 
+                alt="Preview" 
+                className="w-full h-full object-cover"
+                onError={e => { e.target.style.display = 'none' }} 
+              />
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Extra images */}
         <div className="sm:col-span-2">
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>
-            Additional Images <span style={{ color: 'rgba(15,26,14,0.3)', fontWeight: 400, textTransform: 'none' }}>(one URL per line, up to 4 total)</span>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+            Secondary Gallery Assets <span className="text-slate-400 font-normal normal-case">(one URL per line, max 4 total)</span>
           </label>
           <textarea className={inputCls} style={inputStyle} rows={3}
             value={form.images} onChange={e => set('images', e.target.value)}
-            placeholder={"https://...image2.jpg\nhttps://...image3.jpg\nhttps://...image4.jpg"} />
-          <p className="text-xs mt-1" style={{ color: 'rgba(15,26,14,0.35)' }}>
-            These show as thumbnails on the product detail page
+            placeholder={"https://...image2.jpg\nhttps://...image3.jpg"} />
+          <p className="text-xs mt-1 text-slate-400">
+            These render inside thumbnails on the active marketplace layout.
           </p>
         </div>
 
         {/* Ingredients */}
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Ingredients</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Active Ingredients / Herbs</label>
           <input className={inputCls} style={inputStyle}
-            value={form.ingredients} onChange={e => set('ingredients', e.target.value)} placeholder="Natural henna powder, rose water..." />
+            value={form.ingredients} onChange={e => set('ingredients', e.target.value)} placeholder="Mahanarayan Taila, Eucalyptus Extract, Wintergreen..." />
         </div>
 
         {/* Usage instructions */}
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(15,26,14,0.5)' }}>Usage Instructions</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Usage Application Instructions</label>
           <input className={inputCls} style={inputStyle}
-            value={form.usage_instructions} onChange={e => set('usage_instructions', e.target.value)} placeholder="Apply on clean dry skin..." />
+            value={form.usage_instructions} onChange={e => set('usage_instructions', e.target.value)} placeholder="Massage gently over the affected area 2-3 times daily..." />
         </div>
 
         {/* Toggles */}
-        <div className="sm:col-span-2 flex flex-wrap gap-4 pt-2">
-          <label className="flex items-center gap-2.5 cursor-pointer">
+        <div className="sm:col-span-2 flex flex-wrap gap-6 pt-2">
+          <label className="flex items-center gap-2.5 cursor-pointer select-none">
             <div onClick={() => set('is_active', !form.is_active)}
               className="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 cursor-pointer"
-              style={{ backgroundColor: form.is_active ? '#0f1a0e' : 'rgba(15,26,14,0.15)' }}>
-              <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all"
+              style={{ backgroundColor: form.is_active ? '#047857' : '#cbd5e1' }}>
+              <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-xs"
                 style={{ left: form.is_active ? '24px' : '4px' }} />
             </div>
-            <span className="text-sm font-bold" style={{ color: '#0f1a0e' }}>
-              {form.is_active ? 'Active (visible in store)' : 'Hidden from store'}
+            <span className="text-sm font-semibold text-slate-800">
+              {form.is_active ? 'Active (Listed live on store)' : 'Hidden (Draft archiving state)'}
             </span>
           </label>
 
-          <label className="flex items-center gap-2.5 cursor-pointer">
+          <label className="flex items-center gap-2.5 cursor-pointer select-none">
             <div onClick={() => set('is_featured', !form.is_featured)}
               className="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 cursor-pointer"
-              style={{ backgroundColor: form.is_featured ? '#c9a84c' : 'rgba(15,26,14,0.15)' }}>
-              <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all"
+              style={{ backgroundColor: form.is_featured ? '#047857' : '#cbd5e1' }}>
+              <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-xs"
                 style={{ left: form.is_featured ? '24px' : '4px' }} />
             </div>
-            <span className="text-sm font-bold" style={{ color: '#0f1a0e' }}>
-              {form.is_featured ? 'Featured on homepage' : 'Not featured'}
+            <span className="text-sm font-semibold text-slate-800">
+              {form.is_featured ? 'Featured Collection' : 'Standard Catalog Grid'}
             </span>
           </label>
         </div>
 
         {/* Save / Cancel */}
-        <div className="sm:col-span-2 flex gap-3 pt-2">
+        <div className="sm:col-span-2 flex gap-3 pt-3">
           <button onClick={onSave} disabled={saving}
-            className="flex-1 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all"
-            style={{ backgroundColor: saving ? 'rgba(15,26,14,0.4)' : '#0f1a0e' }}>
-            <Save size={14} /> {saving ? 'Saving...' : isEdit ? 'Update Product' : 'Add Product'}
+            className="flex-1 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-300">
+            <Save size={14} /> {saving ? 'Saving File...' : isEdit ? 'Commit Changes' : 'Append to Store'}
           </button>
           <button onClick={onCancel}
-            className="px-6 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest border transition-all"
-            style={{ borderColor: 'rgba(15,26,14,0.1)', color: 'rgba(15,26,14,0.5)' }}>
+            className="px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-slate-200 text-slate-500 bg-white hover:bg-slate-50 transition-all">
             Cancel
           </button>
         </div>
@@ -314,38 +315,37 @@ export default function AdminProductsPage() {
   const lowStockProducts = products.filter(p => p.stock < 5 && p.is_active)
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0a0f0d' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#f8faf9' }}>
       {/* Header */}
       <div className="px-4 sm:px-6 pt-8 pb-5 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between gap-3 mb-5">
+        <div className="flex items-center justify-between gap-3 mb-6">
           <div>
-            <h1 className="text-xl font-black uppercase tracking-tight text-white">Products</h1>
-            <p className="text-xs font-bold uppercase tracking-widest mt-0.5" style={{ color: 'rgba(201,168,76,0.6)' }}>
-              {products.length} total · {products.filter(p => p.is_active).length} active
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Inventory Index</h1>
+            <p className="text-xs font-semibold uppercase tracking-wider mt-1 text-slate-400">
+              {products.length} catalog items · {products.filter(p => p.is_active).length} active visibility
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={fetchAll} className="p-2.5 rounded-xl hover:bg-white/10 transition-colors" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              <RefreshCw size={16} />
+            <button onClick={fetchAll} className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition-colors shadow-sm">
+              <RefreshCw size={15} />
             </button>
             <button
               onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(EMPTY_PRODUCT) }}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all"
-              style={{ backgroundColor: showForm ? 'rgba(255,255,255,0.1)' : '#c9a84c', color: showForm ? 'white' : '#0f1a0e' }}>
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-xs"
+              style={{ backgroundColor: showForm ? '#e2e8f0' : '#047857', color: showForm ? '#475569' : '#ffffff' }}>
               {showForm ? <X size={14} /> : <Plus size={14} />}
-              {showForm ? 'Cancel' : 'Add Product'}
+              {showForm ? 'Close Form' : 'Add New Item'}
             </button>
           </div>
         </div>
 
         {/* Low stock alert */}
         {lowStockProducts.length > 0 && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-xl mb-4"
-            style={{ backgroundColor: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.2)' }}>
-            <AlertCircle size={15} className="flex-shrink-0 mt-0.5" style={{ color: '#dc2626' }} />
+          <div className="flex items-start gap-2.5 p-4 rounded-xl mb-5 bg-red-50 border border-red-200 shadow-xs">
+            <AlertCircle size={16} className="flex-shrink-0 mt-0.5 text-red-700" />
             <div>
-              <p className="text-xs font-black uppercase tracking-wide" style={{ color: '#dc2626' }}>Low Stock Alert</p>
-              <p className="text-xs mt-0.5" style={{ color: 'rgba(220,38,38,0.7)' }}>
+              <p className="text-xs font-bold uppercase tracking-wide text-red-800">Critical Stock Warnings</p>
+              <p className="text-xs mt-1 text-red-600 font-medium leading-relaxed">
                 {lowStockProducts.map(p => `${p.name} (${p.stock} left)`).join(' · ')}
               </p>
             </div>
@@ -354,20 +354,19 @@ export default function AdminProductsPage() {
 
         {/* Search */}
         <div className="relative">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Search products..."
-            className="w-full pl-10 pr-10 py-3 rounded-xl text-sm text-white outline-none"
-            style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1.5px solid rgba(255,255,255,0.08)' }} />
+            placeholder="Filter items by product name, catalog tag properties..."
+            className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 text-slate-800 placeholder-slate-400 outline-none focus:border-emerald-600/40 focus:ring-1 focus:ring-emerald-600/10 shadow-xs" />
           {search && (
-            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2">
-              <X size={14} style={{ color: 'rgba(255,255,255,0.3)' }} />
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <X size={14} />
             </button>
           )}
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 pb-10 max-w-6xl mx-auto">
+      <div className="px-4 sm:px-6 pb-12 max-w-6xl mx-auto">
         {/* Add/Edit form */}
         {showForm && (
           <ProductForm
@@ -380,15 +379,15 @@ export default function AdminProductsPage() {
           />
         )}
 
-{/* Product list */}
+        {/* Product list */}
         {loading ? (
-          <div className="text-center py-20">
-            <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
+          <div className="text-center py-24">
+            <div className="w-9 h-9 border-2 border-slate-200 border-t-emerald-700 rounded-full animate-spin mx-auto" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="rounded-2xl p-12 text-center" style={{ backgroundColor: '#fcfaf6' }}>
-            <Package size={40} className="mx-auto mb-3" style={{ color: 'rgba(15,26,14,0.15)' }} />
-            <p className="font-black text-sm" style={{ color: '#0f1a0e' }}>No products found</p>
+          <div className="rounded-2xl p-16 text-center bg-white border border-slate-200 shadow-sm">
+            <Package size={40} className="mx-auto mb-3 text-slate-300" />
+            <p className="font-bold text-sm text-slate-700">No matching products matching parameters</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -399,70 +398,67 @@ export default function AdminProductsPage() {
 
               return (
                 <div key={product.id}
-                  className="rounded-2xl p-4 flex items-center gap-4 transition-all"
+                  className="rounded-2xl p-4 flex items-center gap-4 transition-all bg-white border shadow-xs"
                   style={{
-                    backgroundColor: '#fcfaf6',
-                    border: `1.5px solid ${!product.is_active ? 'rgba(15,26,14,0.06)' : isLow ? 'rgba(220,38,38,0.2)' : 'rgba(15,26,14,0.06)'}`,
-                    opacity: product.is_active ? 1 : 0.6,
+                    borderColor: !product.is_active ? '#e2e8f0' : isLow ? '#fee2e2' : '#e2e8f0',
+                    opacity: product.is_active ? 1 : 0.65,
                   }}>
 
                   {/* Image */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center"
-                    style={{ backgroundColor: 'rgba(15,26,14,0.05)' }}>
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center bg-slate-50 border border-slate-100">
                     {product.image_url
                       ? <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
-                      : <Package size={20} style={{ color: 'rgba(15,26,14,0.2)' }} />
+                      : <Package size={20} className="text-slate-300" />
                     }
                   </div>
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start gap-2 mb-0.5">
-                      <p className="font-black text-sm truncate" style={{ color: '#0f1a0e' }}>{product.name}</p>
-                      {product.is_featured && <Star size={12} fill="#c9a84c" color="#c9a84c" className="flex-shrink-0 mt-0.5" />}
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <p className="font-bold text-sm text-slate-800 truncate">{product.name}</p>
+                      {product.is_featured && <Star size={12} fill="#b45309" className="text-amber-500 flex-shrink-0" />}
                     </div>
-                    <p className="text-xs truncate mb-1" style={{ color: 'rgba(15,26,14,0.4)' }}>
-                      {product.categories?.name || 'No category'}
+                    <p className="text-xs truncate mb-1.5 text-slate-400">
+                      {product.categories?.name || 'No catalog assignment'}
                     </p>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-black text-sm" style={{ color: '#c9a84c' }}>₹{product.price}</span>
+                      <span className="font-bold text-sm text-emerald-800">₹{product.price}</span>
                       {product.original_price && (
-                        <span className="text-xs line-through" style={{ color: 'rgba(15,26,14,0.3)' }}>₹{product.original_price}</span>
+                        <span className="text-xs line-through text-slate-400">₹{product.original_price}</span>
                       )}
                       {discount && (
-                        <span className="text-xs px-1.5 py-0.5 rounded-full font-black"
-                          style={{ backgroundColor: '#fef3c7', color: '#d97706', fontSize: '9px' }}>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-md font-bold bg-amber-50 text-amber-700 border border-amber-100">
                           {discount}% OFF
                         </span>
                       )}
-                      <span className="text-xs px-1.5 py-0.5 rounded-full font-bold"
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-md font-bold border"
                         style={{
-                          backgroundColor: isLow ? '#fee2e2' : product.stock === 0 ? '#fee2e2' : '#dcfce7',
-                          color: isLow || product.stock === 0 ? '#dc2626' : '#15803d',
-                          fontSize: '9px',
+                          backgroundColor: isLow ? '#fef2f2' : product.stock === 0 ? '#fef2f2' : '#f0fdf4',
+                          color: isLow || product.stock === 0 ? '#b91c1c' : '#166534',
+                          borderColor: isLow || product.stock === 0 ? '#fee2e2' : '#dcfce7',
                         }}>
-                        {product.stock === 0 ? 'OUT OF STOCK' : isLow ? `⚠️ ${product.stock} left` : `${product.stock} in stock`}
+                        {product.stock === 0 ? 'OUT OF STOCK' : isLow ? `⚠️ ${product.stock} units left` : `${product.stock} units ready`}
                       </span>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <div className="flex items-center gap-1">
                     <button onClick={() => handleEdit(product)}
-                      className="p-2 rounded-xl hover:bg-gray-100 transition-colors" title="Edit">
-                      <Edit2 size={14} style={{ color: 'rgba(15,26,14,0.5)' }} />
+                      className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors" title="Edit Properties">
+                      <Edit2 size={14} />
                     </button>
                     <button onClick={() => handleToggleActive(product.id, product.is_active)}
-                      className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
-                      title={product.is_active ? 'Hide from store' : 'Show in store'}>
+                      className="p-2 rounded-xl transition-colors hover:bg-slate-50"
+                      title={product.is_active ? 'Hide from store channel' : 'Publish to store channel'}>
                       {product.is_active
-                        ? <Eye size={14} style={{ color: '#15803d' }} />
-                        : <EyeOff size={14} style={{ color: 'rgba(15,26,14,0.3)' }} />
+                        ? <Eye size={14} className="text-emerald-700" />
+                        : <EyeOff size={14} className="text-slate-300" />
                       }
                     </button>
                     <button onClick={() => handleDelete(product.id, product.name)}
-                      className="p-2 rounded-xl hover:bg-red-50 transition-colors" title="Delete">
-                      <Trash2 size={14} style={{ color: '#dc2626' }} />
+                      className="p-2 rounded-xl text-slate-400 hover:text-red-700 hover:bg-red-50 transition-colors" title="Remove Product">
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>

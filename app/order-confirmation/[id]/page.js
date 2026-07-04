@@ -137,7 +137,7 @@ export default async function OrderConfirmationPage({ params }) {
           </a>
 
           {/* WhatsApp share */}
-          <a href={`https://wa.me/919623740541?text=${waMsg}`}
+          <a href={`https://wa.me/919921297518?text=${waMsg}`}
             target="_blank" rel="noreferrer"
             className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest text-white transition-all hover:opacity-90"
             style={{ backgroundColor: '#25D366' }}>

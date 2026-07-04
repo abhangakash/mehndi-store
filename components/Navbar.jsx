@@ -14,14 +14,6 @@ import Image from 'next/image'
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/products', label: 'Shop' },
-  {
-    label: 'Services',
-    children: [
-      { href: '/packages', label: '💍 Packages' },
-      { href: '/gallery', label: '📸 Gallery' },
-    ],
-  },
-  { href: '/blog', label: 'Journal' },
   { href: '/track-order', label: '📦 Track Order' },
   { href: '/contact', label: 'Contact' },
 ]
@@ -74,12 +66,14 @@ if (pathname.startsWith('/admin')) {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/art2.png" alt="Logo" width={26} height={26} className="brightness-110" />
-            <div className="hidden sm:flex flex-col">
-              <span className="text-white font-black tracking-widest text-[11px] leading-none uppercase">SHRILEKHA</span>
-              <span className="text-[#c9a84c] text-[7px] uppercase tracking-[0.3em] font-bold mt-0.5">Makeup & Mehndi</span>
-            </div>
-          </Link>
+  <div className="w-[26px] h-[26px] rounded-full overflow-hidden flex items-center justify-center">
+    <Image src="/logo.jpeg" alt="Logo" width={26} height={26} className="w-full h-full object-cover brightness-110 rounded-full" />
+  </div>
+  <div className="hidden sm:flex flex-col">
+    <span className="text-white font-black tracking-widest text-[11px] leading-none uppercase">Crabveda</span>
+    <span className="text-[#c9a84c] text-[7px] uppercase tracking-[0.3em] font-bold mt-0.5">Oil</span>
+  </div>
+</Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -272,21 +266,21 @@ if (pathname.startsWith('/admin')) {
 
           {/* Social icons */}
           <div className="mt-auto pt-6 flex items-center gap-4">
-            <a href="https://www.instagram.com/shrilekha_mehandi_art/" target="_blank" rel="noreferrer"
+            <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer"
               className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
               </svg>
             </a>
-            <a href="https://wa.me/919623740541" target="_blank" rel="noreferrer"
+            <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer"
               className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.118 1.524 5.84L0 24l6.342-1.498A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.802 9.802 0 01-5.013-1.378l-.36-.214-3.765.889.942-3.664-.235-.376A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
               </svg>
             </a>
-            <a href="https://maps.google.com/?q=Pune+Maharashtra" target="_blank" rel="noreferrer"
+            <a href="https://maps.google.com/?q=solapur+Maharashtra" target="_blank" rel="noreferrer"
               className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]">
               <MapPin size={18} />
             </a>

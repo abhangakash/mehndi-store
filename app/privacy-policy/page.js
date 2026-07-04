@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { Shield, ArrowLeft } from 'lucide-react'
 
 export const metadata = {
-  title: 'Privacy Policy — Shrilekha Mehndi Art',
-  description: 'Privacy policy for Shrilekha Mehndi Art & Glowup. Learn how we collect, use and protect your personal information.',
+  title: 'Privacy Policy — Crabveda Oil',
+  description: 'Privacy policy for Crabveda Pain Relief Oil. Learn how we collect, use and protect your personal information.',
 }
 
 export default function PrivacyPolicyPage() {
@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
           <ul>
             <li>Place an order on our website (name, phone, email, delivery address)</li>
             <li>Create an account (name, email, phone number)</li>
-            <li>Contact us for inquiries or bookings</li>
+            <li>Contact us for inquiries or support</li>
             <li>Subscribe to our updates</li>
           </ul>
           <p>We also automatically collect certain technical information when you visit our site, such as your IP address, browser type, and pages visited.</p>
@@ -76,7 +76,7 @@ export default function PrivacyPolicyPage() {
             <li>Opt out of marketing communications</li>
             <li>Lodge a complaint with a supervisory authority</li>
           </ul>
-          <p>To exercise these rights, contact us at info@shrilekha.com or WhatsApp +91 96237 40541.</p>
+          <p>To exercise these rights, contact us at crabveda@gmail.com or WhatsApp +91 99212 97518.</p>
         </PolicySection>
 
         <PolicySection title="7. Cookies">
@@ -94,8 +94,8 @@ export default function PrivacyPolicyPage() {
         <PolicySection title="10. Contact Us">
           <p>If you have any questions about this Privacy Policy, please contact us:</p>
           <ul>
-            <li>Email: info@shrilekha.com</li>
-            <li>WhatsApp: +91 96237 40541</li>
+            <li>Email: crabveda@gmail.com</li>
+            <li>WhatsApp: +91 99212 97518</li>
             <li>Location: Pune, Maharashtra, India</li>
           </ul>
         </PolicySection>

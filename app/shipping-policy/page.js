@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { Truck, ArrowLeft, Package, Clock, MapPin, RefreshCw, Phone } from 'lucide-react'
 
 export const metadata = {
-  title: 'Shipping Policy — Shrilekha Mehndi Art',
-  description: 'Shipping and delivery information for Shrilekha Mehndi Art products. Free shipping above ₹499, COD available.',
+  title: 'Shipping Policy — Crabveda Oil',
+  description: 'Shipping and delivery information for Crabveda Pain Relief Oil products. Free shipping across India, online payment only.',
 }
 
 export default function ShippingPolicyPage() {
@@ -27,9 +27,9 @@ export default function ShippingPolicyPage() {
       {/* Quick info cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {[
-          { icon: <Truck size={18} />, label: 'Free Shipping', sub: 'Orders above ₹499', color: '#15803d', bg: '#dcfce7' },
+          { icon: <Truck size={18} />, label: 'Free Shipping', sub: 'On all orders', color: '#15803d', bg: '#dcfce7' },
           { icon: <Clock size={18} />, label: '3-7 Days', sub: 'Standard delivery', color: '#1d4ed8', bg: '#dbeafe' },
-          { icon: <Package size={18} />, label: 'COD Available', sub: 'Orders above ₹999', color: '#d97706', bg: '#fef3c7' },
+          { icon: <Package size={18} />, label: 'Online Payment', sub: 'Secure checkout only', color: '#d97706', bg: '#fef3c7' },
           { icon: <MapPin size={18} />, label: 'Pan India', sub: 'All states covered', color: '#7c3aed', bg: '#ede9fe' },
         ].map(b => (
           <div key={b.label} className="card p-3 text-center">
@@ -53,15 +53,13 @@ export default function ShippingPolicyPage() {
               </tr>
             </thead>
             <tbody>
-              <tr><td>Below ₹499</td><td>₹60 flat rate</td></tr>
-              <tr><td>₹499 and above</td><td>FREE</td></tr>
+              <tr><td>All Orders</td><td>FREE</td></tr>
             </tbody>
           </table>
         </PolicySection>
 
         <PolicySection title="Delivery Timeframes">
           <ul>
-            <li><strong>Pune:</strong> 1-2 business days</li>
             <li><strong>Maharashtra:</strong> 2-4 business days</li>
             <li><strong>Rest of India:</strong> 3-7 business days</li>
             <li><strong>Remote areas:</strong> 5-10 business days</li>
@@ -69,12 +67,11 @@ export default function ShippingPolicyPage() {
           <p>Delivery times are estimates and may vary due to courier delays, public holidays or unforeseen circumstances.</p>
         </PolicySection>
 
-        <PolicySection title="Cash on Delivery (COD)">
+        <PolicySection title="Payment Terms">
           <ul>
-            <li>COD is available on orders above ₹999</li>
-            <li>COD orders may take 1 additional day to process</li>
-            <li>Please keep exact change ready for COD orders</li>
-            <li>COD is available across most pin codes in India</li>
+            <li>We accept online payments only (UPI, Credit/Debit Cards, Net Banking, and Wallets)</li>
+            <li>Cash on Delivery (COD) is currently not available</li>
+            <li>Orders will only be processed and dispatched after successful payment confirmation</li>
           </ul>
         </PolicySection>
 
@@ -95,7 +92,7 @@ export default function ShippingPolicyPage() {
             <li>If you receive a damaged product, contact us within 48 hours with photos</li>
             <li>We will arrange a replacement or full refund</li>
             <li>Missing items must be reported within 24 hours of delivery</li>
-            <li>Contact us on WhatsApp +91 96237 40541 for fastest resolution</li>
+            <li>Contact us on WhatsApp +91 99212 97518 for fastest resolution</li>
           </ul>
         </PolicySection>
 
@@ -114,7 +111,7 @@ export default function ShippingPolicyPage() {
           <div>
             <p className="text-sm font-semibold mb-1" style={{ color: 'var(--brand-text)' }}>Need help with your order?</p>
             <p className="text-sm" style={{ color: 'var(--brand-muted)' }}>
-              Contact us on <a href="https://wa.me/919623740541" className="underline" style={{ color: 'var(--brand-green)' }}>WhatsApp +91 96237 40541</a> or email <a href="mailto:info@shrilekha.com" className="underline" style={{ color: 'var(--brand-green)' }}>info@shrilekha.com</a>. We respond within 2 hours on business days.
+              Contact us on <a href="https://wa.me/919921297518" className="underline" style={{ color: 'var(--brand-green)' }}>WhatsApp +91 99212 97518</a> or email <a href="mailto:crabveda@gmail.com" className="underline" style={{ color: 'var(--brand-green)' }}>crabveda@gmail.com</a>. We respond within 2 hours on business days.
             </p>
           </div>
         </div>

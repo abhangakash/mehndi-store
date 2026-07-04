@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 
-const BASE_URL = 'https://mehndi.zevette.com'
+const BASE_URL = 'https://www.crabveda.com'
 
 export default async function sitemap() {
   // Static pages
