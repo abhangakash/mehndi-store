@@ -2,7 +2,7 @@ import { Toaster } from 'react-hot-toast'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { AuthProvider } from '@/context/AuthContext'
-import PromoPopup from '@/components/PromoPopup'
+//import PromoPopup from '@/components/PromoPopup'
 import CartAbandonmentWidget from '@/components/CartAbandonmentWidget'
 import FloatingButtons from '@/components/FloatingButtons'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
@@ -89,7 +89,6 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />
-          <PromoPopup />
           <CartAbandonmentWidget />
           <FloatingButtons />
           <Toaster
