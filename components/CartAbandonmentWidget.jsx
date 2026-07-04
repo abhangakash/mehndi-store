@@ -4,14 +4,14 @@ import { useCartStore } from '@/store/cartStore'
 import { Phone, X, ShoppingCart } from 'lucide-react'
 
 const DELAY_MS = 3 * 60 * 1000 // 3 minutes
-const STORAGE_KEY = 'shrilekha_cart_nudge_dismissed'
+const STORAGE_KEY = 'crabveda_cart_nudge_dismissed'
 
 export default function CartAbandonmentWidget() {
   const [show, setShow] = useState(false)
   const [dismissed, setDismissed] = useState(false)
   const items = useCartStore(s => s.items)
   const getTotalPrice = useCartStore(s => s.getTotalPrice)
-  const timerRef = useRef(null)
+  const timerRef = useRef(null) // Fixed: Removed TypeScript annotations
 
   useEffect(() => {
     const wasDismissed = sessionStorage.getItem(STORAGE_KEY)
@@ -19,10 +19,10 @@ export default function CartAbandonmentWidget() {
     if (items.length > 0 && !dismissed) {
       timerRef.current = setTimeout(() => setShow(true), DELAY_MS)
     } else {
-      clearTimeout(timerRef.current)
+      if (timerRef.current) clearTimeout(timerRef.current)
       setShow(false)
     }
-    return () => clearTimeout(timerRef.current)
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [items.length, dismissed])
 
   const handleDismiss = () => {
@@ -33,15 +33,15 @@ export default function CartAbandonmentWidget() {
 
   const buildWhatsAppMessage = () => {
     const total = getTotalPrice()
-    const shipping = total >= 499 ? 0 : 60
+    const shipping = 0
     const itemList = items.map(i => `• ${i.name} × ${i.quantity} — ₹${(i.price * i.quantity).toFixed(0)}`).join('\n')
-    return encodeURIComponent(`Hi! I have items in my cart and need help:\n\n${itemList}\n\nTotal: ₹${(total + shipping).toFixed(0)}\n\nCan you help me complete this order?`)
+    return encodeURIComponent(`Hi! I have items in my CrabVeda cart and need help:\n\n${itemList}\n\nTotal: ₹${(total + shipping).toFixed(0)}\n\nCan you help me complete this order?`)
   }
 
   if (!show || items.length === 0) return null
 
   const total = getTotalPrice()
-  const shipping = total >= 499 ? 0 : 60
+  const shipping = 0
 
   return (
     <div className="fixed bottom-24 right-4 z-[100] w-72"

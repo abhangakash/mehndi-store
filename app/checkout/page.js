@@ -4,15 +4,17 @@ import { useCartStore } from '@/store/cartStore'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import Script from 'next/script' // Optimized Script Loading
 import {
   MapPin, Phone, User, Mail, Calendar,
-  Shield, Truck, Lock, Tag, ShoppingBag,
-  CheckCircle, Plus, ChevronDown, ChevronUp, Home, Briefcase
+  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 
 const LABEL_ICONS = { Home: Home, Office: Briefcase, Other: MapPin }
+const SHIPPING_THRESHOLD = 499
+const FLAT_SHIPPING_CHARGE = 50 // Fixed from being hardcoded to 0
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart } = useCartStore()
@@ -65,23 +67,29 @@ export default function CheckoutPage() {
 
   const loadAddresses = async () => {
     setAddressesLoading(true)
-    const { data } = await supabase
-      .from('addresses')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('is_default', { ascending: false })
-      .order('created_at', { ascending: false })
-    setSavedAddresses(data || [])
-    // Auto-select default address
-    const def = (data || []).find(a => a.is_default)
-    if (def) {
-      setSelectedAddressId(def.id)
-      fillFormFromAddress(def)
-      setShowNewForm(false)
-    } else if ((data || []).length === 0) {
-      setShowNewForm(true)
+    try {
+      const { data } = await supabase
+        .from('addresses')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('is_default', { ascending: false })
+        .order('created_at', { ascending: false })
+      
+      setSavedAddresses(data || [])
+      
+      const def = (data || []).find(a => a.is_default)
+      if (def) {
+        setSelectedAddressId(def.id)
+        fillFormFromAddress(def)
+        setShowNewForm(false)
+      } else if ((data || []).length === 0) {
+        setShowNewForm(true)
+      }
+    } catch (err) {
+      console.error('Failed to load addresses:', err)
+    } finally {
+      setAddressesLoading(false)
     }
-    setAddressesLoading(false)
   }
 
   const fillFormFromAddress = (addr) => {
@@ -116,7 +124,7 @@ export default function CheckoutPage() {
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const total = mounted ? getTotalPrice() : 0
-  const shipping = total >= 499 ? 0 : 0
+  const shipping = total >= SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_CHARGE
   const grandTotal = total + shipping
   const codAvailable = grandTotal >= 999
 
@@ -150,6 +158,10 @@ export default function CheckoutPage() {
   }
 
   const handleRazorpay = async () => {
+    if (!window.Razorpay) {
+      toast.error('Razorpay SDK failed to load. Please refresh the page.')
+      return
+    }
     setLoading(true)
     try {
       const res = await fetch('/api/create-order', {
@@ -169,7 +181,11 @@ export default function CheckoutPage() {
         order_id: orderId,
         prefill: { name: form.name, email: form.email, contact: `+91${form.phone}` },
         theme: { color: '#0f1a0e' },
+        modal: {
+          ondismiss: () => setLoading(false) // Reset loading state if window closed
+        },
         handler: async (response) => {
+          setLoading(true)
           try {
             await saveAddressIfNeeded()
             const verifyRes = await fetch('/api/verify-payment', {
@@ -193,6 +209,7 @@ export default function CheckoutPage() {
             const { orderId: savedId, error: verifyError } = await verifyRes.json()
             if (verifyError) {
               toast.error(verifyError, { duration: 8000 })
+              setLoading(false)
               return
             }
             clearCart()
@@ -200,6 +217,7 @@ export default function CheckoutPage() {
             router.push(`/order-confirmation/${savedId}`)
           } catch (err) {
             toast.error('Payment done but order save failed. WhatsApp us at +91 9921297518')
+            setLoading(false)
           }
         },
       }
@@ -207,12 +225,13 @@ export default function CheckoutPage() {
       const rzp = new window.Razorpay(options)
       rzp.on('payment.failed', (response) => {
         toast.error(`Payment failed: ${response.error.description}`)
+        setLoading(false)
       })
       rzp.open()
     } catch (err) {
       toast.error(err.message || 'Something went wrong')
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleCOD = async () => {
@@ -242,8 +261,8 @@ export default function CheckoutPage() {
       router.push(`/order-confirmation/${orderId}`)
     } catch (err) {
       toast.error(err.message || 'Something went wrong')
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleSubmit = (e) => {
@@ -275,7 +294,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <script src="https://checkout.razorpay.com/v1/checkout.js" async />
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <div className="min-h-screen bg-white">
 
         {/* Header */}
@@ -328,12 +347,11 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="p-5">
-                  {/* Saved addresses */}
-                  {user && (
+                  {user && savedAddresses.length > 0 && (
                     <div className="mb-5">
                       {addressesLoading ? (
                         <div className="h-12 rounded-xl animate-pulse bg-gray-50" />
-                      ) : savedAddresses.length > 0 ? (
+                      ) : (
                         <>
                           <p className="text-xs font-black uppercase tracking-widest mb-3 text-gray-400">
                             Saved Addresses
@@ -388,7 +406,7 @@ export default function CheckoutPage() {
                             <Plus size={13} /> {showNewForm ? 'Cancel new address' : 'Add new address'}
                           </button>
                         </>
-                      ) : null}
+                      )}
                     </div>
                   )}
 
@@ -528,7 +546,7 @@ export default function CheckoutPage() {
                     {shipping > 0 && (
                       <div className="flex items-start gap-2 p-2.5 rounded-xl text-[10px] bg-amber-50 text-amber-700 font-bold border border-amber-100/50">
                         <Tag size={12} className="flex-shrink-0" />
-                        Add ₹{(499 - total).toFixed(0)} more for free shipping
+                        Add ₹{(SHIPPING_THRESHOLD - total).toFixed(0)} more for free shipping
                       </div>
                     )}
                     <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-2">
@@ -541,7 +559,7 @@ export default function CheckoutPage() {
                     className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-4 shadow-xl shadow-black/10"
                     style={{ backgroundColor: loading ? '#9ca3af' : '#0f1a0e' }}>
                     {loading ? (
-                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : paymentMethod === 'razorpay' ? `🔒 Pay ₹${grandTotal.toFixed(0)}` : 'Place COD Order'}
                   </button>
 

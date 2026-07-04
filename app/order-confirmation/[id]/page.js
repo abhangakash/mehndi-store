@@ -21,7 +21,7 @@ export default async function OrderConfirmationPage({ params }) {
   if (!order) notFound()
 
   const waMsg = encodeURIComponent(
-    `Hi! I just placed an order on Shrilekha Mehndi Art.\nOrder ID: #${order.id.slice(0, 8).toUpperCase()}\nTotal: ₹${order.total_amount}`
+    `Hi! I just placed an order on CrabVeda.\nOrder ID: #${order.id.slice(0, 8).toUpperCase()}\nTotal: ₹${order.total_amount}`
   )
 
   return (
@@ -69,8 +69,8 @@ export default async function OrderConfirmationPage({ params }) {
             <div className="mt-3 pt-3 border-t flex flex-col gap-1.5" style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
               <div className="flex justify-between text-xs" style={{ color: 'rgba(15,26,14,0.5)' }}>
                 <span>Shipping</span>
-                <span style={{ color: order.shipping_amount == 0 ? '#15803d' : undefined }}>
-                  {order.shipping_amount == 0 ? 'FREE' : `₹${order.shipping_amount}`}
+                <span style={{ color: '#15803d' }} className="font-medium">
+                  FREE
                 </span>
               </div>
               <div className="flex justify-between font-black text-base">
@@ -109,7 +109,7 @@ export default async function OrderConfirmationPage({ params }) {
                 style={{ color: 'rgba(15,26,14,0.4)' }}>Expected Delivery</p>
               <p className="text-sm font-bold" style={{ color: '#0f1a0e' }}>3–7 business days</p>
               <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
-                Payment: {order.payment_method === 'cod' ? 'Cash on Delivery' : 'Paid Online ✅'}
+                Payment: Paid Online ✅
               </p>
             </div>
           </div>

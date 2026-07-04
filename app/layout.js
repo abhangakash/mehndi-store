@@ -56,7 +56,7 @@ export const metadata = {
       'Premium Ayurvedic Crab Oil formulated with Crab Extract and traditional Ayurvedic herbs for joint and muscle care.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/logo.jpeg',
         width: 1200,
         height: 630,
         alt: 'CrabVeda Ayurvedic Crab Oil',
@@ -68,7 +68,7 @@ export const metadata = {
     title: 'CrabVeda Ayurvedic Crab Oil',
     description:
       'Premium Ayurvedic Crab Oil for joint and muscle care.',
-    images: ['/og-image.jpg'],
+    images: ['/logo.jpeg'],
   },
   robots: {
     index: true,

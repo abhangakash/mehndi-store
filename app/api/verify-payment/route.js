@@ -54,9 +54,14 @@ export async function POST(req) {
     const itemsError = validateItems(items)
     if (itemsError) return NextResponse.json({ error: itemsError }, { status: 400 })
 
+    // ── Enforce Online Payment Only ──────────────────────────────
+    if (cod) {
+      return NextResponse.json({ error: 'Cash on Delivery is not available. We only accept online payments.' }, { status: 400 })
+    }
+
     // ── Server-side total recalculation ──────────────────────────
     const recalcSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    const recalcShipping = recalcSubtotal >= 499 ? 0 : 0
+    const recalcShipping = 0 // Free delivery on all orders as per rules
     const recalcTotal = recalcSubtotal + recalcShipping
 
     // Allow ₹1 rounding difference
@@ -66,36 +71,31 @@ export async function POST(req) {
     }
 
     // ── Razorpay signature verification ─────────────────────────
-    if (!cod) {
-      if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-        return NextResponse.json({ error: 'Missing payment details' }, { status: 400 })
-      }
-
-      const secret = process.env.RAZORPAY_KEY_SECRET
-      if (!secret) {
-        console.error('RAZORPAY_KEY_SECRET is not set in environment variables!')
-        return NextResponse.json({ error: 'Payment configuration error — contact support' }, { status: 500 })
-      }
-
-      const body = `${razorpay_order_id}|${razorpay_payment_id}`
-      const expectedSignature = crypto
-        .createHmac('sha256', secret)
-        .update(body)
-        .digest('hex')
-
-      console.log('Received signature:', razorpay_signature)
-      console.log('Expected signature:', expectedSignature)
-      console.log('Match:', expectedSignature === razorpay_signature)
-
-      if (expectedSignature !== razorpay_signature) {
-        console.error('Razorpay signature mismatch — possible fraud or wrong secret key')
-        return NextResponse.json({ error: 'Payment verification failed. Your payment was captured — please contact us on WhatsApp at +91 96237 40541 with your payment ID: ' + razorpay_payment_id }, { status: 400 })
-      }
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return NextResponse.json({ error: 'Missing payment details' }, { status: 400 })
     }
 
-    // ── COD minimum ──────────────────────────────────────────────
-    if (cod && recalcTotal < 999) {
-      return NextResponse.json({ error: 'COD available only on orders above ₹999' }, { status: 400 })
+    const secret = process.env.RAZORPAY_KEY_SECRET
+    if (!secret) {
+      console.error('RAZORPAY_KEY_SECRET is not set in environment variables!')
+      return NextResponse.json({ error: 'Payment configuration error — contact support' }, { status: 500 })
+    }
+
+    const expectedBody = `${razorpay_order_id}|${razorpay_payment_id}`
+    const expectedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(expectedBody)
+      .digest('hex')
+
+    console.log('Received signature:', razorpay_signature)
+    console.log('Expected signature:', expectedSignature)
+    console.log('Match:', expectedSignature === razorpay_signature)
+
+    if (expectedSignature !== razorpay_signature) {
+      console.error('Razorpay signature mismatch — possible fraud or wrong secret key')
+      return NextResponse.json({ 
+        error: 'Payment verification failed. Your payment was captured — please contact us on WhatsApp at +91 99212 97518 with your payment ID: ' + razorpay_payment_id 
+      }, { status: 400 })
     }
 
     // ── Save order ───────────────────────────────────────────────
@@ -113,8 +113,8 @@ export async function POST(req) {
         subtotal: recalcSubtotal,
         shipping_amount: recalcShipping,
         total_amount: recalcTotal,
-        payment_method: cod ? 'cod' : 'razorpay',
-        payment_status: cod ? 'pending' : 'paid',
+        payment_method: 'razorpay',
+        payment_status: 'paid',
         order_status: 'confirmed',
         razorpay_order_id: razorpay_order_id || null,
         razorpay_payment_id: razorpay_payment_id || null,
@@ -156,7 +156,7 @@ export async function POST(req) {
   } catch (err) {
     console.error('Verify payment critical error:', err)
     return NextResponse.json({
-      error: 'Something went wrong saving your order. If payment was deducted, please WhatsApp us at +91 96237 40541 with your payment details.'
+      error: 'Something went wrong saving your order. If payment was deducted, please WhatsApp us at +91 99212 97518 with your payment details.'
     }, { status: 500 })
   }
 }
