@@ -164,7 +164,7 @@ export default function CheckoutPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: Math.round(grandTotal * 100),
         currency: 'INR',
-        name: 'Shrilekha Mehndi Art',
+        name: 'Crabveda',
         description: `Order for ${form.name}`,
         order_id: orderId,
         prefill: { name: form.name, email: form.email, contact: `+91${form.phone}` },

@@ -179,6 +179,7 @@ export default function ProductDetail({ product, reviews, related }) {
             )}
             <div className="absolute top-3 right-3 flex flex-col gap-2">
               <button onClick={handleShare}
+              suppressHydrationWarning
                 className="w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-white transition-colors">
                 <Share2 size={15} style={{ color: 'var(--brand-muted)' }} />
               </button>
