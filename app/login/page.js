@@ -137,9 +137,15 @@ export default function LoginPage() {
           {/* Mobile logo — only shows on mobile */}
           <div className="lg:hidden text-center mb-8">
             <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
-              style={{ backgroundColor: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
-              <Image src="/logo.jpeg" alt="Crabveda" width={32} height={32} className="object-contain" />
-            </div>
+     style={{ backgroundColor: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
+  <Image 
+    src="/logo.jpeg" 
+    alt="Crabveda" 
+    width={56} // Matches the w-14 parent (14 * 4 = 56px) to avoid pixelation
+    height={56} 
+    className="w-full h-full rounded-full object-cover" // object-cover prevents squishing
+  />
+</div>
             <h1 className="font-black text-lg uppercase tracking-widest" style={{ color: '#0f1a0e' }}>
               Crabveda
             </h1>

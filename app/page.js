@@ -5,7 +5,7 @@ import FloatingButtons from '@/components/FloatingButtons'
 import {
   Truck, Shield, Leaf, Star, ArrowRight, Phone,
   Sparkles, Heart, Award, Users, MapPin, CheckCircle,
-  Palette, Camera, ChevronRight
+  Palette, Camera, ChevronRight, ShoppingCart
 } from 'lucide-react'
 
 async function getFeaturedProducts() {
@@ -80,91 +80,60 @@ export default async function HomePage() {
     <div>
       <FloatingButtons />
 {/* ===== HERO SECTION ===== */}
-<section className="relative min-h-[1svh] flex items-center bg-[#0a0f0d] pt-1 pb-12 md:pt-28 md:pb-16 lg:pt-3 lg:pb-20 overflow-hidden">
-
+<section className="relative min-h-[1svh] flex items-center bg-slate-50 pt-8 pb-12 md:pt-24 md:pb-16 lg:pt-12 lg:pb-20 overflow-hidden">
+  
   {/* S-Wave */}
   <div className="absolute top-0 left-0 w-full z-0 pointer-events-none">
     <svg
       viewBox="0 0 1440 700"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-full h-[40vh] md:h-[45vh] lg:h-auto"
+      className="w-full h-[30vh] md:h-[45vh] lg:h-auto"
       preserveAspectRatio="none"
     >
       <path fill="white" d="M0,0H1440V300C1440,300 1250,550 1000,450C750,350 500,650 0,550V0Z" />
       <path d="M0,550C500,650 750,350 1000,450C1250,550 1440,300 1440,300"
-        stroke="#c9a84c" strokeWidth="2" strokeOpacity="0.3" />
+        stroke="#c9a84c" strokeWidth="2" strokeOpacity="0.2" />
     </svg>
   </div>
 
   {/* Ambient glow */}
-  <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-[#c9a84c] rounded-full blur-[160px] opacity-10 pointer-events-none" />
+  <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-[#c9a84c]/20 rounded-full blur-[160px] pointer-events-none" />
 
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-16 items-center">
 
-      {/* ===== TEXT CONTENT ===== */}
-      <div className="lg:col-span-5 flex flex-col gap-5 md:gap-6 lg:gap-10 text-center lg:text-left order-2 lg:order-1 mt-4 md:mt-6 lg:mt-0">
+      {/* ===== BENTO GRID (FIRST ON MOBILE) ===== */}
+      <div className="lg:col-span-7 order-1 lg:order-2 w-full">
+        <div className="grid grid-cols-12 gap-3 md:gap-4 h-auto lg:h-[600px]">
 
-        {/* Badge */}
-        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl self-center lg:self-start">
-          <span className="flex h-2 w-2 rounded-full bg-[#c9a84c] animate-pulse" />
-          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.3em] uppercase">Premium Wellness</span>
-        </div>
-
-        {/* Headline — scale down on tablet */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.85] tracking-tighter mix-blend-exclusion text-white">
-          BOLD <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c]">
-            RELIEF.
-          </span>
-        </h1>
-
-        <p className="text-gray-600 lg:text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-sm md:max-w-md mx-auto lg:mx-0 font-medium">
-          Redefining pain management with highly concentrated Ayurvedic extracts. 
-          Where ancient holistic wisdom meets targeted joint restoration.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 lg:pt-0">
-          <Link href="/products"
-            className="group relative overflow-hidden bg-[#0a0f0d] text-white lg:bg-[#c9a84c] lg:text-[#0a0f0d] px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:shadow-[0_20px_50px_rgba(201,168,76,0.3)] transition-all text-sm md:text-base w-full sm:w-auto">
-            <span className="relative z-10">SHOP COLLECTION</span>
-            <ArrowRight size={18} className="relative z-10 group-hover:translate-x-2 transition-transform" />
-          </Link>
-        </div>
-      </div>
-
-      {/* ===== BENTO GRID (OPTIMIZED FOR MOBILE) ===== */}
-      <div className="lg:col-span-7 order-1 lg:order-2">
-        <div className="grid grid-cols-12 gap-3 md:gap-4 h-auto lg:h-[700px]">
-
-          {/* Main image - Full width on mobile for cleaner impact */}
-          <div className="col-span-12 lg:col-span-8 relative rounded-[1.5rem] md:rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl group h-[260px] sm:h-[320px] md:h-[400px] lg:h-full">
+          {/* Main image */}
+          <div className="col-span-12 lg:col-span-8 relative rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-black/5 shadow-xl group h-[280px] sm:h-[360px] md:h-[420px] lg:h-full">
             <img src="/img2.jpeg" alt="Therapeutic Oil Formulation"
-              className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d] via-transparent to-transparent opacity-80" />
-            <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 lg:bottom-12 lg:left-12">
-              <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[8px] md:text-[10px] mb-1 md:mb-3">
+              className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8">
+              <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[10px] mb-1">
                 Targeted Care
               </p>
-              <h3 className="text-white text-xl md:text-3xl lg:text-5xl font-black uppercase leading-none tracking-tighter">
+              <h3 className="text-white text-2xl md:text-4xl font-black uppercase leading-none tracking-tight">
                 CRABVEDA<br />OIL
               </h3>
             </div>
           </div>
 
-          {/* Side items - Adapts elegantly next to each other on smaller screens */}
+          {/* Side items */}
           <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4">
-            <div className="w-1/2 lg:w-full h-[120px] lg:flex-1 relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-white/10 group">
+            <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
               <img src="/img8.png" alt="Herbal Ingredients" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/20" />
+              <div className="absolute inset-0 bg-black/5" />
             </div>
-            <div className="w-1/2 lg:w-full lg:h-[30%] relative rounded-[1.5rem] md:rounded-[2rem] lg:rounded-[3rem] overflow-hidden border-2 border-[#c9a84c]/20 bg-white flex flex-col items-center justify-center p-3 md:p-6 text-center shadow-xl">
-              <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-1 md:mb-3">
-                <Leaf size={16} className="text-[#c9a84c] md:hidden" />
-                <Leaf size={24} className="text-[#c9a84c] hidden md:block" />
+            
+            <div className="w-1/2 lg:w-full lg:h-[35%] relative rounded-2xl border border-[#c9a84c]/30 bg-white flex flex-col items-center justify-center p-4 text-center shadow-md">
+              <div className="w-10 h-10 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-2">
+                <Leaf size={20} className="text-[#c9a84c]" />
               </div>
-              <p className="text-[#0a0f0d] font-black text-[8px] md:text-[10px] lg:text-xs uppercase tracking-widest leading-tight">
+              <p className="text-[#0a0f0d] font-black text-[10px] md:text-xs uppercase tracking-wider leading-tight">
                 100% Organic<br />Certified
               </p>
             </div>
@@ -173,28 +142,97 @@ export default async function HomePage() {
         </div>
       </div>
 
+      {/* ===== TEXT CONTENT & PRICE/BUY (SECOND ON MOBILE) ===== */}
+      <div className="lg:col-span-5 flex flex-col gap-5 md:gap-6 lg:gap-8 text-center lg:text-left order-2 lg:order-1">
+
+        {/* ===== MOBILE ONLY: HIGH-VISIBILITY TOP PRICING & BUY BLOCK ===== */}
+        <div className="flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto mt-4">
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
+            <span className="text-sm text-gray-400 line-through font-bold">₹720</span>
+            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">50% OFF</span>
+          </div>
+          <Link href="/checkout?item=crabveda"
+            className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10">
+            <ShoppingCart size={18} />
+            <span>BUY NOW</span>
+          </Link>
+        </div>
+
+        {/* Badge */}
+        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl self-center lg:self-start">
+          <span className="flex h-2 w-2 rounded-full bg-[#c9a84c]" />
+          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.3em] uppercase">Premium Wellness</span>
+        </div>
+
+        {/* Headline */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-black leading-[0.9] tracking-tighter text-[#0a0f0d]">
+          BOLD <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">
+            RELIEF.
+          </span>
+        </h1>
+
+        <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md mx-auto lg:mx-0 font-medium">
+          Redefining pain management with highly concentrated Ayurvedic extracts. 
+          Where ancient holistic wisdom meets targeted joint restoration.
+        </p>
+
+        {/* ===== DESKTOP ONLY: PRICING & ACTION BLOCK ===== */}
+        <div className="hidden lg:flex flex-col gap-6">
+          <div className="flex items-center gap-3 my-2">
+            <span className="text-4xl font-black text-[#0a0f0d]">₹360</span>
+            <span className="text-base text-gray-400 line-through font-bold">₹720</span>
+            <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">50% OFF</span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+            <Link href="/checkout?item=crabveda"
+              className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10">
+              <ShoppingCart size={18} />
+              <span>BUY NOW</span>
+            </Link>
+            
+            <Link href="/products"
+              className="group border border-black/10 bg-white text-[#0a0f0d] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all text-base w-full">
+              <span>Explore Suite</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Secondary exploration button specifically structured for mobile layout trail */}
+        <div className="lg:hidden w-full max-w-md mx-auto">
+          <Link href="/products"
+            className="group border border-black/10 bg-white text-[#0a0f0d] py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 text-sm w-full">
+            <span>Explore Entire Suite</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+
+      </div>
+
     </div>
   </div>
 </section>
 
 {/* ===== TRUST BAR ===== */}
-<section className="bg-white py-10 md:py-14 border-y border-[#0a0f0d]/5 relative z-10">
+<section className="bg-white py-10 border-y border-black/5 relative z-10">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-16">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
       {[
         { icon: Truck, label: 'EXPRESS DELIVERY', sub: 'Pan India Shipping' },
         { icon: Shield, label: 'PURE ORGANIC', sub: 'Lab Tested Goods' },
         { icon: Star, label: '5-STAR RATINGS', sub: 'Trusted Recovery' },
         { icon: Award, label: "AYURVEDIC POTENCY", sub: 'Expert Formulation' },
       ].map((item, i) => (
-        <div key={i} className="flex flex-col items-center md:items-start text-center md:text-left gap-3 md:gap-4 group">
-          <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-500">
-            <item.icon size={22} strokeWidth={1.5} className="md:hidden" />
-            <item.icon size={28} strokeWidth={1.5} className="hidden md:block" />
+        <div key={i} className="flex flex-col items-center md:items-start text-center md:text-left gap-3 group">
+          <div className="w-12 h-12 rounded-xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-300">
+            <item.icon size={22} strokeWidth={2} />
           </div>
           <div>
             <p className="text-[#0a0f0d] font-black text-xs md:text-sm tracking-tight uppercase">{item.label}</p>
-            <p className="text-gray-400 text-[9px] md:text-[10px] font-bold tracking-widest uppercase mt-1">{item.sub}</p>
+            <p className="text-gray-400 text-[10px] font-bold tracking-wider uppercase mt-0.5">{item.sub}</p>
           </div>
         </div>
       ))}

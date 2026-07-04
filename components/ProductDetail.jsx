@@ -9,7 +9,7 @@ import {
   ShoppingCart, Zap, Star, ChevronDown, ChevronUp,
   Truck, RefreshCw, Shield, Phone, Package,
   CheckCircle, Leaf, Plus, Minus, Heart, Share2,
-  Tag, Clock, Award, MapPin
+  Tag, Clock, Award, CreditCard, Wallet, Landmark
 } from 'lucide-react'
 
 function StarRating({ rating, size = 16, interactive = false, onRate }) {
@@ -91,6 +91,39 @@ export default function ProductDetail({ product, reviews, related }) {
       toast.success('Link copied!')
     }
   }
+
+  // Custom inline SVG logos for Indian popular payment modes
+  const paymentMethods = [
+    {
+      name: 'UPI',
+      icon: (
+        <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 10l3 4.5L11.5 8M13 14h7M15 10h4" stroke="#0f766e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      )
+    },
+    {
+      name: 'Google Pay',
+      icon: (
+        <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.5 12a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z" stroke="#1d4ed8" strokeWidth="2"/>
+          <path d="M12 9.5v5M9.5 12h5" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      )
+    },
+    {
+      name: 'PhonePe',
+      icon: (
+        <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="5" width="14" height="14" rx="3" stroke="#6b21a8" strokeWidth="2"/>
+          <path d="M10 9v6h3.5a1.5 1.5 0 000-3H10" stroke="#6b21a8" strokeWidth="2" strokeLinejoin="round"/>
+        </svg>
+      )
+    },
+    { name: 'Credit / Debit Card', icon: <CreditCard size={16} className="text-blue-600 flex-shrink-0" /> },
+    { name: 'Net Banking', icon: <Landmark size={16} className="text-amber-600 flex-shrink-0" /> },
+    { name: 'Wallets', icon: <Wallet size={16} className="text-emerald-600 flex-shrink-0" /> }
+  ]
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -285,10 +318,10 @@ export default function ProductDetail({ product, reviews, related }) {
 
           <div className="grid grid-cols-2 gap-2 pt-2">
             {[
-              { icon: <Truck size={14} />, text: 'Free shipping ₹499+' },
+              { icon: <Truck size={14} />, text: 'Free delivery on all orders' },
               { icon: <Shield size={14} />, text: '100% natural & safe' },
               { icon: <RefreshCw size={14} />, text: '7-day easy return' },
-              { icon: <Package size={14} />, text: 'COD on ₹999+' },
+              { icon: <Shield size={14} />, text: 'Online payment only' },
               { icon: <Clock size={14} />, text: 'Ships in 24 hours' },
               { icon: <Award size={14} />, text: 'Certified quality' },
             ].map(c => (
@@ -338,9 +371,8 @@ export default function ProductDetail({ product, reviews, related }) {
               <div className="flex flex-col gap-3">
                 {[
                   { icon: <Truck size={13} />, text: 'Standard delivery: 3–7 business days across India' },
-                  { icon: <Package size={13} />, text: 'Free shipping on orders above ₹499' },
-                  { icon: <CheckCircle size={13} />, text: 'COD available on orders above ₹999' },
-                  { icon: <Clock size={13} />, text: 'Orders shipped within 24 hours of payment' },
+                  { icon: <Package size={13} />, text: 'Free delivery on all orders' },
+                  { icon: <Clock size={13} />, text: 'Orders shipped within 24 hours of payment verification' },
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start gap-2.5">
                     <span className="mt-0.5 flex-shrink-0" style={{ color: 'var(--brand-green)' }}>{item.icon}</span>
@@ -353,19 +385,18 @@ export default function ProductDetail({ product, reviews, related }) {
             <Accordion title="Return & Refund Policy" icon={<RefreshCw size={16} />}>
               <div className="flex flex-col gap-2.5">
                 <p>• Returns accepted within <strong>7 days</strong> of delivery for unused, sealed products</p>
-                <p>• Damaged or wrong item — contact us within <strong>48 hours</strong> with photos</p>
                 <p>• Refund processed in <strong>5–7 business days</strong> to original payment method</p>
                 <p>• WhatsApp us at <a href="https://wa.me/919921297518" className="underline font-medium" style={{ color: 'var(--brand-green)' }}>+91 99212 97518</a> to initiate returns</p>
               </div>
             </Accordion>
 
-            <Accordion title="Payment Options" icon={<Shield size={16} />}>
+            <Accordion title="Payment Options (Online Only)" icon={<Shield size={16} />}>
               <div className="grid grid-cols-2 gap-2">
-                {['UPI / GPay', 'PhonePe', 'Credit Card', 'Debit Card', 'Net Banking', 'Wallets', 'Cash on Delivery', 'WhatsApp Order'].map(m => (
-                  <div key={m} className="flex items-center gap-1.5 text-[10px] p-2 rounded-lg border border-black/5"
+                {paymentMethods.map(m => (
+                  <div key={m.name} className="flex items-center gap-2 text-xs p-2.5 rounded-lg border border-black/5"
                     style={{ backgroundColor: 'var(--brand-surface)' }}>
-                    <CheckCircle size={11} className="flex-shrink-0" style={{ color: 'var(--brand-green)' }} /> 
-                    <span className="truncate">{m}</span>
+                    {m.icon}
+                    <span className="truncate font-medium text-slate-700">{m.name}</span>
                   </div>
                 ))}
               </div>

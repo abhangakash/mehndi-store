@@ -1,145 +1,84 @@
 'use client'
-import { useState, useMemo } from 'react'
+
 import ProductCard from './ProductCard'
-import { Search, X, ChevronDown } from 'lucide-react'
+import { Sparkles, ShieldCheck, Zap } from 'lucide-react'
 
-const SORT_OPTIONS = [
-  { value: 'default', label: 'Default' },
-  { value: 'price-low', label: 'Price: Low to High' },
-  { value: 'price-high', label: 'Price: High to Low' },
-  { value: 'name', label: 'Name A-Z' },
-]
-
-export default function ProductsClient({ products }) {
-  const [search, setSearch] = useState('')
-  const [sort, setSort] = useState('default')
-
-  const filtered = useMemo(() => {
-    let result = [...products]
-    
-    if (search.trim()) {
-      result = result.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.short_description?.toLowerCase().includes(search.toLowerCase())
-      )
-    }
-    
-    if (sort === 'price-low') result.sort((a, b) => a.price - b.price)
-    if (sort === 'price-high') result.sort((a, b) => b.price - a.price)
-    if (sort === 'name') result.sort((a, b) => a.name.localeCompare(b.name))
-    
-    return result
-  }, [products, search, sort])
-
-  const clearFilters = () => { 
-    setSearch('')
-    setSort('default') 
-  }
-  
-  const hasFilters = search || sort !== 'default'
+export default function ProductsClient({ products = [] }) {
+  const productList = products.slice(0, 2)
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
-      {/* Header */}
-      <div className="mb-6 text-center sm:text-left">
-        <h1 className="section-title text-2xl md:text-3xl font-bold">Our Products</h1>
-        <p className="section-subtitle text-sm md:text-base mt-1">
-          Premium Ayurvedic Crab Oil formulas for joint & muscle care
+    <div className="bg-slate-50 min-h-screen text-[#0a0f0d] antialiased pb-12">
+      
+      {/* ===== HEADER ===== */}
+      <div className="max-w-7xl mx-auto px-4 pt-10 pb-6 text-center">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 mb-3">
+          <Sparkles size={12} className="text-[#c9a84c] animate-pulse" />
+          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.2em] uppercase">Premium Wellness</span>
+        </div>
+        <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">
+          SELECT YOUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">PACK</span>
+        </h1>
+        <p className="text-gray-500 text-xs md:text-sm mt-2 max-w-md mx-auto font-medium">
+          Choose between our standard starter pack or upgraded savings bundle.
         </p>
       </div>
 
-      {/* Search & Sort controls bar */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        {/* Search Input */}
-        <div className="relative flex-1">
-          <Search 
-            size={16} 
-            className="absolute left-3 top-1/2 -translate-y-1/2"
-            style={{ color: 'var(--brand-muted)' }} 
-          />
-          <input
-            className="w-full rounded-lg border text-sm py-2.5"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search products..."
-            style={{ 
-              paddingLeft: '2.5rem', 
-              paddingRight: search ? '2.5rem' : '1rem',
-              borderColor: 'var(--brand-border)'
-            }}
-          />
-          {search && (
-            <button 
-              onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-80"
-              style={{ color: 'var(--brand-muted)' }}
-            >
-              <X size={15} />
-            </button>
-          )}
-        </div>
+      {/* ===== STRICT ZERO-SCROLL 2-COLUMN GRID ===== */}
+      <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-6 items-stretch">
+          {productList.map((product, idx) => {
+            const isCombo = product.name?.toLowerCase().includes('combo') || idx === 1;
 
-        {/* Sort Dropdown */}
-        <div className="relative w-full sm:w-48">
-          <select 
-            value={sort} 
-            onChange={e => setSort(e.target.value)}
-            className="w-full appearance-none rounded-lg border text-sm py-2.5 pl-3 cursor-pointer bg-white"
-            style={{ paddingRight: '2.5rem', borderColor: 'var(--brand-border)' }}
-          >
-            {SORT_OPTIONS.map(o => (
-              <option key={o.value} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-          <ChevronDown 
-            size={15} 
-            className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-            style={{ color: 'var(--brand-muted)' }} 
-          />
+            return (
+              <div 
+                key={product.id || idx} 
+                className={`bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative border-2 ${
+                  isCombo 
+                    ? 'border-[#c9a84c] shadow-amber-100/10' 
+                    : 'border-black/5'
+                }`}
+              >
+                {/* Micro Floating Badges */}
+                <div className={`absolute -top-2 left-3 sm:left-6 text-[8px] sm:text-[10px] font-black tracking-widest px-2.5 py-0.5 sm:py-1 rounded-md shadow-xs ${
+                  isCombo 
+                    ? 'bg-[#c9a84c] text-[#0a0f0d]' 
+                    : 'bg-slate-200 text-slate-700'
+                }`}>
+                  {isCombo ? 'POPULAR DEAL' : 'STARTER'}
+                </div>
+
+                {/* Main Product Card Output */}
+                <div className="flex-1 w-full pt-2 sm:pt-4">
+                  <ProductCard product={product} />
+                </div>
+
+                {/* Micro Benefit Banner */}
+                <div className={`mt-3 pt-2 border-t border-gray-100 text-[9px] sm:text-xs font-bold flex items-center justify-center gap-1 ${
+                  isCombo ? 'text-emerald-700' : 'text-gray-400'
+                }`}>
+                  <Zap size={10} fill="currentColor" className={isCombo ? 'text-emerald-600' : 'hidden'} />
+                  <span>{isCombo ? 'Best Price / Save Big' : 'Single Bottle Pack'}</span>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="w-full">
-        {/* Results count & Clear actions */}
-        <div className="flex items-center justify-between mb-4 text-sm">
-          <p style={{ color: 'var(--brand-muted)' }}>
-            Showing {filtered.length} product{filtered.length !== 1 ? 's' : ''}
-            {search && ` matching "${search}"`}
-          </p>
-          {hasFilters && (
-            <button 
-              onClick={clearFilters}
-              className="flex items-center gap-1 text-xs font-medium hover:underline"
-              style={{ color: 'var(--brand-brown)' }}
-            >
-              <X size={12} /> Clear layout
-            </button>
-          )}
+      {/* ===== MINI TRUST BAR ===== */}
+      <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 mt-8">
+        <div className="grid grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-black/5 shadow-xs">
+          <div className="flex items-center gap-2 px-1">
+            <ShieldCheck size={16} className="text-[#c9a84c] shrink-0" />
+            <span className="text-[10px] sm:text-xs font-black tracking-tight text-gray-700 uppercase">100% Ayurvedic Purity</span>
+          </div>
+          <div className="flex items-center gap-2 px-1 border-l border-gray-100">
+            <Zap size={16} className="text-[#c9a84c] shrink-0" />
+            <span className="text-[10px] sm:text-xs font-black tracking-tight text-gray-700 uppercase">Fast Delivery India</span>
+          </div>
         </div>
-
-        {/* Dynamic Responsive Grid */}
-        {filtered.length === 0 ? (
-          <div className="card p-8 md:p-12 text-center rounded-xl border border-dashed">
-            <div className="text-4xl md:text-5xl mb-4">🦀</div>
-            <p className="font-medium mb-1" style={{ color: 'var(--brand-text)' }}>
-              No products found
-            </p>
-            <p className="text-sm mb-4" style={{ color: 'var(--brand-muted)' }}>
-              Try a different search term or clear filters
-            </p>
-            <button onClick={clearFilters} className="btn-secondary text-sm px-4 py-2 rounded-lg">
-              Clear Filters
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filtered.map(p => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        )}
       </div>
+
     </div>
   )
 }
