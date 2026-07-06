@@ -24,9 +24,9 @@ export default function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const pathname = usePathname()
-if (pathname.startsWith('/admin')) {
-  return null
-}
+  if (pathname.startsWith('/admin')) {
+    return null
+  }
   const router = useRouter()
   const totalItems = useCartStore(s => s.getTotalItems())
   const { user, profile, signOut } = useAuth()
@@ -64,16 +64,17 @@ if (pathname.startsWith('/admin')) {
             <Menu size={22} />
           </button>
 
-          {/* Logo */}
+          {/* Logo with Brand Name Always Visible */}
           <Link href="/" className="flex items-center gap-2">
-  <div className="w-[26px] h-[26px] rounded-full overflow-hidden flex items-center justify-center">
-    <Image src="/logo.jpeg" alt="Logo" width={26} height={26} className="w-full h-full object-cover brightness-110 rounded-full" />
-  </div>
-  <div className="hidden sm:flex flex-col">
-    <span className="text-white font-black tracking-widest text-[11px] leading-none uppercase">Crabveda</span>
-    <span className="text-[#c9a84c] text-[7px] uppercase tracking-[0.3em] font-bold mt-0.5">Oil</span>
-  </div>
-</Link>
+            <div className="w-[26px] h-[26px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
+              <Image src="/logo.jpeg" alt="Logo" width={26} height={26} className="w-full h-full object-cover brightness-110 rounded-full" />
+            </div>
+            {/* Changed from 'hidden sm:flex' to 'flex' so it displays on mobile layout */}
+            <div className="flex flex-col">
+              <span className="text-white font-black tracking-widest text-[11px] leading-none uppercase">Crabveda</span>
+              <span className="text-[#c9a84c] text-[7px] uppercase tracking-[0.3em] font-bold mt-0.5">Oil</span>
+            </div>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">

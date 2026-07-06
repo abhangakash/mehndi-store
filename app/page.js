@@ -109,18 +109,27 @@ export default async function HomePage() {
 
           {/* Main image */}
           <div className="col-span-12 lg:col-span-8 relative rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-black/5 shadow-xl group h-[280px] sm:h-[360px] md:h-[420px] lg:h-full">
-            <img src="/img2.jpeg" alt="Therapeutic Oil Formulation"
-              className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8">
-              <p className="text-[#c9a84c] font-bold uppercase tracking-[0.4em] text-[10px] mb-1">
-                Targeted Care
-              </p>
-              <h3 className="text-white text-2xl md:text-4xl font-black uppercase leading-none tracking-tight">
-                CRABVEDA<br />OIL
-              </h3>
-            </div>
-          </div>
+  
+  {/* MOBILE & TABLET IMAGE (Hidden on large screens and above) */}
+  <img 
+    src="/img4.webp" 
+    alt="Therapeutic Oil Formulation"
+    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
+  />
+
+  {/* DESKTOP / PC IMAGE (Hidden by default, visible only on large screens and above) */}
+  <img 
+    src="/img2.jpeg" 
+    alt="Therapeutic Oil Formulation Desktop"
+    className="hidden lg:block w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+  />
+
+  {/* OVERLAY & TEXT (Remains identical for both) */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+  <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8">
+   
+  </div>
+</div>
 
           {/* Side items */}
           <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4">
@@ -149,8 +158,8 @@ export default async function HomePage() {
         <div className="flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto mt-4">
           <div className="flex items-center justify-center gap-3">
             <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
-            <span className="text-sm text-gray-400 line-through font-bold">₹720</span>
-            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">50% OFF</span>
+            <span className="text-sm text-gray-400 line-through font-bold">₹499</span>
+            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
           </div>
           <Link href="/checkout?item=crabveda"
             className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10">
@@ -182,8 +191,8 @@ export default async function HomePage() {
         <div className="hidden lg:flex flex-col gap-6">
           <div className="flex items-center gap-3 my-2">
             <span className="text-4xl font-black text-[#0a0f0d]">₹360</span>
-            <span className="text-base text-gray-400 line-through font-bold">₹720</span>
-            <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">50% OFF</span>
+            <span className="text-base text-gray-400 line-through font-bold">₹499</span>
+            <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">28% OFF</span>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
