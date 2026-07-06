@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import ProductCard from '@/components/ProductCard'
 import FloatingButtons from '@/components/FloatingButtons'
+import BuyNowButton from '@/components/BuyNowButton'
 import {
   Truck, Shield, Leaf, Star, ArrowRight, Phone,
   Sparkles, Heart, Award, Users, MapPin, CheckCircle,
@@ -107,32 +108,32 @@ export default async function HomePage() {
       <div className="lg:col-span-7 order-1 lg:order-2 w-full">
         <div className="grid grid-cols-12 gap-3 md:gap-4 h-auto lg:h-[600px]">
 
-          {/* Main image */}
-          <div className="col-span-12 lg:col-span-8 relative rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-black/5 shadow-xl group h-[280px] sm:h-[360px] md:h-[420px] lg:h-full">
+          {/* Main image container modified for full screen mobile bleeding */}
+          <div className="col-span-12 lg:col-span-8 relative -mx-4 sm:-mx-6 lg:mx-0 rounded-none md:rounded-[2.5rem] overflow-hidden border-b border-black/5 lg:border shadow-xl group h-[280px] sm:h-[360px] md:h-[420px] lg:h-full">
   
-  {/* MOBILE & TABLET IMAGE (Hidden on large screens and above) */}
-  <img 
-    src="/img4.webp" 
-    alt="Therapeutic Oil Formulation"
-    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
-  />
+            {/* MOBILE & TABLET IMAGE */}
+            <img 
+              src="/img4.webp" 
+              alt="Therapeutic Oil Formulation"
+              className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
+            />
 
-  {/* DESKTOP / PC IMAGE (Hidden by default, visible only on large screens and above) */}
-  <img 
-    src="/img2.jpeg" 
-    alt="Therapeutic Oil Formulation Desktop"
-    className="hidden lg:block w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
-  />
+            {/* DESKTOP / PC IMAGE */}
+            <img 
+              src="/img2.jpeg" 
+              alt="Therapeutic Oil Formulation Desktop"
+              className="hidden lg:block w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
+            />
 
-  {/* OVERLAY & TEXT (Remains identical for both) */}
-  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-  <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8">
-   
-  </div>
-</div>
+            {/* OVERLAY & TEXT */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8">
+               
+            </div>
+          </div>
 
-          {/* Side items */}
-          <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4">
+          {/* Side items (keeps padding alignment intact) */}
+          <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4 mt-2 lg:mt-0">
             <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
               <img src="/img8.png" alt="Herbal Ingredients" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/5" />
@@ -156,17 +157,25 @@ export default async function HomePage() {
 
         {/* ===== MOBILE ONLY: HIGH-VISIBILITY TOP PRICING & BUY BLOCK ===== */}
         <div className="flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto mt-4">
-          <div className="flex items-center justify-center gap-3">
-            <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
-            <span className="text-sm text-gray-400 line-through font-bold">₹499</span>
-            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
-          </div>
-          <Link href="/checkout?item=crabveda"
-            className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10">
-            <ShoppingCart size={18} />
-            <span>BUY NOW</span>
-          </Link>
-        </div>
+  <div className="flex items-center justify-center gap-3">
+    <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
+    <span className="text-sm text-gray-400 line-through font-bold">₹499</span>
+    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
+  </div>
+  <BuyNowButton
+    product={{
+      id: 'crabveda-200ml', // ⚠️ placeholder ID — see note below
+      name: 'CrabVeda 200ml',
+      price: 360,
+      image_url: '/img4.webp',
+      short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+    }}
+    className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10 w-full"
+  >
+    <ShoppingCart size={18} />
+    <span>BUY NOW</span>
+  </BuyNowButton>
+</div>
 
         {/* Badge */}
         <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl self-center lg:self-start">
@@ -196,18 +205,26 @@ export default async function HomePage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-            <Link href="/checkout?item=crabveda"
-              className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10">
-              <ShoppingCart size={18} />
-              <span>BUY NOW</span>
-            </Link>
-            
-            <Link href="/products"
-              className="group border border-black/10 bg-white text-[#0a0f0d] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all text-base w-full">
-              <span>Explore Suite</span>
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
+  <BuyNowButton
+    product={{
+      id: 'crabveda-200ml', // ⚠️ placeholder — swap for real product UUID, see note below
+      name: 'CrabVeda 200ml',
+      price: 360,
+      image_url: '/img4.webp',
+      short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+    }}
+    className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
+  >
+    <ShoppingCart size={18} />
+    <span>BUY NOW</span>
+  </BuyNowButton>
+  
+  <Link href="/products"
+    className="group border border-black/10 bg-white text-[#0a0f0d] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all text-base w-full">
+    <span>Explore Suite</span>
+    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+  </Link>
+</div>
         </div>
 
         {/* Secondary exploration button specifically structured for mobile layout trail */}
@@ -310,13 +327,12 @@ export default async function HomePage() {
 
 
 {/* ===== FEATURED PRODUCTS ===== */}
+{/* ===== FEATURED PRODUCTS ===== */}
 <section className="py-20 px-4 bg-white relative overflow-hidden">
-  {/* Elegant background accent */}
   <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
   
   <div className="max-w-7xl mx-auto relative z-10">
     
-    {/* Header Section */}
     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
       <div className="space-y-3">
         <div className="flex items-center gap-2">
@@ -339,18 +355,21 @@ export default async function HomePage() {
       </Link>
     </div>
 
-    {/* Products Grid: 2 columns on mobile, 3 on desktop */}
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
-      {products.slice(0, 6).map((p) => (
+      {products && products.slice(0, 6).map((p) => (
         <div key={p.id} className="group relative">
-          <div className="transition-all duration-500 ease-out hover:-translate-y-2">
+          <div className="transition-all duration-500 ease-out hover:-translate-y-2 flex flex-col gap-2">
             <ProductCard product={p} />
+
+            <BuyNowButton
+              product={p}
+              className="w-full py-2.5 rounded-xl bg-[#0a0f0d] text-white font-black text-[10px] tracking-widest text-center active:scale-[0.98] transition-all hover:bg-[#c9a84c] hover:text-[#0a0f0d]"
+            />
           </div>
         </div>
       ))}
     </div>
 
-    {/* Mobile View All Button - visible only on small screens */}
     <div className="text-center mt-10 md:hidden px-2">
       <Link 
         href="/products" 
@@ -362,7 +381,6 @@ export default async function HomePage() {
     </div>
   </div>
 </section>
-
      {/* ===== PACKAGES PREVIEW ===== 
 <section className="py-24 px-4 bg-[#0a0f0d] relative overflow-hidden">
   <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent opacity-10" />
@@ -461,7 +479,7 @@ export default async function HomePage() {
 </section>
 
 {/* ===== GALLERY PREVIEW ===== */}
-<section className="py-24 px-4 bg-white relative">
+<section className="py-1 px-4 bg-white relative">
   <div className="max-w-7xl mx-auto">
     
     {/* Header: Editorial Style */}

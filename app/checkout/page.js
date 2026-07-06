@@ -7,7 +7,8 @@ import { supabase } from '@/lib/supabase'
 import Script from 'next/script' // Optimized Script Loading
 import {
   MapPin, Phone, User, Mail, Calendar,
-  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home
+  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home,
+  Smartphone, CreditCard, Landmark, Wallet
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
@@ -475,39 +476,35 @@ export default function CheckoutPage() {
                     Payment Method
                   </p>
                 </div>
-                <div className="p-5 flex flex-col gap-3">
-                  <label className="flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all"
-                    style={{
-                      borderColor: paymentMethod === 'razorpay' ? '#0f1a0e' : '#f3f4f6',
-                      backgroundColor: paymentMethod === 'razorpay' ? '#fafafa' : 'white',
-                    }}>
-                    <input type="radio" name="payment" value="razorpay"
-                      checked={paymentMethod === 'razorpay'} onChange={() => setPaymentMethod('razorpay')} className="mt-1 text-[#0f1a0e] focus:ring-[#0f1a0e]" />
+                <div className="p-5">
+                  <div className="flex items-start gap-3 p-4 rounded-xl border-2"
+                    style={{ borderColor: '#0f1a0e', backgroundColor: '#fafafa' }}>
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{ backgroundColor: '#0f1a0e' }}>
+                      <div className="w-2 h-2 rounded-full bg-white" />
+                    </div>
                     <div className="flex-1">
                       <p className="text-sm font-black text-black">Pay Online</p>
                       <p className="text-xs text-gray-500 mt-0.5">UPI, Cards, Net Banking via Razorpay</p>
-                      <div className="flex flex-wrap gap-1.5 mt-2">
-                        {['UPI', 'GPay', 'PhonePe', 'Card', 'Net Banking'].map(m => (
-                          <span key={m} className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500">{m}</span>
-                        ))}
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-purple-50 text-purple-600 border border-purple-100">
+                          <Smartphone size={11} /> UPI
+                        </span>
+                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-blue-50 text-blue-600 border border-blue-100">
+                          <Wallet size={11} /> GPay
+                        </span>
+                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
+                          <Smartphone size={11} /> PhonePe
+                        </span>
+                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-amber-50 text-amber-600 border border-amber-100">
+                          <CreditCard size={11} /> Card
+                        </span>
+                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                          <Landmark size={11} /> Net Banking
+                        </span>
                       </div>
                     </div>
-                  </label>
-
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border-2 transition-all ${codAvailable ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed'}`}
-                    style={{
-                      borderColor: paymentMethod === 'cod' ? '#0f1a0e' : '#f3f4f6',
-                      backgroundColor: paymentMethod === 'cod' ? '#fafafa' : 'white',
-                    }}>
-                    <input type="radio" name="payment" value="cod" disabled={!codAvailable}
-                      checked={paymentMethod === 'cod'} onChange={() => codAvailable && setPaymentMethod('cod')} className="mt-1 text-[#0f1a0e] focus:ring-[#0f1a0e]" />
-                    <div>
-                      <p className="text-sm font-black text-black">Cash on Delivery</p>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {codAvailable ? 'Pay when your order arrives' : 'Available on orders above ₹999'}
-                      </p>
-                    </div>
-                  </label>
+                  </div>
                 </div>
               </div>
             </div>
