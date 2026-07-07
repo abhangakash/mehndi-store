@@ -188,13 +188,14 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Full Screen Mobile Menu Overlay Panel with Background Scroll Lock */}
-      <div className={`lg:hidden fixed inset-0 w-screen h-screen bg-[#0f1a14] transition-all duration-500 z-[150] overflow-y-auto ${menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-full'}`}>
+      {/* Full Screen Mobile Menu Overlay Panel — CHANGED: h-screen to h-[100dvh] */}
+      <div className={`lg:hidden fixed inset-0 w-screen h-[100dvh] bg-[#0f1a14] transition-all duration-500 z-[150] overflow-y-auto ${menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-full'}`}>
         <button onClick={toggleMenu} className="absolute top-7 right-6 p-3 bg-white/5 border border-white/10 rounded-full text-[#c9a84c]">
           <X size={24} />
         </button>
 
-        <div className="flex flex-col min-h-full px-8 pt-20 pb-10">
+        {/* CHANGED: min-h-full to min-h-[100dvh], added safe area padding pb-14 to clear mobile back buttons */}
+        <div className="flex flex-col min-h-[100dvh] px-8 pt-20 pb-14">
           {/* User greeting */}
           {user && (
             <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/5 shrink-0">
@@ -264,8 +265,8 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Social icons — FIXED: added shrink-0 to prevent hidden/crushed elements */}
-          <div className="mt-auto pt-6 flex items-center gap-4 shrink-0">
+          {/* Social icons — CHANGED: added mb-4 helper spacing */}
+          <div className="mt-auto pt-6 flex items-center gap-4 shrink-0 mb-4">
             <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer"
               className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

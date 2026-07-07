@@ -322,7 +322,7 @@ export default function TrackOrderPage() {
                       ? e.target.value.replace(/\D/g, '').slice(0, 10)
                       : e.target.value
                   )}
-                  placeholder={searchType === 'phone' ? '9876543210' : 'you@example.com'}
+                  placeholder={searchType === 'phone' ? 'Mobile Number' : 'you@example.com'}
                   className="w-full py-4 pr-4 rounded-2xl text-sm outline-none transition-all"
                   style={{
                     paddingLeft: searchType === 'phone' ? '4.5rem' : '3rem',
