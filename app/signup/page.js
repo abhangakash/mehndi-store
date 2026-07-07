@@ -1,304 +1,337 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import {
-  Mail, Lock, Eye, EyeOff, User, Phone,
-  ArrowRight, Sparkles, CheckCircle
-} from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, ShieldCheck } from 'lucide-react'
 import toast from 'react-hot-toast'
-import Image from 'next/image'
 
-const BENEFITS = [
-  'Track restoration & delivery status',
-  'Review targeted order history',
-  'Accelerated secure checkouts',
-  'Access exclusive wellness offers',
-]
+/**
+ * Fonts: pair a characterful serif for the display headline with a clean
+ * grotesk for body/UI. Add this to your root layout (or _document) once:
+ *
+ * <link rel="preconnect" href="https://fonts.googleapis.com" />
+ * <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+ */
+
+const FIELD_COUNT = 4
 
 export default function SignupPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirm, setShowConfirm] = useState(false)
+  const [touched, setTouched] = useState({})
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
-  const [confirm, setConfirm] = useState('')
+
+  // ---- validation (computed, not toast-only) ----
+  const errors = useMemo(() => {
+    const e = {}
+    if (touched.name && name.trim().length < 2) e.name = 'Enter your full name'
+    if (touched.email && email && !/^\S+@\S+\.\S+$/.test(email)) e.email = 'Enter a valid email'
+    if (touched.phone && phone && phone.length !== 10) e.phone = '10 digits required'
+    if (touched.password && password && password.length < 6) e.password = 'At least 6 characters'
+    return e
+  }, [touched, name, email, phone, password])
+
+  const filledCount = [name.trim().length > 1, /^\S+@\S+\.\S+$/.test(email), phone.length === 10, password.length >= 6].filter(Boolean).length
+
+  const passwordStrength = useMemo(() => {
+    if (!password) return 0
+    let score = 0
+    if (password.length >= 6) score++
+    if (password.length >= 10) score++
+    if (/[A-Z]/.test(password) && /[0-9]/.test(password)) score++
+    if (/[^A-Za-z0-9]/.test(password)) score++
+    return Math.min(score, 3)
+  }, [password])
+
+  const markTouched = (field) => setTouched((t) => ({ ...t, [field]: true }))
 
   const handleSignup = async (e) => {
     e.preventDefault()
-    if (!name || !email || !password) return toast.error('Please fill all required fields')
-    if (password.length < 6) return toast.error('Password must be at least 6 characters')
-    if (password !== confirm) return toast.error('Passwords do not match')
+    setTouched({ name: true, email: true, phone: true, password: true })
+
+    if (!name.trim() || !email || !phone || !password) {
+      return toast.error('Please fill in all fields.')
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      return toast.error('Please enter a valid email address.')
+    }
+    if (phone.length !== 10) {
+      return toast.error('Please enter a valid 10-digit mobile number.')
+    }
+    if (password.length < 6) {
+      return toast.error('Password must be at least 6 characters.')
+    }
 
     setLoading(true)
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: name, phone: phone || '' } },
+      options: { data: { full_name: name.trim(), phone } },
     })
-    if (error) toast.error(error.message)
-    else {
-      toast.success('Account created! Check your email to verify.')
+
+    if (error) {
+      toast.error(error.message)
+    } else {
+      toast.success('Account created! Please check your email.')
       router.push('/login')
     }
     setLoading(false)
   }
 
-  const baseInputStyle = {
-    backgroundColor: 'white',
-    border: '1.5px solid rgba(15,26,14,0.08)',
-    color: '#0f1a0e',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-    paddingTop: '1rem',
-    paddingBottom: '1rem',
-    paddingRight: '1rem',
-  }
-
-  const handleFocus = e => e.target.style.borderColor = '#c9a84c'
-  const handleBlur = e => e.target.style.borderColor = 'rgba(15,26,14,0.08)'
-
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#0a1209' }}>
+    <div className="min-h-[100dvh] w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased flex flex-col justify-between pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <style>{`
+        .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
 
-      {/* ===== LEFT PANEL ===== */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col items-center justify-center p-12"
-        style={{ background: 'linear-gradient(145deg, #0f1a0e 0%, #1a3020 50%, #0f1a0e 100%)' }}>
+        /* Icon + input as flex siblings */
+        .field-group {
+          display: flex;
+          align-items: stretch;
+          background: #fff;
+          border: 1.5px solid #e7e2d6;
+          border-radius: 0.75rem;
+          overflow: hidden;
+          transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .field-group:focus-within {
+          border-color: #c9a84c;
+          box-shadow: 0 0 0 3px rgba(201,168,76,0.14);
+        }
+        .field-group[data-invalid="true"] { border-color: #f87171; }
+        .field-icon {
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 3rem;
+          color: #a8a29e;
+        }
+        .field-icon.field-icon--prefix {
+          width: auto;
+          padding: 0 0.6rem 0 1rem;
+          gap: 0.5rem;
+          font-weight: 700;
+          font-size: 16px;
+          color: #57534e;
+          border-right: 1px solid #e7e2d6;
+        }
+        .field-input {
+          flex: 1 1 auto;
+          min-width: 0;
+          border: none;
+          outline: none;
+          background: transparent;
+          padding: 0.9rem 1rem 0.9rem 0;
+          font-size: 16px;
+          color: #0f1a14;
+        }
+        .field-input--tight { padding-left: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
+        .field-toggle {
+          flex: 0 0 auto;
+          width: 2.75rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #a8a29e;
+          background: transparent;
+          border: none;
+        }
+      `}</style>
 
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, #c9a84c 0%, transparent 50%),
-                              radial-gradient(circle at 75% 75%, #588157 0%, transparent 50%)`,
-          }} />
-
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          {[240, 320, 400, 480].map((size, i) => (
-            <div key={i} className="absolute rounded-full border"
-              style={{
-                width: size, height: size,
-                top: -size / 2, left: -size / 2,
-                borderColor: `rgba(201, 168, 76, ${0.06 - i * 0.01})`,
-              }} />
+      {/* Segmented progress */}
+      <div className="w-full px-5 pt-[max(1.25rem,env(safe-area-inset-top))]">
+        <div className="max-w-sm mx-auto flex gap-1.5">
+          {Array.from({ length: FIELD_COUNT }).map((_, i) => (
+            <div key={i} className="h-1 flex-1 rounded-full bg-[#e7e1d4] overflow-hidden">
+              <div
+                className="h-full bg-[#c9a84c] transition-all duration-500 ease-out rounded-full"
+                style={{ width: i < filledCount ? '100%' : '0%' }}
+              />
+            </div>
           ))}
-        </div>
-
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <div className="relative mb-8">
-  <div className="w-20 h-20 rounded-full flex items-center justify-center overflow-hidden"
-    style={{ backgroundColor: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)' }}>
-    <Image src="/logo.jpeg" alt="Crabveda" width={80} height={80} className="w-full h-full object-cover brightness-110 rounded-full" />
-  </div>
-</div>
-
-          <div className="mb-3 flex items-center gap-3">
-            <div className="h-px w-6" style={{ backgroundColor: 'rgba(201,168,76,0.3)' }} />
-            <span className="text-xs font-bold uppercase tracking-[0.4em]" style={{ color: '#c9a84c' }}>Authentic Ayurveda</span>
-            <div className="h-px w-6" style={{ backgroundColor: 'rgba(201,168,76,0.3)' }} />
-          </div>
-
-          <h2 className="text-3xl font-black uppercase tracking-widest text-white mb-6">
-            Create Account
-          </h2>
-
-          <div className="flex flex-col gap-3 w-full max-w-xs">
-            {BENEFITS.map(b => (
-              <div key={b} className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'rgba(201,168,76,0.15)' }}>
-                  <CheckCircle size={11} style={{ color: '#c9a84c' }} />
-                </div>
-                <span className="text-sm text-left" style={{ color: 'rgba(255,255,255,0.5)' }}>{b}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 p-4 rounded-2xl w-full max-w-xs"
-            style={{ backgroundColor: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.1)' }}>
-            <p className="text-xs leading-relaxed text-center"
-              style={{ color: 'rgba(255,255,255,0.35)' }}>
-              Join thousands who rely on Crabveda for elite, concentrated pain relief oils and natural recovery solutions.
-            </p>
-          </div>
-        </div>
-
-        <div className="absolute bottom-8 left-0 right-0 text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.3em]"
-            style={{ color: 'rgba(201,168,76,0.3)' }}>
-            ✦ Pure Relief. Restored Vitality. ✦
-          </p>
         </div>
       </div>
 
-      {/* ===== RIGHT PANEL — form ===== */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12"
-        style={{ backgroundColor: '#fcfaf6' }}>
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex flex-col justify-center px-5 py-6">
+        <div className="w-full max-w-sm mx-auto">
 
-          {/* Mobile logo */}
-          <div className="lg:hidden text-center mb-8">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden"
-     style={{ backgroundColor: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
-  <Image 
-    src="/logo.jpeg" 
-    alt="Crabveda" 
-    width={56} 
-    height={56} 
-    className="w-full h-full rounded-full object-cover" 
-  />
-</div>
-            <h1 className="font-black text-lg uppercase tracking-widest" style={{ color: '#0f1a0e' }}>Crabveda</h1>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] mt-0.5" style={{ color: '#c9a84c' }}>Pain Relief & Recovery</p>
-          </div>
-
-          {/* Form header */}
+          {/* Header */}
           <div className="mb-6">
-            <h2 className="text-2xl font-black uppercase tracking-tight" style={{ color: '#0f1a0e' }}>
-              Begin Recovery
-            </h2>
-            <p className="text-xs font-medium mt-1.5" style={{ color: 'rgba(15,26,14,0.4)' }}>
-              Create your account — takes less than a minute
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#c9a84c] mb-1">
+              Get started
+            </p>
+            <h1 className="font-display text-[2rem] leading-[1.1] font-medium tracking-tight text-[#0f1a14]">
+              Create your account
+            </h1>
+            <p className="text-[14px] text-stone-500 mt-1.5 leading-relaxed">
+              Save your address, track orders, and check out faster next time.
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSignup} className="flex flex-col gap-4">
+          <form id="signup-form" onSubmit={handleSignup} noValidate className="space-y-3.5">
 
-            {/* Name */}
+            {/* Full Name */}
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-2"
-                style={{ color: 'rgba(15,26,14,0.5)' }}>Full Name *</label>
-              <div className="relative w-full" style={{ display: 'block' }}>
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
-                  <User size={16} style={{ color: '#c9a84c' }} />
-                </div>
-                <input type="text" value={name} onChange={e => setName(e.target.value)}
+              <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+                Full Name
+              </label>
+              <div className="field-group" data-invalid={!!errors.name}>
+                <span className="field-icon"><User size={18} /></span>
+                <input
+                  id="name"
+                  type="text"
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={() => markTouched('name')}
                   placeholder="Priya Sharma"
-                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
-                  style={{ ...baseInputStyle, paddingLeft: '3.5rem' }} 
-                  onFocus={handleFocus} onBlur={handleBlur} />
+                  aria-invalid={!!errors.name}
+                  className="field-input"
+                />
               </div>
+              {errors.name && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.name}</p>}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-2"
-                style={{ color: 'rgba(15,26,14,0.5)' }}>Email Address *</label>
-              <div className="relative w-full" style={{ display: 'block' }}>
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
-                  <Mail size={16} style={{ color: '#c9a84c' }} />
-                </div>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
-                  style={{ ...baseInputStyle, paddingLeft: '3.5rem' }} 
-                  onFocus={handleFocus} onBlur={handleBlur} />
+              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+                Email Address
+              </label>
+              <div className="field-group" data-invalid={!!errors.email}>
+                <span className="field-icon"><Mail size={18} /></span>
+                <input
+                  id="email"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => markTouched('email')}
+                  placeholder="name@example.com"
+                  aria-invalid={!!errors.email}
+                  className="field-input"
+                />
               </div>
+              {errors.email && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.email}</p>}
             </div>
 
-            {/* Phone */}
+            {/* Mobile Number */}
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-2"
-                style={{ color: 'rgba(15,26,14,0.5)' }}>
-                Phone <span style={{ color: 'rgba(15,26,14,0.3)' }}>(optional — for tracking)</span>
+              <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+                Mobile Number
               </label>
-              <div className="relative w-full" style={{ display: 'block' }}>
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 pointer-events-none">
-                  <Phone size={14} style={{ color: '#c9a84c' }} />
-                  <span className="text-xs font-bold" style={{ color: 'rgba(15,26,14,0.4)' }}>+91</span>
-                </div>
-                <input type="tel" value={phone}
-                  onChange={e => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  placeholder="9876543210" maxLength={10}
-                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
-                  style={{ ...baseInputStyle, paddingLeft: '4.8rem' }}
-                  onFocus={handleFocus} onBlur={handleBlur} />
+              <div className="field-group" data-invalid={!!errors.phone}>
+                <span className="field-icon field-icon--prefix">
+                  <Phone size={16} />
+                  +91
+                </span>
+                <input
+                  id="phone"
+                  type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  value={phone}
+                  maxLength={10}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                  onBlur={() => markTouched('phone')}
+                  placeholder="98765 43210"
+                  aria-invalid={!!errors.phone}
+                  className="field-input field-input--tight"
+                />
               </div>
+              {errors.phone && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.phone}</p>}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-2"
-                style={{ color: 'rgba(15,26,14,0.5)' }}>Password *</label>
-              <div className="relative w-full" style={{ display: 'block' }}>
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
-                  <Lock size={16} style={{ color: '#c9a84c' }} />
-                </div>
-                <input type={showPassword ? 'text' : 'password'} value={password}
-                  onChange={e => setPassword(e.target.value)} placeholder="Min 6 characters"
-                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
-                  style={{ ...baseInputStyle, paddingLeft: '3.5rem', paddingRight: '3rem' }} 
-                  onFocus={handleFocus} onBlur={handleBlur} />
-                <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 transition-colors flex items-center justify-center"
-                  style={{ color: 'rgba(15,26,14,0.3)' }}>
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+                Password
+              </label>
+              <div className="field-group" data-invalid={!!errors.password}>
+                <span className="field-icon"><Lock size={18} /></span>
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => markTouched('password')}
+                  placeholder="Minimum 6 characters"
+                  aria-invalid={!!errors.password}
+                  className="field-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className="field-toggle"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-            </div>
 
-            {/* Confirm password */}
-            <div>
-              <label className="block text-xs font-black uppercase tracking-widest mb-2"
-                style={{ color: 'rgba(15,26,14,0.5)' }}>Confirm Password *</label>
-              <div className="relative w-full" style={{ display: 'block' }}>
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none">
-                  <Lock size={16} style={{ color: password && confirm && password === confirm ? '#15803d' : '#c9a84c' }} />
+              {/* Strength meter */}
+              {password.length > 0 && (
+                <div className="flex items-center gap-2 mt-2 pl-0.5">
+                  <div className="flex gap-1 flex-1">
+                    {[0, 1, 2].map((i) => (
+                      <div key={i} className="h-1 flex-1 rounded-full bg-stone-200 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            passwordStrength > i
+                              ? passwordStrength === 1 ? 'bg-red-400 w-full'
+                              : passwordStrength === 2 ? 'bg-amber-400 w-full'
+                              : 'bg-emerald-500 w-full'
+                              : 'w-0'
+                          }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-[11px] font-medium text-stone-400 w-12 text-right">
+                    {passwordStrength <= 1 ? 'Weak' : passwordStrength === 2 ? 'Good' : 'Strong'}
+                  </span>
                 </div>
-                <input type={showConfirm ? 'text' : 'password'} value={confirm}
-                  onChange={e => setConfirm(e.target.value)} placeholder="Re-enter password"
-                  className="w-full text-sm rounded-2xl outline-none transition-all block relative z-0"
-                  style={{
-                    ...baseInputStyle,
-                    paddingLeft: '3.5rem',
-                    paddingRight: '3rem',
-                    borderColor: confirm && password !== confirm ? '#fca5a5' : 'rgba(15,26,14,0.08)',
-                  }}
-                  onFocus={handleFocus} onBlur={handleBlur} />
-                <button type="button" onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 transition-colors flex items-center justify-center"
-                  style={{ color: 'rgba(15,26,14,0.3)' }}>
-                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-              {confirm && password !== confirm && (
-                <p className="text-xs mt-1 font-medium" style={{ color: '#dc2626' }}>
-                  Passwords do not match
-                </p>
               )}
+              {errors.password && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.password}</p>}
             </div>
 
-            {/* Submit */}
-            <button type="submit" disabled={loading}
-              className="group w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 transition-all active:scale-[0.98] mt-1"
-              style={{
-                backgroundColor: loading ? 'rgba(15,26,14,0.5)' : '#0f1a0e',
-                color: 'white',
-                boxShadow: '0 8px 24px rgba(15,26,14,0.2)',
-              }}>
-              {loading ? 'Creating account...' : 'Create Account'}
-              {!loading && <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />}
-            </button>
+            {/* Unified Submit Button (Below Form Fields / Above Log In Link) */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#0f1a14] hover:bg-[#1a2d23] active:bg-[#1a2d23] text-white py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
+              >
+                {loading ? 'Creating account…' : 'Create account'}
+                {!loading && <ArrowRight size={16} />}
+              </button>
+            </div>
           </form>
 
-          {/* Divider + login link */}
-          <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px" style={{ backgroundColor: 'rgba(15,26,14,0.08)' }} />
-            <Sparkles size={12} style={{ color: '#c9a84c', opacity: 0.6 }} />
-            <div className="flex-1 h-px" style={{ backgroundColor: 'rgba(15,26,14,0.08)' }} />
+          {/* Login Link Alignment */}
+          <div className="mt-5 text-center">
+            <p className="text-sm text-stone-500">
+              Already have an account?{' '}
+              <Link href="/login" className="text-[#0f1a14] font-bold underline underline-offset-4 ml-1">
+                Log In
+              </Link>
+            </p>
           </div>
-
-          <p className="text-center text-xs font-medium" style={{ color: 'rgba(15,26,14,0.4)' }}>
-            Already have an account?{' '}
-            <Link href="/login"
-              className="font-black uppercase tracking-wide border-b pb-0.5"
-              style={{ color: '#0f1a0e', borderColor: '#c9a84c' }}>
-              Sign In
-            </Link>
-          </p>
         </div>
+      </div>
+
+      {/* Footer Branding View */}
+      <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-4">
+        <ShieldCheck size={14} className="text-[#c9a84c]" />
+        <span>Secure Sign Up Portal</span>
       </div>
     </div>
   )

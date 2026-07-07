@@ -81,7 +81,7 @@ export default async function HomePage() {
     <div>
       <FloatingButtons />
 {/* ===== HERO SECTION ===== */}
-<section className="relative min-h-[1svh] flex items-center bg-slate-50 pt-8 pb-12 md:pt-24 md:pb-16 lg:pt-12 lg:pb-20 overflow-hidden">
+<section className="relative min-h-[1svh] flex items-center bg-slate-50 pt-0 pb-12 md:pt-24 md:pb-16 lg:pt-12 lg:pb-20 overflow-hidden">
   
   {/* S-Wave */}
   <div className="absolute top-0 left-0 w-full z-0 pointer-events-none">
@@ -132,6 +132,28 @@ export default async function HomePage() {
             </div>
           </div>
 
+          {/* ===== MOBILE ONLY: HIGH-VISIBILITY TOP PRICING & BUY BLOCK (Placed directly under 1st image) ===== */}
+          <div className="col-span-12 flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto my-2 px-1">
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
+              <span className="text-sm text-gray-400 line-through font-bold">₹499</span>
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
+            </div>
+            <BuyNowButton
+              product={{
+                id: 'crabveda-200ml',
+                name: 'CrabVeda 200ml',
+                price: 360,
+                image_url: '/img4.webp',
+                short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+              }}
+              className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10 w-full"
+            >
+              <ShoppingCart size={18} />
+              <span>BUY NOW</span>
+            </BuyNowButton>
+          </div>
+
           {/* Side items (keeps padding alignment intact) */}
           <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4 mt-2 lg:mt-0">
             <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
@@ -153,90 +175,87 @@ export default async function HomePage() {
       </div>
 
       {/* ===== TEXT CONTENT & PRICE/BUY (SECOND ON MOBILE) ===== */}
-      <div className="lg:col-span-5 flex flex-col gap-5 md:gap-6 lg:gap-8 text-center lg:text-left order-2 lg:order-1">
+      {/* ===== TEXT CONTENT & PRICE/BUY (SECOND ON MOBILE) ===== */}
+<div className="lg:col-span-5 flex flex-col gap-6 md:gap-7 text-center lg:text-left order-2 lg:order-1">
 
-        {/* ===== MOBILE ONLY: HIGH-VISIBILITY TOP PRICING & BUY BLOCK ===== */}
-        <div className="flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto mt-4">
-  <div className="flex items-center justify-center gap-3">
-    <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
-    <span className="text-sm text-gray-400 line-through font-bold">₹499</span>
-    <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
+  {/* Badge */}
+  <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 self-center lg:self-start">
+    <Sparkles size={12} className="text-[#c9a84c]" />
+    <span className="text-[#a48434] text-[10px] font-black tracking-widest uppercase">Traditional Ayurvedic Wisdom</span>
   </div>
-  <BuyNowButton
-    product={{
-      id: 'crabveda-200ml', // ⚠️ placeholder ID — see note below
-      name: 'CrabVeda 200ml',
-      price: 360,
-      image_url: '/img4.webp',
-      short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
-    }}
-    className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10 w-full"
-  >
-    <ShoppingCart size={18} />
-    <span>BUY NOW</span>
-  </BuyNowButton>
+
+  {/* Friendly, Clear Headline */}
+  <div className="flex flex-col gap-3">
+    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#0a0f0d] tracking-tight leading-tight">
+      Natural Relief for Your <br className="hidden sm:inline" />
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">
+        Joints & Muscles.
+      </span>
+    </h1>
+    <p className="text-gray-500 text-xs md:text-sm font-semibold uppercase tracking-wider text-[#c9a84c]">
+      Authentic Crab Oil Formulation
+    </p>
+  </div>
+
+  {/* Descriptive, benefit-driven text body */}
+  <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md mx-auto lg:mx-0 font-normal">
+    Don't let stiffness hold you back. Our specialized formula pairs pure therapeutic concentrates with ancient botanicals to deeply soothe persistent pain, promote long-term joint flexibility, and accelerate muscle recovery.
+  </p>
+
+  {/* Quick trust checklist for peace of mind (Desktop view booster) */}
+  <div className="hidden lg:flex items-center gap-4 py-2 border-y border-black/5 text-gray-500 text-xs font-medium">
+    <div className="flex items-center gap-1.5">
+      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Fast Absorbing
+    </div>
+    <div className="flex items-center gap-1.5">
+      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> No Side Effects
+    </div>
+    <div className="flex items-center gap-1.5">
+      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> 100% Cruelty-Free
+    </div>
+  </div>
+
+  {/* ===== DESKTOP ONLY: PRICING & ACTION BLOCK ===== */}
+  <div className="hidden lg:flex flex-col gap-4">
+    <div className="flex items-center gap-3">
+      <span className="text-4xl font-black text-[#0a0f0d]">₹360</span>
+      <span className="text-base text-gray-400 line-through font-bold">₹499</span>
+      <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">28% OFF</span>
+    </div>
+
+    <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+      <BuyNowButton
+        product={{
+          id: 'crabveda-200ml',
+          name: 'CrabVeda 200ml',
+          price: 360,
+          image_url: '/img4.webp',
+          short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+        }}
+        className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
+      >
+        <ShoppingCart size={18} />
+        <span>BUY NOW</span>
+      </BuyNowButton>
+      
+      <Link href="/products"
+        className="group border border-black/10 bg-white text-[#0a0f0d] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all text-base w-full">
+        <span>Explore Suite</span>
+        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </div>
+  </div>
+
+  {/* Secondary exploration button specifically structured for mobile layout trail */}
+  <div className="lg:hidden w-full max-w-md mx-auto">
+    <Link href="/products"
+      className="group border border-black/10 bg-white text-[#0a0f0d] py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 text-sm w-full">
+      <span>Explore Entire Suite</span>
+      <ArrowRight size={14} />
+    </Link>
+  </div>
+
 </div>
-
-        {/* Badge */}
-        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/5 border border-black/10 backdrop-blur-xl self-center lg:self-start">
-          <span className="flex h-2 w-2 rounded-full bg-[#c9a84c]" />
-          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.3em] uppercase">Premium Wellness</span>
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-black leading-[0.9] tracking-tighter text-[#0a0f0d]">
-          BOLD <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">
-            RELIEF.
-          </span>
-        </h1>
-
-        <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md mx-auto lg:mx-0 font-medium">
-          Redefining pain management with highly concentrated Ayurvedic extracts. 
-          Where ancient holistic wisdom meets targeted joint restoration.
-        </p>
-
-        {/* ===== DESKTOP ONLY: PRICING & ACTION BLOCK ===== */}
-        <div className="hidden lg:flex flex-col gap-6">
-          <div className="flex items-center gap-3 my-2">
-            <span className="text-4xl font-black text-[#0a0f0d]">₹360</span>
-            <span className="text-base text-gray-400 line-through font-bold">₹499</span>
-            <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">28% OFF</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-  <BuyNowButton
-    product={{
-      id: 'crabveda-200ml', // ⚠️ placeholder — swap for real product UUID, see note below
-      name: 'CrabVeda 200ml',
-      price: 360,
-      image_url: '/img4.webp',
-      short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
-    }}
-    className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
-  >
-    <ShoppingCart size={18} />
-    <span>BUY NOW</span>
-  </BuyNowButton>
-  
-  <Link href="/products"
-    className="group border border-black/10 bg-white text-[#0a0f0d] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all text-base w-full">
-    <span>Explore Suite</span>
-    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-  </Link>
-</div>
-        </div>
-
-        {/* Secondary exploration button specifically structured for mobile layout trail */}
-        <div className="lg:hidden w-full max-w-md mx-auto">
-          <Link href="/products"
-            className="group border border-black/10 bg-white text-[#0a0f0d] py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 text-sm w-full">
-            <span>Explore Entire Suite</span>
-            <ArrowRight size={14} />
-          </Link>
-        </div>
-
-      </div>
 
     </div>
   </div>
@@ -328,7 +347,7 @@ export default async function HomePage() {
 
 {/* ===== FEATURED PRODUCTS ===== */}
 {/* ===== FEATURED PRODUCTS ===== */}
-<section className="py-20 px-4 bg-white relative overflow-hidden">
+<section className="py-4 px-4 bg-white relative overflow-hidden">
   <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
   
   <div className="max-w-7xl mx-auto relative z-10">
@@ -578,7 +597,7 @@ export default async function HomePage() {
             "{t.text}"
           </p>
 
-          <div className="pt-6 border-t border-[#0a0f0d]/5 group-hover:border-white/10 transition-colors">
+          <div className="pt- border-t border-[#0a0f0d]/5 group-hover:border-white/10 transition-colors">
             <p className="text-[#0a0f0d] group-hover:text-white font-black text-sm uppercase tracking-tight">
               {t.name}
             </p>
@@ -638,7 +657,7 @@ export default async function HomePage() {
   </div>
 </section>
 {/* ===== FINAL CTA: SIMPLE & ELITE ===== */}
-<section className="py-20 px-6 bg-white">
+<section className="py-10 px-6 bg-white">
   <div className="max-w-5xl mx-auto">
     {/* Decorative Top Line */}
     <div className="w-12 h-[2px] bg-[#c9a84c] mb-10 mx-auto md:mx-0" />

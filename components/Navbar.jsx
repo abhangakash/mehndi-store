@@ -55,9 +55,9 @@ export default function Navbar() {
   const isActive = (href) => pathname === href
 
   return (
-    <header className="sticky top-0 z-[100] w-full bg-transparent">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8 py-4">
-        <div className="relative flex items-center justify-between bg-[#0f1a14]/90 backdrop-blur-xl border border-[#c9a84c]/30 rounded-full px-5 py-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <header className="sticky top-0 z-[100] w-full bg-[#0f1a14]/90 backdrop-blur-xl border-b border-[#c9a84c]/30 shadow-md">
+      <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
 
           {/* Mobile toggle */}
           <button onClick={toggleMenu} className="lg:hidden p-2 text-[#c9a84c]">
@@ -69,7 +69,6 @@ export default function Navbar() {
             <div className="w-[26px] h-[26px] rounded-full overflow-hidden flex items-center justify-center shrink-0">
               <Image src="/logo.jpeg" alt="Logo" width={26} height={26} className="w-full h-full object-cover brightness-110 rounded-full" />
             </div>
-            {/* Changed from 'hidden sm:flex' to 'flex' so it displays on mobile layout */}
             <div className="flex flex-col">
               <span className="text-white font-black tracking-widest text-[11px] leading-none uppercase">Crabveda</span>
               <span className="text-[#c9a84c] text-[7px] uppercase tracking-[0.3em] font-bold mt-0.5">Oil</span>
@@ -189,13 +188,13 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu overlay */}
-      <div className={`lg:hidden fixed inset-0 bg-[#0f1a14] transition-all duration-500 z-[150] ${menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-full'}`}>
+      {/* Full Screen Mobile Menu Overlay Panel with Background Scroll Lock */}
+      <div className={`lg:hidden fixed inset-0 w-screen h-screen bg-[#0f1a14] transition-all duration-500 z-[150] overflow-y-auto ${menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-full'}`}>
         <button onClick={toggleMenu} className="absolute top-7 right-6 p-3 bg-white/5 border border-white/10 rounded-full text-[#c9a84c]">
           <X size={24} />
         </button>
 
-        <div className="flex flex-col h-full px-8 pt-20 pb-10 overflow-y-auto">
+        <div className="flex flex-col h-full px-8 pt-20 pb-10">
           {/* User greeting */}
           {user && (
             <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/5">

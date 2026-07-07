@@ -1,130 +1,143 @@
-
 import Link from 'next/link'
-import { Leaf, Phone, Mail, MapPin, ChevronRight } from 'lucide-react'
+import { Phone, MapPin, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
-
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="mt-20 relative overflow-hidden" style={{ backgroundColor: '#1a2e23' }}>
-      {/* Subtle Pattern Overlay */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-15 15-30 30-30s-30 15-30 30z' fill='%23ffffff' fill-rule='evenodd'/%3E%3C/svg%3E")` }}>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+    <footer className="bg-[#0a0f0d] text-white border-t-4 border-[#c9a84c] relative overflow-hidden font-sans selection:bg-[#c9a84c] selection:text-[#0a0f0d]">
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* MAIN BODY DECK */}
+        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 relative z-10">
           
-          {/* Brand Identity Section */}
-          <div className="lg:col-span-5 space-y-6">
+          {/* Column 1: About CrabVeda (Spans 5 Columns) */}
+          <div className="md:col-span-5 space-y-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 relative rounded-full overflow-hidden">
-  <Image
-    src="/logo.jpeg"
-    alt="Crabveda logo"
-    fill
-    className="object-cover"
-  />
-</div>
-              <span className="text-xl font-bold tracking-tight text-white">Crabveda Oil</span>
+              <div className="w-10 h-10 relative rounded-full overflow-hidden border border-[#c9a84c]/30 bg-white">
+                <Image
+                  src="/logo.jpeg"
+                  alt="CrabVeda logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <h2 className="text-xl font-black tracking-tight uppercase leading-none">
+                  CRABVEDA<span className="text-[#c9a84c]">.</span>
+                </h2>
+                <span className="text-[9px] text-gray-500 tracking-widest uppercase font-bold">Ayurvedic Pain Relief Oil</span>
+              </div>
             </div>
-            <p className="text-gray-400 max-w-sm text-base leading-relaxed">
-              Traditional wisdom. Natural relief. Formulated for joint mobility and deep inflammation recovery
+            
+            <p className="text-gray-400 font-medium text-sm leading-relaxed max-w-sm">
+              Bringing you the power of classical Ayurvedic wisdom. Our specially formulated crab oil penetrates deep to relieve joint pain, reduce muscle stiffness, and restore natural flexibility.
             </p>
             
-            {/* COLORFUL SOCIAL ICONS (Always Visible) */}
+            {/* BRIGHT, BEAUTIFUL COLORED SOCIAL ICONS */}
             <div className="flex items-center gap-4 pt-2">
               {/* Instagram */}
-              <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
-                <div className="p-2.5 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] shadow-lg shadow-black/20">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer" className="hover:scale-110 active:scale-95 transition-transform duration-200">
+                <div className="p-2.5 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] shadow-md shadow-black/30">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                 </div>
               </a>
 
               {/* Facebook */}
-              <a href="https://www.facebook.com/share/1BE5Lhjuqk/" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
-                <div className="p-2.5 rounded-xl bg-[#1877F2] shadow-lg shadow-black/20">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <a href="https://www.facebook.com/share/1BE5Lhjuqk/" target="_blank" rel="noreferrer" className="hover:scale-110 active:scale-95 transition-transform duration-200">
+                <div className="p-2.5 rounded-xl bg-[#1877F2] shadow-md shadow-black/30">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 </div>
               </a>
 
               {/* WhatsApp */}
-              <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform duration-300">
-                <div className="p-2.5 rounded-xl bg-[#25D366] shadow-lg shadow-black/20">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3z"/></svg>
+              <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer" className="hover:scale-110 active:scale-95 transition-transform duration-200">
+                <div className="p-2.5 rounded-xl bg-[#25D366] shadow-md shadow-black/30">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9L21 3z"/></svg>
                 </div>
               </a>
             </div>
           </div>
 
-          {/* Navigation Columns */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
-            <div>
-              <h4 className="text-amber-200 font-semibold text-xs uppercase tracking-[0.2em] mb-6">Experience</h4>
-              <ul className="space-y-4">
-                {[{h:'/',l:'Home'},{h:'/products',l:'Shop All'}].map(link => (
-                  <li key={link.l}>
-                    <Link href={link.h} className="text-gray-400 hover:text-white flex items-center group text-sm transition-colors">
-                      <ChevronRight size={12} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                      {link.l}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Column 2: Easy Links (Spans 4 Columns) */}
+          <div className="md:col-span-4 md:pl-4 space-y-4">
+            <span className="text-xs font-black tracking-widest text-[#c9a84c] uppercase block">Quick Links</span>
+            
+            <nav className="grid grid-cols-1 gap-2.5">
+              {[
+                { label: 'Home Page', href: '/' },
+                { label: 'Shop Pain Relief Oils', href: '/products' },
+                { label: 'Track Your Order', href: '/track-order' }
+              ].map((item) => (
+                <Link 
+                  key={item.label} 
+                  href={item.href} 
+                  className="group flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#c9a84c]/30 hover:bg-white/[0.04] transition-all"
+                >
+                  <span className="text-sm font-bold text-gray-300 group-hover:text-white transition-colors">{item.label}</span>
+                  <ArrowRight size={14} className="text-gray-500 group-hover:text-[#c9a84c] group-hover:translate-x-1 transition-all" />
+                </Link>
+              ))}
+            </nav>
+          </div>
 
-            <div>
-              <h4 className="text-amber-200 font-semibold text-xs uppercase tracking-[0.2em] mb-6">Assistance</h4>
-              <ul className="space-y-4">
-                {[{h:'/track-order',l:'Track Order'},{h:'/shipping-policy',l:'Shipping'},{h:'/return-policy',l:'Returns'}].map(link => (
-                  <li key={link.l}>
-                    <Link href={link.h} className="text-gray-400 hover:text-white text-sm transition-colors">{link.l}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Column 3: Contact Details (Spans 3 Columns) */}
+          <div className="md:col-span-3 space-y-4">
+            <span className="text-xs font-black tracking-widest text-[#c9a84c] uppercase block">Contact Us</span>
+            
+            <div className="space-y-3">
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                <div className="flex items-center gap-2 text-[11px] font-black text-gray-400 uppercase tracking-wider">
+                  <MapPin size={12} className="text-[#c9a84c]" />
+                  <span>Our Address</span>
+                </div>
+                <p className="text-sm font-bold text-white pl-5">Solapur, Maharashtra 413203</p>
+              </div>
 
-            <div className="col-span-2 md:col-span-1">
-              <h4 className="text-amber-200 font-semibold text-xs uppercase tracking-[0.2em] mb-6">Visit Us</h4>
-              <div className="space-y-4 text-sm text-gray-400">
-                <div className="flex items-start gap-3">
-                  <MapPin size={16} className="text-amber-200 mt-0.5 shrink-0" />
-                  <span>Solapur Maharashtra 413203</span>
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                <div className="flex items-center gap-2 text-[11px] font-black text-gray-400 uppercase tracking-wider">
+                  <Phone size={12} className="text-[#c9a84c]" />
+                  <span>Call / WhatsApp</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Phone size={16} className="text-amber-200 shrink-0" />
-                  <a href="tel:+919623740541" className="hover:text-white transition-colors">+91 9921297518</a>
-                </div>
+                <a href="tel:+919921297518" className="text-sm font-black text-[#c9a84c] hover:text-white transition-colors pl-5 block">
+                  +91 9921297518
+                </a>
               </div>
             </div>
           </div>
+
         </div>
 
-        {/* Divider & Bottom Branding */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col items-center gap-8">
+        {/* BOTTOM SUB-FOOTER BAR */}
+        <div className="py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
           
-          {/* Policy Links - Now visible on mobile */}
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-              <Link href="/privacy-policy" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Privacy Policy</Link>
-              <Link href="/terms-of-service" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Terms of Service</Link>
-              <Link href="/shipping-policy" className="text-[10px] text-gray-500 hover:text-white uppercase tracking-widest transition-colors font-medium">Shipping Policy</Link>
+          <div className="flex items-center gap-3 order-2 md:order-1">
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black">
+              © {currentYear} CRABVEDA AYURVEDA. ALL RIGHTS RESERVED.
+            </p>
+          </div>
+          
+          {/* Policy Pages */}
+          <div className="flex flex-wrap gap-x-6 gap-y-2 order-1 md:order-2 w-full md:w-auto border-b border-white/5 md:border-none pb-4 md:pb-0 justify-center">
+            {[
+              { text: 'Privacy Policy', href: '/privacy-policy' },
+              { text: 'Terms of Service', href: '/terms-of-service' },
+              { text: 'Shipping Policy', href: '/shipping-policy' }
+            ].map(legal => (
+              <Link 
+                key={legal.text} 
+                href={legal.href} 
+                className="text-[10px] text-gray-400 hover:text-[#c9a84c] uppercase tracking-widest font-black transition-colors"
+              >
+                {legal.text}
+              </Link>
+            ))}
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between w-full items-center gap-6">
-            <p className="text-[10px] text-gray-600 uppercase tracking-widest font-medium">© {currentYear} CrabVeda Oil</p>
-            
-            <div className="flex items-center gap-3">
-              <span className="text-[9px] md:text-[10px] py-1.5 px-3 rounded-full bg-white/5 border border-white/10 text-amber-100/60 uppercase tracking-tighter">
-                🌿 Free Shipping on all orders.
-              </span>
-              <span className="text-[9px] md:text-[10px] py-1.5 px-3 rounded-full bg-white/5 border border-white/10 text-amber-100/60 uppercase tracking-tighter">
-                📦 Online secure payment.
-              </span>
-            </div>
-          </div>
         </div>
+
       </div>
     </footer>
   )

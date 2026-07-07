@@ -323,13 +323,13 @@ export default function CheckoutPage() {
                 <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Full Name *</label>
-                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" value={form.name} onChange={e => set('name', e.target.value)} placeholder="Priya Sharma" />
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" value={form.name} onChange={e => set('name', e.target.value)} placeholder="your name" />
                   </div>
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Phone *</label>
                     <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" type="tel" value={form.phone}
                       onChange={e => set('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="9876543210" maxLength={10} />
+                      placeholder="mobile number" maxLength={10} />
                   </div>
                   <div className="sm:col-span-2">
                     <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Email (for order updates)</label>
@@ -421,17 +421,17 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">City *</label>
-                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.city} onChange={e => set('city', e.target.value)} placeholder="Pune" />
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.city} onChange={e => set('city', e.target.value)} placeholder="" />
                         </div>
                         <div>
                           <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">State *</label>
-                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.state} onChange={e => set('state', e.target.value)} placeholder="Maharashtra" />
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.state} onChange={e => set('state', e.target.value)} placeholder="" />
                         </div>
                         <div>
                           <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Pincode *</label>
                           <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.pincode}
                             onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))}
-                            placeholder="411001" maxLength={6} />
+                            placeholder="" maxLength={6} />
                         </div>
                         <div>
                           <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">
