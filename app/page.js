@@ -112,11 +112,11 @@ export default async function HomePage() {
           <div className="col-span-12 lg:col-span-8 relative -mx-4 sm:-mx-6 lg:mx-0 rounded-none md:rounded-[2.5rem] overflow-hidden border-b border-black/5 lg:border shadow-xl group h-[280px] sm:h-[360px] md:h-[420px] lg:h-full">
   
             {/* MOBILE & TABLET IMAGE */}
-            <img 
-              src="/img4.webp" 
-              alt="Therapeutic Oil Formulation"
-              className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
-            />
+           <img 
+  src="/img4.webp" 
+  alt="Therapeutic Oil Formulation"
+  className="w-full h-auto object-contain md:object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
+/>
 
             {/* DESKTOP / PC IMAGE */}
             <img 

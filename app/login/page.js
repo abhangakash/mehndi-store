@@ -69,7 +69,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased flex flex-col justify-between pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+    <div className="w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased">
       <style>{`
         .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
 
@@ -120,11 +120,14 @@ export default function LoginPage() {
         }
       `}</style>
 
-      {/* Top spacing element to match the layout blueprint structure */}
-      <div className="w-full pt-[max(1.25rem,env(safe-area-inset-top))]" aria-hidden="true" />
-
-      {/* Main Form Center Wrapper */}
-      <div className="w-full max-w-sm mx-auto px-5 flex flex-col justify-center py-6 flex-1">
+      {/* Main Form Wrapper — sits near the top instead of being stretched across the full viewport */}
+      <div
+        className="w-full max-w-sm mx-auto px-5"
+        style={{
+          paddingTop: 'max(2.5rem, env(safe-area-inset-top))',
+          paddingBottom: 'max(2rem, env(safe-area-inset-bottom))',
+        }}
+      >
 
         {/* Header Block */}
         <div className="mb-6">
@@ -269,12 +272,12 @@ export default function LoginPage() {
 
           </div>
         )}
-      </div>
 
-      {/* Trust & Verification Footer Layer */}
-      <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-2">
-        <ShieldCheck size={14} className="text-[#c9a84c]" />
-        <span>Secure Sign In</span>
+        {/* Trust & Verification Footer */}
+        <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest mt-8">
+          <ShieldCheck size={14} className="text-[#c9a84c]" />
+          <span>Secure Sign In</span>
+        </div>
       </div>
     </div>
   )
