@@ -115,7 +115,7 @@ export default async function HomePage() {
            <img 
   src="/img4.webp" 
   alt="Therapeutic Oil Formulation"
-  className="w-full h-auto object-contain md:object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
+  className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
 />
 
             {/* DESKTOP / PC IMAGE */}
