@@ -194,11 +194,10 @@ export default function Navbar() {
           <X size={24} />
         </button>
 
-        {/* CHANGED: h-full to min-h-full below to prevent layout squishing on small viewports */}
         <div className="flex flex-col min-h-full px-8 pt-20 pb-10">
           {/* User greeting */}
           {user && (
-            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/5">
+            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/5 shrink-0">
               <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#0f1a14] text-lg font-black"
                 style={{ backgroundColor: '#c9a84c' }}>
                 {(profile?.full_name || user.email || 'U')[0].toUpperCase()}
@@ -211,7 +210,7 @@ export default function Navbar() {
           )}
 
           {!user && (
-            <Link href="/login" className="flex items-center gap-3 text-[#c9a84c] mb-8 group">
+            <Link href="/login" className="flex items-center gap-3 text-[#c9a84c] mb-8 group shrink-0">
               <div className="w-10 h-10 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 flex items-center justify-center">
                 <User size={18} />
               </div>
@@ -265,8 +264,8 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Social icons */}
-          <div className="mt-auto pt-6 flex items-center gap-4">
+          {/* Social icons — FIXED: added shrink-0 to prevent hidden/crushed elements */}
+          <div className="mt-auto pt-6 flex items-center gap-4 shrink-0">
             <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer"
               className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
