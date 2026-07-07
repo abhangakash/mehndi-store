@@ -194,7 +194,8 @@ export default function Navbar() {
           <X size={24} />
         </button>
 
-        <div className="flex flex-col h-full px-8 pt-20 pb-10">
+        {/* CHANGED: h-full to min-h-full below to prevent layout squishing on small viewports */}
+        <div className="flex flex-col min-h-full px-8 pt-20 pb-10">
           {/* User greeting */}
           {user && (
             <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/5">

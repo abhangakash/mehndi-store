@@ -331,7 +331,7 @@ export default function SignupPage() {
       {/* Footer Branding View */}
       <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-4">
         <ShieldCheck size={14} className="text-[#c9a84c]" />
-        <span>Secure Sign Up Portal</span>
+        <span>Secure Sign Up</span>
       </div>
     </div>
   )
