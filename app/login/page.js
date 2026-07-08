@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Package, ShieldCheck } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Package, ShieldCheck, Truck, Shield, Award } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 /**
@@ -69,19 +69,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased">
+    /* Force layout to take full viewport dynamic height and blend background perfectly */
+    <div className="min-h-[100dvh] w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased flex flex-col justify-between pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <style>{`
         .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
 
-        /* Icon + input as flex siblings — separate boxes that cannot overlap,
-           regardless of whether a padding utility class gets dropped from the build. */
+        /* Icon + input as flex siblings — separate boxes that cannot overlap */
         .field-group {
           display: flex;
           align-items: stretch;
-          height: 3.5rem;
+          height: 3.25rem;
           background: #fff;
           border: 1.5px solid #e7e2d6;
-          border-radius: 0.75rem;
+          border-radius: 0.5rem;
           overflow: hidden;
           transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
@@ -92,7 +92,7 @@ export default function LoginPage() {
         .field-group[data-invalid="true"] { border-color: #f87171; }
         .field-icon {
           flex: 0 0 auto;
-          width: 3rem;
+          width: 2.75rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -104,13 +104,13 @@ export default function LoginPage() {
           border: none;
           outline: none;
           background: transparent;
-          padding: 0 1rem 0 0;
-          font-size: 16px;
+          padding: 0 0.85rem 0 0;
+          font-size: 16px; /* Retained intentionally to safeguard iOS zoom states */
           color: #0f1a14;
         }
         .field-toggle {
           flex: 0 0 auto;
-          width: 2.75rem;
+          width: 2.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -120,24 +120,22 @@ export default function LoginPage() {
         }
       `}</style>
 
-      {/* Main Form Wrapper — sits near the top instead of being stretched across the full viewport */}
-      <div
-        className="w-full max-w-sm mx-auto px-5"
+      {/* Main Content Area */}
+      <div 
+        className="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto px-5"
         style={{
           paddingTop: 'max(2.5rem, env(safe-area-inset-top))',
-          paddingBottom: 'max(2rem, env(safe-area-inset-bottom))',
         }}
       >
-
-        {/* Header Block */}
-        <div className="mb-6">
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#c9a84c] mb-1">
+        {/* Header Block with balanced typography scales */}
+        <div className="mb-5">
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-1">
             Welcome back
           </p>
-          <h1 className="font-display text-[2rem] leading-[1.1] font-medium tracking-tight text-[#0f1a14]">
+          <h1 className="font-display text-xl sm:text-2xl leading-snug font-medium tracking-tight text-[#0f1a14]">
             {forgotMode ? 'Reset password' : 'Sign In'}
           </h1>
-          <p className="text-[14px] text-stone-500 mt-1.5 leading-relaxed">
+          <p className="text-xs sm:text-sm text-stone-500 mt-1 leading-relaxed">
             {forgotMode
               ? "Enter your email and we'll send you a secure link to reset your credentials."
               : 'Access your secure profile, saved addresses, and active orders.'}
@@ -145,15 +143,15 @@ export default function LoginPage() {
         </div>
 
         {/* Action Form */}
-        <form id="login-form" onSubmit={forgotMode ? handleForgotPassword : handleLogin} noValidate className="space-y-3.5">
+        <form id="login-form" onSubmit={forgotMode ? handleForgotPassword : handleLogin} noValidate className="space-y-3">
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+            <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
               Email Address
             </label>
             <div className="field-group" data-invalid={!!errors.email}>
-              <span className="field-icon"><Mail size={18} /></span>
+              <span className="field-icon"><Mail size={16} /></span>
               <input
                 id="email"
                 type="email"
@@ -167,26 +165,26 @@ export default function LoginPage() {
                 className="field-input"
               />
             </div>
-            {errors.email && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.email}</p>}
+            {errors.email && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.email}</p>}
           </div>
 
           {/* Password */}
           {!forgotMode && (
             <div>
               <div className="flex items-center justify-between mb-1 pl-0.5">
-                <label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-stone-500">
+                <label htmlFor="password" className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
                   Password
                 </label>
                 <button
                   type="button"
                   onClick={() => setForgotMode(true)}
-                  className="text-xs font-bold text-[#c9a84c] hover:underline"
+                  className="text-[11px] font-bold text-[#c9a84c] hover:underline"
                 >
                   Forgot password?
                 </button>
               </div>
               <div className="field-group" data-invalid={!!errors.password}>
-                <span className="field-icon"><Lock size={18} /></span>
+                <span className="field-icon"><Lock size={16} /></span>
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -204,10 +202,10 @@ export default function LoginPage() {
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                   className="field-toggle"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              {errors.password && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.password}</p>}
+              {errors.password && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.password}</p>}
             </div>
           )}
 
@@ -217,7 +215,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setForgotMode(false)}
-                className="text-xs font-bold text-stone-400 hover:text-[#0f1a14] py-1 transition-colors"
+                className="text-[11px] font-bold text-stone-400 hover:text-[#0f1a14] py-1 transition-colors"
               >
                 ← Back to standard sign in
               </button>
@@ -225,21 +223,21 @@ export default function LoginPage() {
           )}
 
           {/* Core Action Submit Trigger Box */}
-          <div className="pt-2">
+          <div className="pt-1">
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#0f1a14] hover:bg-[#1a2d23] active:bg-[#1a2d23] text-white py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
+              className="w-full bg-[#0f1a14] hover:bg-[#1a2d23] active:bg-[#1a2d23] text-white py-3.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
             >
               {loading ? 'Verifying…' : forgotMode ? 'Send reset link' : 'Sign In'}
-              {!loading && <ArrowRight size={16} />}
+              {!loading && <ArrowRight size={14} />}
             </button>
           </div>
         </form>
 
-        {/* Secondary Navigation Flows (Always sits below the core button stack) */}
+        {/* Secondary Navigation Flows */}
         {!forgotMode && (
-          <div className="space-y-5 mt-5">
+          <div className="space-y-4 mt-4">
 
             <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-stone-200" />
@@ -250,17 +248,17 @@ export default function LoginPage() {
             {/* Quick Link Order Tracking Integration Field */}
             <Link
               href="/track-order"
-              className="flex items-center justify-between w-full px-4 py-3.5 bg-white border border-stone-200 rounded-xl text-xs font-bold uppercase tracking-wider text-stone-600 hover:border-stone-300 transition-all active:scale-[0.99]"
+              className="flex items-center justify-between w-full px-4 py-3 bg-white border border-stone-200 rounded-lg text-[11px] font-bold uppercase tracking-wider text-stone-600 hover:border-stone-300 transition-all active:scale-[0.99]"
             >
-              <span className="flex items-center gap-2.5">
-                <Package size={16} className="text-[#c9a84c]" />
+              <span className="flex items-center gap-2">
+                <Package size={14} className="text-[#c9a84c]" />
                 Track order instantly
               </span>
-              <ArrowRight size={14} className="text-stone-400" />
+              <ArrowRight size={12} className="text-stone-400" />
             </Link>
 
-            {/* Inverted flow router trigger anchor pointing to your registration workflow */}
-            <p className="text-center text-sm text-stone-500">
+            {/* Registration Workflow Redirect */}
+            <p className="text-center text-xs sm:text-sm text-stone-500">
               New to Crabveda?{' '}
               <Link
                 href="/signup"
@@ -269,15 +267,32 @@ export default function LoginPage() {
                 Create Account
               </Link>
             </p>
-
           </div>
         )}
 
-        {/* Trust & Verification Footer */}
-        <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest mt-8">
-          <ShieldCheck size={14} className="text-[#c9a84c]" />
-          <span>Secure Sign In</span>
-        </div>
+        {/* Brand Perks Feature Grid — Active on BOTH Mobile and PC with optimized sizes */}
+        {!forgotMode && (
+          <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-stone-200/60">
+            <div className="text-center">
+              <div className="flex justify-center text-[#c9a84c] mb-1"><Truck size={14} /></div>
+              <p className="text-[9px] sm:text-[10px] font-semibold text-stone-600 leading-tight">Free Shipping</p>
+            </div>
+            <div className="text-center">
+              <div className="flex justify-center text-[#c9a84c] mb-1"><Shield size={14} /></div>
+              <p className="text-[9px] sm:text-[10px] font-semibold text-stone-600 leading-tight">Secure Checkout</p>
+            </div>
+            <div className="text-center">
+              <div className="flex justify-center text-[#c9a84c] mb-1"><Award size={14} /></div>
+              <p className="text-[9px] sm:text-[10px] font-semibold text-stone-600 leading-tight">100% Pure</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Trust & Verification Footer — Always dynamically anchored at the extreme bottom */}
+      <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-8">
+        <ShieldCheck size={12} className="text-[#c9a84c]" />
+        <span>Secure Sign In</span>
       </div>
     </div>
   )

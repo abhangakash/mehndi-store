@@ -96,7 +96,7 @@ export default function SignupPage() {
           align-items: stretch;
           background: #fff;
           border: 1.5px solid #e7e2d6;
-          border-radius: 0.75rem;
+          border-radius: 0.5rem;
           overflow: hidden;
           transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
@@ -110,15 +110,15 @@ export default function SignupPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 3rem;
+          width: 2.75rem;
           color: #a8a29e;
         }
         .field-icon.field-icon--prefix {
           width: auto;
-          padding: 0 0.6rem 0 1rem;
-          gap: 0.5rem;
+          padding: 0 0.5rem 0 0.85rem;
+          gap: 0.35rem;
           font-weight: 700;
-          font-size: 16px;
+          font-size: 15px;
           color: #57534e;
           border-right: 1px solid #e7e2d6;
         }
@@ -128,14 +128,14 @@ export default function SignupPage() {
           border: none;
           outline: none;
           background: transparent;
-          padding: 0.9rem 1rem 0.9rem 0;
-          font-size: 16px;
+          padding: 0.75rem 0.85rem 0.75rem 0;
+          font-size: 16px; /* 16px prevents forced iOS auto-zoom on mobile */
           color: #0f1a14;
         }
-        .field-input--tight { padding-left: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
+        .field-input--tight { padding-left: 0.65rem; font-weight: 600; letter-spacing: 0.02em; }
         .field-toggle {
           flex: 0 0 auto;
-          width: 2.75rem;
+          width: 2.5rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -163,27 +163,27 @@ export default function SignupPage() {
         <div className="w-full max-w-sm mx-auto">
 
           {/* Header */}
-          <div className="mb-6">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#c9a84c] mb-1">
+          <div className="mb-5">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-1">
               Get started
             </p>
-            <h1 className="font-display text-[2rem] leading-[1.1] font-medium tracking-tight text-[#0f1a14]">
+            <h1 className="font-display text-xl sm:text-2xl leading-snug font-medium tracking-tight text-[#0f1a14]">
               Create your account
             </h1>
-            <p className="text-[14px] text-stone-500 mt-1.5 leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-500 mt-1 leading-relaxed">
               Save your address, track orders, and check out faster next time.
             </p>
           </div>
 
-          <form id="signup-form" onSubmit={handleSignup} noValidate className="space-y-3.5">
+          <form id="signup-form" onSubmit={handleSignup} noValidate className="space-y-3">
 
             {/* Full Name */}
             <div>
-              <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
                 Full Name
               </label>
               <div className="field-group" data-invalid={!!errors.name}>
-                <span className="field-icon"><User size={18} /></span>
+                <span className="field-icon"><User size={16} /></span>
                 <input
                   id="name"
                   type="text"
@@ -191,21 +191,21 @@ export default function SignupPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onBlur={() => markTouched('name')}
-                  placeholder="Priya Sharma"
+                  placeholder="Your Name"
                   aria-invalid={!!errors.name}
                   className="field-input"
                 />
               </div>
-              {errors.name && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.name}</p>}
+              {errors.name && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.name}</p>}
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
                 Email Address
               </label>
               <div className="field-group" data-invalid={!!errors.email}>
-                <span className="field-icon"><Mail size={18} /></span>
+                <span className="field-icon"><Mail size={16} /></span>
                 <input
                   id="email"
                   type="email"
@@ -219,17 +219,17 @@ export default function SignupPage() {
                   className="field-input"
                 />
               </div>
-              {errors.email && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.email}</p>}
+              {errors.email && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.email}</p>}
             </div>
 
             {/* Mobile Number */}
             <div>
-              <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="phone" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
                 Mobile Number
               </label>
               <div className="field-group" data-invalid={!!errors.phone}>
                 <span className="field-icon field-icon--prefix">
-                  <Phone size={16} />
+                  <Phone size={14} />
                   +91
                 </span>
                 <input
@@ -241,21 +241,21 @@ export default function SignupPage() {
                   maxLength={10}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                   onBlur={() => markTouched('phone')}
-                  placeholder="98765 43210"
+                  placeholder="Mobile Number"
                   aria-invalid={!!errors.phone}
                   className="field-input field-input--tight"
                 />
               </div>
-              {errors.phone && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.phone}</p>}
+              {errors.phone && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.phone}</p>}
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="password" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
                 Password
               </label>
               <div className="field-group" data-invalid={!!errors.password}>
-                <span className="field-icon"><Lock size={18} /></span>
+                <span className="field-icon"><Lock size={16} /></span>
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -273,7 +273,7 @@ export default function SignupPage() {
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                   className="field-toggle"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
 
@@ -295,30 +295,30 @@ export default function SignupPage() {
                       </div>
                     ))}
                   </div>
-                  <span className="text-[11px] font-medium text-stone-400 w-12 text-right">
+                  <span className="text-[10px] font-medium text-stone-400 w-12 text-right">
                     {passwordStrength <= 1 ? 'Weak' : passwordStrength === 2 ? 'Good' : 'Strong'}
                   </span>
                 </div>
               )}
-              {errors.password && <p className="text-xs text-red-500 mt-1 pl-0.5">{errors.password}</p>}
+              {errors.password && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.password}</p>}
             </div>
 
             {/* Unified Submit Button (Below Form Fields / Above Log In Link) */}
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#0f1a14] hover:bg-[#1a2d23] active:bg-[#1a2d23] text-white py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
+                className="w-full bg-[#0f1a14] hover:bg-[#1a2d23] active:bg-[#1a2d23] text-white py-3.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
               >
                 {loading ? 'Creating account…' : 'Create account'}
-                {!loading && <ArrowRight size={16} />}
+                {!loading && <ArrowRight size={14} />}
               </button>
             </div>
           </form>
 
           {/* Login Link Alignment */}
-          <div className="mt-5 text-center">
-            <p className="text-sm text-stone-500">
+          <div className="mt-4 text-center">
+            <p className="text-xs sm:text-sm text-stone-500">
               Already have an account?{' '}
               <Link href="/login" className="text-[#0f1a14] font-bold underline underline-offset-4 ml-1">
                 Log In
@@ -330,7 +330,7 @@ export default function SignupPage() {
 
       {/* Footer Branding View */}
       <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-4">
-        <ShieldCheck size={14} className="text-[#c9a84c]" />
+        <ShieldCheck size={12} className="text-[#c9a84c]" />
         <span>Secure Sign Up</span>
       </div>
     </div>

@@ -24,6 +24,7 @@ export default function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const pathname = usePathname()
+  
   if (pathname.startsWith('/admin')) {
     return null
   }
@@ -32,11 +33,18 @@ export default function Navbar() {
   const { user, profile, signOut } = useAuth()
 
   useEffect(() => { setMounted(true) }, [])
+  
+  /* Clears screen shift states cleanly upon route transitions */
   useEffect(() => {
     setMenuOpen(false)
     setServicesOpen(false)
     setUserMenuOpen(false)
-    document.body.style.overflow = 'unset'
+    
+    // Wrap body unlock in requestAnimationFrame to prevent immediate top-dock shifts
+    const token = requestAnimationFrame(() => {
+      document.body.style.overflow = 'unset'
+    })
+    return () => cancelAnimationFrame(token)
   }, [pathname])
 
   const toggleMenu = () => {
@@ -60,7 +68,8 @@ export default function Navbar() {
         <div className="relative flex h-12 items-center justify-between">
 
           {/* Mobile toggle */}
-          <button onClick={toggleMenu} className="lg:hidden p-2 text-[#c9a84c]">
+          <button onClick={toggleMenu} className="lg:hidden p-2 text-[#c9a84c]"
+          suppressHydrationWarning={true} >
             <Menu size={22} />
           </button>
 
@@ -188,13 +197,12 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Full Screen Mobile Menu Overlay Panel — CHANGED: h-screen to h-[100dvh] */}
+      {/* Full Screen Mobile Menu Overlay Panel */}
       <div className={`lg:hidden fixed inset-0 w-screen h-[100dvh] bg-[#0f1a14] transition-all duration-500 z-[150] overflow-y-auto ${menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-full'}`}>
         <button onClick={toggleMenu} className="absolute top-7 right-6 p-3 bg-white/5 border border-white/10 rounded-full text-[#c9a84c]">
           <X size={24} />
         </button>
 
-        {/* CHANGED: min-h-full to min-h-[100dvh], added safe area padding pb-14 to clear mobile back buttons */}
         <div className="flex flex-col min-h-[100dvh] px-8 pt-20 pb-14">
           {/* User greeting */}
           {user && (
@@ -265,7 +273,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Social icons — CHANGED: added mb-4 helper spacing */}
+          {/* Social icons */}
           <div className="mt-auto pt-6 flex items-center gap-4 shrink-0 mb-4">
             <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu" target="_blank" rel="noreferrer"
               className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#c9a84c]">

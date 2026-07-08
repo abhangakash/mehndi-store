@@ -1,60 +1,56 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { MessageCircle, X } from 'lucide-react'
+import Image from 'next/image'
 
 export default function FloatingButtons() {
   const [visible, setVisible] = useState(false)
-  const [expanded, setExpanded] = useState(false)
+  const [pulse, setPulse] = useState(true)
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 1500)
     return () => clearTimeout(timer)
   }, [])
 
+  useEffect(() => {
+    const pulseTimer = setTimeout(() => setPulse(false), 8000)
+    return () => clearTimeout(pulseTimer)
+  }, [visible])
+
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-5 right-4 z-50 flex flex-col gap-3 items-end">
-      {/* Expandable options */}
-      {expanded && (
-        <>
-          {/* Instagram */}
-          <a href="https://www.instagram.com/crabveda?igsh=M2VoNzRoOGhvMzFu"
-            target="_blank" rel="noreferrer"
-            aria-label="Follow on Instagram"
-            className="flex items-center gap-2 pl-3 pr-4 h-10 rounded-full shadow-lg text-white text-xs font-medium transition-all hover:scale-105 active:scale-95 animate-in"
-            style={{ background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" />
-              <circle cx="12" cy="12" r="4" />
-              <circle cx="17.5" cy="6.5" r="0.5" fill="white" stroke="white" />
-            </svg>
-            <span>Follow us</span>
-          </a>
+    <div className="fixed bottom-5 right-4 z-50">
+      {/* Clean Circular WhatsApp Action Button */}
+      <a
+        href="https://wa.me/919921297518?text=Hi! I want to know more about crabveda oil"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="group relative flex items-center justify-center bg-[#25D366] hover:bg-[#20ba56] w-14 h-14 rounded-full shadow-[0_4px_16px_rgba(37,211,102,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 ease-out"
+        suppressHydrationWarning={true}
+      >
+        {/* Elegant Branded Pulse Dot (No spammy numbers or red flashes) */}
+        {pulse && (
+          <span className="absolute top-0.5 right-0.5 flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-white p-[2px]">
+              <span className="h-full w-full rounded-full bg-[#128C7E]"></span>
+            </span>
+          </span>
+        )}
 
-          {/* WhatsApp */}
-          <a href="https://wa.me/919921297518?text=Hi! I want to know more about crabveda oil"
-            target="_blank" rel="noreferrer"
-            aria-label="Chat on WhatsApp"
-            className="flex items-center gap-2 pl-3 pr-4 h-10 rounded-full shadow-lg text-white text-xs font-medium transition-all hover:scale-105 active:scale-95"
-            style={{ backgroundColor: '#25D366' }}>
-            <MessageCircle size={16} fill="white" color="white" />
-            <span>Chat with us</span>
-          </a>
-        </>
-      )}
-
-      {/* Main toggle button */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        aria-label="Contact options"
-        className="w-14 h-14 rounded-full shadow-xl flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95"
-        style={{ backgroundColor: expanded ? '#6b7280' : 'var(--brand-green)' }}>
-        {expanded
-          ? <X size={22} />
-          : <MessageCircle size={24} />
-        }
-      </button>
+        {/* Your Downloaded Local WhatsApp SVG */}
+        <div className="w-7 h-7 flex items-center justify-center transition-transform group-hover:rotate-12 duration-300 shrink-0">
+          <Image 
+            src="/whatsapp.svg" 
+            alt="WhatsApp" 
+            width={28} 
+            height={28} 
+            className="w-full h-full object-contain"
+            priority
+          />
+        </div>
+      </a>
     </div>
   )
 }

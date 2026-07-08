@@ -154,11 +154,7 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
                 📞 {order.phone}
                 {order.email && <><br />✉️ {order.email}</>}
               </p>
-              {order.booking_date && (
-                <p className="text-xs mt-2.5 font-semibold text-amber-700">
-                  📅 Preferred: {new Date(order.booking_date).toLocaleDateString('en-IN')}
-                </p>
-              )}
+              
             </div>
           </div>
         </div>

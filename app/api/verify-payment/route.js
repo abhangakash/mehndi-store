@@ -109,7 +109,6 @@ export async function POST(req) {
         city: customer.city.trim(),
         state: customer.state.trim(),
         pincode: customer.pincode.trim(),
-        booking_date: customer.booking_date || null,
         subtotal: recalcSubtotal,
         shipping_amount: recalcShipping,
         total_amount: recalcTotal,

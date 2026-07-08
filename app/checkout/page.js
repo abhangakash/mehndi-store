@@ -5,10 +5,10 @@ import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Script from 'next/script' // Optimized Script Loading
+import Image from 'next/image'
 import {
-  MapPin, Phone, User, Mail, Calendar,
+  MapPin, Phone, User, Mail,
   Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home,
-  Smartphone, CreditCard, Landmark, Wallet
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
@@ -35,7 +35,7 @@ export default function CheckoutPage() {
 
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
-    address: '', city: '', state: '', pincode: '', booking_date: '',
+    address: '', city: '', state: '', pincode: '',
   })
 
   useEffect(() => { setMounted(true) }, [])
@@ -433,14 +433,7 @@ export default function CheckoutPage() {
                             onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))}
                             placeholder="" maxLength={6} />
                         </div>
-                        <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">
-                            <Calendar size={11} className="inline mr-1" />Preferred Date
-                          </label>
-                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" type="date" value={form.booking_date}
-                            onChange={e => set('booking_date', e.target.value)}
-                            min={new Date().toISOString().split('T')[0]} />
-                        </div>
+                       
                       </div>
 
                       {user && (
@@ -455,16 +448,6 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {!showNewForm && selectedAddressId && (
-                    <div className="mt-4">
-                      <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">
-                        <Calendar size={11} className="inline mr-1" />Preferred Delivery Date
-                      </label>
-                      <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" type="date" value={form.booking_date}
-                        onChange={e => set('booking_date', e.target.value)}
-                        min={new Date().toISOString().split('T')[0]} />
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -486,22 +469,33 @@ export default function CheckoutPage() {
                     <div className="flex-1">
                       <p className="text-sm font-black text-black">Pay Online</p>
                       <p className="text-xs text-gray-500 mt-0.5">UPI, Cards, Net Banking via Razorpay</p>
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-purple-50 text-purple-600 border border-purple-100">
-                          <Smartphone size={11} /> UPI
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-blue-50 text-blue-600 border border-blue-100">
-                          <Wallet size={11} /> GPay
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
-                          <Smartphone size={11} /> PhonePe
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-amber-50 text-amber-600 border border-amber-100">
-                          <CreditCard size={11} /> Card
-                        </span>
-                        <span className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                          <Landmark size={11} /> Net Banking
-                        </span>
+                      <div className="flex flex-wrap items-center gap-2 mt-3">
+                        {[
+                          { src: '/upi.svg', alt: 'UPI' },
+                          { src: '/gpay.svg', alt: 'GPay' },
+                          { src: '/phonepe.svg', alt: 'PhonePe' },
+                          { src: '/paytm.svg', alt: 'Paytm' },
+                          { src: '/visa.svg', alt: 'Visa' },
+                          { src: '/mastercard.svg', alt: 'Mastercard' },
+                          { src: '/amazon.svg', alt: 'Amazon Pay' },
+                          { src: '/rupay.svg', alt: 'RuPay' },
+                        ].map(({ src, alt }) => (
+                          <span
+                            key={alt}
+                            className="flex items-center justify-center w-11 h-7 rounded-md bg-white border border-gray-100 shadow-sm shrink-0"
+                            title={alt}
+                          >
+                            <div className="w-8 h-[18px] flex items-center justify-center shrink-0">
+                              <Image
+                                src={src}
+                                alt={alt}
+                                width={32}
+                                height={18}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
