@@ -113,7 +113,7 @@ export default async function HomePage() {
   
             {/* MOBILE & TABLET IMAGE */}
            <img 
-  src="/img4.webp" 
+  src="/img21.webp" 
   alt="Therapeutic Oil Formulation"
   className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
 />
@@ -144,7 +144,7 @@ export default async function HomePage() {
                 id: 'crabveda-200ml',
                 name: 'CrabVeda 200ml',
                 price: 360,
-                image_url: '/img4.webp',
+                image_url: '/img14.webp',
                 short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
               }}
               className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10 w-full"
@@ -229,7 +229,7 @@ export default async function HomePage() {
           id: 'crabveda-200ml',
           name: 'CrabVeda 200ml',
           price: 360,
-          image_url: '/img4.webp',
+          image_url: '/img14.webp',
           short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
         }}
         className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
@@ -345,7 +345,6 @@ export default async function HomePage() {
 </section>
 
 
-{/* ===== FEATURED PRODUCTS ===== */}
 {/* ===== FEATURED PRODUCTS ===== */}
 <section className="py-4 px-4 bg-white relative overflow-hidden">
   <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
@@ -498,67 +497,70 @@ export default async function HomePage() {
 </section>
 
 {/* ===== GALLERY PREVIEW ===== */}
-<section className="py-1 px-4 bg-white relative">
+<section className="py-6 px-4 bg-[#fbf9f4] relative overflow-hidden">
   <div className="max-w-7xl mx-auto">
     
     {/* Header: Editorial Style */}
-    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-      <div className="space-y-3">
+    <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 relative z-10">
+      <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
-          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Our Sourcing</span>
+          <span className="h-[1.5px] w-8 bg-[#c9a84c]"></span>
+          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Targeted Recovery</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-none">
           RESTORING <br className="md:hidden" /> 
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a0f0d] via-[#c9a84c] to-[#0a0f0d]">VITALITY.</span>
         </h2>
+        <p className="text-xs md:text-sm font-medium uppercase tracking-widest text-[#0a0f0d]/40 max-w-md">
+          Scientific botanical badge formulations engineered for specific anatomical comfort.
+        </p>
       </div>
-
-      <Link 
-        href="/gallery" 
-        className="group flex items-center gap-3 text-[#0a0f0d] font-black text-xs tracking-widest hover:text-[#c9a84c] transition-all"
-      >
-        VIEW FULL JOURNEY
-        <div className="w-10 h-10 rounded-full border border-[#0a0f0d]/10 flex items-center justify-center group-hover:bg-[#0a0f0d] group-hover:text-white transition-all">
-          <ArrowRight size={16} />
-        </div>
-      </Link>
     </div>
 
     {/* Gallery Grid */}
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-      {GALLERY_ITEMS.map((item, i) => (
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
+      {[
+        { image: '/31.webp', label: 'Knee Joint Pain Relief', subtitle: 'Anatomical Stability' },
+        { image: '/32.webp', label: 'Back Pain Relief Solution', subtitle: 'Lumbar Leaf Extract' },
+        { image: '/33.webp', label: 'Shoulder Pain Relief', subtitle: 'Mobility Recovery' },
+        { image: '/34.webp', label: 'Active Wellness & Motion', subtitle: 'Kinetic Vitality' },
+        { image: '/35.webp', label: 'Strength & Growth Element', subtitle: 'Cellular Support' },
+        { image: '/36.webp', label: 'Serene Meditation Path', subtitle: 'Holistic Mindfulness' },
+      ].map((item, i) => (
         <div 
           key={i} 
-          className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] bg-[#f8f8f8] border border-[#0a0f0d]/5 cursor-pointer"
+          className="group relative overflow-hidden rounded-3xl bg-white border border-[#0a0f0d]/6 shadow-[0_4px_24px_rgba(10,15,13,0.02)] transition-all hover:shadow-[0_12px_40px_rgba(10,15,13,0.05)] cursor-pointer flex flex-col p-4 md:p-6"
         >
+          {/* Circular Asset Frame Wrapper - Reduced padding 'p-2' on mobile to make the image bigger */}
           <div 
-            className={`aspect-square flex flex-col items-center justify-center relative transition-transform duration-700 group-hover:scale-110 ${
-              i % 2 === 0 ? 'bg-[#fcfaf2]' : 'bg-white'
+            className={`aspect-square w-full rounded-2xl flex items-center justify-center relative p-2 sm:p-6 md:p-10 transition-colors duration-500 mb-4 md:mb-6 ${
+              i % 2 === 0 ? 'bg-[#fcfaf2]' : 'bg-[#fbf9f4]/50'
             }`}
           >
-            {/* ✅ ONLY CHANGE: IMAGE ADDED */}
-            <img
-              src={item.image}
-              alt={item.label}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-
-            {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d]/80 via-[#0a0f0d]/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-4 md:p-8">
-              <span className="text-[#c9a84c] text-[10px] font-black uppercase tracking-widest mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                {item.tag}
-              </span>
-              <p className="text-white text-sm md:text-lg font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                {item.label}
-              </p>
+            {/* The Badge Container */}
+            <div className="relative w-full h-full rounded-full overflow-hidden transition-transform duration-700 group-hover:scale-105 bg-white shadow-sm border border-[#0a0f0d]/4">
+              <img
+                src={item.image}
+                alt={item.label}
+                className="absolute inset-0 w-full h-full object-contain p-2"
+              />
             </div>
+
+            {/* Hover Dark Overlay Overlay for Aesthetic depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0d]/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-2xl pointer-events-none" />
           </div>
 
-          <div className="md:hidden p-3 bg-white border-t border-[#0a0f0d]/5">
-             <p className="text-[10px] font-black text-[#0a0f0d] uppercase tracking-tighter opacity-60">
-               {item.label}
-             </p>
+          {/* Persistent Typography Block (Visible at all times below image) */}
+          <div className="flex flex-col gap-1 px-1 min-w-0">
+            <span className="text-[#c9a84c] text-[9px] font-black uppercase tracking-widest">
+              {item.subtitle}
+            </span>
+            <h3 className="text-sm md:text-base font-black tracking-tight text-[#0a0f0d] truncate transition-colors group-hover:text-[#c9a84c]">
+              {item.label}
+            </h3>
+            <div className="hidden md:flex items-center gap-1 text-[10px] font-bold text-[#0a0f0d]/30 mt-1 opacity-0 group-hover:opacity-100 transition-all translate-x-[-4px] group-hover:translate-x-0">
+              EXPLORE FORMULA <ArrowRight size={10} className="text-[#c9a84c]" />
+            </div>
           </div>
         </div>
       ))}

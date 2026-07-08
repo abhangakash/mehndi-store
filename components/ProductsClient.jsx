@@ -1,83 +1,91 @@
 'use client'
 
 import ProductCard from './ProductCard'
-import { Sparkles, ShieldCheck, Zap } from 'lucide-react'
+import { Sparkles, ShieldCheck, Check, ShoppingBag } from 'lucide-react'
 
 export default function ProductsClient({ products = [] }) {
+  // Pull exactly 2 options for an instant zero-scroll side-by-side compare
   const productList = products.slice(0, 2)
 
   return (
-    <div className="bg-slate-50 min-h-screen text-[#0a0f0d] antialiased pb-12">
+    <div className="bg-white min-h-screen text-black antialiased pb-12">
       
-      {/* ===== HEADER ===== */}
-      <div className="max-w-7xl mx-auto px-4 pt-10 pb-6 text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 mb-3">
-          <Sparkles size={12} className="text-[#c9a84c] animate-pulse" />
-          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.2em] uppercase">Premium Wellness</span>
-        </div>
-        <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">
-          SELECT YOUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">PACK</span>
+      {/* ===== HEADER (MATCHES CART PAGE HEADER STYLE) ===== */}
+      <header className="px-4 pt-8 pb-4 text-center">
+        <h1 className="text-2xl font-black uppercase tracking-tight text-black flex items-center justify-center gap-2">
+          <ShoppingBag size={20} className="sm:hidden" style={{ color: '#c9a84c' }} />
+          Official Store
         </h1>
-        <p className="text-gray-500 text-xs md:text-sm mt-2 max-w-md mx-auto font-medium">
-          Choose between our standard starter pack or upgraded savings bundle.
+        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#c9a84c' }}>
+          Select your wellness regimen below
         </p>
-      </div>
+      </header>
 
-      {/* ===== STRICT ZERO-SCROLL 2-COLUMN GRID ===== */}
-      <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-6 items-stretch">
+      {/* ===== TWO-COLUMN HIGH-IMPACT PRODUCT GRID ===== */}
+      <main className="max-w-5xl mx-auto px-4 pb-6">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 items-stretch">
           {productList.map((product, idx) => {
-            const isCombo = product.name?.toLowerCase().includes('combo') || idx === 1;
+            const isCombo = product?.name?.toLowerCase().includes('combo') || idx === 1
 
             return (
               <div 
-                key={product.id || idx} 
-                className={`bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative border-2 ${
+                key={product?.id || idx} 
+                className={`rounded-2xl border overflow-hidden bg-white flex flex-col justify-between relative transition-all duration-200 ${
                   isCombo 
-                    ? 'border-[#c9a84c] shadow-amber-100/10' 
-                    : 'border-black/5'
+                    ? 'border-[#c9a84c] shadow-md shadow-[#c9a84c]/5' 
+                    : 'border-gray-100 shadow-sm'
                 }`}
               >
-                {/* Micro Floating Badges */}
-                <div className={`absolute -top-2 left-3 sm:left-6 text-[8px] sm:text-[10px] font-black tracking-widest px-2.5 py-0.5 sm:py-1 rounded-md shadow-xs ${
-                  isCombo 
-                    ? 'bg-[#c9a84c] text-[#0a0f0d]' 
-                    : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {isCombo ? 'POPULAR DEAL' : 'STARTER'}
+                {/* Header Strip inside Card (Matches Cart Inner Heading) */}
+                <div className="px-3 py-2.5 sm:px-5 sm:py-3.5 flex items-center justify-between border-b border-gray-50 bg-gray-50/50">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <Sparkles size={12} style={{ color: isCombo ? '#c9a84c' : '#9ca3af' }} className="shrink-0" />
+                    <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-gray-500 truncate">
+                      {isCombo ? 'Recommended Deal' : 'Starter Option'}
+                    </p>
+                  </div>
+                  <span className="text-[8px] sm:text-[10px] font-black text-gray-300 uppercase tracking-wider shrink-0">
+                    0{idx + 1}
+                  </span>
                 </div>
 
-                {/* Main Product Card Output */}
-                <div className="flex-1 w-full pt-2 sm:pt-4">
+                {/* Main Product Component Wrapper Frame */}
+                <div className="flex-1 w-full p-3 sm:p-5 min-h-0">
                   <ProductCard product={product} />
                 </div>
 
-                {/* Micro Benefit Banner */}
-                <div className={`mt-3 pt-2 border-t border-gray-100 text-[9px] sm:text-xs font-bold flex items-center justify-center gap-1 ${
-                  isCombo ? 'text-emerald-700' : 'text-gray-400'
-                }`}>
-                  <Zap size={10} fill="currentColor" className={isCombo ? 'text-emerald-600' : 'hidden'} />
-                  <span>{isCombo ? 'Best Price / Save Big' : 'Single Bottle Pack'}</span>
+                {/* Card footer (Matches Cart Item Line Pricing Layout Style) */}
+                <div className="px-3 py-3 sm:px-5 sm:py-4 border-t border-gray-50 bg-gray-50/20 flex items-center justify-between">
+                  <div className={`text-[8px] sm:text-[11px] font-black uppercase tracking-widest flex items-center gap-1 ${
+                    isCombo ? 'text-emerald-600' : 'text-gray-400'
+                  }`}>
+                    <Check size={12} strokeWidth={3} className={isCombo ? 'text-emerald-600' : 'text-gray-300'} />
+                    <span>{isCombo ? 'Max Savings' : 'Standard'}</span>
+                  </div>
                 </div>
               </div>
             )
           })}
         </div>
-      </div>
+      </main>
 
-      {/* ===== MINI TRUST BAR ===== */}
-      <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8 mt-8">
-        <div className="grid grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-black/5 shadow-xs">
-          <div className="flex items-center gap-2 px-1">
-            <ShieldCheck size={16} className="text-[#c9a84c] shrink-0" />
-            <span className="text-[10px] sm:text-xs font-black tracking-tight text-gray-700 uppercase">100% Ayurvedic Purity</span>
+      {/* ===== OPTIMIZED TRUST INFOBAR ===== */}
+      <footer className="max-w-5xl mx-auto px-4 mt-2">
+        <div className="grid grid-cols-2 gap-2 p-3 rounded-2xl border border-gray-100 bg-white shadow-xs">
+          <div className="flex items-center justify-center gap-1.5 py-1">
+            <ShieldCheck size={14} style={{ color: '#c9a84c' }} className="shrink-0" />
+            <span className="text-[9px] sm:text-xs font-black tracking-widest text-gray-500 uppercase text-center">
+              100% Verified Pure
+            </span>
           </div>
-          <div className="flex items-center gap-2 px-1 border-l border-gray-100">
-            <Zap size={16} className="text-[#c9a84c] shrink-0" />
-            <span className="text-[10px] sm:text-xs font-black tracking-tight text-gray-700 uppercase">Fast Delivery India</span>
+          <div className="flex items-center justify-center gap-1.5 py-1 border-l border-gray-100">
+            <Check size={14} style={{ color: '#c9a84c' }} className="shrink-0" />
+            <span className="text-[9px] sm:text-xs font-black tracking-widest text-gray-500 uppercase text-center">
+              Free Express Delivery
+            </span>
           </div>
         </div>
-      </div>
+      </footer>
 
     </div>
   )

@@ -25,8 +25,8 @@ export default function ProductCard({ product }) {
       <div className="card overflow-hidden transition-all duration-200 hover:shadow-md h-full flex flex-col bg-white border border-gray-100 rounded-xl">
         
         {/* Image Container - Responsive Height */}
-        <div className="relative aspect-square sm:h-52 w-full overflow-hidden bg-[var(--brand-surface)]">
-          {product.image_url ? (
+<div className="relative h-44 md:h-60 lg:h-90 w-full overflow-hidden bg-[var(--brand-surface)]">
+            {product.image_url ? (
             <img 
               src={product.image_url} 
               alt={product.name} 
