@@ -6,40 +6,120 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const BASE = 'https://crabveda.com'
 const FROM = 'CrabVeda <orders@crabveda.com>'
 
-function header(title, subtitle, bgColor = 'linear-gradient(135deg,#2c1a11,#42281b)', emoji = '') {
-  return `<div style="background:${bgColor};padding:32px;text-align:center">
-    ${emoji ? `<p style="font-size:40px;margin:0 0 8px">${emoji}</p>` : ''}
-    <p style="margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:0.3em;color:#d4a373;text-transform:uppercase">✦ CrabVeda Ayurveda ✦</p>
-    <h1 style="margin:0;font-size:26px;font-weight:900;color:#ffffff;text-transform:uppercase">${title}</h1>
-    <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5)">${subtitle}</p>
-  </div>`
+function header(title, subtitle) {
+  return `<tr>
+    <td style="background-color: #0f1a0e; padding: 40px 40px 36px; text-align: center;">
+      <table align="center" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto 16px auto;">
+        <tr>
+          <td style="text-align: center;">
+            <img 
+              src="https://crabveda.com/logo.jpeg" 
+              width="72" 
+              height="72" 
+              alt="CrabVeda Logo" 
+              style="display: block; border-radius: 50%; border: 2px solid #c9a84c; background-color: #ffffff; object-fit: cover;" 
+            />
+          </td>
+        </tr>
+      </table>
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; color: #c9a84c; text-transform: uppercase; margin-bottom: 10px;">
+        ✦ CRABVEDA AYURVEDA ✦
+      </p>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.02em;">
+        ${title}
+      </h1>
+      <p style="margin: 8px 0 0; font-size: 14px; color: #a3b899;">
+        ${subtitle}
+      </p>
+    </td>
+  </tr>`
 }
 
 function footer() {
-  return `<div style="background:#2c1a11;padding:20px 32px;text-align:center">
-    <p style="margin:0;font-size:10px;font-weight:800;color:#d4a373;text-transform:uppercase;letter-spacing:0.3em">CrabVeda — Joint & Muscle Care</p>
-    <p style="margin:4px 0 0;font-size:11px;color:rgba(255,255,255,0.35)">crabveda.com · crabveda@gmail.com · +91 99212 97518</p>
-    <p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.2)">✦ Authentic Ayurvedic Wellness ✦</p>
-  </div>`
+  return `<tr>
+    <td style="padding: 32px 40px; text-align: center; background-color: #faf8f5;">
+      <p style="margin: 0 0 16px; font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.05em;">
+        Follow Our Channels
+      </p>
+      <table align="center" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto;">
+        <tr>
+          <td style="padding: 0 10px;">
+            <a href="https://www.instagram.com/crabveda" target="_blank" rel="noreferrer" style="text-decoration: none; display: inline-block;">
+              <table cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td style="vertical-align: middle; padding-right: 6px;">
+                    <img src="https://cdn-icons-png.flaticon.com/32/174/174855.png" width="16" height="16" alt="Instagram" style="display: block; border: 0;" />
+                  </td>
+                  <td style="vertical-align: middle; font-size: 13px; color: #525252; font-weight: 500;">Instagram</td>
+                </tr>
+              </table>
+            </a>
+          </td>
+          <td style="padding: 0 10px;">
+            <a href="https://www.facebook.com/share/1BE5Lhjuqk/" target="_blank" rel="noreferrer" style="text-decoration: none; display: inline-block;">
+              <table cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td style="vertical-align: middle; padding-right: 6px;">
+                    <img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" width="16" height="16" alt="Facebook" style="display: block; border: 0;" />
+                  </td>
+                  <td style="vertical-align: middle; font-size: 13px; color: #525252; font-weight: 500;">Facebook</td>
+                </tr>
+              </table>
+            </a>
+          </td>
+          <td style="padding: 0 10px;">
+            <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer" style="text-decoration: none; display: inline-block;">
+              <table cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td style="vertical-align: middle; padding-right: 6px;">
+                    <img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" width="16" height="16" alt="WhatsApp" style="display: block; border: 0;" />
+                  </td>
+                  <td style="vertical-align: middle; font-size: 13px; color: #525252; font-weight: 500;">WhatsApp</td>
+                </tr>
+              </table>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="background-color: #0f1a0e; padding: 24px 40px; text-align: center;">
+      <p style="margin: 0; font-size: 11px; font-weight: 600; color: #c9a84c; text-transform: uppercase; letter-spacing: 0.15em;">
+        CrabVeda Joint & Muscle Care
+      </p>
+      <p style="margin: 6px 0 0; font-size: 12px; color: #8a9e85;">
+        crabveda.com · +91 99212 97518
+      </p>
+      <p style="margin: 14px 0 0; font-size: 11px; color: #52634d; line-height: 1.4;">
+        This automated notification layout was dispatched safely to your profile context.<br />
+        © ${new Date().getFullYear()} CrabVeda. All rights reserved.
+      </p>
+    </td>
+  </tr>`
 }
 
 function wrap(content) {
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-  <body style="margin:0;padding:0;background:#fbf9f4;font-family:Arial,sans-serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#fbf9f4;padding:32px 16px">
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+  <body style="margin:0;padding:0;background-color:#fdfbf7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#fdfbf7;padding:40px 16px">
   <tr><td align="center">
-  <table width="100%" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)">
+  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:560px;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e8e4dc;box-shadow:0 1px 3px rgba(15,26,14,0.05)">
   ${content}
   ${footer()}
   </table></td></tr></table></body></html>`
 }
 
 function itemRows(items) {
-  return (items || []).map((item, i) => `
-    <tr style="background:${i % 2 === 0 ? '#fff' : '#faf7f2'}">
-      <td style="padding:12px 16px;font-size:13px;color:#2c1a11;font-weight:600">${item.product_name}</td>
-      <td style="padding:12px 16px;font-size:12px;color:rgba(44,26,17,0.5);text-align:center">${item.quantity}</td>
-      <td style="padding:12px 16px;font-size:14px;font-weight:800;color:#bc7d44;text-align:right">₹${Number(item.total_price).toFixed(0)}</td>
+  return (items || []).map((item) => `
+    <tr style="border-bottom: 1px solid #f5f2eb;">
+      <td style="padding: 14px 0;">
+        <p style="margin: 0; font-size: 13px; font-weight: 600; color: #0f1a0e;">${item.product_name || 'Ayurvedic Treatment Item'}</p>
+        <p style="margin: 4px 0 0; font-size: 12px; color: #737373;">Qty: ${item.quantity || 1}</p>
+      </td>
+      <td align="right" style="padding: 14px 0; vertical-align: middle;">
+        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #0f1a0e;">₹${Number(item.total_price || 0).toFixed(0)}</p>
+      </td>
     </tr>`).join('')
 }
 
@@ -50,80 +130,206 @@ function buildConfirmationEmail(order, items) {
   const subtotal = Number(order.subtotal || 0)
 
   return wrap(`
-    ${header('Order Confirmed!', `Thank you for shopping with us 🌿`)}
-    <tr><td style="padding:20px 32px;background:#faf4ed;border-bottom:1px solid rgba(0,0,0,0.06)">
-      <table width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td><p style="margin:0;font-size:10px;font-weight:800;color:rgba(44,26,17,0.4);text-transform:uppercase;letter-spacing:0.15em">Order ID</p>
-            <p style="margin:4px 0 0;font-size:16px;font-weight:900;color:#2c1a11">#${ordNum}</p></td>
-        <td align="right"><p style="margin:0;font-size:10px;font-weight:800;color:rgba(44,26,17,0.4);text-transform:uppercase;letter-spacing:0.15em">Payment</p>
-            <p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#2c1a11">${order.payment_method === 'cod' ? '💵 Cash on Delivery' : '✅ Paid Online'}</p></td>
-      </tr></table>
-    </td></tr>
-    <tr><td style="padding:24px 32px 16px">
-      <p style="margin:0;font-size:15px;font-weight:700;color:#2c1a11">Hi ${order.customer_name} 👋</p>
-      <p style="margin:8px 0 0;font-size:14px;color:rgba(44,26,17,0.6);line-height:1.6">Your order is confirmed and being prepared for dispatch!</p>
-    </td></tr>
-    <tr><td style="padding:0 32px 20px">
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,0.06)">
-        <thead><tr style="background:#2c1a11"><th style="padding:10px 16px;font-size:10px;color:white;text-align:left;text-transform:uppercase">Product</th><th style="padding:10px 16px;font-size:10px;color:white;text-align:center">Qty</th><th style="padding:10px 16px;font-size:10px;color:white;text-align:right">Total</th></tr></thead>
-        <tbody>${itemRows(items)}</tbody>
-      </table>
-    </td></tr>
-    <tr><td style="padding:0 32px 20px">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf7f2;border-radius:12px;padding:16px;border:1px solid rgba(0,0,0,0.06)">
-        <tr><td><p style="margin:0 0 6px;font-size:13px;color:rgba(44,26,17,0.5)">Subtotal</p></td><td align="right"><p style="margin:0 0 6px;font-size:13px;color:#2c1a11">₹${subtotal.toFixed(0)}</p></td></tr>
-        <tr><td><p style="margin:0 0 10px;font-size:13px;color:rgba(44,26,17,0.5)">Shipping</p></td><td align="right"><p style="margin:0 0 10px;font-size:13px;color:#15803d;font-weight:700">FREE</p></td></tr>
-        <tr style="border-top:1px solid rgba(0,0,0,0.08)"><td style="padding-top:10px"><p style="margin:0;font-size:15px;font-weight:900;color:#2c1a11">Total</p></td><td align="right" style="padding-top:10px"><p style="margin:0;font-size:18px;font-weight:900;color:#bc7d44">₹${total.toFixed(0)}</p></td></tr>
-      </table>
-    </td></tr>
-    <tr><td style="padding:0 32px 20px">
-      <div style="background:#faf7f2;border-radius:12px;padding:16px;border:1px solid rgba(66,40,27,0.1)">
-        <p style="margin:0 0 4px;font-size:10px;font-weight:800;color:rgba(44,26,17,0.4);text-transform:uppercase">Delivery Address</p>
-        <p style="margin:0;font-size:14px;font-weight:700;color:#2c1a11">${order.customer_name}</p>
-        <p style="margin:4px 0 0;font-size:13px;color:rgba(44,26,17,0.6);line-height:1.5">${order.address}, ${order.city}, ${order.state} — ${order.pincode}<br>📞 ${order.phone}</p>
-      </div>
-    </td></tr>
-    <tr><td style="padding:0 32px 32px;text-align:center">
-      <a href="${BASE}/track-order" style="display:inline-block;background:#2c1a11;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em">Track Your Order →</a>
-      <p style="margin:12px 0 0;font-size:12px;color:rgba(44,26,17,0.4)">Need help? <a href="https://wa.me/919921297518" style="color:#bc7d44;font-weight:700">WhatsApp +91 99212 97518</a></p>
-    </td></tr>
+    ${header('Order Confirmed', 'Your order is logged and in preparation for dispatch 🌿')}
+    
+    <tr>
+      <td style="padding: 20px 40px; background-color: #faf8f5; border-bottom: 1px solid #e8e4dc;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+          <tr>
+            <td>
+              <p style="margin: 0; font-size: 10px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.08em;">Order ID</p>
+              <p style="margin: 4px 0 0; font-size: 14px; font-weight: 700; color: #0f1a0e;">#${ordNum}</p>
+            </td>
+            <td align="right">
+              <p style="margin: 0; font-size: 10px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.08em;">Order Date</p>
+              <p style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #0f1a0e;">${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 36px 40px 24px;">
+        <p style="margin: 0; font-size: 15px; font-weight: 700; color: #0f1a0e;">Hello ${order.customer_name || 'Customer'},</p>
+        <p style="margin: 10px 0 0; font-size: 14px; color: #404040; line-height: 1.6;">Thank you for choosing CrabVeda. We have securely received your package details and our fulfillment group is prioritizing packing operations.</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 24px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #e8e4dc;">
+              <th align="left" style="padding-bottom: 10px; font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase;">Items Ordered</th>
+              <th align="right" style="padding-bottom: 10px; font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase;">Price</th>
+            </tr>
+          </thead>
+          <tbody>${itemRows(items)}</tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 32px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border-top: 2px solid #0f1a0e; padding-top: 16px;">
+          <tr>
+            <td style="padding-bottom: 8px;"><p style="margin: 0; font-size: 13px; color: #525252;">Subtotal</p></td>
+            <td align="right" style="padding-bottom: 8px;"><p style="margin: 0; font-size: 13px; font-weight: 600; color: #0f1a0e;">₹${subtotal.toFixed(0)}</p></td>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 12px; border-bottom: 1px solid #e8e4dc;"><p style="margin: 0; font-size: 13px; color: #525252;">Shipping & Handling</p></td>
+            <td align="right" style="padding-bottom: 12px; border-bottom: 1px solid #e8e4dc;">
+              <p style="margin: 0; font-size: 13px; color: ${shipping === 0 ? '#16a34a' : '#0f1a0e'}; font-weight: 700;">${shipping === 0 ? 'FREE' : `₹${shipping.toFixed(0)}`}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 16px;"><p style="margin: 0; font-size: 14px; font-weight: 700; color: #0f1a0e;">Total Paid Amount</p></td>
+            <td align="right" style="padding-top: 16px;"><p style="margin: 0; font-size: 18px; font-weight: 700; color: #0f1a0e;">₹${total.toFixed(0)}</p></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 32px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border: 1px solid #e8e4dc; border-radius: 8px; padding: 20px;">
+          <tr>
+            <td>
+              <p style="margin: '0 0 8px'; font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.05em;">Delivery Address</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 700; color: #0f1a0e;">${order.customer_name}</p>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #525252; line-height: 1.5;">${order.address}, ${order.city}, ${order.state} — ${order.pincode}<br>📞 ${order.phone}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 40px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+          <tr>
+            <td width="48%" style="border: 1px solid #e8e4dc; border-radius: 8px; padding: 14px;">
+              <p style="margin: 0 0 4px; font-size: 10px; font-weight: 700; color: #737373; text-transform: uppercase;">Payment Details</p>
+              <p style="margin: 0; font-size: 13px; font-weight: 600; color: #0f1a0e;">${order.payment_method === 'cod' ? 'Cash on Delivery' : 'Online Gateway Paid'}</p>
+            </td>
+            <td width="4%"></td>
+            <td width="48%" style="border: 1px solid #e8e4dc; border-radius: 8px; padding: 14px;">
+              <p style="margin: 0 0 4px; font-size: 10px; font-weight: 700; color: #737373; text-transform: uppercase;">Delivery SLA</p>
+              <p style="margin: 0; font-size: 13px; font-weight: 600; color: #0f1a0e;">3–7 Business Days</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 40px; text-align: center; border-bottom: 1px solid #e8e4dc;">
+        <a href="${BASE}/track-order" target="_blank" rel="noreferrer" style="display: inline-block; background-color: #0f1a0e; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Track Your Order</a>
+      </td>
+    </tr>
   `)
 }
 
 function buildShippedEmail(order) {
   const ordNum = order.id.slice(0, 8).toUpperCase()
+  const trackLink = order.tracking_number 
+    ? `${BASE}/track-order?number=${encodeURIComponent(order.tracking_number)}`
+    : `${BASE}/track-order`
+
   return wrap(`
-    ${header('Your Order is Shipped!', `Order #${ordNum} is on the way`, 'linear-gradient(135deg,#bc7d44,#d4a373)', '🚚')}
-    <tr><td style="padding:28px 32px">
-      <p style="font-size:15px;font-weight:700;color:#2c1a11">Hi ${order.customer_name} 👋</p>
-      <p style="color:rgba(44,26,17,0.6);line-height:1.6;font-size:14px">Great news! Your order is packed and on its way. Expected delivery in <strong>2–3 business days</strong>.</p>
-      <div style="background:#faf4ed;border-radius:12px;padding:16px;margin:16px 0;border:1px solid rgba(188,125,68,0.2)">
-        <p style="margin:0 0 4px;font-size:10px;font-weight:800;color:rgba(44,26,17,0.6);text-transform:uppercase">Delivering To</p>
-        <p style="margin:0;font-size:13px;color:#2c1a11;line-height:1.5">${order.address}, ${order.city}, ${order.state} — ${order.pincode}</p>
-      </div>
-      <div style="text-align:center;margin-top:20px">
-        <a href="${BASE}/track-order" style="display:inline-block;background:#2c1a11;color:white;padding:14px 32px;border-radius:50px;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none">Track My Order →</a>
-      </div>
-    </td></tr>
+    ${header('Order Shipped', 'Your natural healing items are on their way! 🚚')}
+    
+    <tr>
+      <td style="padding: 20px 40px; background-color: #faf8f5; border-bottom: 1px solid #e8e4dc;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+          <tr>
+            <td>
+              <p style="margin: 0; font-size: 10px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.08em;">Order ID</p>
+              <p style="margin: 4px 0 0; font-size: 14px; font-weight: 700; color: #0f1a0e;">#${ordNum}</p>
+            </td>
+            <td align="right">
+              <p style="margin: 0; font-size: 10px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.08em;">Status</p>
+              <p style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #16a34a;">Dispatched</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 36px 40px 24px;">
+        <p style="margin: 0; font-size: 15px; font-weight: 700; color: #0f1a0e;">Hello ${order.customer_name || 'Customer'},</p>
+        <p style="margin: 10px 0 0; font-size: 14px; color: #404040; line-height: 1.6;">Great news! Your package has cleared our sorting facility and is officially handed over to our shipping partner. Your items are expected to reach your location within the next 3–7 business days.</p>
+      </td>
+    </tr>
+
+    ${order.tracking_number ? `
+    <tr>
+      <td style="padding: 0 40px 24px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="background-color: #fef9ee; border-radius: 8px; border: 1px solid rgba(201,168,76,0.15);">
+          <tr>
+            <td style="padding: 16px;">
+              <p style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.05em;">Awb Tracking Number</p>
+              <p style="margin: 0; font-size: 16px; font-weight: 700; color: #0f1a0e; letter-spacing: 0.02em;">${order.tracking_number}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>` : ''}
+
+    <tr>
+      <td style="padding: 0 40px 32px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="border: 1px solid #e8e4dc; border-radius: 8px; padding: 20px;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; color: #737373; text-transform: uppercase; letter-spacing: 0.05em;">Shipping Destination</p>
+              <p style="margin: 0; font-size: 13px; color: #525252; line-height: 1.5;">${order.address}, ${order.city}, ${order.state} — ${order.pincode}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 40px; text-align: center; border-bottom: 1px solid #e8e4dc;">
+        <a href="${trackLink}" target="_blank" rel="noreferrer" style="display: inline-block; background-color: #0f1a0e; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Track Live Delivery Package</a>
+      </td>
+    </tr>
   `)
 }
 
 function buildDeliveredEmail(order) {
   const ordNum = order.id.slice(0, 8).toUpperCase()
   return wrap(`
-    ${header('Order Delivered! 🎉', `Your order #${ordNum} has arrived`, 'linear-gradient(135deg,#15803d,#16a34a)', '🎁')}
-    <tr><td style="padding:28px 32px">
-      <p style="font-size:15px;font-weight:700;color:#2c1a11">Hi ${order.customer_name} 👋</p>
-      <p style="color:rgba(44,26,17,0.6);line-height:1.6;font-size:14px">Your order has been safely delivered! We hope CrabVeda Ayurvedic Crab Oil brings wellness and relief to your joint & muscle care routing. 🌿</p>
-      <div style="background:#faf7f2;border-radius:12px;padding:20px;margin:16px 0;border:1px solid rgba(66,40,27,0.1);text-align:center">
-        <p style="margin:0 0 4px;font-size:28px">⭐⭐⭐⭐⭐</p>
-        <p style="margin:0;font-size:14px;font-weight:700;color:#2c1a11">Enjoyed your experience?</p>
-        <p style="margin:4px 0 12px;font-size:13px;color:rgba(44,26,17,0.5)">Leave a review to help other find relief</p>
-        <a href="${BASE}/products" style="display:inline-block;background:#2c1a11;color:white;padding:12px 24px;border-radius:50px;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none">Write a Review →</a>
-      </div>
-      <p style="color:rgba(44,26,17,0.6);line-height:1.6;font-size:13px;text-align:center">Want to order again? <a href="${BASE}/products" style="color:#bc7d44;font-weight:700">Shop more products</a></p>
-      <p style="color:rgba(44,26,17,0.6);line-height:1.6;font-size:13px;text-align:center;margin-top:8px">Need help? <a href="https://wa.me/919921297518" style="color:#bc7d44;font-weight:700">WhatsApp +91 99212 97518</a></p>
-    </td></tr>
+    ${header('Order Delivered', 'Your packages have arrived safely at your doorstep! 🎉')}
+    
+    <tr>
+      <td style="padding: 36px 40px 24px;">
+        <p style="margin: 0; font-size: 15px; font-weight: 700; color: #0f1a0e;">Hello ${order.customer_name || 'Customer'},</p>
+        <p style="margin: 10px 0 0; font-size: 14px; color: #404040; line-height: 1.6;">Your order has been safely delivered! We hope CrabVeda Ayurvedic Crab Oil brings wellness and relief to your joint & muscle care routine. 🌿</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 32px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #faf8f5; border: 1px solid #e8e4dc; border-radius: 8px; padding: 24px; text-align: center;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 12px; font-size: 15px; font-weight: 700; color: #0f1a0e;">Enjoyed your experience?</p>
+              <p style="margin: 0 0 20px; font-size: 13px; color: #525252; line-height: 1.5;">Leave an honest review to help others find relief from muscle and joint pains.</p>
+              <a href="${BASE}/products" target="_blank" rel="noreferrer" style="display: inline-block; background-color: #0f1a0e; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Write a Review</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding: 0 40px 40px; text-align: center; border-bottom: 1px solid #e8e4dc;">
+        <p style="margin: 0; font-size: 13px; color: #525252;">Want to look for more wellness items? <a href="${BASE}/products" style="color: #c9a84c; font-weight: 700; text-decoration: none;">Shop Products Again</a></p>
+      </td>
+    </tr>
   `)
 }
 
@@ -131,24 +337,36 @@ function buildCancelledEmail(order) {
   const ordNum = order.id.slice(0, 8).toUpperCase()
   const total = Number(order.total_amount || 0)
   return wrap(`
-    ${header('Order Cancelled', `Order #${ordNum}`, 'linear-gradient(135deg,#dc2626,#ef4444)', '❌')}
-    <tr><td style="padding:28px 32px">
-      <p style="font-size:15px;font-weight:700;color:#2c1a11">Hi ${order.customer_name},</p>
-      <p style="color:rgba(44,26,17,0.6);line-height:1.6;font-size:14px">Your order #${ordNum} has been cancelled.</p>
-      ${order.payment_method !== 'cod' ? `
-      <div style="background:#fef3c7;border-radius:12px;padding:16px;margin:16px 0;border:1px solid rgba(217,119,6,0.2)">
-        <p style="margin:0 0 4px;font-size:10px;font-weight:800;color:#d97706;text-transform:uppercase">Refund Info</p>
-        <p style="margin:0;font-size:14px;font-weight:700;color:#2c1a11">₹${total.toFixed(0)} will be refunded in 5–7 business days</p>
-        <p style="margin:4px 0 0;font-size:12px;color:rgba(44,26,17,0.5)">Refund goes back to your original online payment channel</p>
-      </div>` : ''}
-      <p style="color:rgba(44,26,17,0.6);line-height:1.6;font-size:13px">If this was a mistake or you have questions, please contact us immediately:</p>
-      <div style="text-align:center;margin-top:16px">
-        <a href="https://wa.me/919921297518" style="display:inline-block;background:#25D366;color:white;padding:14px 32px;border-radius:50px;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none">WhatsApp Us →</a>
-      </div>
-      <div style="text-align:center;margin-top:12px">
-        <a href="${BASE}/products" style="display:inline-block;background:#2c1a11;color:white;padding:12px 24px;border-radius:50px;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none">Shop Again →</a>
-      </div>
-    </td></tr>
+    ${header('Order Cancelled', `Updates regarding cancelled reference order #${ordNum}`)}
+    
+    <tr>
+      <td style="padding: 36px 40px 24px;">
+        <p style="margin: 0; font-size: 15px; font-weight: 700; color: #0f1a0e;">Hello ${order.customer_name || 'Customer'},</p>
+        <p style="margin: 10px 0 0; font-size: 14px; color: #404040; line-height: 1.6;">Your order reference <strong>#${ordNum}</strong> has been cancelled and will not be managed further by our fulfillment desks.</p>
+      </td>
+    </tr>
+
+    ${order.payment_method !== 'cod' ? `
+    <tr>
+      <td style="padding: 0 40px 24px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #fef2f2; border: 1px solid #fee2e2; border-radius: 8px; padding: 16px;">
+          <tr>
+            <td>
+              <p style="margin: 0 0 4px; font-size: 10px; font-weight: 700; color: #ef4444; text-transform: uppercase;">Refund Dispatched</p>
+              <p style="margin: 0; font-size: 14px; font-weight: 700; color: #0f1a0e;">₹${total.toFixed(0)} will reverse into your original channel</p>
+              <p style="margin: 4px 0 0; font-size: 12px; color: #737373;">Please allow 5–7 banking business days for setup clearings.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>` : ''}
+
+    <tr>
+      <td style="padding: 0 40px 40px; text-align: center; border-bottom: 1px solid #e8e4dc;">
+        <p style="margin: 0 0 16px; font-size: 13px; color: #525252;">If this cancellation was unintended, please check back in with our desks:</p>
+        <a href="${BASE}/products" target="_blank" rel="noreferrer" style="display: inline-block; background-color: #0f1a0e; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Shop Again</a>
+      </td>
+    </tr>
   `)
 }
 
