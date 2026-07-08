@@ -149,7 +149,7 @@ export async function POST(req) {
 
     // ── Send confirmation email (non-blocking) ───────────────────
     const baseUrl = req.headers.get('origin') || `https://${req.headers.get('host')}`
-    sendConfirmationEmail(order.id, baseUrl) // intentionally not awaited
+    await sendConfirmationEmail(order.id, baseUrl) 
 
     return NextResponse.json({ orderId: order.id })
   } catch (err) {

@@ -33,9 +33,9 @@ export async function POST(req) {
 
     // Auto-send emails for shipped, delivered, cancelled
     const baseUrl = req.headers.get('origin') || `https://${req.headers.get('host')}`
-    if (status === 'shipped') sendStatusEmail(orderId, 'shipped', baseUrl)
-    if (status === 'delivered') sendStatusEmail(orderId, 'delivered', baseUrl)
-    if (status === 'cancelled') sendStatusEmail(orderId, 'cancelled', baseUrl)
+    if (status === 'shipped') await sendStatusEmail(orderId, 'shipped', baseUrl)
+    if (status === 'delivered') await sendStatusEmail(orderId, 'delivered', baseUrl)
+    if (status === 'cancelled') await sendStatusEmail(orderId, 'cancelled', baseUrl)
 
     return NextResponse.json({ success: true, order: data })
   } catch (err) {
