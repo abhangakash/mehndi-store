@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   ShoppingCart, Menu, X, User, LogOut,
-  Package, ChevronDown, Sparkles, MapPin, Search
+  Package, ChevronDown, Sparkles, MapPin, Search,
+  Home, ShoppingBag, Truck, Phone
 } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { useAuth } from '@/context/AuthContext'
@@ -13,10 +14,10 @@ import toast from 'react-hot-toast'
 import Image from 'next/image'
 
 const NAV_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/products', label: 'Shop' },
-  { href: '/track-order', label: 'Track Order' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/', label: 'Home', icon: Home },
+  { href: '/products', label: 'Shop', icon: ShoppingBag },
+  { href: '/track-order', label: 'Track Order', icon: Truck },
+  { href: '/contact', label: 'Contact', icon: Phone },
 ]
 
 export default function Navbar() {
@@ -85,16 +86,20 @@ export default function Navbar() {
 
           {/* Desktop Nav Actions */}
           <nav className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map(link => (
-              <div key={link.label} className="relative">
-                <Link href={link.href}
-                  className={`px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
-                    isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-500 hover:text-black'
-                  }`}>
-                  {link.label}
-                </Link>
-              </div>
-            ))}
+            {NAV_LINKS.map(link => {
+              const Icon = link.icon
+              return (
+                <div key={link.label} className="relative">
+                  <Link href={link.href}
+                    className={`flex items-center gap-1.5 px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
+                      isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-500 hover:text-black'
+                    }`}>
+                    <Icon size={12} className={isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-400'} />
+                    <span>{link.label}</span>
+                  </Link>
+                </div>
+              )
+            })}
           </nav>
 
           {/* Right Action Stack */}
@@ -203,14 +208,18 @@ export default function Navbar() {
 
             {/* Mobile Links */}
             <div className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <Link key={link.label} href={link.href} onClick={toggleMenu}
-                  className={`block text-xl font-black uppercase tracking-tight py-2 transition-colors ${
-                    isActive(link.href) ? 'text-[#c9a84c]' : 'text-black hover:text-[#c9a84c]'
-                  }`}>
-                  {link.label}
-                </Link>
-              ))}
+              {NAV_LINKS.map((link) => {
+                const Icon = link.icon
+                return (
+                  <Link key={link.label} href={link.href} onClick={toggleMenu}
+                    className={`flex items-center gap-3 text-xl font-black uppercase tracking-tight py-2 transition-colors ${
+                      isActive(link.href) ? 'text-[#c9a84c]' : 'text-black hover:text-[#c9a84c]'
+                    }`}>
+                    <Icon size={18} className={isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-400'} />
+                    <span>{link.label}</span>
+                  </Link>
+                )
+              })}
 
               {user && (
                 <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-1">
@@ -235,7 +244,7 @@ export default function Navbar() {
 
           {/* Social Channels Dock Footer */}
           <div className="pt-6 border-t border-gray-100 flex items-center gap-4">
-            {/* Instagram - Standard brand color layout without artificial styling shapes */}
+            {/* Instagram */}
             <a href="https://www.instagram.com/crabveda" target="_blank" rel="noreferrer"
               className="w-7 h-7 flex items-center justify-center text-[#E1306C]">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -245,7 +254,7 @@ export default function Navbar() {
               </svg>
             </a>
 
-            {/* Facebook - Native original blue color asset layout */}
+            {/* Facebook */}
             <a href="https://www.facebook.com/crabveda" target="_blank" rel="noreferrer"
               className="w-7 h-7 flex items-center justify-center text-[#1877F2]">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -253,7 +262,7 @@ export default function Navbar() {
               </svg>
             </a>
             
-            {/* WhatsApp - Displays public/whatsapp.svg with its genuine original colors */}
+            {/* WhatsApp */}
             <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer"
               className="w-7 h-7 flex items-center justify-center">
               <Image 

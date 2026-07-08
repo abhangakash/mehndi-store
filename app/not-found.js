@@ -1,70 +1,84 @@
 import Link from 'next/link'
-import { Leaf, Home, ShoppingBag, Phone, ArrowRight } from 'lucide-react'
+import { ArrowRight, ShoppingBag } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #fdf8f0 50%, #f9f5ed 100%)' }}>
-      <div className="max-w-lg w-full text-center">
-        {/* Animated design */}
-        <div className="relative mb-8 mx-auto w-32 h-32">
-          <div className="w-32 h-32 rounded-full flex items-center justify-center mx-auto"
-            style={{ backgroundColor: 'var(--brand-green)', opacity: 0.1, position: 'absolute', inset: 0 }} />
-          <div className="w-32 h-32 flex items-center justify-center relative text-7xl">
-            🌱
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Soft brand glow matching your other pages */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
+      
+      <div className="max-w-md w-full text-center relative z-10 py-12">
+        
+        {/* Minimalist Header Typography */}
+        <div className="space-y-3 mb-8">
+          <div className="flex items-center justify-center gap-2">
+            <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
+            <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">
+              Page Not Found
+            </span>
+            <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
           </div>
+          
+          <h1 className="text-7xl md:text-8xl font-black text-[#0a0f0d] tracking-tighter leading-none">
+            404
+          </h1>
+          
+          <h2 className="text-lg sm:text-xl font-black text-[#0a0f0d] tracking-tight uppercase mt-4">
+            Eased Away.
+          </h2>
         </div>
 
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto"
-          style={{ backgroundColor: 'var(--brand-green)' }}>
-          <Leaf size={28} color="white" />
-        </div>
-
-        <h1 className="text-7xl font-bold mb-2" style={{ color: 'var(--brand-green)' }}>404</h1>
-        <h2 className="text-xl font-semibold mb-3" style={{ color: 'var(--brand-text)' }}>
-          This page seems to have eased away
-        </h2>
-        <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--brand-muted)' }}>
-          Like targeted relief soothing away discomfort — this page has disappeared. But don't worry, 
-          our natural Ayurvedic pain relief oils and wellness solutions are still here to help!
+        {/* Clear, elegant copy */}
+        <p className="text-xs sm:text-sm leading-relaxed text-gray-500 mb-8 max-w-sm mx-auto">
+          Like targeted relief soothing away discomfort, this page has dissolved. However, our signature Ayurvedic pain relief oils and premium wellness solutions are still fully available to explore.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-          <Link href="/" className="btn-primary text-sm justify-center">
-            <Home size={15} /> Back to Home
-          </Link>
-          <Link href="/products" className="btn-secondary text-sm justify-center">
-            <ShoppingBag size={15} /> Browse Products
+        {/* Primary Action Button matches the Buy Now style */}
+        <div className="mb-10 px-2">
+          <Link 
+            href="/products" 
+            className="flex items-center justify-center w-full py-4 rounded-xl bg-[#0a0f0d] text-white font-black tracking-widest text-[11px] gap-2 active:scale-[0.98] transition-transform shadow-lg shadow-[#0a0f0d]/10"
+          >
+            EXPLORE ALL PRODUCTS
+            <ShoppingBag size={14} />
           </Link>
         </div>
 
-        <div className="card p-4">
-          <p className="text-xs font-medium mb-3" style={{ color: 'var(--brand-muted)' }}>
-            Quick links you might be looking for:
+        {/* Custom Quick Navigation Deck - Exact links requested */}
+        <div className="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm text-left">
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3.5">
+            Quick Navigation Links
           </p>
+          
           <div className="grid grid-cols-2 gap-2">
             {[
-              { href: '/products', label: 'Shop Oil' },
-              { href: '/packages', label: 'Wellness Bundles' },
-              { href: '/gallery', label: 'Our Ingredients' },
-              { href: '/blog', label: 'Health Blog' },
+              { href: '/', label: 'Home' },
+              { href: '/products', label: 'Shop Oils' },
               { href: '/track-order', label: 'Track Order' },
               { href: '/contact', label: 'Contact Us' },
             ].map(l => (
-              <Link key={l.href} href={l.href}
-                className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium hover:bg-gray-50 transition-colors"
-                style={{ color: 'var(--brand-green)', border: '1px solid var(--brand-border)' }}>
-                {l.label} <ArrowRight size={12} />
+              <Link 
+                key={l.href} 
+                href={l.href}
+                className="group flex items-center justify-between px-3 py-2.5 rounded-xl text-[11px] font-bold border border-gray-100 text-[#0a0f0d] hover:border-[#c9a84c] hover:bg-gray-50/50 transition-all"
+              >
+                {l.label} 
+                <ArrowRight size={12} className="text-gray-400 group-hover:text-[#c9a84c] transition-colors" />
               </Link>
             ))}
           </div>
         </div>
 
-        <p className="text-xs mt-6" style={{ color: 'var(--brand-muted)' }}>
-          Need expert help?{' '}
-          <a href="https://wa.me/919921297518" target="_blank" rel="noreferrer"
-            className="underline" style={{ color: 'var(--brand-green)' }}>
-            Chat with us on WhatsApp
+        {/* WhatsApp Footer Helper */}
+        <p className="text-[11px] font-medium text-gray-400 mt-8">
+          Need immediate guidance?{' '}
+          <a 
+            href="https://wa.me/919921297518" 
+            target="_blank" 
+            rel="noreferrer"
+            className="font-black text-[#c9a84c] underline uppercase tracking-wider ml-1"
+          >
+            Chat on WhatsApp
           </a>
         </p>
       </div>

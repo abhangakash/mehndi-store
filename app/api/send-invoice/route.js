@@ -2,7 +2,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
 
 // GET /api/send-invoice?orderId=xxx
-// Returns HTML invoice — browser can print/save as PDF
+// Returns a premium, print-ready HTML invoice matching the brand aesthetic
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url)
@@ -33,121 +33,184 @@ export async function GET(req) {
   <title>Invoice #${ordNum} — CrabVeda</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #fbf9f4; padding: 40px 20px; color: #1e120c; }
-    .page { max-width: 680px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.08); }
-    .header { background: linear-gradient(135deg, #2c1a11, #42281b); padding: 32px; color: white; }
-    .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .brand { }
-    .brand-name { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: #f4eae1; }
-    .brand-sub { font-size: 9px; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase; color: #d4a373; margin-top: 4px; }
-    .invoice-label { text-align: right; }
-    .invoice-label h2 { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; }
-    .invoice-label p { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; }
-    .meta { padding: 24px 32px; background: #faf4ed; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.06); }
-    .meta-box label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(44,26,17,0.4); }
-    .meta-box p { font-size: 14px; font-weight: 700; color: #2c1a11; margin-top: 4px; }
-    .body { padding: 28px 32px; }
-    .section-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(44,26,17,0.4); margin-bottom: 12px; }
-    .address-box { background: #faf7f2; border: 1px solid rgba(66,40,27,0.1); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
-    .address-box .name { font-size: 15px; font-weight: 700; color: #2c1a11; }
-    .address-box .details { font-size: 13px; color: rgba(44,26,17,0.7); margin-top: 4px; line-height: 1.6; }
-    table.items { width: 100%; border-collapse: collapse; margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); }
-    table.items th { background: #2c1a11; color: white; padding: 12px 16px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; }
-    table.items th:last-child { text-align: right; }
-    table.items td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid rgba(0,0,0,0.04); }
-    table.items td:last-child { text-align: right; font-weight: 700; color: #bc7d44; }
-    table.items tr:last-child td { border-bottom: none; }
-    table.items tr:nth-child(even) td { background: #fdfcf9; }
-    .totals { background: #faf7f2; border-radius: 12px; padding: 16px; border: 1px solid rgba(0,0,0,0.06); margin-bottom: 24px; }
-    .total-row { display: flex; justify-content: space-between; font-size: 13px; color: rgba(44,26,17,0.6); margin-bottom: 8px; }
-    .total-row.grand { font-size: 16px; font-weight: 900; color: #2c1a11; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 8px; padding-top: 12px; }
-    .total-row.grand span:last-child { color: #2c1a11; }
-    .payment-row { display: flex; gap: 12px; margin-bottom: 24px; }
-    .pill { flex: 1; background: #faf4ed; border: 1px solid rgba(188,125,68,0.2); border-radius: 12px; padding: 12px 14px; }
-    .pill label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(44,26,17,0.4); }
-    .pill p { font-size: 13px; font-weight: 700; color: #2c1a11; margin-top: 4px; }
-    .note { background: #fcfaf7; border: 1px solid rgba(188,125,68,0.15); border-radius: 12px; padding: 14px 16px; font-size: 12px; color: rgba(44,26,17,0.7); line-height: 1.6; margin-bottom: 24px; }
-    .footer { background: #2c1a11; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
-    .footer-brand { font-size: 10px; font-weight: 800; color: #d4a373; text-transform: uppercase; letter-spacing: 0.25em; }
-    .footer-info { font-size: 11px; color: rgba(255,255,255,0.4); text-align: right; line-height: 1.5; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #fafafa; padding: 40px 20px; color: #0a0f0d; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 720px; margin: 0 auto; background: white; border: 1px solid #f0f0f0; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.02); }
+    
+    /* Luxury Header Layout */
+    .header { padding: 40px 40px 32px 40px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: white; }
+    .brand-identity { display: flex; align-items: center; gap: 16px; }
+    .brand-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 1px solid #f0f0f0; }
+    .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #0a0f0d; }
+    .brand-sub { font-size: 10px; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase; color: #c9a84c; margin-top: 3px; }
+    
+    .invoice-title-box { text-align: right; }
+    .invoice-title-box h2 { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: #0a0f0d; }
+    .invoice-title-box p { font-size: 12px; font-weight: 700; color: #c9a84c; margin-top: 4px; letter-spacing: 0.05em; }
+    
+    /* Meta Information Bar */
+    .meta-bar { padding: 20px 40px; background: #fafafa; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; }
+    .meta-box label { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: #9ca3af; }
+    .meta-box p { font-size: 13px; font-weight: 800; color: #0a0f0d; margin-top: 5px; }
+    
+    /* Main Layout Details */
+    .body-content { padding: 32px 40px; }
+    .section-heading { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: #9ca3af; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .section-heading::after { content: ''; flex: 1; height: 1px; background: #f3f4f6; }
+    
+    .address-details-card { border: 1px solid #f0f0f0; border-radius: 16px; padding: 20px; margin-bottom: 32px; background: white; }
+    .address-details-card .customer-name { font-size: 15px; font-weight: 800; color: #0a0f0d; text-transform: uppercase; letter-spacing: 0.02em; }
+    .address-details-card .address-text { font-size: 13px; color: #4b5563; margin-top: 6px; line-height: 1.6; font-weight: 500; }
+    
+    /* Modern Clean Invoice Table */
+    table.items-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+    table.items-table th { padding: 12px 16px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: #9ca3af; text-align: left; border-bottom: 2px solid #0a0f0d; }
+    table.items-table th:last-child { text-align: right; }
+    table.items-table td { padding: 18px 16px; font-size: 13px; font-weight: 600; color: #0a0f0d; border-bottom: 1px solid #f3f4f6; }
+    table.items-table td.qty-col { text-align: center; color: #4b5563; }
+    table.items-table td.price-col { text-align: right; color: #4b5563; }
+    table.items-table td.total-col { text-align: right; font-weight: 800; color: #0a0f0d; }
+    
+    /* Summary Deck */
+    .invoice-breakdown { display: flex; justify-content: flex-end; margin-bottom: 32px; }
+    .totals-wrapper { width: 100%; max-width: 320px; border: 1px solid #f0f0f0; border-radius: 16px; padding: 20px; background: #fafafa; }
+    .breakdown-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #4b5563; margin-bottom: 10px; }
+    .breakdown-row.grand-total { font-size: 16px; font-weight: 900; color: #0a0f0d; border-top: 1px solid #e5e7eb; margin-top: 12px; padding-top: 14px; text-transform: uppercase; letter-spacing: 0.02em; }
+    .breakdown-row.grand-total span:last-child { color: #c9a84c; font-size: 18px; }
+    
+    /* Info Badges */
+    .status-container { display: flex; gap: 12px; margin-bottom: 32px; }
+    .info-badge { flex: 1; border: 1px solid #f0f0f0; border-radius: 16px; padding: 14px 18px; background: white; }
+    .info-badge label { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: #9ca3af; }
+    .info-badge p { font-size: 13px; font-weight: 800; color: #0a0f0d; margin-top: 4px; }
+    
+    /* Brand Message Box */
+    .brand-notice-box { border-left: 3px solid #c9a84c; background: #fafafa; border-radius: 0 16px 16px 0; padding: 18px 20px; font-size: 12px; font-weight: 500; color: #4b5563; line-height: 1.65; margin-bottom: 8px; }
+    
+    /* Premium Minimalist Footer */
+    .footer-section { background: #0a0f0d; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo-text { font-size: 11px; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 0.2em; }
+    .footer-logo-text span { color: #c9a84c; }
+    .footer-contact-data { font-size: 11px; font-weight: 600; color: #9ca3af; text-align: right; line-height: 1.6; }
+    
+    /* Top Menu Bar Styles */
+    .action-bar { text-align: center; margin-bottom: 24px; }
+    .print-trigger-btn { background: #0a0f0d; color: white; border: none; padding: 14px 36px; border-radius: 12px; font-size: 12px; font-weight: 900; cursor: pointer; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.2s; box-shadow: 0 4px 12px rgba(10,15,13,0.15); }
+    .print-trigger-btn:hover { background: #1a2320; transform: translateY(-1px); }
+    
     @media print {
       body { background: white; padding: 0; }
-      .page { box-shadow: none; border-radius: 0; }
-      .no-print { display: none; }
+      .page { box-shadow: none; border: none; border-radius: 0; }
+      .action-bar { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="no-print" style="text-align:center;margin-bottom:20px;">
-    <button onclick="window.print()" style="background:#2c1a11;color:white;border:none;padding:12px 32px;border-radius:50px;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:0.1em;text-transform:uppercase;">
-      🖨️ Print / Save as PDF
+
+  <div class="action-bar">
+    <button onclick="window.print()" class="print-trigger-btn">
+      Print / Save as PDF
     </button>
   </div>
+
   <div class="page">
     <div class="header">
-      <div class="header-top">
-        <div class="brand">
+      <div class="brand-identity">
+        <!-- Rendered with circular logo profile image fallback asset -->
+        <img src="/logo.jpeg" alt="CrabVeda Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <div>
           <div class="brand-name">CrabVeda</div>
-          <div class="brand-sub">Ayurvedic Crab Oil & Joint Care</div>
-        </div>
-        <div class="invoice-label">
-          <h2>Invoice</h2>
-          <p>#${ordNum}</p>
+          <div class="brand-sub">Ayurvedic Care & Vitality</div>
         </div>
       </div>
+      <div class="invoice-title-box">
+        <h2>Invoice</h2>
+        <p>#${ordNum}</p>
+      </div>
     </div>
-    <div class="meta">
-      <div class="meta-box"><label>Invoice Date</label><p>${date}</p></div>
-      <div class="meta-box"><label>Order ID</label><p>#${ordNum}</p></div>
-      <div class="meta-box" style="text-align:right"><label>Status</label><p style="color:#15803d">${order.order_status?.toUpperCase() || 'CONFIRMED'}</p></div>
+    
+    <div class="meta-bar">
+      <div class="meta-box"><label>Date Issued</label><p>${date}</p></div>
+      <div class="meta-box"><label>Reference ID</label><p>#${ordNum}</p></div>
+      <div class="meta-box" style="text-align:right">
+        <label>Order Status</label>
+        <p style="color:#16a34a">${order.order_status?.toUpperCase() || 'CONFIRMED'}</p>
+      </div>
     </div>
-    <div class="body">
-      <p class="section-label">Billed To</p>
-      <div class="address-box">
-        <div class="name">${order.customer_name}</div>
-        <div class="details">
+    
+    <div class="body-content">
+      <p class="section-heading">Billed To</p>
+      <div class="address-details-card">
+        <div class="customer-name">${order.customer_name}</div>
+        <div class="address-text">
           ${order.address}, ${order.city}, ${order.state} — ${order.pincode}<br>
-          📞 ${order.phone}
-          ${order.email ? `<br>✉️ ${order.email}` : ''}
+          <strong>Phone:</strong> ${order.phone}
+          ${order.email ? `<br><strong>Email:</strong> ${order.email}` : ''}
         </div>
       </div>
-      <p class="section-label">Items</p>
-      <table class="items">
+      
+      <p class="section-heading">Order Contents</p>
+      <table class="items-table">
         <thead>
           <tr>
-            <th>Product</th>
+            <th>Product Description</th>
             <th style="text-align:center">Qty</th>
-            <th style="text-align:right">Unit Price</th>
-            <th style="text-align:right">Total</th>
+            <th style="text-align:right">Unit Rate</th>
+            <th style="text-align:right">Amount</th>
           </tr>
         </thead>
         <tbody>
           ${items.map(item => `
             <tr>
               <td>${item.product_name}</td>
-              <td style="text-align:center">${item.quantity}</td>
-              <td style="text-align:right;color:rgba(44,26,17,0.6)">₹${Number(item.unit_price).toFixed(0)}</td>
-              <td>₹${Number(item.total_price).toFixed(0)}</td>
+              <td class="qty-col">${item.quantity}</td>
+              <td class="price-col">₹${Number(item.unit_price).toFixed(0)}</td>
+              <td class="total-col">₹${Number(item.total_price).toFixed(0)}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
-      <div class="totals">
-        <div class="total-row"><span>Subtotal</span><span>₹${subtotal.toFixed(0)}</span></div>
-        <div class="total-row"><span>Shipping</span><span style="color:#15803d;font-weight:700;">FREE</span></div>
-        <div class="total-row grand"><span>Total</span><span>₹${total.toFixed(0)}</span></div>
+      
+      <div class="invoice-breakdown">
+        <div class="totals-wrapper">
+          <div class="breakdown-row">
+            <span>Subtotal</span>
+            <span>₹${subtotal.toFixed(0)}</span>
+          </div>
+          <div class="breakdown-row">
+            <span>Shipping & Handling</span>
+            <span style="color:#16a34a; font-weight:800;">FREE</span>
+          </div>
+          <div class="breakdown-row grand-total">
+            <span>Total Amount</span>
+            <span>₹${total.toFixed(0)}</span>
+          </div>
+        </div>
       </div>
-      <div class="payment-row">
-        <div class="pill"><label>Payment Method</label><p>${order.payment_method === 'cod' ? 'Cash on Delivery' : 'Paid Online'}</p></div>
-        <div class="pill"><label>Payment Status</label><p style="color:${order.payment_status === 'paid' ? '#15803d' : '#d97706'}">${(order.payment_status || 'pending').toUpperCase()}</p></div>
+      
+      <div class="status-container">
+        <div class="info-badge">
+          <label>Payment Method</label>
+          <p>${order.payment_method === 'cod' ? 'Cash on Delivery' : 'Online Payment'}</p>
+        </div>
+        <div class="info-badge">
+          <label>Payment Status</label>
+          <p style="color:${order.payment_status === 'paid' ? '#16a34a' : '#d97706'}">
+            ${(order.payment_status || 'pending').toUpperCase()}
+          </p>
+        </div>
       </div>
-      <div class="note">
-        🦀 <strong>Thank you for choosing CrabVeda!</strong> Our Ayurvedic Crab Oil is formulated to support joint flexibility and muscle health. For optimum results, apply on the affected area and massage gently for 10-15 minutes twice daily. For external use only. For support or queries, contact us via WhatsApp at <strong>+91 99212 97518</strong> or email <strong>crabveda@gmail.com</strong>.
+      
+      <div class="brand-notice-box">
+        <strong>Thank you for choosing CrabVeda.</strong> Our authentic Ayurvedic formulations are crafted using premium natural herbs to optimize body health. For targeted joint relief, massage softly over the affected region twice daily. For priority support, reach out directly on WhatsApp at <strong>+91 99212 97518</strong> or email us at <strong>crabveda@gmail.com</strong>.
       </div>
     </div>
-    <div class="footer">
-      <div class="footer-brand">✦ CrabVeda Ayurveda</div>
-      <div class="footer-info">crabveda.com<br>crabveda@gmail.com · +91 99212 97518</div>
+    
+    <div class="footer-section">
+      <div class="footer-logo-text">✦ CrabVeda <span>Ayurveda</span></div>
+      <div class="footer-contact-data">
+        crabveda.com<br>
+        +91 99212 97518 · crabveda@gmail.com
+      </div>
     </div>
   </div>
 </body>
