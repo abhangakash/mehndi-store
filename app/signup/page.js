@@ -15,8 +15,6 @@ import toast from 'react-hot-toast'
  * <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
  */
 
-const FIELD_COUNT = 4
-
 export default function SignupPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -37,8 +35,6 @@ export default function SignupPage() {
     if (touched.password && password && password.length < 6) e.password = 'At least 6 characters'
     return e
   }, [touched, name, email, phone, password])
-
-  const filledCount = [name.trim().length > 1, /^\S+@\S+\.\S+$/.test(email), phone.length === 10, password.length >= 6].filter(Boolean).length
 
   const passwordStrength = useMemo(() => {
     if (!password) return 0
@@ -85,8 +81,23 @@ export default function SignupPage() {
     setLoading(false)
   }
 
+  const handleGoogleLogin = async () => {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+
+    if (error) {
+      toast.error(error.message)
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className="min-h-[100dvh] w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased flex flex-col justify-between pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+    <div className="min-h-[100dvh] w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased flex flex-col justify-between pb-[max(1rem,env(safe-area-inset-bottom))]">
       <style>{`
         .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
 
@@ -128,7 +139,7 @@ export default function SignupPage() {
           border: none;
           outline: none;
           background: transparent;
-          padding: 0.75rem 0.85rem 0.75rem 0;
+          padding: 0.65rem 0.85rem 0.65rem 0;
           font-size: 16px; /* 16px prevents forced iOS auto-zoom on mobile */
           color: #0f1a14;
         }
@@ -145,41 +156,28 @@ export default function SignupPage() {
         }
       `}</style>
 
-      {/* Segmented progress */}
-      <div className="w-full px-5 pt-[max(1.25rem,env(safe-area-inset-top))]">
-        <div className="max-w-sm mx-auto flex gap-1.5">
-          {Array.from({ length: FIELD_COUNT }).map((_, i) => (
-            <div key={i} className="h-1 flex-1 rounded-full bg-[#e7e1d4] overflow-hidden">
-              <div
-                className="h-full bg-[#c9a84c] transition-all duration-500 ease-out rounded-full"
-                style={{ width: i < filledCount ? '100%' : '0%' }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex-1 flex flex-col justify-center px-5 py-6">
+      {/* Main Container */}
+      <div className="flex-1 flex flex-col justify-center px-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-4">
         <div className="w-full max-w-sm mx-auto">
 
           {/* Header */}
-          <div className="mb-5">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-1">
+          <div className="mb-4">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-0.5">
               Get started
             </p>
             <h1 className="font-display text-xl sm:text-2xl leading-snug font-medium tracking-tight text-[#0f1a14]">
               Create your account
             </h1>
-            <p className="text-xs sm:text-sm text-stone-500 mt-1 leading-relaxed">
+            <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">
               Save your address, track orders, and check out faster next time.
             </p>
           </div>
 
-          <form id="signup-form" onSubmit={handleSignup} noValidate className="space-y-3">
+          <form id="signup-form" onSubmit={handleSignup} noValidate className="space-y-2.5">
 
             {/* Full Name */}
             <div>
-              <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-0.5 pl-0.5">
                 Full Name
               </label>
               <div className="field-group" data-invalid={!!errors.name}>
@@ -201,7 +199,7 @@ export default function SignupPage() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-0.5 pl-0.5">
                 Email Address
               </label>
               <div className="field-group" data-invalid={!!errors.email}>
@@ -224,7 +222,7 @@ export default function SignupPage() {
 
             {/* Mobile Number */}
             <div>
-              <label htmlFor="phone" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="phone" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-0.5 pl-0.5">
                 Mobile Number
               </label>
               <div className="field-group" data-invalid={!!errors.phone}>
@@ -251,7 +249,7 @@ export default function SignupPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
+              <label htmlFor="password" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-0.5 pl-0.5">
                 Password
               </label>
               <div className="field-group" data-invalid={!!errors.password}>
@@ -279,7 +277,7 @@ export default function SignupPage() {
 
               {/* Strength meter */}
               {password.length > 0 && (
-                <div className="flex items-center gap-2 mt-2 pl-0.5">
+                <div className="flex items-center gap-2 mt-1.5 pl-0.5">
                   <div className="flex gap-1 flex-1">
                     {[0, 1, 2].map((i) => (
                       <div key={i} className="h-1 flex-1 rounded-full bg-stone-200 overflow-hidden">
@@ -303,8 +301,8 @@ export default function SignupPage() {
               {errors.password && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.password}</p>}
             </div>
 
-            {/* Unified Submit Button (Below Form Fields / Above Log In Link) */}
-            <div className="pt-1">
+            {/* Core Submit Action Button */}
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}
@@ -314,11 +312,34 @@ export default function SignupPage() {
                 {!loading && <ArrowRight size={14} />}
               </button>
             </div>
+
+            {/* Section Divider */}
+            <div className="flex items-center gap-3 py-0.5">
+              <div className="flex-1 h-px bg-stone-200" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">or</span>
+              <div className="flex-1 h-px bg-stone-200" />
+            </div>
+
+            {/* Google OAuth Button with Clean Flat SVG Pathing */}
+            <button
+              type="button"
+              disabled={loading}
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-3 py-3 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 transition-all font-bold text-xs uppercase tracking-wider text-stone-600 active:scale-[0.99] disabled:opacity-50"
+            >
+              <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                <path fill="#4285F4" d="M46.5 24c0-1.61-.15-3.16-.42-4.69H24v8.87h12.62c-.54 2.9-2.18 5.37-4.63 7.01l7.19 5.57c4.21-3.88 6.64-9.59 6.64-16.17z" />
+                <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z" />
+                <path fill="#34A853" d="M24 38.5c-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48c6.48 0 11.93-2.13 15.89-5.81l-7.19-5.57c-2.11 1.42-4.81 2.38-7.7 2.38z" />
+              </svg>
+              Continue with Google
+            </button>
           </form>
 
-          {/* Login Link Alignment */}
-          <div className="mt-4 text-center">
-            <p className="text-xs sm:text-sm text-stone-500">
+          {/* Login Navigation */}
+          <div className="mt-3 text-center">
+            <p className="text-xs text-stone-500">
               Already have an account?{' '}
               <Link href="/login" className="text-[#0f1a14] font-bold underline underline-offset-4 ml-1">
                 Log In
@@ -328,8 +349,8 @@ export default function SignupPage() {
         </div>
       </div>
 
-      {/* Footer Branding View */}
-      <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-4">
+      {/* Footer view */}
+      <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-2">
         <ShieldCheck size={12} className="text-[#c9a84c]" />
         <span>Secure Sign Up</span>
       </div>
