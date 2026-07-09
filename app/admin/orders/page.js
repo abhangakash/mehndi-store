@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import {
   Clock, CheckCircle, Truck, XCircle, Package,
   Search, ChevronDown, Phone, Mail, MapPin,
-  RefreshCw, Send, Download, X
+  RefreshCw, Send, Download, X, ExternalLink, AlertTriangle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -17,13 +17,36 @@ const STATUS_CONFIG = {
   cancelled: { label: 'Cancelled', color: '#b91c1c', bg: '#fee2e2', icon: XCircle },
 }
 
-function OrderRow({ order, onStatusChange, onSendEmail }) {
+function ShiprocketBadge({ order, onPush, pushing }) {
+  const hasShipment = !!order.shiprocket_order_id
+
+  if (hasShipment) {
+    return (
+      <span className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-teal-200 bg-teal-50 text-teal-700">
+        <Truck size={11} /> Shiprocket #{order.shiprocket_order_id}
+        {order.shiprocket_status && (
+          <span className="opacity-60 font-medium normal-case">· {order.shiprocket_status}</span>
+        )}
+      </span>
+    )
+  }
+
+  return (
+    <button onClick={() => onPush(order)} disabled={pushing}
+      className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-amber-200 text-amber-700 hover:bg-amber-50 transition-colors disabled:opacity-50">
+      <AlertTriangle size={11} /> {pushing ? 'Pushing...' : 'Not on Shiprocket — Push'}
+    </button>
+  )
+}
+
+function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, pushingId }) {
   const [expanded, setExpanded] = useState(false)
   const [updating, setUpdating] = useState(false)
   const [currentStatus, setCurrentStatus] = useState(order.order_status || 'pending')
 
   const status = STATUS_CONFIG[currentStatus] || STATUS_CONFIG.pending
   const StatusIcon = status.icon
+  const isPushing = pushingId === order.id
 
   const handleStatusChange = async (newStatus) => {
     if (newStatus === currentStatus) return
@@ -120,6 +143,8 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
               <Download size={11} /> Invoice
             </a>
 
+            <ShiprocketBadge order={order} onPush={onPushShiprocket} pushing={isPushing} />
+
             <button onClick={() => setExpanded(!expanded)}
               className="flex items-center gap-1 text-xs font-bold ml-auto text-emerald-700 hover:text-emerald-800 transition-colors">
               {expanded ? 'Hide' : 'Details'}
@@ -154,8 +179,31 @@ function OrderRow({ order, onStatusChange, onSendEmail }) {
                 📞 {order.phone}
                 {order.email && <><br />✉️ {order.email}</>}
               </p>
-              
             </div>
+          </div>
+
+          {/* Shiprocket details block */}
+          <div className="mt-4 pt-4 border-t border-slate-200">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Shiprocket</p>
+            {order.shiprocket_order_id ? (
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-slate-600">
+                <span>Order ID: <span className="font-mono font-semibold text-slate-800">{order.shiprocket_order_id}</span></span>
+                {order.shiprocket_shipment_id && (
+                  <span>Shipment ID: <span className="font-mono font-semibold text-slate-800">{order.shiprocket_shipment_id}</span></span>
+                )}
+                {order.shiprocket_status && (
+                  <span>Status: <span className="font-semibold text-slate-800">{order.shiprocket_status}</span></span>
+                )}
+                <a href="https://app.shiprocket.in/seller/orders/new" target="_blank" rel="noreferrer"
+                  className="flex items-center gap-1 font-bold text-teal-700 hover:text-teal-800">
+                  Open in Shiprocket <ExternalLink size={11} />
+                </a>
+              </div>
+            ) : (
+              <p className="text-xs text-amber-700 font-medium">
+                Not yet pushed to Shiprocket. Use the button above to push manually.
+              </p>
+            )}
           </div>
         </div>
       )}
@@ -168,6 +216,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [pushingId, setPushingId] = useState(null)
 
   const fetchOrders = useCallback(async () => {
     setLoading(true)
@@ -217,6 +266,27 @@ export default function AdminOrdersPage() {
       else if (error) toast.error('Email failed: ' + error)
       else toast.success('Email sent!')
     } catch { toast.error('Email failed') }
+  }
+
+  const handlePushShiprocket = async (order) => {
+    setPushingId(order.id)
+    try {
+      const res = await fetch('/api/notify-shiprocket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order, items: order.order_items || [] }),
+      })
+      const data = await res.json()
+      if (!res.ok || data.error) {
+        toast.error('Shiprocket push failed: ' + (data.error || 'Unknown error'))
+      } else {
+        toast.success('Pushed to Shiprocket!')
+        fetchOrders()
+      }
+    } catch (err) {
+      toast.error('Shiprocket push failed — ' + err.message)
+    }
+    setPushingId(null)
   }
 
   const filtered = orders.filter(o => {
@@ -306,7 +376,9 @@ export default function AdminOrdersPage() {
           {filtered.map(order => (
             <OrderRow key={order.id} order={order}
               onStatusChange={handleStatusChange}
-              onSendEmail={handleSendEmail} />
+              onSendEmail={handleSendEmail}
+              onPushShiprocket={handlePushShiprocket}
+              pushingId={pushingId} />
           ))}
         </div>
       )}

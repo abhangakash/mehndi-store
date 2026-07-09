@@ -45,6 +45,20 @@ async function notifyAdminWhatsApp(order, items, baseUrl) {
   }
 }
 
+async function pushToShiprocket(order, items, baseUrl) {
+  try {
+    const res = await fetch(`${baseUrl}/api/notify-shiprocket`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order, items }),
+    })
+    const data = await res.json()
+    if (!res.ok) console.error('Shiprocket push failed (non-critical):', data.error)
+  } catch (err) {
+    console.error('Shiprocket push failed (non-critical):', err.message)
+  }
+}
+
 export async function POST(req) {
   try {
     const body = await req.json()
@@ -165,6 +179,9 @@ export async function POST(req) {
 
     // ── Notify admin on WhatsApp ───────────────────────────────────
     await notifyAdminWhatsApp(order, items, baseUrl)
+
+    // ── Auto-push order to Shiprocket ───────────────────────────────
+    await pushToShiprocket(order, items, baseUrl)
 
     return NextResponse.json({ orderId: order.id })
   } catch (err) {
