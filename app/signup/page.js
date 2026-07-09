@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, ShieldCheck } from 'lucide-react'
-import { Turnstile } from '@marsidev/react-turnstile'
 import toast from 'react-hot-toast'
 
 /**
@@ -21,7 +20,6 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [touched, setTouched] = useState({})
-  const [captchaToken, setCaptchaToken] = useState(null)
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -67,45 +65,20 @@ export default function SignupPage() {
       return toast.error('Password must be at least 6 characters.')
     }
 
-    // Defensive human verification check
-    if (!captchaToken) {
-      return toast.error('Please verify you are human')
-    }
-
     setLoading(true)
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name.trim(), phone } },
+    })
 
-    try {
-      // Step 6 server verification execution layer
-      const verifyRes = await fetch('/api/verify-captcha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: captchaToken }),
-      })
-      const verifyData = await verifyRes.json()
-
-      if (!verifyData.success) {
-        setLoading(false)
-        return toast.error('Security token verification failed. Please try again.')
-      }
-
-      // Final secure sign-up handshake
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { full_name: name.trim(), phone } },
-      })
-
-      if (error) {
-        toast.error(error.message)
-      } else {
-        toast.success('Account created! Please check your email.')
-        router.push('/login')
-      }
-    } catch (err) {
-      toast.error('A security infrastructure error occurred.')
-    } finally {
-      setLoading(false)
+    if (error) {
+      toast.error(error.message)
+    } else {
+      toast.success('Account created! Please check your email.')
+      router.push('/login')
     }
+    setLoading(false)
   }
 
   const handleGoogleLogin = async () => {
@@ -328,21 +301,8 @@ export default function SignupPage() {
               {errors.password && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.password}</p>}
             </div>
 
-            {/* Cloudflare Turnstile Integration Block */}
-            <div className="pt-1 flex justify-center">
-              <Turnstile
-                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-                onSuccess={(token) => setCaptchaToken(token)}
-                onExpire={() => setCaptchaToken(null)}
-                options={{
-                  theme: 'light',
-                  size: 'normal',
-                }}
-              />
-            </div>
-
             {/* Core Submit Action Button */}
-            <div className="pt-1">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}

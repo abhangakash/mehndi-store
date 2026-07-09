@@ -61,14 +61,8 @@ export default function LoginPage() {
     if (!/^\S+@\S+\.\S+$/.test(email)) return toast.error('Please enter a valid email address')
 
     setLoading(true)
-    
-    // Execute server verification before auth layer
-    const isHuman = await verifyCaptchaToken()
-    if (!isHuman) {
-      setLoading(false)
-      return
-    }
 
+    // Captcha bypass on regular login execution flow
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       toast.error(error.message)
@@ -258,18 +252,20 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Cloudflare Turnstile Integration Block */}
-          <div className="pt-1 flex justify-center">
-            <Turnstile
-              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-              onSuccess={(token) => setCaptchaToken(token)}
-              onExpire={() => setCaptchaToken(null)}
-              options={{
-                theme: 'light',
-                size: 'normal',
-              }}
-            />
-          </div>
+          {/* Render Cloudflare Turnstile Integration Block ONLY for forgot password mode */}
+          {forgotMode && (
+            <div className="pt-1 flex justify-center">
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                onSuccess={(token) => setCaptchaToken(token)}
+                onExpire={() => setCaptchaToken(null)}
+                options={{
+                  theme: 'light',
+                  size: 'normal',
+                }}
+              />
+            </div>
+          )}
 
           <div className="pt-1">
             <button
