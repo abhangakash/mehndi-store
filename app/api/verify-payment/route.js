@@ -33,6 +33,18 @@ async function sendConfirmationEmail(orderId, baseUrl) {
   }
 }
 
+async function notifyAdminWhatsApp(order, items, baseUrl) {
+  try {
+    await fetch(`${baseUrl}/api/notify-admin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order, items }),
+    })
+  } catch (err) {
+    console.error('Admin WhatsApp notify failed (non-critical):', err.message)
+  }
+}
+
 export async function POST(req) {
   try {
     const body = await req.json()
@@ -147,9 +159,12 @@ export async function POST(req) {
       console.error('Order items insert error (non-critical):', itemsInsertError)
     }
 
-    // ── Send confirmation email (non-blocking) ───────────────────
+    // ── Send confirmation email ────────────────────────────────────
     const baseUrl = req.headers.get('origin') || `https://${req.headers.get('host')}`
-    await sendConfirmationEmail(order.id, baseUrl) 
+    await sendConfirmationEmail(order.id, baseUrl)
+
+    // ── Notify admin on WhatsApp ───────────────────────────────────
+    await notifyAdminWhatsApp(order, items, baseUrl)
 
     return NextResponse.json({ orderId: order.id })
   } catch (err) {

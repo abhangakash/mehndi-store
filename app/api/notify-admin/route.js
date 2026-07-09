@@ -14,19 +14,15 @@ export async function POST(req) {
     }
 
     const ordNum = order.id.slice(0, 8).toUpperCase()
-    const itemList = (items || []).map(i => `${i.product_name} x${i.quantity}`).join(', ')
+    const itemList = (items || []).map(i => `${i.product_name || i.name} x${i.quantity}`).join(', ')
 
-    const message = `🛒 NEW ORDER #${ordNum}
-
+    const message = `🦀 NEW ORDER #${ordNum}
 👤 ${order.customer_name}
 📞 ${order.phone}
 💰 ₹${Number(order.total_amount).toFixed(0)} (${order.payment_method === 'cod' ? 'COD' : 'PAID ONLINE'})
-
 📦 ${itemList}
-
-📍 ${order.city}, ${order.state}
-
-👉 mehndi.zevette.com/admin/orders`
+🏠 ${order.address}, ${order.city}, ${order.state} - ${order.pincode}
+👉 crabveda.com/admin/orders`
 
     const url = `https://api.callmebot.com/whatsapp.php?phone=${adminPhone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`
     const res = await fetch(url)
