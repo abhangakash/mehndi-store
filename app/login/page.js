@@ -5,15 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Package, ShieldCheck, Truck, Shield, Award } from 'lucide-react'
+import { Turnstile } from '@marsidev/react-turnstile'
 import toast from 'react-hot-toast'
-
-/**
- * Fonts: pair a characterful serif for the display headline with a clean
- * grotesk for body/UI. Add this to your root layout (or _document) once:
- *
- * <link rel="preconnect" href="https://fonts.googleapis.com" />
- * <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
- */
 
 export default function LoginPage() {
   const router = useRouter()
@@ -23,6 +16,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [forgotMode, setForgotMode] = useState(false)
   const [touched, setTouched] = useState({})
+  
+  // Captcha State Hook
+  const [captchaToken, setCaptchaToken] = useState(null)
 
   const markTouched = (field) => setTouched((t) => ({ ...t, [field]: true }))
 
@@ -33,6 +29,31 @@ export default function LoginPage() {
     return e
   }, [touched, email, password, forgotMode])
 
+  // Shared validation helper for backend CAPTCHA check
+  const verifyCaptchaToken = async () => {
+    if (!captchaToken) {
+      toast.error('Please verify you are human')
+      return false
+    }
+    
+    try {
+      const verifyRes = await fetch('/api/verify-captcha', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: captchaToken }),
+      })
+      const verifyData = await verifyRes.json()
+      if (!verifyData.success) {
+        toast.error('Security verification failed. Please refresh and try again.')
+        return false
+      }
+      return true
+    } catch {
+      toast.error('Security infrastructure connection error.')
+      return false
+    }
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault()
     setTouched({ email: true, password: true })
@@ -40,6 +61,14 @@ export default function LoginPage() {
     if (!/^\S+@\S+\.\S+$/.test(email)) return toast.error('Please enter a valid email address')
 
     setLoading(true)
+    
+    // Execute server verification before auth layer
+    const isHuman = await verifyCaptchaToken()
+    if (!isHuman) {
+      setLoading(false)
+      return
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       toast.error(error.message)
@@ -57,6 +86,14 @@ export default function LoginPage() {
     if (!/^\S+@\S+\.\S+$/.test(email)) return toast.error('Please enter a valid email address')
 
     setLoading(true)
+
+    // Defend password reset route against continuous mass-spam bots
+    const isHuman = await verifyCaptchaToken()
+    if (!isHuman) {
+      setLoading(false)
+      return
+    }
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     })
@@ -76,7 +113,6 @@ export default function LoginPage() {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     })
-
     if (error) {
       toast.error(error.message)
       setLoading(false)
@@ -84,12 +120,9 @@ export default function LoginPage() {
   }
 
   return (
-    /* Force layout to take full viewport dynamic height and blend background perfectly */
     <div className="min-h-[100dvh] w-full bg-[#FAF8F5] text-[#0f1a14] font-sans antialiased flex flex-col justify-between pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <style>{`
         .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
-
-        /* Icon + input as flex siblings — separate boxes that cannot overlap */
         .field-group {
           display: flex;
           align-items: stretch;
@@ -120,7 +153,7 @@ export default function LoginPage() {
           outline: none;
           background: transparent;
           padding: 0 0.85rem 0 0;
-          font-size: 16px; /* Retained intentionally to safeguard iOS zoom states */
+          font-size: 16px;
           color: #0f1a14;
         }
         .field-toggle {
@@ -135,14 +168,7 @@ export default function LoginPage() {
         }
       `}</style>
 
-      {/* Main Content Area */}
-      <div 
-        className="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto px-5"
-        style={{
-          paddingTop: 'max(2.5rem, env(safe-area-inset-top))',
-        }}
-      >
-        {/* Header Block with balanced typography scales */}
+      <div className="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto px-5 pt-[max(2.5rem,env(safe-area-inset-top))]">
         <div className="mb-5">
           <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-1">
             Welcome back
@@ -157,10 +183,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Action Form */}
         <form id="login-form" onSubmit={forgotMode ? handleForgotPassword : handleLogin} noValidate className="space-y-3">
-
-          {/* Email */}
           <div>
             <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1 pl-0.5">
               Email Address
@@ -183,7 +206,6 @@ export default function LoginPage() {
             {errors.email && <p className="text-[11px] text-red-500 mt-1 pl-0.5">{errors.email}</p>}
           </div>
 
-          {/* Password */}
           {!forgotMode && (
             <div>
               <div className="flex items-center justify-between mb-1 pl-0.5">
@@ -224,7 +246,6 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Back Action Hook when Reset Workflow is Enabled */}
           {forgotMode && (
             <div>
               <button
@@ -237,7 +258,19 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Core Action Submit Trigger Box */}
+          {/* Cloudflare Turnstile Integration Block */}
+          <div className="pt-1 flex justify-center">
+            <Turnstile
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+              onSuccess={(token) => setCaptchaToken(token)}
+              onExpire={() => setCaptchaToken(null)}
+              options={{
+                theme: 'light',
+                size: 'normal',
+              }}
+            />
+          </div>
+
           <div className="pt-1">
             <button
               type="submit"
@@ -250,17 +283,14 @@ export default function LoginPage() {
           </div>
         </form>
 
-        {/* Secondary Navigation Flows */}
         {!forgotMode && (
           <div className="space-y-3 mt-3">
-
             <div className="flex items-center gap-3 py-0.5">
               <div className="flex-1 h-px bg-stone-200" />
               <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">or</span>
               <div className="flex-1 h-px bg-stone-200" />
             </div>
 
-            {/* Google OAuth Button with Clean Flat SVG Pathing */}
             <button
               type="button"
               disabled={loading}
@@ -276,7 +306,6 @@ export default function LoginPage() {
               Continue with Google
             </button>
 
-            {/* Quick Link Order Tracking Integration Field */}
             <Link
               href="/track-order"
               className="flex items-center justify-between w-full px-4 py-3 bg-white border border-stone-200 rounded-lg text-[11px] font-bold uppercase tracking-wider text-stone-600 hover:border-stone-300 transition-all active:scale-[0.99]"
@@ -288,7 +317,6 @@ export default function LoginPage() {
               <ArrowRight size={12} className="text-stone-400" />
             </Link>
 
-            {/* Registration Workflow Redirect */}
             <p className="text-center text-xs sm:text-sm text-stone-500 pt-1">
               New to Crabveda?{' '}
               <Link
@@ -301,7 +329,6 @@ export default function LoginPage() {
           </div>
         )}
 
-        {/* Brand Perks Feature Grid — Active on BOTH Mobile and PC with optimized sizes */}
         {!forgotMode && (
           <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-stone-200/60">
             <div className="text-center">
@@ -320,7 +347,6 @@ export default function LoginPage() {
         )}
       </div>
 
-      {/* Trust & Verification Footer — Always dynamically anchored at the extreme bottom */}
       <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-8">
         <ShieldCheck size={12} className="text-[#c9a84c]" />
         <span>Secure Sign In</span>
