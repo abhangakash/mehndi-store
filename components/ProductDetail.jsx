@@ -95,12 +95,14 @@ export default function ProductDetail({ product, reviews, related }) {
   }
 
   const paymentMethods = [
-    { name: 'UPI', icon: <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10l3 4.5L11.5 8M13 14h7M15 10h4" stroke="#c9a84c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-    { name: 'Google Pay', icon: <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 12a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z" stroke="#9ca3af" strokeWidth="2"/><path d="M12 9.5v5M9.5 12h5" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round"/></svg> },
-    { name: 'PhonePe', icon: <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="14" height="14" rx="3" stroke="#9ca3af" strokeWidth="2"/><path d="M10 9v6h3.5a1.5 1.5 0 000-3H10" stroke="#9ca3af" strokeWidth="2" strokeLinejoin="round"/></svg> },
-    { name: 'Cards', icon: <CreditCard size={14} className="text-gray-400 flex-shrink-0" /> },
-    { name: 'Net Banking', icon: <Landmark size={14} className="text-gray-400 flex-shrink-0" /> },
-    { name: 'Wallets', icon: <Wallet size={14} className="text-gray-400 flex-shrink-0" /> }
+    { name: 'UPI', icon: <img src="/upi.svg" alt="UPI" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'GPay', icon: <img src="/gpay.svg" alt="GPay" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'PhonePe', icon: <img src="/phonepe.svg" alt="PhonePe" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'Paytm', icon: <img src="/paytm.svg" alt="Paytm" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'Visa', icon: <img src="/visa.svg" alt="Visa" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'Mastercard', icon: <img src="/mastercard.svg" alt="Mastercard" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'Amazon Pay', icon: <img src="/amazon.svg" alt="Amazon Pay" className="w-5 h-5 object-contain flex-shrink-0" /> },
+    { name: 'RuPay', icon: <img src="/rupay.svg" alt="RuPay" className="w-5 h-5 object-contain flex-shrink-0" /> }
   ]
 
   return (
@@ -317,9 +319,7 @@ export default function ProductDetail({ product, reviews, related }) {
                   .filter(Boolean)
                   .map((step, i) => (
                     <div key={i} className="flex items-start gap-2.5">
-                      <span className="w-4 h-4 rounded-md flex items-center justify-center text-[9px] font-black flex-shrink-0 mt-0.5 text-white bg-[#0f1a0e]">
-                        {i + 1}
-                      </span>
+                     
                       <span className="leading-relaxed">{step.trim()}{step.trim().endsWith('.') ? '' : '.'}</span>
                     </div>
                   ))
@@ -359,7 +359,7 @@ export default function ProductDetail({ product, reviews, related }) {
               </div>
             </Accordion>
 
-            <Accordion title="Payment Options (Online Only)" icon={<Shield size={14} />}>
+            <Accordion title="Payment Options (Online Only)" icon={<Shield size={14} />} defaultOpen>
               <div className="grid grid-cols-2 gap-2 pt-1">
                 {paymentMethods.map(m => (
                   <div key={m.name} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest p-2 rounded-xl border border-gray-50 bg-gray-50/30">

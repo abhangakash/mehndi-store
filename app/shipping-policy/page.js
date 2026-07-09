@@ -28,7 +28,7 @@ export default function ShippingPolicyPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {[
           { icon: <Truck size={18} />, label: 'Free Shipping', sub: 'On all orders', color: '#15803d', bg: '#dcfce7' },
-          { icon: <Clock size={18} />, label: '3-7 Days', sub: 'Standard delivery', color: '#1d4ed8', bg: '#dbeafe' },
+          { icon: <Clock size={18} />, label: '4-7 Days', sub: 'Courier delivery', color: '#1d4ed8', bg: '#dbeafe' },
           { icon: <Package size={18} />, label: 'Online Payment', sub: 'Secure checkout only', color: '#d97706', bg: '#fef3c7' },
           { icon: <MapPin size={18} />, label: 'Pan India', sub: 'All states covered', color: '#7c3aed', bg: '#ede9fe' },
         ].map(b => (
@@ -45,24 +45,29 @@ export default function ShippingPolicyPage() {
 
       <div className="card p-6 md:p-8 flex flex-col gap-8">
         <PolicySection title="Shipping Charges">
-          <table>
-            <thead>
-              <tr>
-                <th>Order Value</th>
-                <th>Shipping Charge</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>All Orders</td><td>FREE</td></tr>
-            </tbody>
-          </table>
+          <div className="w-full overflow-hidden rounded-xl border border-gray-100 bg-gray-50/30 max-w-md mt-1">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50">
+                  <th className="py-3 px-4 text-xs font-semibold tracking-wider uppercase text-gray-500 w-1/2">Order Value</th>
+                  <th className="py-3 px-4 text-xs font-semibold tracking-wider uppercase text-gray-500 w-1/2">Shipping Charge</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="text-gray-700">
+                  <td className="py-3 px-4 text-sm border-b border-gray-100">All Orders Across India</td>
+                  <td className="py-3 px-4 text-sm font-bold border-b border-gray-100 text-emerald-600">FREE</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </PolicySection>
 
         <PolicySection title="Delivery Timeframes">
+          <p>We require 4 to 7 days for shipping depending on our courier partner.</p>
           <ul>
-            <li><strong>Maharashtra:</strong> 2-4 business days</li>
-            <li><strong>Rest of India:</strong> 3-7 business days</li>
-            <li><strong>Remote areas:</strong> 5-10 business days</li>
+            <li><strong>Maharashtra:</strong> 4-7 business days depending on courier partner</li>
+            <li><strong>Outside State:</strong> Additional days may be required depending on our courier partner</li>
           </ul>
           <p>Delivery times are estimates and may vary due to courier delays, public holidays or unforeseen circumstances.</p>
         </PolicySection>
@@ -87,15 +92,6 @@ export default function ShippingPolicyPage() {
           <p>Once your order is shipped, you will receive tracking information via WhatsApp or email. You can also track your order on our website at <Link href="/track-order" style={{ color: 'var(--brand-green)' }} className="underline">Track Order</Link> page using your phone number or email.</p>
         </PolicySection>
 
-        <PolicySection title="Damaged or Missing Items">
-          <ul>
-            <li>If you receive a damaged product, contact us within 48 hours with photos</li>
-            <li>We will arrange a replacement or full refund</li>
-            <li>Missing items must be reported within 24 hours of delivery</li>
-            <li>Contact us on WhatsApp +91 99212 97518 for fastest resolution</li>
-          </ul>
-        </PolicySection>
-
         <PolicySection title="Return Policy">
           <ul>
             <li>Returns accepted within 7 days of delivery for unused, sealed products</li>
@@ -111,7 +107,7 @@ export default function ShippingPolicyPage() {
           <div>
             <p className="text-sm font-semibold mb-1" style={{ color: 'var(--brand-text)' }}>Need help with your order?</p>
             <p className="text-sm" style={{ color: 'var(--brand-muted)' }}>
-              Contact us on <a href="https://wa.me/919921297518" className="underline" style={{ color: 'var(--brand-green)' }}>WhatsApp +91 99212 97518</a> or email <a href="mailto:crabveda@gmail.com" className="underline" style={{ color: 'var(--brand-green)' }}>crabveda@gmail.com</a>. We respond within 2 hours on business days.
+              Contact us on <a href="https://wa.me/919921297518" className="underline" style={{ color: 'var(--brand-green)' }}>WhatsApp +91 99212 97518</a> or email <a href="mailto:crabveda@gmail.com" className="underline" style={{ color: 'var(--brand-green)' }}>crabveda@gmail.com</a>. We respond within 24 hours on business days.
             </p>
           </div>
         </div>

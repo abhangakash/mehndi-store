@@ -175,7 +175,6 @@ export default async function HomePage() {
       </div>
 
       {/* ===== TEXT CONTENT & PRICE/BUY (SECOND ON MOBILE) ===== */}
-      {/* ===== TEXT CONTENT & PRICE/BUY (SECOND ON MOBILE) ===== */}
 <div className="lg:col-span-5 flex flex-col gap-6 md:gap-7 text-center lg:text-left order-2 lg:order-1">
 
   {/* Badge */}

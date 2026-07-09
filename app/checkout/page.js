@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Script from 'next/script' // Optimized Script Loading
 import Image from 'next/image'
-import {
+import { 
   MapPin, Phone, User, Mail,
   Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home,
 } from 'lucide-react'

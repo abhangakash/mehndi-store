@@ -8,7 +8,7 @@ import {
   Package, ChevronDown, Sparkles, MapPin, Search,
   Home, ShoppingBag, Truck, Phone
 } from 'lucide-react'
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cartStore' 
 import { useAuth } from '@/context/AuthContext'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
@@ -202,7 +202,7 @@ export default function Navbar() {
                 <div className="w-9 h-9 rounded-xl border border-gray-100 flex items-center justify-center text-gray-500">
                   <User size={16} />
                 </div>
-                <span className="text-xs font-black uppercase tracking-widest">Sign In / Register</span>
+                <span className="text-[#c9a84c] font-black uppercase tracking-widest">Sign In / Register</span>
               </Link>
             )}
 

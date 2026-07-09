@@ -4,9 +4,7 @@ import { Send, User, Mail, Phone, MessageSquare, CheckCircle } from 'lucide-reac
 import toast from 'react-hot-toast'
 
 const INQUIRY_TYPES = [
-  'Bridal Mehndi Booking',
-  'Bridal Makeup Booking',
-  'Mehndi + Makeup Combo',
+  'Crabveda oil Combo',
   'Product Order Query',
   'Bulk Order Inquiry',
   'Other',

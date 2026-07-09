@@ -57,7 +57,7 @@ export default function TermsPage() {
           <p>Crabveda Oil shall not be liable for any indirect, incidental or consequential damages arising from the use of our products. Our liability is strictly limited to the amount paid for the specific product purchased.</p>
         </PolicySection>
         <PolicySection title="7. Governing Law">
-          <p>These Terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Pune, Maharashtra.</p>
+          <p>These Terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Solapur, Maharashtra.</p>
         </PolicySection>
         <PolicySection title="8. Contact">
           <p>For questions about these Terms, contact us at crabveda@gmail.com or WhatsApp +91 99212 97518.</p>

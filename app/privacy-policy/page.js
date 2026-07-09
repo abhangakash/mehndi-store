@@ -96,7 +96,7 @@ export default function PrivacyPolicyPage() {
           <ul>
             <li>Email: crabveda@gmail.com</li>
             <li>WhatsApp: +91 99212 97518</li>
-            <li>Location: Pune, Maharashtra, India</li>
+            <li>Location: Solapur, Maharashtra, India</li>
           </ul>
         </PolicySection>
       </div>
