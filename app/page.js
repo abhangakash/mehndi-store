@@ -69,7 +69,7 @@ const TESTIMONIALS = [
 ]
 
 export const metadata = {
-  title: 'CrabVeda — Ayurvedic Crab Oil for Joint & Muscle Care',
+  title: 'CrabVeda',
   description: 'Premium Ayurvedic Crab Oil to relieve joint pain, stiffness, and inflammation. Natural healing for improved mobility and flexibility. Shop CrabVeda 200ml bottles online.',
   keywords: 'CrabVeda, crab oil, Ayurvedic oil, joint pain relief, muscle care, inflammation remedy, natural healing, stiffness relief, mobility',
 }
@@ -113,14 +113,14 @@ export default async function HomePage() {
   
             {/* MOBILE & TABLET IMAGE */}
            <img 
-  src="/img21.webp" 
-  alt="Therapeutic Oil Formulation"
-  className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
-/>
+              src="/img21.webp" 
+              alt="Therapeutic Oil Formulation"
+              className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
+            />
 
             {/* DESKTOP / PC IMAGE */}
             <img 
-              src="/img2.jpeg" 
+              src="/img2.webp" 
               alt="Therapeutic Oil Formulation Desktop"
               className="hidden lg:block w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
             />
@@ -157,7 +157,7 @@ export default async function HomePage() {
           {/* Side items (keeps padding alignment intact) */}
           <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4 mt-2 lg:mt-0">
             <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
-              <img src="/img8.png" alt="Herbal Ingredients" className="w-full h-full object-cover" />
+              <img src="/img8.webp" alt="Herbal Ingredients" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/5" />
             </div>
             
