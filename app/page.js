@@ -112,7 +112,7 @@ export default async function HomePage() {
 
             {/* DESKTOP / PC IMAGE */}
             <img 
-              src="/img2.webp" 
+              src="/img2.avif" 
               alt="Therapeutic Oil Formulation Desktop"
               className="hidden lg:block w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
             />
@@ -150,7 +150,7 @@ export default async function HomePage() {
           <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4 mt-2 lg:mt-0">
   <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
     <img 
-      src="/img8.webp" 
+      src="/img8.avif" 
       alt="Herbal Ingredients" 
       className="w-full h-full object-cover" 
       loading="lazy"
@@ -294,7 +294,7 @@ export default async function HomePage() {
         <div className="grid grid-cols-2 gap-3 md:gap-4 lg:hidden h-[240px] sm:h-[280px] md:h-[340px]">
           <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418]">
             <img 
-              src="/img13.webp" 
+              src="/img13.avif" 
               alt="Ayurvedic Extraction" 
               className="w-full h-full object-cover" 
               loading="lazy"
@@ -305,7 +305,7 @@ export default async function HomePage() {
           </div>
           <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418] mt-6 md:mt-10">
             <img 
-              src="/img16.webp" 
+              src="/img16.avif" 
               alt="Therapeutic Massage" 
               className="w-full h-full object-cover" 
               loading="lazy"
@@ -320,7 +320,7 @@ export default async function HomePage() {
         <div className="hidden lg:block relative h-[500px]">
           <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
             <img 
-              src="/img13.webp" 
+              src="/img8.avif" 
               alt="Ayurvedic Extraction" 
               className="w-full h-full object-cover" 
               loading="lazy"
@@ -331,7 +331,7 @@ export default async function HomePage() {
           </div>
           <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
             <img 
-              src="/img16.webp" 
+              src="/img16.avif" 
               alt="Therapeutic Massage" 
               className="w-full h-full object-cover" 
               loading="lazy"
