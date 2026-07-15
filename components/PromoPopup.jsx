@@ -93,7 +93,7 @@ export default function PromoPopup() {
           <div className="px-6 py-5 flex items-center justify-between"
             style={{ background: 'linear-gradient(135deg, #0f1a0e, #1a3020)' }}>
             <div className="flex items-center gap-2">
-              <Sparkles size={16} style={{ color: '#c9a84c' }} />
+              <Sparkles size={16} style={{ color: '#93731e' }} />
               <span className="text-xs font-black uppercase tracking-widest text-white">
                 {POPUP_CONTENT.badge}
               </span>
@@ -125,7 +125,7 @@ export default function PromoPopup() {
                 </p>
               </div>
               <div className="text-right flex-shrink-0">
-                <div className="text-2xl font-black leading-none" style={{ color: '#c9a84c' }}>
+                <div className="text-2xl font-black leading-none" style={{ color: '#93731e' }}>
                   {POPUP_CONTENT.highlight}
                 </div>
                 <div className="text-[10px] mt-0.5 font-bold uppercase" style={{ color: 'rgba(15,26,14,0.4)' }}>

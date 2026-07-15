@@ -41,11 +41,11 @@ export async function GET(req) {
     .brand-identity { display: flex; align-items: center; gap: 16px; }
     .brand-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 1px solid #f0f0f0; }
     .brand-name { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: #0a0f0d; }
-    .brand-sub { font-size: 10px; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase; color: #c9a84c; margin-top: 3px; }
+    .brand-sub { font-size: 10px; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase; color: #93731e; margin-top: 3px; }
     
     .invoice-title-box { text-align: right; }
     .invoice-title-box h2 { font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: #0a0f0d; }
-    .invoice-title-box p { font-size: 12px; font-weight: 700; color: #c9a84c; margin-top: 4px; letter-spacing: 0.05em; }
+    .invoice-title-box p { font-size: 12px; font-weight: 700; color: #93731e; margin-top: 4px; letter-spacing: 0.05em; }
     
     /* Meta Information Bar */
     .meta-bar { padding: 20px 40px; background: #fafafa; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; }
@@ -75,7 +75,7 @@ export async function GET(req) {
     .totals-wrapper { width: 100%; max-width: 320px; border: 1px solid #f0f0f0; border-radius: 16px; padding: 20px; background: #fafafa; }
     .breakdown-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #4b5563; margin-bottom: 10px; }
     .breakdown-row.grand-total { font-size: 16px; font-weight: 900; color: #0a0f0d; border-top: 1px solid #e5e7eb; margin-top: 12px; padding-top: 14px; text-transform: uppercase; letter-spacing: 0.02em; }
-    .breakdown-row.grand-total span:last-child { color: #c9a84c; font-size: 18px; }
+    .breakdown-row.grand-total span:last-child { color: #93731e; font-size: 18px; }
     
     /* Info Badges */
     .status-container { display: flex; gap: 12px; margin-bottom: 32px; }
@@ -84,12 +84,12 @@ export async function GET(req) {
     .info-badge p { font-size: 13px; font-weight: 800; color: #0a0f0d; margin-top: 4px; }
     
     /* Brand Message Box */
-    .brand-notice-box { border-left: 3px solid #c9a84c; background: #fafafa; border-radius: 0 16px 16px 0; padding: 18px 20px; font-size: 12px; font-weight: 500; color: #4b5563; line-height: 1.65; margin-bottom: 8px; }
+    .brand-notice-box { border-left: 3px solid #93731e; background: #fafafa; border-radius: 0 16px 16px 0; padding: 18px 20px; font-size: 12px; font-weight: 500; color: #4b5563; line-height: 1.65; margin-bottom: 8px; }
     
     /* Premium Minimalist Footer */
     .footer-section { background: #0a0f0d; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; }
     .footer-logo-text { font-size: 11px; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 0.2em; }
-    .footer-logo-text span { color: #c9a84c; }
+    .footer-logo-text span { color: #93731e; }
     .footer-contact-data { font-size: 11px; font-weight: 600; color: #9ca3af; text-align: right; line-height: 1.6; }
     
     /* Top Menu Bar Styles */

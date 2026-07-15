@@ -5,18 +5,18 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
       {/* Soft brand glow matching your other pages */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#93731e]/5 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-md w-full text-center relative z-10 py-12">
         
         {/* Minimalist Header Typography */}
         <div className="space-y-3 mb-8">
           <div className="flex items-center justify-center gap-2">
-            <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
-            <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">
+            <span className="h-[1.5px] w-6 bg-[#93731e]"></span>
+            <span className="text-[#93731e] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">
               Page Not Found
             </span>
-            <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
+            <span className="h-[1.5px] w-6 bg-[#93731e]"></span>
           </div>
           
           <h1 className="text-7xl md:text-8xl font-black text-[#0a0f0d] tracking-tighter leading-none">
@@ -60,10 +60,10 @@ export default function NotFound() {
               <Link 
                 key={l.href} 
                 href={l.href}
-                className="group flex items-center justify-between px-3 py-2.5 rounded-xl text-[11px] font-bold border border-gray-100 text-[#0a0f0d] hover:border-[#c9a84c] hover:bg-gray-50/50 transition-all"
+                className="group flex items-center justify-between px-3 py-2.5 rounded-xl text-[11px] font-bold border border-gray-100 text-[#0a0f0d] hover:border-[#93731e] hover:bg-gray-50/50 transition-all"
               >
                 {l.label} 
-                <ArrowRight size={12} className="text-gray-400 group-hover:text-[#c9a84c] transition-colors" />
+                <ArrowRight size={12} className="text-gray-400 group-hover:text-[#93731e] transition-colors" />
               </Link>
             ))}
           </div>
@@ -76,7 +76,7 @@ export default function NotFound() {
             href="https://wa.me/919921297518" 
             target="_blank" 
             rel="noreferrer"
-            className="font-black text-[#c9a84c] underline uppercase tracking-wider ml-1"
+            className="font-black text-[#93731e] underline uppercase tracking-wider ml-1"
           >
             Chat on WhatsApp
           </a>

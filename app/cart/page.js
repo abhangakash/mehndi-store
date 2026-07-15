@@ -31,7 +31,7 @@ export default function CartPage() {
       {/* Header */}
       <div className="px-4 pt-8 pb-4 text-center">
         <h1 className="text-2xl font-black uppercase tracking-tight text-black">Your Cart</h1>
-        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#c9a84c' }}>
+        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#93731e' }}>
           Review your items before secure checkout
         </p>
       </div>
@@ -53,7 +53,7 @@ export default function CartPage() {
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
               <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
-                <ShoppingBag size={14} style={{ color: '#c9a84c' }} />
+                <ShoppingBag size={14} style={{ color: '#93731e' }} />
                 <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                   Selected Products ({items.reduce((acc, i) => acc + i.quantity, 0)})
                 </p>
@@ -108,7 +108,7 @@ export default function CartPage() {
                         </div>
 
                         {/* Calculated Line Total */}
-                        <span className="font-black text-sm text-[#c9a84c]">
+                        <span className="font-black text-sm text-[#93731e]">
                           ₹{(item.price * item.quantity).toFixed(0)}
                         </span>
                       </div>
@@ -139,7 +139,7 @@ export default function CartPage() {
                   
                   <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-2">
                     <span className="font-black text-xs uppercase tracking-widest text-black">Total Amount</span>
-                    <span className="font-black text-lg text-[#c9a84c]">₹{grandTotal.toFixed(0)}</span>
+                    <span className="font-black text-lg text-[#93731e]">₹{grandTotal.toFixed(0)}</span>
                   </div>
                 </div>
 
@@ -160,7 +160,7 @@ export default function CartPage() {
                 </Link>
 
                 <div className="flex items-center justify-center gap-1.5 mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
-                  <Truck size={12} className="text-[#c9a84c]" /> Free delivery on all orders
+                  <Truck size={12} className="text-[#93731e]" /> Free delivery on all orders
                 </div>
               </div>
             </div>

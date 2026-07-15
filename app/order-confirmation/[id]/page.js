@@ -39,7 +39,7 @@ export default async function OrderConfirmationPage({ params }) {
           Thank you, {order.customer_name}!
         </p>
         <div className="inline-block mt-3 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest"
-          style={{ backgroundColor: 'rgba(201,168,76,0.1)', color: '#c9a84c', border: '1px solid rgba(201,168,76,0.2)' }}>
+          style={{ backgroundColor: 'rgba(201,168,76,0.1)', color: '#93731e', border: '1px solid rgba(201,168,76,0.2)' }}>
           Order #{order.id.slice(0, 8).toUpperCase()}
         </div>
       </div>
@@ -51,7 +51,7 @@ export default async function OrderConfirmationPage({ params }) {
         <div className="rounded-3xl overflow-hidden" style={{ backgroundColor: '#fcfaf6' }}>
           <div className="px-5 py-4 flex items-center gap-2"
             style={{ borderBottom: '1px solid rgba(15,26,14,0.06)', backgroundColor: '#fef9ee' }}>
-            <Package size={15} style={{ color: '#c9a84c' }} />
+            <Package size={15} style={{ color: '#93731e' }} />
             <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(15,26,14,0.5)' }}>
               Order Summary
             </p>
@@ -61,7 +61,7 @@ export default async function OrderConfirmationPage({ params }) {
               <div key={item.id} className="flex justify-between py-2 border-b last:border-0 text-sm"
                 style={{ borderColor: 'rgba(15,26,14,0.06)' }}>
                 <span style={{ color: '#0f1a0e' }}>{item.product_name} × {item.quantity}</span>
-                <span className="font-black" style={{ color: '#c9a84c' }}>
+                <span className="font-black" style={{ color: '#93731e' }}>
                   ₹{Number(item.total_price).toFixed(0)}
                 </span>
               </div>
@@ -75,7 +75,7 @@ export default async function OrderConfirmationPage({ params }) {
               </div>
               <div className="flex justify-between font-black text-base">
                 <span style={{ color: '#0f1a0e' }}>Total</span>
-                <span style={{ color: '#c9a84c' }}>₹{Number(order.total_amount).toFixed(0)}</span>
+                <span style={{ color: '#93731e' }}>₹{Number(order.total_amount).toFixed(0)}</span>
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@ export default async function OrderConfirmationPage({ params }) {
             style={{ borderBottom: '1px solid rgba(15,26,14,0.06)' }}>
             <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: 'rgba(201,168,76,0.1)' }}>
-              <MapPin size={14} style={{ color: '#c9a84c' }} />
+              <MapPin size={14} style={{ color: '#93731e' }} />
             </div>
             <div>
               <p className="text-xs font-black uppercase tracking-widest mb-1"
@@ -102,7 +102,7 @@ export default async function OrderConfirmationPage({ params }) {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: 'rgba(201,168,76,0.1)' }}>
-              <Truck size={14} style={{ color: '#c9a84c' }} />
+              <Truck size={14} style={{ color: '#93731e' }} />
             </div>
             <div>
               <p className="text-xs font-black uppercase tracking-widest mb-0.5"

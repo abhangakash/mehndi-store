@@ -34,7 +34,7 @@ export function ShippedEmail({ order = {}, trackingNumber = '' }) {
                             style={{ 
                               display: 'block', 
                               borderRadius: '50%', 
-                              border: '2px solid #c9a84c',
+                              border: '2px solid #93731e',
                               backgroundColor: '#ffffff',
                               objectFit: 'cover'
                             }} 
@@ -43,7 +43,7 @@ export function ShippedEmail({ order = {}, trackingNumber = '' }) {
                       </tr>
                     </table>
 
-                    <p style={{ margin: 0, fontSize: '11px', fontWeight: 700, letterSpacing: '0.25em', color: '#c9a84c', textTransform: 'uppercase', marginBottom: '10px' }}>
+                    <p style={{ margin: 0, fontSize: '11px', fontWeight: 700, letterSpacing: '0.25em', color: '#93731e', textTransform: 'uppercase', marginBottom: '10px' }}>
                       ✦ CRABVEDA AYURVEDA ✦
                     </p>
                     <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
@@ -228,7 +228,7 @@ export function ShippedEmail({ order = {}, trackingNumber = '' }) {
                 {/* Sub-Footer Declarations */}
                 <tr>
                   <td align="center" valign="top" style={{ backgroundColor: '#0f1a0e', padding: '24px 40px', textAlign: 'center' }}>
-                    <p style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: '#c9a84c', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                    <p style={{ margin: 0, fontSize: '11px', fontWeight: 600, color: '#93731e', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                       CrabVeda Joint & Muscle Care
                     </p>
                     <p style={{ margin: '6px 0 0', fontSize: '12px', color: '#8a9e85' }}>

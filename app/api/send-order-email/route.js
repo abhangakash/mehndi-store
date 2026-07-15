@@ -17,12 +17,12 @@ function header(title, subtitle) {
               width="72" 
               height="72" 
               alt="CrabVeda Logo" 
-              style="display: block; border-radius: 50%; border: 2px solid #c9a84c; background-color: #ffffff; object-fit: cover;" 
+              style="display: block; border-radius: 50%; border: 2px solid #93731e; background-color: #ffffff; object-fit: cover;" 
             />
           </td>
         </tr>
       </table>
-      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; color: #c9a84c; text-transform: uppercase; margin-bottom: 10px;">
+      <p style="margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; color: #93731e; text-transform: uppercase; margin-bottom: 10px;">
         ✦ CRABVEDA AYURVEDA ✦
       </p>
       <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.02em;">
@@ -85,7 +85,7 @@ function footer() {
   </tr>
   <tr>
     <td style="background-color: #0f1a0e; padding: 24px 40px; text-align: center;">
-      <p style="margin: 0; font-size: 11px; font-weight: 600; color: #c9a84c; text-transform: uppercase; letter-spacing: 0.15em;">
+      <p style="margin: 0; font-size: 11px; font-weight: 600; color: #93731e; text-transform: uppercase; letter-spacing: 0.15em;">
         CrabVeda Joint & Muscle Care
       </p>
       <p style="margin: 6px 0 0; font-size: 12px; color: #8a9e85;">
@@ -327,7 +327,7 @@ function buildDeliveredEmail(order) {
 
     <tr>
       <td style="padding: 0 40px 40px; text-align: center; border-bottom: 1px solid #e8e4dc;">
-        <p style="margin: 0; font-size: 13px; color: #525252;">Want to look for more wellness items? <a href="${BASE}/products" style="color: #c9a84c; font-weight: 700; text-decoration: none;">Shop Products Again</a></p>
+        <p style="margin: 0; font-size: 13px; color: #525252;">Want to look for more wellness items? <a href="${BASE}/products" style="color: #93731e; font-weight: 700; text-decoration: none;">Shop Products Again</a></p>
       </td>
     </tr>
   `)

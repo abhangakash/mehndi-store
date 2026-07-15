@@ -83,7 +83,7 @@ export default function ResetPasswordPage() {
           transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
         .field-group:focus-within {
-          border-color: #c9a84c;
+          border-color: #93731e;
           box-shadow: 0 0 0 3px rgba(201,168,76,0.14);
         }
         .field-group[data-invalid="true"] { border-color: #f87171; }
@@ -123,7 +123,7 @@ export default function ResetPasswordPage() {
       >
         {checkingSession ? (
           <div className="text-center py-10">
-            <div className="w-8 h-8 border-2 border-stone-200 border-t-[#c9a84c] rounded-full animate-spin mx-auto mb-3" />
+            <div className="w-8 h-8 border-2 border-stone-200 border-t-[#93731e] rounded-full animate-spin mx-auto mb-3" />
             <p className="text-xs text-stone-400 font-medium">Verifying reset link...</p>
           </div>
         ) : !validSession ? (
@@ -148,7 +148,7 @@ export default function ResetPasswordPage() {
         ) : (
           <>
             <div className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-1">
+              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#93731e] mb-1">
                 Almost done
               </p>
               <h1 className="font-display text-xl sm:text-2xl leading-snug font-medium tracking-tight text-[#0f1a14]">
@@ -226,7 +226,7 @@ export default function ResetPasswordPage() {
       </div>
 
       <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-8">
-        <ShieldCheck size={12} className="text-[#c9a84c]" />
+        <ShieldCheck size={12} className="text-[#93731e]" />
         <span>Secure Reset</span>
       </div>
     </div>

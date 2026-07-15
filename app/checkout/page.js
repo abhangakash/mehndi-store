@@ -276,7 +276,7 @@ export default function CheckoutPage() {
   if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#c9a84c]" />
+        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#93731e]" />
       </div>
     )
   }
@@ -301,7 +301,7 @@ export default function CheckoutPage() {
         {/* Header */}
         <div className="px-4 pt-8 pb-4 text-center">
           <h1 className="text-2xl font-black uppercase tracking-tight text-black">Checkout</h1>
-          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#c9a84c' }}>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#93731e' }}>
             Secure • Fast • Easy
           </p>
         </div>
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
               {/* Personal info */}
               <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
                 <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
-                  <User size={14} style={{ color: '#c9a84c' }} />
+                  <User size={14} style={{ color: '#93731e' }} />
                   <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                     Personal Details
                   </p>
@@ -323,17 +323,17 @@ export default function CheckoutPage() {
                 <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Full Name *</label>
-                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" value={form.name} onChange={e => set('name', e.target.value)} placeholder="your name" />
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#93731e]/20" value={form.name} onChange={e => set('name', e.target.value)} placeholder="your name" />
                   </div>
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Phone *</label>
-                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" type="tel" value={form.phone}
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#93731e]/20" type="tel" value={form.phone}
                       onChange={e => set('phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
                       placeholder="mobile number" maxLength={10} />
                   </div>
                   <div className="sm:col-span-2">
                     <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Email (for order updates)</label>
-                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
+                    <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#93731e]/20" type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
                   </div>
                 </div>
               </div>
@@ -341,7 +341,7 @@ export default function CheckoutPage() {
               {/* ===== DELIVERY ADDRESS ===== */}
               <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
                 <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
-                  <MapPin size={14} style={{ color: '#c9a84c' }} />
+                  <MapPin size={14} style={{ color: '#93731e' }} />
                   <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                     Delivery Address
                   </p>
@@ -377,7 +377,7 @@ export default function CheckoutPage() {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-0.5">
-                                      <LabelIcon size={12} style={{ color: '#c9a84c' }} />
+                                      <LabelIcon size={12} style={{ color: '#93731e' }} />
                                       <span className="text-xs font-black uppercase tracking-wider text-black">
                                         {addr.label}
                                       </span>
@@ -415,7 +415,7 @@ export default function CheckoutPage() {
                     <div className="flex flex-col gap-4">
                       <div>
                         <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Full Address *</label>
-                        <textarea className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#c9a84c]/20" value={form.address} onChange={e => set('address', e.target.value)}
+                        <textarea className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#93731e]/20" value={form.address} onChange={e => set('address', e.target.value)}
                           placeholder="House/flat no, street, area, landmark..." rows={3} />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -454,7 +454,7 @@ export default function CheckoutPage() {
               {/* Payment method */}
               <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
                 <div className="px-5 py-3.5 flex items-center gap-2 border-b border-gray-50 bg-gray-50/50">
-                  <Lock size={14} style={{ color: '#c9a84c' }} />
+                  <Lock size={14} style={{ color: '#93731e' }} />
                   <p className="text-xs font-black uppercase tracking-widest text-gray-500">
                     Payment Method
                   </p>
@@ -516,7 +516,7 @@ export default function CheckoutPage() {
                         <span className="text-xs text-black font-medium leading-tight">
                           {item.name} <span className="text-gray-400">× {item.quantity}</span>
                         </span>
-                        <span className="text-xs font-black text-[#c9a84c] flex-shrink-0">
+                        <span className="text-xs font-black text-[#93731e] flex-shrink-0">
                           ₹{(item.price * item.quantity).toFixed(0)}
                         </span>
                       </div>
@@ -534,7 +534,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-2">
                       <span className="font-black text-xs uppercase tracking-widest text-black">Total Amount</span>
-                      <span className="font-black text-lg text-[#c9a84c]">₹{grandTotal.toFixed(0)}</span>
+                      <span className="font-black text-lg text-[#93731e]">₹{grandTotal.toFixed(0)}</span>
                     </div>
                   </div>
 

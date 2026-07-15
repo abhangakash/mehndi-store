@@ -105,11 +105,14 @@ export default async function HomePage() {
   
             {/* MOBILE & TABLET IMAGE */}
            <img 
-              src="/img21.webp" 
-              alt="Therapeutic Oil Formulation"
-              className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden" 
-            />
-
+            src="/img21.webp" 
+            alt="Therapeutic Oil Formulation"
+            className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden"
+            // 1. Tell the browser to load this with maximum priority
+            fetchPriority="high" 
+            // 2. Instruct the browser to decode this image off the main thread
+            decoding="async" 
+          />
             {/* DESKTOP / PC IMAGE */}
             <img 
               src="/img2.avif" 
@@ -166,7 +169,7 @@ export default async function HomePage() {
       <Leaf size={20} className="text-[#8B6B16]" />
     </div>
     <p className="text-[#0a0f0d] font-black text-[10px] md:text-xs uppercase tracking-wider leading-tight">
-      100% Organic<br />Certified
+      100% Organic<br />
     </p>
   </div>
 </div>
@@ -349,7 +352,7 @@ export default async function HomePage() {
           THE <span className="text-[#8B6B16]">RECOVERY</span> <br />
           THE EXPERIENCE
         </h2>
-        <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+        <p className="text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
           From deep muscle soreness to persistent joint discomfort, our authentic Ayurvedic blends
           offer a profound healing sanctuary for long-lasting pain relief and mobility.
         </p>
@@ -366,7 +369,7 @@ export default async function HomePage() {
 
         <div className="pt-2 md:pt-4">
           <a href="https://wa.me/919921297518"
-            className="inline-flex items-center gap-3 bg-[#8B6B12] text-[#0a0f0d] px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
+            className="inline-flex items-center gap-3 bg-[#8B6B12] text-white px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
             CONSULT NOW <Phone size={16} className="md:hidden" /><Phone size={18} className="hidden md:block" />
           </a>
         </div>
@@ -437,11 +440,11 @@ export default async function HomePage() {
   <div className="max-w-7xl mx-auto relative z-10">
     <div className="text-center mb-16">
       <div className="inline-flex items-center gap-2 mb-4">
-        <Sparkles size={18} className="text-[#c9a84c]" />
-        <span className="text-[#c9a84c] text-xs font-black uppercase tracking-[0.3em]">Exquisite Services</span>
+        <Sparkles size={18} className="text-[#93731e]" />
+        <span className="text-[#93731e] text-xs font-black uppercase tracking-[0.3em]">Exquisite Services</span>
       </div>
       <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4">
-        OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] via-[#f3d382] to-[#c9a84c]">PACKAGES.</span>
+        OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#93731e] via-[#f3d382] to-[#93731e]">PACKAGES.</span>
       </h2>
       <p className="text-gray-400 max-w-2xl mx-auto font-medium text-lg">
         Premium bridal experiences tailored to your unique style. 
@@ -455,12 +458,12 @@ export default async function HomePage() {
           key={pkg.name} 
           className={`relative group rounded-[2.5rem] border transition-all duration-500 overflow-hidden ${
             pkg.popular 
-            ? 'bg-white border-[#c9a84c] scale-105 z-20 shadow-[0_20px_50px_rgba(201,168,76,0.15)]' 
-            : 'bg-[#111815] border-white/5 hover:border-[#c9a84c]/50'
+            ? 'bg-white border-[#93731e] scale-105 z-20 shadow-[0_20px_50px_rgba(201,168,76,0.15)]' 
+            : 'bg-[#111815] border-white/5 hover:border-[#93731e]/50'
           }`}
         >
           {pkg.popular && (
-            <div className="absolute top-0 left-0 right-0 py-2 bg-[#c9a84c] text-center text-[10px] font-black text-[#0a0f0d] uppercase tracking-[0.2em]">
+            <div className="absolute top-0 left-0 right-0 py-2 bg-[#93731e] text-center text-[10px] font-black text-[#0a0f0d] uppercase tracking-[0.2em]">
               Most Requested
             </div>
           )}
@@ -479,7 +482,7 @@ export default async function HomePage() {
             </h3>
 
             <div className="flex items-baseline gap-1 mb-8">
-              <span className={`text-3xl font-black ${pkg.popular ? 'text-[#c9a84c]' : 'text-[#c9a84c]'}`}>
+              <span className={`text-3xl font-black ${pkg.popular ? 'text-[#93731e]' : 'text-[#93731e]'}`}>
                 {pkg.price}
               </span>
               <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Onwards</span>
@@ -490,7 +493,7 @@ export default async function HomePage() {
                 <li key={f} className="flex items-start gap-3 text-sm font-medium">
                   <CheckCircle 
                     size={18} 
-                    className={`mt-0.5 flex-shrink-0 ${pkg.popular ? 'text-[#0a0f0d]' : 'text-[#c9a84c]'}`} 
+                    className={`mt-0.5 flex-shrink-0 ${pkg.popular ? 'text-[#0a0f0d]' : 'text-[#93731e]'}`} 
                   />
                   <span className={pkg.popular ? 'text-gray-700' : 'text-gray-400'}>{f}</span>
                 </li>
@@ -505,8 +508,8 @@ export default async function HomePage() {
               rel="noreferrer"
               className={`flex items-center justify-center gap-3 w-full py-5 rounded-2xl font-black text-xs tracking-widest transition-all ${
                 pkg.popular 
-                ? 'bg-[#0a0f0d] text-white hover:bg-[#c9a84c] hover:text-[#0a0f0d]' 
-                : 'bg-[#c9a84c] text-[#0a0f0d] hover:bg-white hover:text-[#0a0f0d]'
+                ? 'bg-[#0a0f0d] text-white hover:bg-[#93731e] hover:text-[#0a0f0d]' 
+                : 'bg-[#93731e] text-[#0a0f0d] hover:bg-white hover:text-[#0a0f0d]'
               }`}
             >
               <Phone size={16} /> BOOK ON WHATSAPP
@@ -519,7 +522,7 @@ export default async function HomePage() {
     <div className="text-center mt-16">
       <Link 
         href="/packages" 
-        className="inline-flex items-center gap-2 text-white/50 hover:text-[#c9a84c] font-bold tracking-widest text-xs transition-colors"
+        className="inline-flex items-center gap-2 text-white/50 hover:text-[#93731e] font-bold tracking-widest text-xs transition-colors"
       >
         VIEW ALL DETAILED PRICING <ChevronRight size={16} />
       </Link>
@@ -535,14 +538,14 @@ export default async function HomePage() {
     <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 relative z-10">
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <span className="h-[1.5px] w-8 bg-[#c9a84c]"></span>
+          <span className="h-[1.5px] w-8 bg-[#93731e]"></span>
           <span className="text-[#8B6B16] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Targeted Recovery</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-none">
           RESTORING <br className="md:hidden" /> 
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a0f0d] via-[#c9a84c] to-[#0a0f0d]">VITALITY.</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0a0f0d] via-[#9c7f31] to-[#0a0f0d]">VITALITY.</span>
         </h2>
-        <p className="text-xs md:text-sm font-medium uppercase tracking-widest text-[#0a0f0d]/40 max-w-md">
+        <p className="text-xs md:text-sm font-medium uppercase tracking-widest text-[#0a0f0d]/65 max-w-md">
           Scientific botanical badge formulations engineered for specific anatomical comfort.
         </p>
       </div>
@@ -607,7 +610,7 @@ export default async function HomePage() {
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-16 space-y-4">
       <div className="flex justify-center items-center gap-2">
-        <Heart size={16} className="text-[#8B6B16] fill-[#c9a84c]" />
+        <Heart size={16} className="text-[#8B6B16] fill-[#93731e]" />
         <span className="text-[#8B6B16] text-xs font-black uppercase tracking-[0.4em]">Real Stories</span>
       </div>
       <h2 className="text-5xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter">
@@ -626,7 +629,7 @@ export default async function HomePage() {
         <div key={i} className="group p-8 rounded-[2rem] bg-[#fcfaf2] border border-[#0a0f0d]/5 hover:bg-[#0a0f0d] transition-all duration-500">
           <div className="flex items-center gap-1 mb-6">
             {[...Array(t.rating)].map((_, s) => (
-              <Star key={s} size={14} fill="#c9a84c" className="text-[#8B6B16]" />
+              <Star key={s} size={14} fill="#93731e" className="text-[#8B6B16]" />
             ))}
           </div>
           
@@ -665,10 +668,10 @@ export default async function HomePage() {
           <span className="text-[#8B6B16]">CRABVEDA</span> <br />
           PROMISE.
         </h2>
-        <p className="text-gray-600 text-lg font-medium">
+        <p className="text-gray-400 text-lg font-medium">
           Trusted by over 5000+ individuals across India for target-deep recovery and long-lasting joint comfort.
         </p>
-        <div className="w-20 h-1 bg-[#c9a84c]" />
+        <div className="w-20 h-1 bg-[#93731e]" />
       </div>
 
       {/* Right Grid Content */}
@@ -681,7 +684,7 @@ export default async function HomePage() {
           { icon: <Camera size={32} />, title: 'Restores Mobility', desc: 'Specially crafted to reduce painful inflammation and rebuild flexible, long-term mobility.' },
           { icon: <Heart size={32} />, title: 'Made with Care', desc: 'Meticulously processed to ensure premium therapeutic strength and maximum comfort.' },
         ].map((f, i) => (
-          <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-[#c9a84c]/50 transition-all group">
+          <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-[#93731e]/50 transition-all group">
             <div className="text-[#8B6B16] mb-6 group-hover:scale-110 transition-transform duration-300">
               {f.icon}
             </div>
@@ -697,7 +700,7 @@ export default async function HomePage() {
 <section className="py-10 px-6 bg-white">
   <div className="max-w-5xl mx-auto">
     {/* Decorative Top Line */}
-    <div className="w-12 h-[2px] bg-[#c9a84c] mb-10 mx-auto md:mx-0" />
+    <div className="w-12 h-[2px] bg-[#93731e] mb-10 mx-auto md:mx-0" />
 
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
       <div className="flex-1 space-y-6 text-center md:text-left">
@@ -714,7 +717,7 @@ export default async function HomePage() {
       <div className="flex flex-col gap-4 w-full md:w-auto">
         <Link 
           href="/products" 
-          className="group flex items-center justify-between gap-8 bg-[#0a0f0d] text-white px-8 py-5 rounded-2xl hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all duration-300"
+          className="group flex items-center justify-between gap-8 bg-[#0a0f0d] text-white px-8 py-5 rounded-2xl hover:bg-[#93731e] hover:text-[#0a0f0d] transition-all duration-300"
         >
           <span className="font-black text-xs tracking-widest uppercase">Shop Pain Relief Oil</span>
           <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

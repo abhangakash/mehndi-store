@@ -128,7 +128,7 @@ export default function LoginPage() {
           transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
         .field-group:focus-within {
-          border-color: #c9a84c;
+          border-color: #93731e;
           box-shadow: 0 0 0 3px rgba(201,168,76,0.14);
         }
         .field-group[data-invalid="true"] { border-color: #f87171; }
@@ -164,7 +164,7 @@ export default function LoginPage() {
 
       <div className="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto px-5 pt-[max(2.5rem,env(safe-area-inset-top))]">
         <div className="mb-5">
-          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#93731e] mb-1">
             Welcome back
           </p>
           <h1 className="font-display text-xl sm:text-2xl leading-snug font-medium tracking-tight text-[#0f1a14]">
@@ -209,7 +209,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setForgotMode(true)}
-                  className="text-[11px] font-bold text-[#c9a84c] hover:underline"
+                  className="text-[11px] font-bold text-[#93731e] hover:underline"
                 >
                   Forgot password?
                 </button>
@@ -307,7 +307,7 @@ export default function LoginPage() {
               className="flex items-center justify-between w-full px-4 py-3 bg-white border border-stone-200 rounded-lg text-[11px] font-bold uppercase tracking-wider text-stone-600 hover:border-stone-300 transition-all active:scale-[0.99]"
             >
               <span className="flex items-center gap-2">
-                <Package size={14} className="text-[#c9a84c]" />
+                <Package size={14} className="text-[#93731e]" />
                 Track order instantly
               </span>
               <ArrowRight size={12} className="text-stone-400" />
@@ -317,7 +317,7 @@ export default function LoginPage() {
               New to Crabveda?{' '}
               <Link
                 href="/signup"
-                className="font-bold underline underline-offset-4 ml-1 text-[#0f1a14] decoration-[#c9a84c]"
+                className="font-bold underline underline-offset-4 ml-1 text-[#0f1a14] decoration-[#93731e]"
               >
                 Create Account
               </Link>
@@ -328,15 +328,15 @@ export default function LoginPage() {
         {!forgotMode && (
           <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-stone-200/60">
             <div className="text-center">
-              <div className="flex justify-center text-[#c9a84c] mb-1"><Truck size={14} /></div>
+              <div className="flex justify-center text-[#93731e] mb-1"><Truck size={14} /></div>
               <p className="text-[9px] sm:text-[10px] font-semibold text-stone-600 leading-tight">Free Shipping</p>
             </div>
             <div className="text-center">
-              <div className="flex justify-center text-[#c9a84c] mb-1"><Shield size={14} /></div>
+              <div className="flex justify-center text-[#93731e] mb-1"><Shield size={14} /></div>
               <p className="text-[9px] sm:text-[10px] font-semibold text-stone-600 leading-tight">Secure Checkout</p>
             </div>
             <div className="text-center">
-              <div className="flex justify-center text-[#c9a84c] mb-1"><Award size={14} /></div>
+              <div className="flex justify-center text-[#93731e] mb-1"><Award size={14} /></div>
               <p className="text-[9px] sm:text-[10px] font-semibold text-stone-600 leading-tight">100% Pure</p>
             </div>
           </div>
@@ -344,7 +344,7 @@ export default function LoginPage() {
       </div>
 
       <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-8">
-        <ShieldCheck size={12} className="text-[#c9a84c]" />
+        <ShieldCheck size={12} className="text-[#93731e]" />
         <span>Secure Sign In</span>
       </div>
     </div>

@@ -51,7 +51,7 @@ export default function CartAbandonmentWidget() {
         {/* ===== TOP BAR HEAD TITLE (MATCHES CART HEAD INTERFACE) ===== */}
         <div className="px-4 py-3 flex items-center justify-between border-b border-gray-50 bg-gray-50/50">
           <div className="flex items-center gap-1.5">
-            <ShoppingBag size={12} style={{ color: '#c9a84c' }} />
+            <ShoppingBag size={12} style={{ color: '#93731e' }} />
             <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">
               Complete Your Order
             </p>
@@ -65,14 +65,14 @@ export default function CartAbandonmentWidget() {
         <div className="p-4">
           <p className="text-xs font-semibold leading-relaxed text-gray-400 mb-3">
             You have <strong className="text-black font-black">{items.length} item{items.length > 1 ? 's' : ''}</strong> worth{' '}
-            <strong className="text-[#c9a84c] font-black">₹{(total + shipping).toFixed(0)}</strong> resting in your cart.
+            <strong className="text-[#93731e] font-black">₹{(total + shipping).toFixed(0)}</strong> resting in your cart.
           </p>
 
           <div className="flex flex-col gap-1.5 mb-4 border-b border-gray-50 pb-3">
             {items.slice(0, 2).map(item => (
               <div key={item.id} className="flex justify-between text-[11px] font-semibold text-gray-400">
                 <span className="truncate pr-4">{item.name}</span>
-                <span className="font-black text-[#c9a84c] shrink-0">₹{(item.price * item.quantity).toFixed(0)}</span>
+                <span className="font-black text-[#93731e] shrink-0">₹{(item.price * item.quantity).toFixed(0)}</span>
               </div>
             ))}
             {items.length > 2 && (

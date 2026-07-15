@@ -24,8 +24,8 @@ function StarRating({ rating, size = 16, interactive = false, onRate }) {
           onMouseLeave={() => interactive && setHover(0)}
           className={interactive ? 'cursor-pointer' : 'cursor-default'}>
           <Star size={size}
-            fill={s <= (hover || rating) ? '#c9a84c' : 'none'}
-            color={s <= (hover || rating) ? '#c9a84c' : '#e5e7eb'} />
+            fill={s <= (hover || rating) ? '#93731e' : 'none'}
+            color={s <= (hover || rating) ? '#93731e' : '#e5e7eb'} />
         </button>
       ))}
     </div>
@@ -39,7 +39,7 @@ function Accordion({ title, icon, children, defaultOpen = false, badge }) {
       <button onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between py-4 px-4 text-left gap-3">
         <div className="flex items-center gap-2.5">
-          {icon && <span style={{ color: '#c9a84c' }}>{icon}</span>}
+          {icon && <span style={{ color: '#93731e' }}>{icon}</span>}
           <span className="text-xs font-black uppercase tracking-widest text-gray-500">{title}</span>
           {badge && (
             <span className="text-[10px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-100">
@@ -138,7 +138,7 @@ export default function ProductDetail({ product, reviews, related }) {
             
             <div className="absolute top-3 left-3 flex flex-col gap-1.5">
               {discount && (
-                <span className="bg-[#c9a84c] text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg">
+                <span className="bg-[#93731e] text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg">
                   {discount}% OFF
                 </span>
               )}
@@ -173,7 +173,7 @@ export default function ProductDetail({ product, reviews, related }) {
               {images.map((img, i) => (
                 <button key={i} onClick={() => setActiveImg(i)}
                   className={`w-14 h-14 rounded-xl overflow-hidden border bg-white flex-shrink-0 flex items-center justify-center p-1 transition-all ${
-                    activeImg === i ? 'border-[#c9a84c] ring-1 ring-[#c9a84c]/20' : 'border-gray-100'
+                    activeImg === i ? 'border-[#93731e] ring-1 ring-[#93731e]/20' : 'border-gray-100'
                   }`}>
                   {img ? <img src={img} alt="" className="max-h-full max-w-full object-contain" /> : <span className="text-xl">🦀</span>}
                 </button>
@@ -199,7 +199,7 @@ export default function ProductDetail({ product, reviews, related }) {
             {avgRating ? (
               <>
                 <StarRating rating={Math.round(parseFloat(avgRating))} size={12} />
-                <span className="text-xs font-black text-[#c9a84c] ml-0.5">{avgRating}</span>
+                <span className="text-xs font-black text-[#93731e] ml-0.5">{avgRating}</span>
                 <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
                   ({reviews.length} review{reviews.length !== 1 ? 's' : ''})
                 </span>
@@ -214,7 +214,7 @@ export default function ProductDetail({ product, reviews, related }) {
           </p>
 
           <div className="flex items-center gap-3 py-3 border-y border-gray-100">
-            <span className="text-2xl font-black text-[#c9a84c]">
+            <span className="text-2xl font-black text-[#93731e]">
               ₹{product.price}
             </span>
             {product.original_price && (
@@ -266,7 +266,7 @@ export default function ProductDetail({ product, reviews, related }) {
                 </div>
               </div>
               <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mr-1.5">
-                Total: <strong className="text-[#c9a84c] text-xs font-black ml-1">₹{(product.price * qty).toFixed(0)}</strong>
+                Total: <strong className="text-[#93731e] text-xs font-black ml-1">₹{(product.price * qty).toFixed(0)}</strong>
               </span>
             </div>
           )}
@@ -299,7 +299,7 @@ export default function ProductDetail({ product, reviews, related }) {
               { icon: <Award size={13} />, text: 'Certified pure batch' },
             ].map(c => (
               <div key={c.text} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-3 py-2.5 rounded-xl border border-gray-50 bg-gray-50/40 text-gray-400">
-                <span style={{ color: '#c9a84c' }}>{c.icon}</span>
+                <span style={{ color: '#93731e' }}>{c.icon}</span>
                 <span className="truncate">{c.text}</span>
               </div>
             ))}
@@ -330,7 +330,7 @@ export default function ProductDetail({ product, reviews, related }) {
             {product.ingredients && (
               <Accordion title="Ingredients" icon={<Leaf size={14} />}>
                 <div className="flex items-start gap-2">
-                  <Leaf size={12} className="mt-0.5 flex-shrink-0 text-[#c9a84c]" />
+                  <Leaf size={12} className="mt-0.5 flex-shrink-0 text-[#93731e]" />
                   <span>{product.ingredients}</span>
                 </div>
               </Accordion>
@@ -344,7 +344,7 @@ export default function ProductDetail({ product, reviews, related }) {
                   { icon: <Clock size={12} />, text: 'Orders shipped within 24 hours of payment verification' },
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start gap-2">
-                    <span className="mt-0.5 flex-shrink-0 text-[#c9a84c]">{item.icon}</span>
+                    <span className="mt-0.5 flex-shrink-0 text-[#93731e]">{item.icon}</span>
                     <span className="leading-snug">{item.text}</span>
                   </div>
                 ))}
@@ -389,7 +389,7 @@ export default function ProductDetail({ product, reviews, related }) {
               {avgRating && (
                 <div className="rounded-2xl border border-gray-100 p-4 flex items-center gap-5 bg-white shadow-sm">
                   <div className="text-center shrink-0 border-r border-gray-50 pr-4">
-                    <div className="text-3xl font-black text-[#c9a84c] leading-none mb-1">{avgRating}</div>
+                    <div className="text-3xl font-black text-[#93731e] leading-none mb-1">{avgRating}</div>
                     <StarRating rating={Math.round(parseFloat(avgRating))} size={10} />
                     <div className="text-[9px] font-black uppercase tracking-widest text-gray-400 mt-1.5">{reviews.length} reviews</div>
                   </div>
@@ -401,7 +401,7 @@ export default function ProductDetail({ product, reviews, related }) {
                         <div key={star} className="flex items-center gap-2 mb-1 last:mb-0">
                           <span className="text-[10px] font-bold text-gray-400 w-2 text-right">{star}</span>
                           <div className="flex-1 h-1 rounded-full bg-gray-50 border border-gray-100">
-                            <div className="h-full rounded-full transition-all bg-[#c9a84c]" style={{ width: `${pct}%` }} />
+                            <div className="h-full rounded-full transition-all bg-[#93731e]" style={{ width: `${pct}%` }} />
                           </div>
                           <span className="text-[10px] font-bold text-gray-300 w-3">{count}</span>
                         </div>
@@ -449,7 +449,7 @@ export default function ProductDetail({ product, reviews, related }) {
         <footer className="max-w-5xl mx-auto px-4 border-t border-gray-100 pt-8">
           <div className="flex items-center justify-between mb-4 pl-1">
             <h2 className="text-xs font-black uppercase tracking-widest text-gray-500">You May Also Like</h2>
-            <Link href="/products" className="text-xs font-black uppercase tracking-widest text-[#c9a84c] hover:underline">
+            <Link href="/products" className="text-xs font-black uppercase tracking-widest text-[#93731e] hover:underline">
               View all
             </Link>
           </div>

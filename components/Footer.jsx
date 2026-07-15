@@ -7,7 +7,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-[#0f1a0e] text-white border-t border-gray-800 relative overflow-hidden font-sans selection:bg-[#c9a84c] selection:text-[#0f1a0e]">
+    <footer className="bg-[#0f1a0e] text-white border-t border-gray-800 relative overflow-hidden font-sans selection:bg-[#93731e] selection:text-[#0f1a0e]">
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="md:col-span-5 space-y-6">
             <div className="flex items-center gap-3">
               {/* Logo Wrapper changed to rounded-full */}
-              <div className="w-10 h-10 relative rounded-full overflow-hidden border border-[#c9a84c]/20 bg-white shadow-xl shadow-black/20">
+              <div className="w-10 h-10 relative rounded-full overflow-hidden border border-[#93731e]/20 bg-white shadow-xl shadow-black/20">
                 <Image
                   src="/logo.jpeg"
                   alt="CrabVeda logo"
@@ -28,7 +28,7 @@ export default function Footer() {
               </div>
               <div>
                 <h2 className="text-lg font-black tracking-tight uppercase leading-none">
-                  CRABVEDA<span className="text-[#c9a84c]">.</span>
+                  CRABVEDA<span className="text-[#93731e]">.</span>
                 </h2>
                 <span className="text-[9px] text-gray-400 tracking-widest uppercase font-black block mt-1">
                   Ayurvedic Pain Relief Oil
@@ -72,7 +72,7 @@ export default function Footer() {
 
           {/* Column 2: Easy Links (Spans 4 Columns) */}
           <div className="md:col-span-4 md:pl-4 space-y-4">
-            <span className="text-xs font-black tracking-widest text-[#c9a84c] uppercase block">Quick Links</span>
+            <span className="text-xs font-black tracking-widest text-[#93731e] uppercase block">Quick Links</span>
             
             <nav className="grid grid-cols-1 gap-2">
               {[
@@ -83,10 +83,10 @@ export default function Footer() {
                 <Link 
                   key={item.label} 
                   href={item.href} 
-                  className="group flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#c9a84c]/20 hover:bg-white/[0.04] transition-all duration-200"
+                  className="group flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#93731e]/20 hover:bg-white/[0.04] transition-all duration-200"
                 >
                   <span className="text-xs font-black uppercase tracking-wider text-gray-300 group-hover:text-white transition-colors">{item.label}</span>
-                  <ArrowRight size={12} className="text-gray-500 group-hover:text-[#c9a84c] group-hover:translate-x-0.5 transition-all" />
+                  <ArrowRight size={12} className="text-gray-400 group-hover:text-[#93731e] group-hover:translate-x-0.5 transition-all" />
                 </Link>
               ))}
             </nav>
@@ -94,12 +94,12 @@ export default function Footer() {
 
           {/* Column 3: Contact Details (Spans 3 Columns) */}
           <div className="md:col-span-3 space-y-4">
-            <span className="text-xs font-black tracking-widest text-[#c9a84c] uppercase block">Contact Us</span>
+            <span className="text-xs font-black tracking-widest text-[#93731e] uppercase block">Contact Us</span>
             
             <div className="space-y-2">
               <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                 <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                  <MapPin size={12} className="text-[#c9a84c]" />
+                  <MapPin size={12} className="text-[#93731e]" />
                   <span>Our Address</span>
                 </div>
                 <p className="text-xs font-bold text-white pl-5">Solapur, Maharashtra 413203</p>
@@ -107,10 +107,10 @@ export default function Footer() {
 
               <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                 <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                  <Phone size={12} className="text-[#c9a84c]" />
+                  <Phone size={12} className="text-[#93731e]" />
                   <span>Call / WhatsApp</span>
                 </div>
-                <a href="tel:+919921297518" className="text-xs font-black text-[#c9a84c] hover:text-white transition-colors pl-5 block tracking-wide">
+                <a href="tel:+919921297518" className="text-xs font-black text-[#93731e] hover:text-white transition-colors pl-5 block tracking-wide">
                   +91 9921297518
                 </a>
               </div>
@@ -123,7 +123,7 @@ export default function Footer() {
         <div className="py-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
           
           <div className="flex items-center gap-3 order-2 md:order-1">
-            <p className="text-[9px] text-gray-500 uppercase tracking-widest font-black">
+            <p className="text-[9px] text-gray-400 uppercase tracking-widest font-black">
               © {currentYear} CRABVEDA AYURVEDA. ALL RIGHTS RESERVED.
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function Footer() {
               <Link 
                 key={legal.text} 
                 href={legal.href} 
-                className="text-[9px] text-gray-400 hover:text-[#c9a84c] uppercase tracking-widest font-black transition-colors"
+                className="text-[9px] text-gray-400 hover:text-[#93731e] uppercase tracking-widest font-black transition-colors"
               >
                 {legal.text}
               </Link>

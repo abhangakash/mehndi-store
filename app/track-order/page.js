@@ -57,7 +57,7 @@ function OrderCard({ order }) {
           <button 
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="text-xs font-black flex items-center gap-1 uppercase tracking-wider text-[#c9a84c] hover:opacity-80 transition-opacity"
+            className="text-xs font-black flex items-center gap-1 uppercase tracking-wider text-[#93731e] hover:opacity-80 transition-opacity"
           >
             Details {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
           </button>
@@ -74,7 +74,7 @@ function OrderCard({ order }) {
               <div className="h-full transition-all duration-700 rounded-full"
                 style={{
                   width: stepIdx >= 0 ? `${(stepIdx / 3) * 100}%` : '0%',
-                  background: 'linear-gradient(90deg, #c9a84c, #a48434)',
+                  background: 'linear-gradient(90deg, #93731e, #a48434)',
                 }} />
             </div>
 
@@ -152,7 +152,7 @@ function OrderCard({ order }) {
                       Qty: {item.quantity} × ₹{Number(item.unit_price).toFixed(0)}
                     </p>
                   </div>
-                  <p className="font-black text-xs flex-shrink-0 text-[#c9a84c]">
+                  <p className="font-black text-xs flex-shrink-0 text-[#93731e]">
                     ₹{Number(item.total_price).toFixed(0)}
                   </p>
                 </div>
@@ -174,14 +174,14 @@ function OrderCard({ order }) {
             </div>
             <div className="flex justify-between font-black text-xs border-t border-gray-200/60 pt-2 text-[#0a0f0d] uppercase tracking-wide">
               <span>Total Amount</span>
-              <span className="text-[#c9a84c] text-sm">₹{Number(order.total_amount).toFixed(0)}</span>
+              <span className="text-[#93731e] text-sm">₹{Number(order.total_amount).toFixed(0)}</span>
             </div>
           </div>
 
           {/* Delivery address */}
           <div className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-black/5">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#c9a84c]/10 border border-[#c9a84c]/20">
-              <MapPin size={13} className="text-[#c9a84c]" />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 bg-[#93731e]/10 border border-[#93731e]/20">
+              <MapPin size={13} className="text-[#93731e]" />
             </div>
             <div className="min-w-0">
               <p className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Delivery Address</p>
@@ -254,12 +254,12 @@ export default function TrackOrderPage() {
 
       {/* ===== HEADER ===== */}
       <div className="max-w-7xl mx-auto px-4 pt-10 pb-6 text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 mb-3">
-          <Sparkles size={12} className="text-[#c9a84c] animate-pulse" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#93731e]/10 border border-[#93731e]/20 mb-3">
+          <Sparkles size={12} className="text-[#93731e] animate-pulse" />
           <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.2em] uppercase">Order Tracking</span>
         </div>
         <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">
-          TRACK YOUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">ORDER</span>
+          TRACK YOUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#93731e] to-[#a48434]">ORDER</span>
         </h1>
         <p className="text-gray-500 text-xs md:text-sm mt-2 max-w-md mx-auto font-medium">
           Enter your checkout details below to access real-time delivery tracking status updates.
@@ -297,10 +297,10 @@ export default function TrackOrderPage() {
             <div className="relative w-full">
               {searchType === 'phone'
                 ? <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none select-none">
-                    <Phone size={13} className="text-[#c9a84c]" />
+                    <Phone size={13} className="text-[#93731e]" />
                     <span className="text-xs font-black text-gray-300">+91</span>
                   </div>
-                : <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#c9a84c]" />
+                : <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#93731e]" />
               }
               <input
                 type={searchType === 'email' ? 'email' : 'tel'}
@@ -311,7 +311,7 @@ export default function TrackOrderPage() {
                     : e.target.value
                 )}
                 placeholder={searchType === 'phone' ? 'Enter 10-Digit Mobile' : 'you@example.com'}
-                className="w-full py-3.5 pr-4 rounded-xl text-xs font-bold outline-none border transition-all bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#c9a84c]/20"
+                className="w-full py-3.5 pr-4 rounded-xl text-xs font-bold outline-none border transition-all bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#93731e]/20"
                 style={{
                   paddingLeft: searchType === 'phone' ? '4.2rem' : '2.8rem',
                   borderColor: 'rgba(15,26,14,0.08)',
@@ -338,7 +338,7 @@ export default function TrackOrderPage() {
             <span className="text-gray-400 group-hover:text-gray-600 transition-colors">
               🔐 View dashboard order history
             </span>
-            <ArrowRight size={13} className="text-[#c9a84c] group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight size={13} className="text-[#93731e] group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
@@ -382,11 +382,11 @@ export default function TrackOrderPage() {
       <div className="max-w-xl mx-auto px-4 mt-6">
         <div className="grid grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-black/5 shadow-xs">
           <div className="flex items-center gap-2 px-1">
-            <ShieldCheck size={16} className="text-[#c9a84c] shrink-0" />
+            <ShieldCheck size={16} className="text-[#93731e] shrink-0" />
             <span className="text-[10px] font-black tracking-tight text-gray-700 uppercase">100% Ayurvedic Purity</span>
           </div>
           <div className="flex items-center gap-2 px-1 border-l border-gray-100">
-            <Zap size={16} className="text-[#c9a84c] shrink-0" />
+            <Zap size={16} className="text-[#93731e] shrink-0" />
             <span className="text-[10px] font-black tracking-tight text-gray-700 uppercase">Fast Delivery India</span>
           </div>
         </div>

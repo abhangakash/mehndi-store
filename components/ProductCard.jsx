@@ -4,7 +4,7 @@ import { ShoppingCart, Star } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import toast from 'react-hot-toast'
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, displayName, displayDescription, hideDiscountBadge }) {
   const addItem = useCartStore(s => s.addItem)
   
   const discount = product.original_price
@@ -25,8 +25,8 @@ export default function ProductCard({ product }) {
       <div className="card overflow-hidden transition-all duration-200 hover:shadow-md h-full flex flex-col bg-white border border-gray-100 rounded-xl">
         
         {/* Image Container - Responsive Height */}
-<div className="relative h-44 md:h-60 lg:h-90 w-full overflow-hidden bg-[var(--brand-surface)]">
-            {product.image_url ? (
+        <div className="relative h-44 md:h-60 lg:h-90 w-full overflow-hidden bg-[var(--brand-surface)]">
+          {product.image_url ? (
             <img 
               src={product.image_url} 
               alt={product.name} 
@@ -36,9 +36,9 @@ export default function ProductCard({ product }) {
             <div className="w-full h-full flex items-center justify-center text-3xl sm:text-5xl">🦀</div>
           )}
           
-          {/* Badges - Adjusted for mobile */}
+          {/* Badges - ONLY SHOWS ON COMBO PACK TO AVOID DUPED LABELS */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
-            {discount && (
+            {discount && !hideDiscountBadge && (
               <span className="badge badge-brown text-[10px] sm:text-xs px-2 py-0.5 shadow-sm">
                 {discount}% OFF
               </span>
@@ -65,16 +65,16 @@ export default function ProductCard({ product }) {
           </p>
           
           <h3 className="font-semibold text-sm sm:text-base mb-1 line-clamp-1 sm:line-clamp-2" style={{ color: 'var(--brand-text)' }}>
-            {product.name}
+            {displayName || product.name}
           </h3>
 
           <p className="text-[11px] sm:text-xs mb-3 line-clamp-2 flex-1 hidden xs:block" style={{ color: 'var(--brand-muted)' }}>
-            {product.short_description}
+            {displayDescription || product.short_description}
           </p>
 
           <div className="flex items-center gap-1 mb-3">
             <div className="flex">
-               {[1,2,3,4,5].map(s => <Star key={s} size={10} fill="#c9a84c" color="#c9a84c" />)}
+               {[1,2,3,4,5].map(s => <Star key={s} size={10} fill="#93731e" color="#93731e" />)}
             </div>
             <span className="text-[10px] sm:text-xs ml-1" style={{ color: 'var(--brand-muted)' }}>(4.8)</span>
           </div>

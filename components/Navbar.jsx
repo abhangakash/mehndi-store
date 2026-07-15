@@ -80,7 +80,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-black font-black tracking-widest text-xs leading-none uppercase">Crabveda</span>
-              <span className="text-[#c9a84c] text-[8px] uppercase tracking-widest font-black mt-0.5">Ayurvedic</span>
+              <span className="text-[#93731e] text-[8px] uppercase tracking-widest font-black mt-0.5">Ayurvedic</span>
             </div>
           </Link>
 
@@ -92,9 +92,9 @@ export default function Navbar() {
                 <div key={link.label} className="relative">
                   <Link href={link.href}
                     className={`flex items-center gap-1.5 px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
-                      isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-500 hover:text-black'
+                      isActive(link.href) ? 'text-[#93731e]' : 'text-gray-500 hover:text-black'
                     }`}>
-                    <Icon size={12} className={isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-400'} />
+                    <Icon size={12} className={isActive(link.href) ? 'text-[#93731e]' : 'text-gray-400'} />
                     <span>{link.label}</span>
                   </Link>
                 </div>
@@ -114,7 +114,7 @@ export default function Navbar() {
             <Link href="/cart" className="relative p-2 text-gray-500 hover:text-black transition-colors">
               <ShoppingCart size={16} />
               {mounted && totalItems > 0 && (
-                <span className="absolute top-0.5 right-0.5 bg-[#c9a84c] text-white text-[8px] font-black h-4 w-4 rounded-full flex items-center justify-center ring-2 ring-white">
+                <span className="absolute top-0.5 right-0.5 bg-[#93731e] text-white text-[8px] font-black h-4 w-4 rounded-full flex items-center justify-center ring-2 ring-white">
                   {totalItems > 9 ? '9+' : totalItems}
                 </span>
               )}
@@ -202,7 +202,7 @@ export default function Navbar() {
                 <div className="w-9 h-9 rounded-xl border border-gray-100 flex items-center justify-center text-gray-500">
                   <User size={16} />
                 </div>
-                <span className="text-[#c9a84c] font-black uppercase tracking-widest">Sign In / Register</span>
+                <span className="text-[#93731e] font-black uppercase tracking-widest">Sign In / Register</span>
               </Link>
             )}
 
@@ -213,9 +213,9 @@ export default function Navbar() {
                 return (
                   <Link key={link.label} href={link.href} onClick={toggleMenu}
                     className={`flex items-center gap-3 text-xl font-black uppercase tracking-tight py-2 transition-colors ${
-                      isActive(link.href) ? 'text-[#c9a84c]' : 'text-black hover:text-[#c9a84c]'
+                      isActive(link.href) ? 'text-[#93731e]' : 'text-black hover:text-[#93731e]'
                     }`}>
-                    <Icon size={18} className={isActive(link.href) ? 'text-[#c9a84c]' : 'text-gray-400'} />
+                    <Icon size={18} className={isActive(link.href) ? 'text-[#93731e]' : 'text-gray-400'} />
                     <span>{link.label}</span>
                   </Link>
                 )

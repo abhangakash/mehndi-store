@@ -46,7 +46,7 @@ function OrderCard({ order }) {
             <p className="text-xs font-black uppercase tracking-wider text-gray-400">
               #{order.id.slice(0, 8).toUpperCase()}
             </p>
-            <p className="font-black text-base text-[#c9a84c]">₹{Number(order.total_amount).toFixed(0)}</p>
+            <p className="font-black text-base text-[#93731e]">₹{Number(order.total_amount).toFixed(0)}</p>
             <p className="text-xs text-gray-400">
               {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
@@ -58,7 +58,7 @@ function OrderCard({ order }) {
             <StatusIcon size={11} /> {status.label}
           </span>
           <button onClick={() => setExpanded(!expanded)}
-            className="text-xs font-bold flex items-center gap-1 text-[#c9a84c] hover:opacity-80 transition-opacity">
+            className="text-xs font-bold flex items-center gap-1 text-[#93731e] hover:opacity-80 transition-opacity">
             {expanded ? 'Hide' : 'Details'}
             {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
           </button>
@@ -128,17 +128,17 @@ function OrderCard({ order }) {
             {order.order_items?.map(item => (
               <div key={item.id} className="flex justify-between items-start py-2 text-xs gap-4">
                 <span className="text-gray-700 font-medium break-words">{item.product_name} × {item.quantity}</span>
-                <span className="font-black text-[#c9a84c] flex-shrink-0">₹{Number(item.total_price).toFixed(0)}</span>
+                <span className="font-black text-[#93731e] flex-shrink-0">₹{Number(item.total_price).toFixed(0)}</span>
               </div>
             ))}
             <div className="pt-2.5 flex justify-between text-sm font-black mt-1">
               <span className="text-black">Total</span>
-              <span className="text-[#c9a84c]">₹{Number(order.total_amount).toFixed(0)}</span>
+              <span className="text-[#93731e]">₹{Number(order.total_amount).toFixed(0)}</span>
             </div>
           </div>
 
           <div className="flex items-start gap-2 text-xs text-gray-400">
-            <MapPin size={13} className="mt-0.5 flex-shrink-0 text-[#c9a84c]" />
+            <MapPin size={13} className="mt-0.5 flex-shrink-0 text-[#93731e]" />
             <span className="break-words">{order.address}, {order.city} — {order.pincode}</span>
           </div>
 
@@ -244,7 +244,7 @@ export default function ProfileContent() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#c9a84c]" />
+      <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin border-[#93731e]" />
     </div>
   )
   if (!user) return null
@@ -262,7 +262,7 @@ export default function ProfileContent() {
       {/* Top Banner Header Block */}
       <div className="px-4 pt-8 pb-4 text-center">
         <h1 className="text-2xl font-black uppercase tracking-tight text-black">My Account</h1>
-        <p className="text-xs font-bold uppercase tracking-widest mt-1 style-title max-w-md mx-auto" style={{ color: '#c9a84c' }}>
+        <p className="text-xs font-bold uppercase tracking-widest mt-1 style-title max-w-md mx-auto" style={{ color: '#93731e' }}>
           Manage your personal records, profiles & secure dynamic settings
         </p>
       </div>
@@ -373,7 +373,7 @@ export default function ProfileContent() {
           <div className="space-y-4">
             {ordersLoading ? (
               <div className="rounded-2xl p-10 border border-gray-100 text-center bg-white">
-                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
+                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#93731e]" />
               </div>
             ) : orders.length === 0 ? (
               <div className="rounded-2xl p-10 border border-gray-100 text-center bg-white">
@@ -483,7 +483,7 @@ export default function ProfileContent() {
 
             {addrLoading ? (
               <div className="rounded-2xl p-10 border border-gray-100 text-center bg-white">
-                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#c9a84c]" />
+                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin mx-auto border-[#93731e]" />
               </div>
             ) : addresses.length === 0 && !showAddrForm ? (
               <div className="rounded-2xl p-10 border border-gray-100 text-center bg-white">
@@ -503,7 +503,7 @@ export default function ProfileContent() {
                       style={{ borderColor: addr.is_default ? '#0f1a0e' : '#f3f4f6', borderWidth: addr.is_default ? '1.5px' : '1px' }}>
                       <div className="flex items-start justify-between gap-3 mb-2">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <LI size={13} className="text-[#c9a84c]" />
+                          <LI size={13} className="text-[#93731e]" />
                           <span className="text-xs font-black uppercase tracking-wider text-black">{addr.label}</span>
                           {addr.is_default && (
                             <span className="text-[9px] px-2 py-0.5 rounded-full font-black text-white bg-[#0f1a0e]">

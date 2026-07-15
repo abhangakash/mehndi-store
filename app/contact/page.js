@@ -67,7 +67,7 @@ export default function ContactPage() {
                 </a>
 
                 <div className="flex items-start gap-3 p-3 rounded-xl text-black">
-                  <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-amber-50 border border-amber-100/50" style={{ color: '#c9a84c' }}>
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-amber-50 border border-amber-100/50" style={{ color: '#93731e' }}>
                     <MapPin size={14} />
                   </div>
                   <div>

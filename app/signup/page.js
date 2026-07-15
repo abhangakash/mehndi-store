@@ -112,7 +112,7 @@ export default function SignupPage() {
           transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
         .field-group:focus-within {
-          border-color: #c9a84c;
+          border-color: #93731e;
           box-shadow: 0 0 0 3px rgba(201,168,76,0.14);
         }
         .field-group[data-invalid="true"] { border-color: #f87171; }
@@ -162,7 +162,7 @@ export default function SignupPage() {
 
           {/* Header */}
           <div className="mb-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#c9a84c] mb-0.5">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#93731e] mb-0.5">
               Get started
             </p>
             <h1 className="font-display text-xl sm:text-2xl leading-snug font-medium tracking-tight text-[#0f1a14]">
@@ -351,7 +351,7 @@ export default function SignupPage() {
 
       {/* Footer view */}
       <div className="w-full flex items-center justify-center gap-1.5 text-stone-400 text-[10px] font-bold uppercase tracking-widest pt-2">
-        <ShieldCheck size={12} className="text-[#c9a84c]" />
+        <ShieldCheck size={12} className="text-[#93731e]" />
         <span>Secure Sign Up</span>
       </div>
     </div>

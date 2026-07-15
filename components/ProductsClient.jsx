@@ -13,10 +13,10 @@ export default function ProductsClient({ products = [] }) {
       {/* ===== HEADER (MATCHES CART PAGE HEADER STYLE) ===== */}
       <header className="px-4 pt-8 pb-4 text-center">
         <h1 className="text-2xl font-black uppercase tracking-tight text-black flex items-center justify-center gap-2">
-          <ShoppingBag size={20} className="sm:hidden" style={{ color: '#c9a84c' }} />
+          <ShoppingBag size={20} className="sm:hidden" style={{ color: '#93731e' }} />
           Official Store
         </h1>
-        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#c9a84c' }}>
+        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#93731e' }}>
           Select your wellness regimen below
         </p>
       </header>
@@ -25,21 +25,25 @@ export default function ProductsClient({ products = [] }) {
       <main className="max-w-5xl mx-auto px-4 pb-6">
         <div className="grid grid-cols-2 gap-3 sm:gap-6 items-stretch">
           {productList.map((product, idx) => {
-            const isCombo = product?.name?.toLowerCase().includes('combo') || idx === 1
+            
+            // SWAPPED CONDITION TO MATCH YOUR PRODUCTION DATA ARRAY:
+            // Index 0 (First Item) is the ₹999 Combo Pack
+            // Index 1 (Second Item) is the ₹360 Single Bottle
+            const isCombo = idx === 0
 
             return (
               <div 
                 key={product?.id || idx} 
                 className={`rounded-2xl border overflow-hidden bg-white flex flex-col justify-between relative transition-all duration-200 ${
                   isCombo 
-                    ? 'border-[#c9a84c] shadow-md shadow-[#c9a84c]/5' 
+                    ? 'border-[#93731e] shadow-md shadow-[#93731e]/5' 
                     : 'border-gray-100 shadow-sm'
                 }`}
               >
-                {/* Header Strip inside Card (Matches Cart Inner Heading) */}
+                {/* Header Strip inside Card */}
                 <div className="px-3 py-2.5 sm:px-5 sm:py-3.5 flex items-center justify-between border-b border-gray-50 bg-gray-50/50">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <Sparkles size={12} style={{ color: isCombo ? '#c9a84c' : '#9ca3af' }} className="shrink-0" />
+                    <Sparkles size={12} style={{ color: isCombo ? '#93731e' : '#9ca3af' }} className="shrink-0" />
                     <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-gray-500 truncate">
                       {isCombo ? 'Recommended Deal' : 'Starter Option'}
                     </p>
@@ -51,10 +55,15 @@ export default function ProductsClient({ products = [] }) {
 
                 {/* Main Product Component Wrapper Frame */}
                 <div className="flex-1 w-full p-3 sm:p-5 min-h-0">
-                  <ProductCard product={product} />
+                  <ProductCard 
+                    product={product} 
+                    displayName={isCombo ? 'Advanced Recovery Combo' : 'Pain Relief Oil'} 
+                    displayDescription={isCombo ? 'Complete 2-bottle therapy for intensive recovery.' : 'Standard 1-bottle pack for targeted relief.'}
+                    hideDiscountBadge={!isCombo}
+                  />
                 </div>
 
-                {/* Card footer (Matches Cart Item Line Pricing Layout Style) */}
+                {/* Card footer */}
                 <div className="px-3 py-3 sm:px-5 sm:py-4 border-t border-gray-50 bg-gray-50/20 flex items-center justify-between">
                   <div className={`text-[8px] sm:text-[11px] font-black uppercase tracking-widest flex items-center gap-1 ${
                     isCombo ? 'text-emerald-600' : 'text-gray-400'
@@ -73,13 +82,13 @@ export default function ProductsClient({ products = [] }) {
       <footer className="max-w-5xl mx-auto px-4 mt-2">
         <div className="grid grid-cols-2 gap-2 p-3 rounded-2xl border border-gray-100 bg-white shadow-xs">
           <div className="flex items-center justify-center gap-1.5 py-1">
-            <ShieldCheck size={14} style={{ color: '#c9a84c' }} className="shrink-0" />
+            <ShieldCheck size={14} style={{ color: '#93731e' }} className="shrink-0" />
             <span className="text-[9px] sm:text-xs font-black tracking-widest text-gray-500 uppercase text-center">
               100% Verified Pure
             </span>
           </div>
           <div className="flex items-center justify-center gap-1.5 py-1 border-l border-gray-100">
-            <Check size={14} style={{ color: '#c9a84c' }} className="shrink-0" />
+            <Check size={14} style={{ color: '#93731e' }} className="shrink-0" />
             <span className="text-[9px] sm:text-xs font-black tracking-widest text-gray-500 uppercase text-center">
               Free Express Delivery
             </span>
