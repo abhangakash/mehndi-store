@@ -24,14 +24,6 @@ async function getCategories() {
   return data || []
 }
 
-const GALLERY_ITEMS = [
-  { image: '/img13.webp', label: 'Joint Pain Relief', tag: 'joints' },
-  { image: '/img14.webp', label: 'Muscle Recovery', tag: 'muscles' },
-  { image: '/img15.webp', label: '100% Organic Herbs', tag: 'ingredients' },
-  { image: '/img11.webp', label: 'Therapeutic Massage', tag: 'application' },
-  { image: '/img16.webp', label: 'CrabVeda 200ml Bottle', tag: 'product' },
-  { image: '/img12.webp', label: 'Inflammation Reduction', tag: 'healing' },
-];
 
 const PACKAGES = [
   {
@@ -94,12 +86,12 @@ export default async function HomePage() {
     >
       <path fill="white" d="M0,0H1440V300C1440,300 1250,550 1000,450C750,350 500,650 0,550V0Z" />
       <path d="M0,550C500,650 750,350 1000,450C1250,550 1440,300 1440,300"
-        stroke="#c9a84c" strokeWidth="2" strokeOpacity="0.2" />
+        stroke="#8B6B12" strokeWidth="2" strokeOpacity="0.2" />
     </svg>
   </div>
 
   {/* Ambient glow */}
-  <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-[#c9a84c]/20 rounded-full blur-[160px] pointer-events-none" />
+  <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-[#8B6B12]/20 rounded-full blur-[160px] pointer-events-none" />
 
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-16 items-center">
@@ -136,7 +128,7 @@ export default async function HomePage() {
           <div className="col-span-12 flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto my-2 px-1">
             <div className="flex items-center justify-center gap-3">
               <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
-              <span className="text-sm text-gray-400 line-through font-bold">₹499</span>
+              <span className="text-sm text-gray-600 line-through font-bold">₹499</span>
               <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
             </div>
             <BuyNowButton
@@ -156,20 +148,28 @@ export default async function HomePage() {
 
           {/* Side items (keeps padding alignment intact) */}
           <div className="col-span-12 lg:col-span-4 flex flex-row lg:flex-col gap-3 md:gap-4 mt-2 lg:mt-0">
-            <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
-              <img src="/img8.webp" alt="Herbal Ingredients" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/5" />
-            </div>
-            
-            <div className="w-1/2 lg:w-full lg:h-[35%] relative rounded-2xl border border-[#c9a84c]/30 bg-white flex flex-col items-center justify-center p-4 text-center shadow-md">
-              <div className="w-10 h-10 rounded-full bg-[#c9a84c]/10 flex items-center justify-center mb-2">
-                <Leaf size={20} className="text-[#c9a84c]" />
-              </div>
-              <p className="text-[#0a0f0d] font-black text-[10px] md:text-xs uppercase tracking-wider leading-tight">
-                100% Organic<br />Certified
-              </p>
-            </div>
-          </div>
+  <div className="w-1/2 lg:w-full h-[140px] lg:flex-1 relative rounded-2xl overflow-hidden border border-black/5 shadow-md">
+    <img 
+      src="/img8.webp" 
+      alt="Herbal Ingredients" 
+      className="w-full h-full object-cover" 
+      loading="lazy"
+      decoding="async"
+      width="362"
+      height="242"
+    />
+    <div className="absolute inset-0 bg-black/5" />
+  </div>
+  
+  <div className="w-1/2 lg:w-full lg:h-[35%] relative rounded-2xl border border-[#8B6B12]/30 bg-white flex flex-col items-center justify-center p-4 text-center shadow-md">
+    <div className="w-10 h-10 rounded-full bg-[#8B6B12]/10 flex items-center justify-center mb-2">
+      <Leaf size={20} className="text-[#8B6B16]" />
+    </div>
+    <p className="text-[#0a0f0d] font-black text-[10px] md:text-xs uppercase tracking-wider leading-tight">
+      100% Organic<br />Certified
+    </p>
+  </div>
+</div>
           
         </div>
       </div>
@@ -178,20 +178,20 @@ export default async function HomePage() {
 <div className="lg:col-span-5 flex flex-col gap-6 md:gap-7 text-center lg:text-left order-2 lg:order-1">
 
   {/* Badge */}
-  <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 self-center lg:self-start">
-    <Sparkles size={12} className="text-[#c9a84c]" />
-    <span className="text-[#a48434] text-[10px] font-black tracking-widest uppercase">Traditional Ayurvedic Wisdom</span>
+  <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#8B6B12]/10 border border-[#8B6B12]/20 self-center lg:self-start">
+    <Sparkles size={12} className="text-[#8B6B16]" />
+    <span className="text-[#7A5D0A] text-[10px] font-black tracking-widest uppercase">Traditional Ayurvedic Wisdom</span>
   </div>
 
   {/* Friendly, Clear Headline */}
   <div className="flex flex-col gap-3">
     <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#0a0f0d] tracking-tight leading-tight">
       Natural Relief for Your <br className="hidden sm:inline" />
-      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#a48434]">
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6B12] to-[#a48434]">
         Joints & Muscles.
       </span>
     </h1>
-    <p className="text-gray-500 text-xs md:text-sm font-semibold uppercase tracking-wider text-[#c9a84c]">
+    <p className="text-gray-500 text-xs md:text-sm font-semibold uppercase tracking-wider text-[#8B6B16]">
       Authentic Crab Oil Formulation
     </p>
   </div>
@@ -218,7 +218,7 @@ export default async function HomePage() {
   <div className="hidden lg:flex flex-col gap-4">
     <div className="flex items-center gap-3">
       <span className="text-4xl font-black text-[#0a0f0d]">₹360</span>
-      <span className="text-base text-gray-400 line-through font-bold">₹499</span>
+      <span className="text-base text-gray-600 line-through font-bold">₹499</span>
       <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">28% OFF</span>
     </div>
 
@@ -231,7 +231,7 @@ export default async function HomePage() {
           image_url: '/img14.webp',
           short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
         }}
-        className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#c9a84c] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
+        className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#8B6B12] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
       >
         <ShoppingCart size={18} />
         <span>BUY NOW</span>
@@ -271,12 +271,12 @@ export default async function HomePage() {
         { icon: Award, label: "AYURVEDIC POTENCY", sub: 'Expert Formulation' },
       ].map((item, i) => (
         <div key={i} className="flex flex-col items-center md:items-start text-center md:text-left gap-3 group">
-          <div className="w-12 h-12 rounded-xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#c9a84c] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-300">
+          <div className="w-12 h-12 rounded-xl bg-[#0a0f0d]/5 flex items-center justify-center text-[#8B6B16] group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-300">
             <item.icon size={22} strokeWidth={2} />
           </div>
           <div>
             <p className="text-[#0a0f0d] font-black text-xs md:text-sm tracking-tight uppercase">{item.label}</p>
-            <p className="text-gray-400 text-[10px] font-bold tracking-wider uppercase mt-0.5">{item.sub}</p>
+            <p className="text-gray-600 text-[10px] font-bold tracking-wider uppercase mt-0.5">{item.sub}</p>
           </div>
         </div>
       ))}
@@ -293,20 +293,52 @@ export default async function HomePage() {
         {/* Mobile / Tablet: simple 2-image row */}
         <div className="grid grid-cols-2 gap-3 md:gap-4 lg:hidden h-[240px] sm:h-[280px] md:h-[340px]">
           <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418]">
-            <img src="/img13.webp" alt="Ayurvedic Extraction" className="w-full h-full object-cover" />
+            <img 
+              src="/img13.webp" 
+              alt="Ayurvedic Extraction" 
+              className="w-full h-full object-cover" 
+              loading="lazy"
+              decoding="async"
+              width="315"
+              height="420"
+            />
           </div>
           <div className="rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#0f2418] mt-6 md:mt-10">
-            <img src="/img16.webp" alt="Therapeutic Massage" className="w-full h-full object-cover" />
+            <img 
+              src="/img16.webp" 
+              alt="Therapeutic Massage" 
+              className="w-full h-full object-cover" 
+              loading="lazy"
+              decoding="async"
+              width="315"
+              height="420"
+            />
           </div>
         </div>
 
         {/* Desktop: overlapping rotated cards */}
         <div className="hidden lg:block relative h-[500px]">
           <div className="absolute top-0 right-0 w-[85%] h-[80%] rounded-[3.5rem] overflow-hidden border-4 border-[#0f2418] rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
-            <img src="/img13.webp" alt="Ayurvedic Extraction" className="w-full h-full object-cover" />
+            <img 
+              src="/img13.webp" 
+              alt="Ayurvedic Extraction" 
+              className="w-full h-full object-cover" 
+              loading="lazy"
+              decoding="async"
+              width="475"
+              height="633"
+            />
           </div>
           <div className="absolute bottom-0 left-0 w-[70%] h-[60%] rounded-[3rem] overflow-hidden border-4 border-[#0f2418] -rotate-6 hover:rotate-0 transition-all duration-500 shadow-2xl z-20">
-            <img src="/img16.webp" alt="Therapeutic Massage" className="w-full h-full object-cover" />
+            <img 
+              src="/img16.webp" 
+              alt="Therapeutic Massage" 
+              className="w-full h-full object-cover" 
+              loading="lazy"
+              decoding="async"
+              width="390"
+              height="519"
+            />
           </div>
         </div>
       </div>
@@ -314,19 +346,19 @@ export default async function HomePage() {
       {/* Text */}
       <div className="order-1 lg:order-2 flex flex-col gap-5 md:gap-6 text-center lg:text-left">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight uppercase">
-          THE <span className="text-[#c9a84c]">RECOVERY</span> <br />
-          EXPERIENCE
+          THE <span className="text-[#8B6B16]">RECOVERY</span> <br />
+          THE EXPERIENCE
         </h2>
-        <p className="text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+        <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
           From deep muscle soreness to persistent joint discomfort, our authentic Ayurvedic blends
           offer a profound healing sanctuary for long-lasting pain relief and mobility.
         </p>
 
         <div className="grid grid-cols-2 gap-3 max-w-sm md:max-w-md mx-auto lg:mx-0">
           {['Joint Care', 'Muscle Relief', '100% Organic', 'Fast Acting'].map(item => (
-            <div key={item} className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl bg-[#c9a84c]/5 border border-[#c9a84c]/10">
-              <CheckCircle size={15} className="text-[#c9a84c] flex-shrink-0 md:hidden" />
-              <CheckCircle size={18} className="text-[#c9a84c] flex-shrink-0 hidden md:block" />
+            <div key={item} className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl bg-[#8B6B12]/5 border border-[#8B6B12]/10">
+              <CheckCircle size={15} className="text-[#8B6B16] flex-shrink-0 md:hidden" />
+              <CheckCircle size={18} className="text-[#8B6B16] flex-shrink-0 hidden md:block" />
               <span className="text-white font-bold text-[10px] md:text-xs uppercase tracking-wider">{item}</span>
             </div>
           ))}
@@ -334,7 +366,7 @@ export default async function HomePage() {
 
         <div className="pt-2 md:pt-4">
           <a href="https://wa.me/919921297518"
-            className="inline-flex items-center gap-3 bg-[#c9a84c] text-[#0a0f0d] px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
+            className="inline-flex items-center gap-3 bg-[#8B6B12] text-[#0a0f0d] px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black hover:bg-white transition-colors text-sm md:text-base">
             CONSULT NOW <Phone size={16} className="md:hidden" /><Phone size={18} className="hidden md:block" />
           </a>
         </div>
@@ -346,24 +378,24 @@ export default async function HomePage() {
 
 {/* ===== FEATURED PRODUCTS ===== */}
 <section className="py-4 px-4 bg-white relative overflow-hidden">
-  <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-[100px] pointer-events-none" />
+  <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B6B12]/5 rounded-full blur-[100px] pointer-events-none" />
   
   <div className="max-w-7xl mx-auto relative z-10">
     
     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <span className="h-[1.5px] w-6 bg-[#c9a84c]"></span>
-          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Healing Collection</span>
+          <span className="h-[1.5px] w-6 bg-[#8B6B12]"></span>
+          <span className="text-[#8B6B16] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Healing Collection</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-[0.9]">
-          PURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#f3d382]">RELIEF.</span>
+          PURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6B12] to-[#f3d382]">RELIEF.</span>
         </h2>
       </div>
 
       <Link 
         href="/products" 
-        className="group hidden md:flex items-center gap-3 text-[#0a0f0d] font-black text-xs tracking-widest hover:text-[#c9a84c] transition-all"
+        className="group hidden md:flex items-center gap-3 text-[#0a0f0d] font-black text-xs tracking-widest hover:text-[#8B6B16] transition-all"
       >
         EXPLORE ALL
         <div className="w-10 h-10 rounded-full border border-[#0a0f0d]/10 flex items-center justify-center group-hover:bg-[#0a0f0d] group-hover:text-white transition-all duration-300">
@@ -380,7 +412,7 @@ export default async function HomePage() {
 
             <BuyNowButton
               product={p}
-              className="w-full py-2.5 rounded-xl bg-[#0a0f0d] text-white font-black text-[10px] tracking-widest text-center active:scale-[0.98] transition-all hover:bg-[#c9a84c] hover:text-[#0a0f0d]"
+              className="w-full py-2.5 rounded-xl bg-[#0a0f0d] text-white font-black text-[10px] tracking-widest text-center active:scale-[0.98] transition-all hover:bg-[#8B6B12] hover:text-[#0a0f0d]"
             />
           </div>
         </div>
@@ -504,7 +536,7 @@ export default async function HomePage() {
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <span className="h-[1.5px] w-8 bg-[#c9a84c]"></span>
-          <span className="text-[#c9a84c] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Targeted Recovery</span>
+          <span className="text-[#8B6B16] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em]">Targeted Recovery</span>
         </div>
         <h2 className="text-4xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter leading-none">
           RESTORING <br className="md:hidden" /> 
@@ -530,7 +562,7 @@ export default async function HomePage() {
           key={i} 
           className="group relative overflow-hidden rounded-3xl bg-white border border-[#0a0f0d]/6 shadow-[0_4px_24px_rgba(10,15,13,0.02)] transition-all hover:shadow-[0_12px_40px_rgba(10,15,13,0.05)] cursor-pointer flex flex-col p-4 md:p-6"
         >
-          {/* Circular Asset Frame Wrapper - Reduced padding 'p-2' on mobile to make the image bigger */}
+          {/* Circular Asset Frame Wrapper */}
           <div 
             className={`aspect-square w-full rounded-2xl flex items-center justify-center relative p-2 sm:p-6 md:p-10 transition-colors duration-500 mb-4 md:mb-6 ${
               i % 2 === 0 ? 'bg-[#fcfaf2]' : 'bg-[#fbf9f4]/50'
@@ -542,6 +574,10 @@ export default async function HomePage() {
                 src={item.image}
                 alt={item.label}
                 className="absolute inset-0 w-full h-full object-contain p-2"
+                loading="lazy"
+                decoding="async"
+                width="257"
+                height="257"
               />
             </div>
 
@@ -551,14 +587,14 @@ export default async function HomePage() {
 
           {/* Persistent Typography Block (Visible at all times below image) */}
           <div className="flex flex-col gap-1 px-1 min-w-0">
-            <span className="text-[#c9a84c] text-[9px] font-black uppercase tracking-widest">
+            <span className="text-[#8B6B16] text-[9px] font-black uppercase tracking-widest">
               {item.subtitle}
             </span>
-            <h3 className="text-sm md:text-base font-black tracking-tight text-[#0a0f0d] truncate transition-colors group-hover:text-[#c9a84c]">
+            <h3 className="text-sm md:text-base font-black tracking-tight text-[#0a0f0d] truncate transition-colors group-hover:text-[#8B6B16]">
               {item.label}
             </h3>
             <div className="hidden md:flex items-center gap-1 text-[10px] font-bold text-[#0a0f0d]/30 mt-1 opacity-0 group-hover:opacity-100 transition-all translate-x-[-4px] group-hover:translate-x-0">
-              EXPLORE FORMULA <ArrowRight size={10} className="text-[#c9a84c]" />
+              EXPLORE FORMULA <ArrowRight size={10} className="text-[#8B6B16]" />
             </div>
           </div>
         </div>
@@ -571,11 +607,11 @@ export default async function HomePage() {
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-16 space-y-4">
       <div className="flex justify-center items-center gap-2">
-        <Heart size={16} className="text-[#c9a84c] fill-[#c9a84c]" />
-        <span className="text-[#c9a84c] text-xs font-black uppercase tracking-[0.4em]">Real Stories</span>
+        <Heart size={16} className="text-[#8B6B16] fill-[#c9a84c]" />
+        <span className="text-[#8B6B16] text-xs font-black uppercase tracking-[0.4em]">Real Stories</span>
       </div>
       <h2 className="text-5xl md:text-6xl font-black text-[#0a0f0d] tracking-tighter">
-        VOICES OF <span className="italic font-serif text-[#c9a84c]">Relief.</span>
+        VOICES OF <span className="italic font-serif text-[#8B6B16]">Relief.</span>
       </h2>
     </div>
 
@@ -590,7 +626,7 @@ export default async function HomePage() {
         <div key={i} className="group p-8 rounded-[2rem] bg-[#fcfaf2] border border-[#0a0f0d]/5 hover:bg-[#0a0f0d] transition-all duration-500">
           <div className="flex items-center gap-1 mb-6">
             {[...Array(t.rating)].map((_, s) => (
-              <Star key={s} size={14} fill="#c9a84c" className="text-[#c9a84c]" />
+              <Star key={s} size={14} fill="#c9a84c" className="text-[#8B6B16]" />
             ))}
           </div>
           
@@ -603,10 +639,10 @@ export default async function HomePage() {
               {t.name}
             </p>
             <div className="flex items-center justify-between mt-1">
-              <p className="text-[#c9a84c] text-[10px] font-bold flex items-center gap-1 uppercase">
+              <p className="text-[#8B6B16] text-[10px] font-bold flex items-center gap-1 uppercase">
                 <MapPin size={10} /> {t.location}
               </p>
-              <span className="text-[9px] font-black px-2 py-1 bg-[#0a0f0d]/5 group-hover:bg-white/10 text-[#0a0f0d] group-hover:text-[#c9a84c] rounded-md uppercase tracking-tighter">
+              <span className="text-[9px] font-black px-2 py-1 bg-[#0a0f0d]/5 group-hover:bg-white/10 text-[#0a0f0d] group-hover:text-[#8B6B16] rounded-md uppercase tracking-tighter">
                 {t.condition}
               </span>
             </div>
@@ -626,10 +662,10 @@ export default async function HomePage() {
       <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-6">
         <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none">
           THE <br />
-          <span className="text-[#c9a84c]">CRABVEDA</span> <br />
+          <span className="text-[#8B6B16]">CRABVEDA</span> <br />
           PROMISE.
         </h2>
-        <p className="text-gray-400 text-lg font-medium">
+        <p className="text-gray-600 text-lg font-medium">
           Trusted by over 5000+ individuals across India for target-deep recovery and long-lasting joint comfort.
         </p>
         <div className="w-20 h-1 bg-[#c9a84c]" />
@@ -646,11 +682,11 @@ export default async function HomePage() {
           { icon: <Heart size={32} />, title: 'Made with Care', desc: 'Meticulously processed to ensure premium therapeutic strength and maximum comfort.' },
         ].map((f, i) => (
           <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-[#c9a84c]/50 transition-all group">
-            <div className="text-[#c9a84c] mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-[#8B6B16] mb-6 group-hover:scale-110 transition-transform duration-300">
               {f.icon}
             </div>
             <h3 className="text-xl font-black text-white mb-3 uppercase tracking-tight">{f.title}</h3>
-            <p className="text-gray-400 text-sm leading-relaxed font-medium">{f.desc}</p>
+            <p className="text-gray-600 text-sm leading-relaxed font-medium">{f.desc}</p>
           </div>
         ))}
       </div>
@@ -667,7 +703,7 @@ export default async function HomePage() {
       <div className="flex-1 space-y-6 text-center md:text-left">
         <h2 className="text-5xl md:text-7xl font-black text-[#0a0f0d] tracking-tighter leading-none">
           RECLAIM YOUR <br />
-          <span className="text-[#c9a84c]">MOBILITY.</span>
+          <span className="text-[#8B6B16]">MOBILITY.</span>
         </h2>
         <p className="text-gray-500 text-lg md:text-xl font-medium max-w-md mx-auto md:mx-0">
           From target-deep relief to natural long-term wellness. India's clinical Ayurvedic standard.
@@ -704,12 +740,12 @@ export default async function HomePage() {
             </div>
           ))}
         </div>
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Trusted by 5000+ Verified Users</p>
+        <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Trusted by 5000+ Verified Users</p>
       </div>
       
       <a 
         href="https://wa.me/919921297518" 
-        className="text-[#c9a84c] font-black text-xs tracking-widest flex items-center gap-2 hover:opacity-70 transition-opacity"
+        className="text-[#8B6B16] font-black text-xs tracking-widest flex items-center gap-2 hover:opacity-70 transition-opacity"
       >
         WHATSAPP ORDER INQUIRY <Phone size={14} />
       </a>

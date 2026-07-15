@@ -67,14 +67,14 @@ export default function ReviewForm({ productId }) {
                 className="transition-transform hover:scale-110">
                 <Star
                   size={28}
-                  fill={s <= (hover || rating) ? '#c9a84c' : 'none'}
-                  color={s <= (hover || rating) ? '#c9a84c' : '#d1d5db'}
+                  fill={s <= (hover || rating) ? '#8B6B12' : 'none'}
+                  color={s <= (hover || rating) ? '#8B6B12' : '#d1d5db'}
                 />
               </button>
             ))}
             {rating > 0 && (
               <span className="ml-2 text-xs font-black uppercase tracking-wide"
-                style={{ color: '#c9a84c' }}>
+                style={{ color: '#8B6B12' }}>
                 {['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'][rating]}
               </span>
             )}
@@ -92,7 +92,7 @@ export default function ReviewForm({ productId }) {
             placeholder="Priya Sharma"
             className="w-full px-4 py-3 text-sm rounded-xl outline-none transition-all"
             style={{ backgroundColor: 'white', border: '1.5px solid rgba(15,26,14,0.08)', color: '#0f1a0e' }}
-            onFocus={e => e.target.style.borderColor = '#c9a84c'}
+            onFocus={e => e.target.style.borderColor = '#8B6B12'}
             onBlur={e => e.target.style.borderColor = 'rgba(15,26,14,0.08)'}
           />
         </div>
@@ -109,7 +109,7 @@ export default function ReviewForm({ productId }) {
             rows={3}
             className="w-full px-4 py-3 text-sm rounded-xl outline-none transition-all resize-none"
             style={{ backgroundColor: 'white', border: '1.5px solid rgba(15,26,14,0.08)', color: '#0f1a0e' }}
-            onFocus={e => e.target.style.borderColor = '#c9a84c'}
+            onFocus={e => e.target.style.borderColor = '#8B6B12'}
             onBlur={e => e.target.style.borderColor = 'rgba(15,26,14,0.08)'}
           />
         </div>
