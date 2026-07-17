@@ -51,5 +51,73 @@ export default async function ProductPage({ params }) {
     getReviews(product.id),
     getRelated(product.category_id, product.id),
   ])
-  return <ProductDetail product={product} reviews={reviews} related={related} />
+  return (
+  <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+
+          name: product.name,
+
+          image: product.images?.length
+            ? product.images
+            : [product.image_url],
+
+          description:
+            product.description || product.short_description,
+
+          brand: {
+            "@type": "Brand",
+            name: "CrabVeda",
+          },
+
+          sku: product.id,
+
+          offers: {
+            "@type": "Offer",
+            url: `https://www.crabveda.com/products/${product.slug}`,
+            priceCurrency: "INR",
+            price: product.price,
+            availability:
+              product.stock > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+          },
+
+          ...(reviews.length > 0 && {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue:
+                reviews.reduce((sum, r) => sum + r.rating, 0) /
+                reviews.length,
+              reviewCount: reviews.length,
+            },
+
+            review: reviews.map((r) => ({
+              "@type": "Review",
+              author: {
+                "@type": "Person",
+                name: r.reviewer_name,
+              },
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: r.rating,
+              },
+              reviewBody: r.comment,
+            })),
+          }),
+        }),
+      }}
+    />
+
+    <ProductDetail
+      product={product}
+      reviews={reviews}
+      related={related}
+    />
+  </>
+)
 }
