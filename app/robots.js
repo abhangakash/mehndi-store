@@ -4,10 +4,16 @@ export default function robots() {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin', '/admin-login', '/api/', '/profile', '/checkout', '/cart'],
+        disallow: [
+          '/admin',
+          '/admin-login',
+          '/api/',
+          '/profile',
+          '/checkout',
+          '/cart',
+        ],
       },
     ],
     sitemap: 'https://www.crabveda.com/sitemap.xml',
-    host: 'https://www.crabveda.com',
   }
 }
