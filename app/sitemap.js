@@ -7,9 +7,6 @@ export default async function sitemap() {
   const staticPages = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
     { url: `${BASE_URL}/products`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
-    { url: `${BASE_URL}/packages`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/gallery`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/track-order`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/privacy-policy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
@@ -32,9 +29,10 @@ export default async function sitemap() {
 
   // Dynamic blog pages
   const { data: posts } = await supabase
-    .from('blog_posts')
-    .select('slug, published_at')
-    .eq('is_published', true)
+  .from('blog_posts')
+  .select('slug, published_at')
+  .eq('is_published', true)
+  .not('slug', 'in', '("5-tips-darker-mehndi-color","how-to-make-henna-paste-home","bridal-mehndi-designs-2024")')
 
   const blogPages = (posts || []).map(p => ({
     url: `${BASE_URL}/blog/${p.slug}`,
