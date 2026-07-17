@@ -29,6 +29,19 @@ export default async function OrderConfirmationPage({ params }) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0f1a0e' }}>
+      
+      {/* Meta Purchase Event Tracking Trigger 👇 */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('track', 'Purchase', {
+            value: ${Number(order.total_amount).toFixed(2)},
+            currency: 'INR',
+            content_type: 'product',
+            content_ids: ${JSON.stringify(order.order_items?.map(item => item.product_name) || [])}
+          });
+        }
+      `}} />
+
       {/* Hero */}
       <div className="px-4 pt-10 pb-6 text-center">
         <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"

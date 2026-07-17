@@ -19,12 +19,14 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               {/* Logo Wrapper changed to rounded-full */}
               <div className="w-10 h-10 relative rounded-full overflow-hidden border border-[#93731e]/20 bg-white shadow-xl shadow-black/20">
-                <Image
-                  src="/logo.jpeg"
-                  alt="CrabVeda logo"
-                  fill
-                  className="object-cover"
-                />
+                // Inside your Footer.jsx file, locate your logo Image tag:
+                  <Image
+                    src="/logo.jpeg"
+                    alt="CrabVeda Logo"
+                    fill
+                    sizes="(max-width: 768px) 100px, 150px" 
+                    className="object-contain" 
+                  />
               </div>
               <div>
                 <h2 className="text-lg font-black tracking-tight uppercase leading-none">
@@ -97,14 +99,7 @@ export default function Footer() {
             <span className="text-xs font-black tracking-widest text-[#93731e] uppercase block">Contact Us</span>
             
             <div className="space-y-2">
-              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                  <MapPin size={12} className="text-[#93731e]" />
-                  <span>Our Address</span>
-                </div>
-                <p className="text-xs font-bold text-white pl-5">Solapur, Maharashtra 413203</p>
-              </div>
-
+              
               <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                 <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
                   <Phone size={12} className="text-[#93731e]" />

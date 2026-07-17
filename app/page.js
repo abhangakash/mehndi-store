@@ -24,6 +24,18 @@ async function getCategories() {
   return data || []
 }
 
+// Real single-bottle product for the hero "Buy Now" buttons — fetched live
+// so id/price always match Supabase instead of a hardcoded fake ID.
+async function getHeroProduct() {
+  const { data } = await supabase
+    .from('products')
+    .select('*')
+    .eq('slug', 'crabveda-oil')
+    .eq('is_active', true)
+    .single()
+  return data
+}
+
 
 const PACKAGES = [
   {
@@ -67,7 +79,24 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  const [products, categories] = await Promise.all([getFeaturedProducts(), getCategories()])
+  const [products, categories, heroProduct] = await Promise.all([
+    getFeaturedProducts(),
+    getCategories(),
+    getHeroProduct(),
+  ])
+
+  // Fallback in case the slug ever doesn't match (keeps page from crashing)
+  const hero = heroProduct || {
+    id: null,
+    name: 'CrabVeda 200ml',
+    price: 360,
+    original_price: 499,
+    image_url: '/img14.webp',
+    short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+  }
+  const discountPct = hero.original_price
+    ? Math.round(((hero.original_price - hero.price) / hero.original_price) * 100)
+    : null
 
   return (
     <div>
@@ -108,9 +137,7 @@ export default async function HomePage() {
             src="/img21.webp" 
             alt="Therapeutic Oil Formulation"
             className="w-full h-full object-cover object-left transition-transform duration-[2s] group-hover:scale-105 lg:hidden"
-            // 1. Tell the browser to load this with maximum priority
             fetchPriority="high" 
-            // 2. Instruct the browser to decode this image off the main thread
             decoding="async" 
           />
             {/* DESKTOP / PC IMAGE */}
@@ -130,17 +157,21 @@ export default async function HomePage() {
           {/* ===== MOBILE ONLY: HIGH-VISIBILITY TOP PRICING & BUY BLOCK (Placed directly under 1st image) ===== */}
           <div className="col-span-12 flex flex-col gap-3 lg:hidden w-full max-w-md mx-auto my-2 px-1">
             <div className="flex items-center justify-center gap-3">
-              <span className="text-3xl font-black text-[#0a0f0d]">₹360</span>
-              <span className="text-sm text-gray-600 line-through font-bold">₹499</span>
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">28% OFF</span>
+              <span className="text-3xl font-black text-[#0a0f0d]">₹{hero.price}</span>
+              {hero.original_price && (
+                <span className="text-sm text-gray-600 line-through font-bold">₹{hero.original_price}</span>
+              )}
+              {discountPct && (
+                <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">{discountPct}% OFF</span>
+              )}
             </div>
             <BuyNowButton
               product={{
-                id: 'crabveda-200ml',
-                name: 'CrabVeda 200ml',
-                price: 360,
-                image_url: '/img14.webp',
-                short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+                id: hero.id,
+                name: hero.name,
+                price: hero.price,
+                image_url: hero.image_url,
+                short_description: hero.short_description,
               }}
               className="bg-[#0a0f0d] text-white py-4 rounded-xl font-black flex items-center justify-center gap-3 active:scale-[0.98] transition-all text-base shadow-lg shadow-black/10 w-full"
             >
@@ -220,19 +251,23 @@ export default async function HomePage() {
   {/* ===== DESKTOP ONLY: PRICING & ACTION BLOCK ===== */}
   <div className="hidden lg:flex flex-col gap-4">
     <div className="flex items-center gap-3">
-      <span className="text-4xl font-black text-[#0a0f0d]">₹360</span>
-      <span className="text-base text-gray-600 line-through font-bold">₹499</span>
-      <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">28% OFF</span>
+      <span className="text-4xl font-black text-[#0a0f0d]">₹{hero.price}</span>
+      {hero.original_price && (
+        <span className="text-base text-gray-600 line-through font-bold">₹{hero.original_price}</span>
+      )}
+      {discountPct && (
+        <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-2.5 py-1 rounded-md">{discountPct}% OFF</span>
+      )}
     </div>
 
     <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
       <BuyNowButton
         product={{
-          id: 'crabveda-200ml',
-          name: 'CrabVeda 200ml',
-          price: 360,
-          image_url: '/img14.webp',
-          short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+          id: hero.id,
+          name: hero.name,
+          price: hero.price,
+          image_url: hero.image_url,
+          short_description: hero.short_description,
         }}
         className="group bg-[#0a0f0d] text-white px-8 py-4 rounded-xl font-black flex items-center justify-center gap-3 hover:bg-[#8B6B12] hover:text-[#0a0f0d] transition-all text-base w-full shadow-lg shadow-black/10"
       >
@@ -242,7 +277,7 @@ export default async function HomePage() {
       
       <Link href="/products"
         className="group border border-black/10 bg-white text-[#0a0f0d] px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-50 transition-all text-base w-full">
-        <span>Explore Suite</span>
+        <span>Explore Shop</span>
         <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
       </Link>
     </div>
@@ -252,7 +287,7 @@ export default async function HomePage() {
   <div className="lg:hidden w-full max-w-md mx-auto">
     <Link href="/products"
       className="group border border-black/10 bg-white text-[#0a0f0d] py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 text-sm w-full">
-      <span>Explore Entire Suite</span>
+      <span>Explore Shop</span>
       <ArrowRight size={14} />
     </Link>
   </div>
@@ -433,103 +468,6 @@ export default async function HomePage() {
     </div>
   </div>
 </section>
-     {/* ===== PACKAGES PREVIEW ===== 
-<section className="py-24 px-4 bg-[#0a0f0d] relative overflow-hidden">
-  <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent opacity-10" />
-  
-  <div className="max-w-7xl mx-auto relative z-10">
-    <div className="text-center mb-16">
-      <div className="inline-flex items-center gap-2 mb-4">
-        <Sparkles size={18} className="text-[#93731e]" />
-        <span className="text-[#93731e] text-xs font-black uppercase tracking-[0.3em]">Exquisite Services</span>
-      </div>
-      <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-4">
-        OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#93731e] via-[#f3d382] to-[#93731e]">PACKAGES.</span>
-      </h2>
-      <p className="text-gray-400 max-w-2xl mx-auto font-medium text-lg">
-        Premium bridal experiences tailored to your unique style. 
-        From intimate ceremonies to grand celebrations.
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {PACKAGES.map((pkg) => (
-        <div 
-          key={pkg.name} 
-          className={`relative group rounded-[2.5rem] border transition-all duration-500 overflow-hidden ${
-            pkg.popular 
-            ? 'bg-white border-[#93731e] scale-105 z-20 shadow-[0_20px_50px_rgba(201,168,76,0.15)]' 
-            : 'bg-[#111815] border-white/5 hover:border-[#93731e]/50'
-          }`}
-        >
-          {pkg.popular && (
-            <div className="absolute top-0 left-0 right-0 py-2 bg-[#93731e] text-center text-[10px] font-black text-[#0a0f0d] uppercase tracking-[0.2em]">
-              Most Requested
-            </div>
-          )}
-
-          <div className={`p-8 lg:p-10 ${pkg.popular ? 'pt-12' : ''}`}>
-            <div className={`w-16 h-16 rounded-2xl mb-6 flex items-center justify-center text-3xl ${
-              pkg.popular ? 'bg-[#0a0f0d]/5' : 'bg-white/5'
-            }`}>
-              {pkg.icon}
-            </div>
-
-            <h3 className={`text-2xl font-black mb-2 uppercase tracking-tight ${
-              pkg.popular ? 'text-[#0a0f0d]' : 'text-white'
-            }`}>
-              {pkg.name}
-            </h3>
-
-            <div className="flex items-baseline gap-1 mb-8">
-              <span className={`text-3xl font-black ${pkg.popular ? 'text-[#93731e]' : 'text-[#93731e]'}`}>
-                {pkg.price}
-              </span>
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Onwards</span>
-            </div>
-
-            <ul className="space-y-4 mb-10">
-              {pkg.features.map((f) => (
-                <li key={f} className="flex items-start gap-3 text-sm font-medium">
-                  <CheckCircle 
-                    size={18} 
-                    className={`mt-0.5 flex-shrink-0 ${pkg.popular ? 'text-[#0a0f0d]' : 'text-[#93731e]'}`} 
-                  />
-                  <span className={pkg.popular ? 'text-gray-700' : 'text-gray-400'}>{f}</span>
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href={`https://wa.me/919623740541?text=${encodeURIComponent(
-                `Hi! I want to book the ${pkg.name} package`
-              )}`}
-              target="_blank" 
-              rel="noreferrer"
-              className={`flex items-center justify-center gap-3 w-full py-5 rounded-2xl font-black text-xs tracking-widest transition-all ${
-                pkg.popular 
-                ? 'bg-[#0a0f0d] text-white hover:bg-[#93731e] hover:text-[#0a0f0d]' 
-                : 'bg-[#93731e] text-[#0a0f0d] hover:bg-white hover:text-[#0a0f0d]'
-              }`}
-            >
-              <Phone size={16} /> BOOK ON WHATSAPP
-            </a>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div className="text-center mt-16">
-      <Link 
-        href="/packages" 
-        className="inline-flex items-center gap-2 text-white/50 hover:text-[#93731e] font-bold tracking-widest text-xs transition-colors"
-      >
-        VIEW ALL DETAILED PRICING <ChevronRight size={16} />
-      </Link>
-    </div>
-  </div>
-</section>
-
 {/* ===== GALLERY PREVIEW ===== */}
 <section className="py-6 px-4 bg-[#fbf9f4] relative overflow-hidden">
   <div className="max-w-7xl mx-auto">
@@ -596,9 +534,7 @@ export default async function HomePage() {
             <h3 className="text-sm md:text-base font-black tracking-tight text-[#0a0f0d] truncate transition-colors group-hover:text-[#8B6B16]">
               {item.label}
             </h3>
-            <div className="hidden md:flex items-center gap-1 text-[10px] font-bold text-[#0a0f0d]/30 mt-1 opacity-0 group-hover:opacity-100 transition-all translate-x-[-4px] group-hover:translate-x-0">
-              EXPLORE FORMULA <ArrowRight size={10} className="text-[#8B6B16]" />
-            </div>
+            
           </div>
         </div>
       ))}

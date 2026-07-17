@@ -74,15 +74,24 @@ export default function Navbar() {
           </button>
 
           {/* Logo Brand Frame */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-[28px] h-[28px] rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-gray-100">
-              <Image src="/logo.jpeg" alt="Crabveda Logo" width={28} height={28} className="w-full h-full object-cover" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-black font-black tracking-widest text-xs leading-none uppercase">Crabveda</span>
-              <span className="text-[#93731e] text-[8px] uppercase tracking-widest font-black mt-0.5">Ayurvedic</span>
-            </div>
-          </Link>
+          {/* Logo Brand Frame */}
+<Link href="/" className="flex items-center gap-2">
+  {/* FIX: added aspect-square and forced max-w/max-h constraints */}
+  <div className="w-7 h-7 max-w-7 max-h-7 aspect-square relative rounded-full overflow-hidden shrink-0 border border-gray-100 bg-white">
+    <Image 
+      src="/logo.jpeg" 
+      alt="Crabveda Logo" 
+      fill 
+      sizes="28px" 
+      className="object-cover" 
+      priority
+    />
+  </div>
+  <div className="flex flex-col">
+    <span className="text-black font-black tracking-widest text-xs leading-none uppercase">Crabveda</span>
+    <span className="text-[#93731e] text-[8px] uppercase tracking-widest font-black mt-0.5">Ayurvedic</span>
+  </div>
+</Link>
 
           {/* Desktop Nav Actions */}
           <nav className="hidden lg:flex items-center gap-1">
