@@ -24,6 +24,9 @@ export default async function OrderConfirmationPage({ params }) {
     `Hi! I just placed an order on CrabVeda.\nOrder ID: #${order.id.slice(0, 8).toUpperCase()}\nTotal: ₹${order.total_amount}`
   )
 
+  // Dynamically checking if order was COD or Prepaid
+  const isCOD = order.payment_method?.toLowerCase() === 'cod' || order.is_cod === true
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0f1a0e' }}>
       {/* Hero */}
@@ -109,7 +112,7 @@ export default async function OrderConfirmationPage({ params }) {
                 style={{ color: 'rgba(15,26,14,0.4)' }}>Expected Delivery</p>
               <p className="text-sm font-bold" style={{ color: '#0f1a0e' }}>3–7 business days</p>
               <p className="text-xs" style={{ color: 'rgba(15,26,14,0.4)' }}>
-                Payment: Paid Online ✅
+                Payment: {isCOD ? 'Cash on Delivery (Pay when received) 📦' : 'Paid Online ✅'}
               </p>
             </div>
           </div>

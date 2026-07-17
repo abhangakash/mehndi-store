@@ -6,6 +6,7 @@ import { AuthProvider } from '@/context/AuthContext'
 import CartAbandonmentWidget from '@/components/CartAbandonmentWidget'
 import FloatingButtons from '@/components/FloatingButtons'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import Script from 'next/script' // 👈 Imported for optimized tracking script injection
 import './globals.css'
 
 export const metadata = {
@@ -85,6 +86,18 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <GoogleAnalytics />
+
+        {/* Microsoft Clarity Tracking Script */}
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "xnz10k5n2c");
+          `}
+        </Script>
+
         <AuthProvider>
           <Navbar />
           <main className="min-h-screen">{children}</main>

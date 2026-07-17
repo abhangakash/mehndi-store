@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useCartStore } from '@/store/cartStore'
 import ProductCard from './ProductCard'
@@ -66,6 +66,24 @@ export default function ProductDetail({ product, reviews, related }) {
   const [wishlisted, setWishlisted] = useState(false)
   const addItem = useCartStore(s => s.addItem)
 
+  // GA4 Product View Tracking (view_item)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'view_item', {
+        currency: 'INR',
+        value: Number(product.price),
+        items: [
+          {
+            item_id: product.id.toString(),
+            item_name: product.name,
+            price: Number(product.price),
+            quantity: 1
+          }
+        ]
+      });
+    }
+  }, [product]);
+
   const images = (product.images?.length ? product.images : [product.image_url]).filter(Boolean)
   const discount = product.original_price
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100) : null
@@ -74,6 +92,23 @@ export default function ProductDetail({ product, reviews, related }) {
 
   const handleAddToCart = () => {
     addItem(product, qty)
+
+    // GA4 Add To Cart Tracking
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'add_to_cart', {
+        currency: 'INR',
+        value: Number(product.price) * qty,
+        items: [
+          {
+            item_id: product.id.toString(),
+            item_name: product.name,
+            price: Number(product.price),
+            quantity: Number(qty)
+          }
+        ]
+      });
+    }
+
     toast.success(`${product.name} added to cart!`, {
       icon: '🦀',
       style: { borderRadius: '12px', fontSize: '13px', fontWeight: 'bold' },
@@ -82,6 +117,23 @@ export default function ProductDetail({ product, reviews, related }) {
 
   const handleBuyNow = () => {
     addItem(product, qty)
+
+    // GA4 Add To Cart Tracking (for Buy Now path)
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'add_to_cart', {
+        currency: 'INR',
+        value: Number(product.price) * qty,
+        items: [
+          {
+            item_id: product.id.toString(),
+            item_name: product.name,
+            price: Number(product.price),
+            quantity: Number(qty)
+          }
+        ]
+      });
+    }
+
     window.location.href = '/checkout'
   }
 
@@ -319,7 +371,6 @@ export default function ProductDetail({ product, reviews, related }) {
                   .filter(Boolean)
                   .map((step, i) => (
                     <div key={i} className="flex items-start gap-2.5">
-                     
                       <span className="leading-relaxed">{step.trim()}{step.trim().endsWith('.') ? '' : '.'}</span>
                     </div>
                   ))

@@ -13,6 +13,22 @@ export const useCartStore = create(
         } else {
           set({ items: [...items, { ...product, quantity }] })
         }
+
+        // GA4 Add to Cart Tracking Global Fallback
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('event', 'add_to_cart', {
+            currency: 'INR',
+            value: Number(product.price) * quantity,
+            items: [
+              {
+                item_id: product.id.toString(),
+                item_name: product.name,
+                price: Number(product.price),
+                quantity: Number(quantity)
+              }
+            ]
+          });
+        }
       },
       removeItem: (id) => set({ items: get().items.filter(i => i.id !== id) }),
       updateQuantity: (id, quantity) => {
@@ -23,6 +39,6 @@ export const useCartStore = create(
       getTotalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
       getTotalPrice: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
     }),
-    { name: 'crabveda-cart' } // Changed storage key name to match your new project brand
+    { name: 'crabveda-cart' } 
   )
 )

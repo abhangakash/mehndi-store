@@ -45,6 +45,22 @@ export default function CheckoutPage() {
     if (mounted && items.length === 0) router.push('/cart')
   }, [items, mounted, router])
 
+  // GA4 Begin Checkout Tracking (begin_checkout)
+  useEffect(() => {
+    if (mounted && items.length > 0 && typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'begin_checkout', {
+        currency: 'INR',
+        value: Number(getTotalPrice()),
+        items: items.map(item => ({
+          item_id: item.id.toString(),
+          item_name: item.name,
+          price: Number(item.price),
+          quantity: Number(item.quantity)
+        }))
+      });
+    }
+  }, [mounted, items]);
+
   // Pre-fill personal info from profile
   useEffect(() => {
     if (profile || user) {
@@ -213,6 +229,23 @@ export default function CheckoutPage() {
               setLoading(false)
               return
             }
+
+            // GA4 Purchase Tracking (for Razorpay path)
+            if (typeof window !== 'undefined' && window.gtag) {
+              window.gtag('event', 'purchase', {
+                transaction_id: savedId.toString(),
+                currency: 'INR',
+                value: Number(grandTotal),
+                shipping: Number(shipping),
+                items: items.map(item => ({
+                  item_id: item.id.toString(),
+                  item_name: item.name,
+                  price: Number(item.price),
+                  quantity: Number(item.quantity)
+                }))
+              });
+            }
+
             clearCart()
             toast.success('Order placed successfully!')
             router.push(`/order-confirmation/${savedId}`)
@@ -257,6 +290,23 @@ export default function CheckoutPage() {
       })
       const { orderId, error } = await res.json()
       if (error) throw new Error(error)
+
+      // GA4 Purchase Tracking (for COD fallback path if enabled)
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'purchase', {
+          transaction_id: orderId.toString(),
+          currency: 'INR',
+          value: Number(grandTotal),
+          shipping: Number(shipping),
+          items: items.map(item => ({
+            item_id: item.id.toString(),
+            item_name: item.name,
+            price: Number(item.price),
+            quantity: Number(item.quantity)
+          }))
+        });
+      }
+
       clearCart()
       toast.success('Order placed! Pay on delivery.')
       router.push(`/order-confirmation/${orderId}`)
