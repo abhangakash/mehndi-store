@@ -401,7 +401,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-white">
 
         {/* Header */}
-        <div className="px-4 pt-8 pb-4 text-center">
+        <div className="px-4 pt-2 pb-4 text-center">
           <h1 className="text-2xl font-black uppercase tracking-tight text-black">Checkout</h1>
           <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#93731e' }}>
             Secure • Fast • Easy
@@ -697,11 +697,6 @@ export default function CheckoutPage() {
                     <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500">
                       <Truck size={11} className="text-green-500 flex-shrink-0" /> Free Shipping
                     </span>
-                  </div>
-
-                  {/* Return / Replacement policy line */}
-                  <div className="flex items-center justify-center gap-1.5 mb-4 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
-                    <RotateCcw size={12} style={{ color: '#93731e' }} /> Easy 7-Day Return & Replacement
                   </div>
 
                   <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
