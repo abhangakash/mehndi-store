@@ -4,18 +4,28 @@ import { useCartStore } from '@/store/cartStore'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import Script from 'next/script' // Optimized Script Loading
+import Script from 'next/script'
 import Image from 'next/image'
 import { 
   MapPin, Phone, User, Mail,
-  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home,
+  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home, Loader2, CheckCircle2
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 
 const LABEL_ICONS = { Home: Home, Office: Briefcase, Other: MapPin }
-// Free shipping across all orders
 const FLAT_SHIPPING_CHARGE = 0 
+
+const INDIAN_STATES = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa',
+  'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala',
+  'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland',
+  'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+  'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+  'Andaman and Nicobar Islands', 'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir',
+  'Ladakh', 'Lakshadweep', 'Puducherry',
+]
 
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart } = useCartStore()
@@ -26,26 +36,26 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('razorpay')
 
-  // Saved addresses
   const [savedAddresses, setSavedAddresses] = useState([])
   const [selectedAddressId, setSelectedAddressId] = useState(null)
   const [showNewForm, setShowNewForm] = useState(false)
   const [saveThisAddress, setSaveThisAddress] = useState(false)
   const [addressesLoading, setAddressesLoading] = useState(false)
 
+  // Pincode auto-fill state
+  const [pincodeLookupStatus, setPincodeLookupStatus] = useState(null) // null | 'loading' | 'found' | 'not-found'
+
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
-    address: '', city: '', state: '', pincode: '',
+    address: '', city: '', state: 'Maharashtra', pincode: '',
   })
 
   useEffect(() => { setMounted(true) }, [])
 
-  // Redirect if cart empty
   useEffect(() => {
     if (mounted && items.length === 0) router.push('/cart')
   }, [items, mounted, router])
 
-  // GA4 Begin Checkout Tracking (begin_checkout)
   useEffect(() => {
     if (mounted && items.length > 0 && typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'begin_checkout', {
@@ -61,7 +71,6 @@ export default function CheckoutPage() {
     }
   }, [mounted, items]);
 
-  // Pre-fill personal info from profile
   useEffect(() => {
     if (profile || user) {
       setForm(f => ({
@@ -73,7 +82,6 @@ export default function CheckoutPage() {
     }
   }, [profile, user])
 
-  // Load saved addresses for logged-in users
   useEffect(() => {
     if (user) {
       loadAddresses()
@@ -81,6 +89,52 @@ export default function CheckoutPage() {
       setShowNewForm(true)
     }
   }, [user])
+
+  // ── Auto-fill City & State from Pincode ──────────────────────────
+  // India Post's free public API — no key needed. Triggers once the
+  // user has typed a full 6-digit pincode, so they don't have to
+  // manually type city/state at all in most cases.
+  useEffect(() => {
+    const pincode = form.pincode
+    if (pincode.length !== 6) {
+      setPincodeLookupStatus(null)
+      return
+    }
+
+    let cancelled = false
+    setPincodeLookupStatus('loading')
+
+    const lookup = async () => {
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`)
+        const data = await res.json()
+        if (cancelled) return
+
+        const postOffice = data?.[0]?.PostOffice?.[0]
+        if (data?.[0]?.Status === 'Success' && postOffice) {
+          // Match API's state name against our dropdown list (case-insensitive)
+          // so the <select> auto-selects correctly even with minor naming differences
+          const matchedState = INDIAN_STATES.find(
+            s => s.toLowerCase() === (postOffice.State || '').toLowerCase()
+          )
+          setForm(f => ({
+            ...f,
+            city: postOffice.District || f.city,
+            state: matchedState || postOffice.State || f.state,
+          }))
+          setPincodeLookupStatus('found')
+        } else {
+          setPincodeLookupStatus('not-found')
+        }
+      } catch (err) {
+        console.error('Pincode lookup failed:', err)
+        if (!cancelled) setPincodeLookupStatus('not-found')
+      }
+    }
+
+    const timer = setTimeout(lookup, 300)
+    return () => { cancelled = true; clearTimeout(timer) }
+  }, [form.pincode])
 
   const loadAddresses = async () => {
     setAddressesLoading(true)
@@ -230,7 +284,6 @@ export default function CheckoutPage() {
               return
             }
 
-            // GA4 Purchase Tracking (for Razorpay path)
             if (typeof window !== 'undefined' && window.gtag) {
               window.gtag('event', 'purchase', {
                 transaction_id: savedId.toString(),
@@ -291,7 +344,6 @@ export default function CheckoutPage() {
       const { orderId, error } = await res.json()
       if (error) throw new Error(error)
 
-      // GA4 Purchase Tracking (for COD fallback path if enabled)
       if (typeof window !== 'undefined' && window.gtag) {
         window.gtag('event', 'purchase', {
           transaction_id: orderId.toString(),
@@ -463,27 +515,44 @@ export default function CheckoutPage() {
 
                   {(showNewForm || !user) && (
                     <div className="flex flex-col gap-4">
+                      {/* Pincode moved first — city/state auto-fill from it */}
+                      <div>
+                        <label className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-2 text-gray-400">
+                          Pincode *
+                          {pincodeLookupStatus === 'loading' && <Loader2 size={11} className="animate-spin" style={{ color: '#93731e' }} />}
+                          {pincodeLookupStatus === 'found' && <CheckCircle2 size={11} className="text-green-600" />}
+                        </label>
+                        <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#93731e]/20" value={form.pincode}
+                          onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))}
+                          placeholder="6-digit pincode" maxLength={6} inputMode="numeric" />
+                        {pincodeLookupStatus === 'found' && (
+                          <p className="text-[11px] font-bold text-green-600 mt-1.5">✓ City & state auto-filled — double check below</p>
+                        )}
+                        {pincodeLookupStatus === 'not-found' && (
+                          <p className="text-[11px] font-bold text-amber-600 mt-1.5">Couldn't detect location — please fill city & state manually</p>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">City *</label>
+                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.city} onChange={e => set('city', e.target.value)} placeholder="Auto-filled from pincode" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">State *</label>
+                          <select className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm appearance-none focus:ring-2 focus:ring-[#93731e]/20" value={form.state} onChange={e => set('state', e.target.value)}>
+                            <option value="">Select state</option>
+                            {INDIAN_STATES.map(s => (
+                              <option key={s} value={s}>{s}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
                       <div>
                         <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Full Address *</label>
                         <textarea className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#93731e]/20" value={form.address} onChange={e => set('address', e.target.value)}
                           placeholder="House/flat no, street, area, landmark..." rows={3} />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">City *</label>
-                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.city} onChange={e => set('city', e.target.value)} placeholder="" />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">State *</label>
-                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.state} onChange={e => set('state', e.target.value)} placeholder="" />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-black uppercase tracking-widest mb-2 text-gray-400">Pincode *</label>
-                          <input className="w-full bg-gray-50 border-none rounded-xl p-3 text-sm" value={form.pincode}
-                            onChange={e => set('pincode', e.target.value.replace(/\D/g, '').slice(0, 6))}
-                            placeholder="" maxLength={6} />
-                        </div>
-                       
                       </div>
 
                       {user && (
