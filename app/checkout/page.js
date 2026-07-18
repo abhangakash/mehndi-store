@@ -8,7 +8,7 @@ import Script from 'next/script'
 import Image from 'next/image'
 import { 
   MapPin, Phone, User, Mail,
-  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home, Loader2, CheckCircle2
+  Shield, Tag, ShoppingBag, Lock, Plus, Briefcase, Home, Loader2, CheckCircle2, Truck, RotateCcw
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
@@ -408,6 +408,16 @@ export default function CheckoutPage() {
           </p>
         </div>
 
+        {/* Free Shipping Banner — always visible at top on every device, no scrolling needed */}
+        <div className="max-w-5xl mx-auto px-4 mb-5">
+          <div className="flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-green-50 border border-green-200 text-center">
+            <Truck size={16} className="text-green-600 flex-shrink-0" />
+            <p className="text-xs sm:text-sm font-black uppercase tracking-wide text-green-700">
+              Free Shipping on This Order
+            </p>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="max-w-5xl mx-auto px-4 pb-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -631,13 +641,22 @@ export default function CheckoutPage() {
                 <div className="p-5">
                   <div className="flex flex-col gap-3 mb-6 max-h-60 overflow-y-auto pr-1">
                     {items.map(item => (
-                      <div key={item.id} className="flex justify-between gap-4">
-                        <span className="text-xs text-black font-medium leading-tight">
-                          {item.name} <span className="text-gray-400">× {item.quantity}</span>
-                        </span>
-                        <span className="text-xs font-black text-[#93731e] flex-shrink-0">
-                          ₹{(item.price * item.quantity).toFixed(0)}
-                        </span>
+                      <div key={item.id} className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-lg bg-gray-50 border border-gray-100 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                          {item.image_url ? (
+                            <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-lg">🦀</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0 flex justify-between gap-3 items-start">
+                          <span className="text-xs text-black font-medium leading-tight">
+                            {item.name} <span className="text-gray-400">× {item.quantity}</span>
+                          </span>
+                          <span className="text-xs font-black text-[#93731e] flex-shrink-0">
+                            ₹{(item.price * item.quantity).toFixed(0)}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -659,11 +678,31 @@ export default function CheckoutPage() {
 
                   <button type="submit" disabled={loading}
                     className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-4 shadow-xl shadow-black/10"
-                    style={{ backgroundColor: loading ? '#9ca3af' : '#0f1a0e' }}>
+                    style={{ backgroundColor: loading ? '#9ca3af' : '#15803d' }}>
                     {loading ? (
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : paymentMethod === 'razorpay' ? `🔒 Pay ₹${grandTotal.toFixed(0)}` : 'Place COD Order'}
                   </button>
+
+                  {/* Compact trust bar — reassurance for cold ad traffic at the point of decision */}
+                  <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-3 text-center">
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500">
+                      5000+ Happy Customers
+                    </span>
+                    <span className="text-gray-200">•</span>
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500">
+                      100% Ayurvedic
+                    </span>
+                    <span className="text-gray-200">•</span>
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500">
+                      <Truck size={11} className="text-green-500 flex-shrink-0" /> Free Shipping
+                    </span>
+                  </div>
+
+                  {/* Return / Replacement policy line */}
+                  <div className="flex items-center justify-center gap-1.5 mb-4 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                    <RotateCcw size={12} style={{ color: '#93731e' }} /> Easy 7-Day Return & Replacement
+                  </div>
 
                   <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
                     <Shield size={12} className="text-green-500" /> 100% Secured by Razorpay
