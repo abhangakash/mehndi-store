@@ -89,7 +89,7 @@ export default async function HomePage() {
   const hero = heroProduct || {
     id: null,
     name: 'CrabVeda 200ml',
-    price: 360,
+    price: 449,
     original_price: 499,
     image_url: '/img14.webp',
     short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
