@@ -1,8 +1,8 @@
 'use client'
-import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { useState, useEffect } from 'react'
+import TrackingTimeline from '@/components/TrackingTimeline'
 import {
-  Package, Phone, Mail, Search, MapPin,
+  Package, Phone, Mail, Search, MapPin, Hash,
   CheckCircle, Clock, Truck, XCircle,
   ArrowRight, ChevronDown, ChevronUp, ShoppingBag,
   Sparkles, ShieldCheck, Zap
@@ -11,126 +11,105 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 import Image from 'next/image'
 
-const STATUS = {
-  pending:   { label: 'Order Placed',   icon: Clock,       color: '#d97706', bg: '#fef3c7', step: 0 },
-  confirmed: { label: 'Confirmed',      icon: CheckCircle,   color: '#1d4ed8', bg: '#dbeafe', step: 1 },
-  shipped:   { label: 'Out for Delivery', icon: Truck,      color: '#7c3aed', bg: '#ede9fe', step: 2 },
-  delivered: { label: 'Delivered',      icon: CheckCircle,   color: '#15803d', bg: '#dcfce7', step: 3 },
-  cancelled: { label: 'Cancelled',      icon: XCircle,       color: '#dc2626', bg: '#fee2e2', step: -1 },
-}
+const STEPS = ['Ordered', 'Shipped', 'Out for delivery', 'Delivered']
 
-const STEP_LABELS = ['Placed', 'Confirmed', 'Shipped', 'Delivered']
+function getProgress(order) {
+  const s = order.order_status
+  const t = order.tracking?.status
+  const latest = order.tracking?.events?.[0]?.detail
+
+  if (s === 'cancelled') return { step: -1, title: 'Cancelled', note: 'This order has been cancelled.', color: '#b91c1c' }
+  if (s === 'delivered' || t === 'delivered') return { step: 3, title: 'Delivered', note: 'Your order has been delivered.', color: '#15803d' }
+  if (s === 'shipped') {
+    if (t === 'out_for_delivery') return { step: 2, title: 'Out for delivery', note: 'Your order is with the delivery staff and should reach you today.', color: '#0a0f0d' }
+    if (t === 'available_for_pickup') return { step: 2, title: 'Ready for pickup', note: 'Your order is waiting at your local post office.', color: '#0a0f0d' }
+    if (t === 'failed_attempt') return { step: 2, title: 'Delivery attempted', note: 'India Post could not deliver on the last attempt. They will try again.', color: '#b45309' }
+    if (t === 'exception') return { step: 1, title: 'Shipment update', note: 'India Post reported an issue with this shipment. Message us on WhatsApp if it continues.', color: '#b45309' }
+    return { step: 1, title: 'Shipped', note: latest || 'Your order is on its way. It usually arrives in 3–7 business days.', color: '#0a0f0d' }
+  }
+  if (s === 'confirmed') return { step: 0, title: 'Preparing your order', note: 'Your order is confirmed and is being packed.', color: '#0a0f0d' }
+  return { step: 0, title: 'Order placed', note: 'We have received your order.', color: '#0a0f0d' }
+}
 
 function OrderCard({ order }) {
   const [expanded, setExpanded] = useState(false)
-  const status = STATUS[order.order_status] || STATUS.pending
-  const StatusIcon = status.icon
-  const stepIdx = status.step
-  const isCancelled = order.order_status === 'cancelled'
+  const p = getProgress(order)
+  const isCancelled = p.step < 0
+  const accent = p.step === 3 ? '#15803d' : '#0a0f0d'
+  const shortId = order.id.slice(0, 8).toUpperCase()
 
   return (
-    <div className="bg-white rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 shadow-md border-2 border-black/5 transition-all duration-300 w-full relative">
-      
-      {/* Micro Floating Order Number Badge */}
-      <div className="absolute -top-2.5 left-4 sm:left-6 text-[8px] sm:text-[10px] font-black tracking-widest px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm bg-slate-200 text-slate-700 uppercase">
-        Order #{order.id.slice(0, 8).toUpperCase()}
-      </div>
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-black/10 w-full">
 
-      {/* Order Header / Cost Breakdown info */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2 sm:pt-1 pb-4 border-b border-gray-100">
+      {/* Order summary band */}
+      <div className="grid grid-cols-3 gap-3 px-4 sm:px-6 py-3.5 bg-slate-100 border-b border-black/5">
         <div>
-          <p className="font-black text-xl sm:text-2xl tracking-tight text-[#0a0f0d]">
-            ₹{Number(order.total_amount).toFixed(0)}
-          </p>
-          <p className="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider mt-0.5">
-            Placed on {new Date(order.created_at).toLocaleDateString('en-IN', {
-              day: 'numeric', month: 'long', year: 'numeric'
-            })}
+          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-500">Order placed</p>
+          <p className="text-xs font-bold text-[#0a0f0d] mt-0.5">
+            {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
           </p>
         </div>
-        
-        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-dashed border-gray-100">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider"
-            style={{ backgroundColor: status.bg, color: status.color }}>
-            <StatusIcon size={11} /> {status.label}
-          </span>
-          <button 
-            type="button"
-            onClick={() => setExpanded(!expanded)}
-            className="text-xs font-black flex items-center gap-1 uppercase tracking-wider text-[#93731e] hover:opacity-80 transition-opacity"
-          >
-            Details {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-          </button>
+        <div>
+          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-500">Total</p>
+          <p className="text-xs font-bold text-[#0a0f0d] mt-0.5">₹{Number(order.total_amount).toFixed(0)}</p>
+        </div>
+        <div className="text-right">
+          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-500">Order #</p>
+          <p className="text-xs font-bold font-mono text-[#0a0f0d] mt-0.5">{shortId}</p>
         </div>
       </div>
 
-      {/* Progress tracker — only for non-cancelled */}
-      {!isCancelled && (
-        <div className="py-5 border-b border-gray-100">
-          <div className="relative flex items-center justify-between px-2">
-            {/* Track line */}
-            <div className="absolute left-0 right-0 top-3.5 h-0.5 z-0"
-              style={{ backgroundColor: 'rgba(15,26,14,0.08)', margin: '0 24px' }}>
-              <div className="h-full transition-all duration-700 rounded-full"
-                style={{
-                  width: stepIdx >= 0 ? `${(stepIdx / 3) * 100}%` : '0%',
-                  background: 'linear-gradient(90deg, #93731e, #a48434)',
-                }} />
-            </div>
+      {/* Status headline and progress */}
+      <div className="px-4 sm:px-6 pt-5 pb-6">
+        <h3 className="text-lg sm:text-xl font-black tracking-tight" style={{ color: p.color }}>{p.title}</h3>
+        <p className="text-xs text-gray-500 font-medium mt-1 leading-relaxed">{p.note}</p>
 
-            {STEP_LABELS.map((label, i) => {
-              const done = i <= stepIdx
-              const current = i === stepIdx
+        {!isCancelled && (
+          <div className="relative flex items-start justify-between mt-6">
+            <div className="absolute left-[12.5%] right-[12.5%] top-[10px] h-[3px] rounded-full bg-slate-200">
+              <div className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${(p.step / 3) * 100}%`, backgroundColor: p.step === 3 ? '#15803d' : '#93731e' }} />
+            </div>
+            {STEPS.map((label, i) => {
+              const done = i <= p.step
               return (
-                <div key={label} className="flex flex-col items-center gap-1.5 z-10 flex-1">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-500 text-[10px] font-black"
+                <div key={label} className="relative flex-1 flex flex-col items-center gap-2">
+                  <div className="w-[23px] h-[23px] rounded-full flex items-center justify-center text-[10px] font-black"
                     style={{
-                      backgroundColor: done ? '#0a0f0d' : 'white',
-                      color: done ? 'white' : 'rgba(15,26,14,0.25)',
-                      border: `2px solid ${done ? '#0a0f0d' : 'rgba(15,26,14,0.1)'}`,
-                      boxShadow: current ? '0 0 0 4px rgba(201,168,76,0.15)' : 'none',
+                      backgroundColor: done ? accent : '#ffffff',
+                      color: '#ffffff',
+                      border: `2px solid ${done ? accent : '#e2e8f0'}`,
                     }}>
-                    {done ? '✓' : i + 1}
+                    {done ? '✓' : ''}
                   </div>
-                  <span className="text-center leading-none hidden sm:block mt-0.5"
-                    style={{
-                      fontSize: '9px',
-                      fontWeight: done ? 900 : 600,
-                      color: done ? '#0a0f0d' : 'rgba(15,26,14,0.4)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                    }}>
+                  <span className="text-[10px] sm:text-[11px] text-center leading-tight font-semibold"
+                    style={{ color: done ? '#0a0f0d' : '#94a3b8' }}>
                     {label}
                   </span>
                 </div>
               )
             })}
           </div>
+        )}
+      </div>
 
-          {/* Micro-viewport step label fallback */}
-          <div className="flex sm:hidden justify-between mt-2 px-1">
-            {STEP_LABELS.map((label, i) => (
-              <span key={label} className="text-[8px] font-black uppercase tracking-wide text-center flex-1"
-                style={{ color: i <= stepIdx ? '#0a0f0d' : 'rgba(15,26,14,0.3)' }}>
-                {label}
-              </span>
-            ))}
-          </div>
+      {/* Shipment updates (carrier scans) */}
+      {order.tracking_number && !isCancelled && <TrackingTimeline order={order} />}
 
-          {/* Status micro-banner */}
-          <div className="mt-4 px-3 py-2.5 rounded-xl text-[11px] font-bold text-center uppercase tracking-wide border border-black/5"
-            style={{ backgroundColor: status.bg, color: status.color }}>
-            {order.order_status === 'pending' && '⏳ Your order is being processed'}
-            {order.order_status === 'confirmed' && '✅ Order confirmed — preparing to ship'}
-            {order.order_status === 'shipped' && '🚚 On the way! Expected delivery in 2-3 days'}
-            {order.order_status === 'delivered' && '🎉 Delivered! Thank you for shopping with us'}
-          </div>
-        </div>
-      )}
+      {/* Details toggle */}
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-center gap-1.5 py-3.5 border-t border-gray-100 text-xs font-bold text-[#93731e] hover:bg-slate-50 transition-colors"
+      >
+        {expanded ? 'Hide order details' : 'View order details'}
+        {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+      </button>
+
 
       {/* Expanded details */}
       {expanded && (
-        <div className="pt-4 flex flex-col gap-4 animate-fadeIn">
+        <div className="px-4 sm:px-6 pb-5 pt-4 border-t border-gray-100 flex flex-col gap-4 animate-fadeIn">
           {/* Items */}
           <div>
             <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-gray-400">Items Ordered</p>
@@ -219,31 +198,72 @@ function OrderCard({ order }) {
 }
 
 export default function TrackOrderPage() {
-  const [searchType, setSearchType] = useState('phone')
+  const [searchType, setSearchType] = useState('order_id')
   const [searchValue, setSearchValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [orders, setOrders] = useState(null)
   const [searched, setSearched] = useState(false)
 
-  const handleSearch = async (e) => {
+  // Opened from the shipped email link: /track-order?order=A1B2C3D4
+  useEffect(() => {
+    const o = new URLSearchParams(window.location.search).get('order')
+    if (o && /^[0-9a-fA-F]{8}$/.test(o.trim())) {
+      const v = o.trim().toUpperCase()
+      setSearchType('order_id')
+      setSearchValue(v)
+      runSearch('order_id', v)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleSearch = (e) => {
     e.preventDefault()
-    if (!searchValue.trim()) return toast.error(`Enter your ${searchType}`)
+    runSearch(searchType, searchValue)
+  }
+
+  const runSearch = async (tab, raw) => {
+    const value = (raw || '').trim()
+    let type = tab
+    let query = value
+
+    if (tab === 'contact') {
+      if (value.includes('@')) {
+        type = 'email'
+      } else {
+        const digits = value.replace(/\D/g, '')
+        const ten = digits.length > 10 && digits.startsWith('91') ? digits.slice(-10) : digits
+        if (ten.length !== 10) {
+          return toast.error('Enter a valid 10-digit mobile number or email address')
+        }
+        type = 'phone'
+        query = ten
+      }
+    } else if (!/^#?[0-9a-fA-F]{8}$/.test(value)) {
+      return toast.error('Order ID has 8 characters, for example A1B2C3D4')
+    }
+
     setLoading(true)
     setOrders(null)
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*, order_items(*)')
-      .eq(searchType, searchValue.trim())
-      .order('created_at', { ascending: false })
-      .limit(10)
+    let data = null, error = null
+    try {
+      const res = await fetch('/api/track-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, value: query }),
+      })
+      const json = await res.json()
+      if (!res.ok) error = json.error || 'error'
+      else data = json.orders
+    } catch (err) {
+      error = err.message
+    }
     if (error) {
-      toast.error('Something went wrong. Please try again.')
+      toast.error(typeof error === 'string' && error.startsWith('Invalid') ? error : 'Something went wrong. Please try again.')
     } else if (!data || data.length === 0) {
       setOrders([])
-      toast.error('No orders found with this ' + searchType)
+      toast.error('No order found')
     } else {
       setOrders(data)
-      toast.success(`Found ${data.length} order${data.length > 1 ? 's' : ''}`)
     }
     setSearched(true)
     setLoading(false)
@@ -262,7 +282,7 @@ export default function TrackOrderPage() {
           TRACK YOUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#93731e] to-[#a48434]">ORDER</span>
         </h1>
         <p className="text-gray-500 text-xs md:text-sm mt-2 max-w-md mx-auto font-medium">
-          Enter your checkout details below to access real-time delivery tracking status updates.
+          Enter your Order ID, or the mobile number or email you used at checkout.
         </p>
       </div>
 
@@ -270,14 +290,14 @@ export default function TrackOrderPage() {
       <div className="max-w-xl mx-auto px-4">
         <div className="bg-white rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 shadow-md border-2 border-black/5">
           <p className="text-[10px] font-black uppercase tracking-widest mb-3 text-gray-400">
-            Search by Verification Channel
+            Find your order
           </p>
 
           {/* Toggle buttons styled exactly like premium packs layout */}
           <div className="grid grid-cols-2 gap-2 mb-4 p-1 rounded-xl bg-slate-100">
             {[
-              { key: 'phone', label: '📞 Phone Number' },
-              { key: 'email', label: '✉️ Email Address' },
+              { key: 'order_id', label: 'Order ID' },
+              { key: 'contact', label: 'Mobile / Email' },
             ].map(t => (
               <button key={t.key}
                 type="button"
@@ -295,25 +315,23 @@ export default function TrackOrderPage() {
           {/* Input Field Elements */}
           <form onSubmit={handleSearch} className="flex flex-col gap-3">
             <div className="relative w-full">
-              {searchType === 'phone'
-                ? <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 pointer-events-none select-none">
-                    <Phone size={13} className="text-[#93731e]" />
-                    <span className="text-xs font-black text-gray-300">+91</span>
-                  </div>
-                : <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#93731e]" />
+              {searchType === 'order_id'
+                ? <Hash size={14} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#93731e]" />
+                : <Phone size={14} className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#93731e]" />
               }
               <input
-                type={searchType === 'email' ? 'email' : 'tel'}
+                type="text"
+                autoComplete="off"
                 value={searchValue}
                 onChange={e => setSearchValue(
-                  searchType === 'phone'
-                    ? e.target.value.replace(/\D/g, '').slice(0, 10)
+                  searchType === 'order_id'
+                    ? e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 8).toUpperCase()
                     : e.target.value
                 )}
-                placeholder={searchType === 'phone' ? 'Enter 10-Digit Mobile' : 'you@example.com'}
+                placeholder={searchType === 'order_id' ? 'Order ID, for example A1B2C3D4' : 'Mobile number or email address'}
                 className="w-full py-3.5 pr-4 rounded-xl text-xs font-bold outline-none border transition-all bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#93731e]/20"
                 style={{
-                  paddingLeft: searchType === 'phone' ? '4.2rem' : '2.8rem',
+                  paddingLeft: '2.8rem',
                   borderColor: 'rgba(15,26,14,0.08)',
                   color: '#0a0f0d',
                 }}
@@ -322,12 +340,12 @@ export default function TrackOrderPage() {
 
             <button type="submit" disabled={loading}
               className="w-full py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.99] bg-[#0a0f0d] hover:bg-[#141d1a] disabled:opacity-40 shadow-sm">
-              {loading ? 'Searching Record...' : <><Search size={13} /> Fetch Live Status</>}
+              {loading ? 'Searching...' : <><Search size={13} /> Track order</>}
             </button>
           </form>
 
           <p className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-4">
-            * Please use the matching credentials provided during checkout.
+            Use the same mobile number or email you entered at checkout. Your Order ID is in your confirmation email.
           </p>
         </div>
 
@@ -351,23 +369,23 @@ export default function TrackOrderPage() {
                   <ShoppingBag size={20} className="text-gray-300" />
                 </div>
                 <p className="font-black text-sm uppercase tracking-wide text-[#0a0f0d]">
-                  No Orders Found
+                  No order found
                 </p>
                 <p className="text-[11px] text-gray-400 font-medium mt-1 mb-4">
-                  We couldn't locate active bookings matching that {searchType}.
+                  We could not find an order with those details. Please check them and try again.
                 </p>
                 <button
                   type="button"
-                  onClick={() => { setSearchType(searchType === 'phone' ? 'email' : 'phone'); setSearchValue(''); setOrders(null); setSearched(false) }}
+                  onClick={() => { setSearchType(searchType === 'contact' ? 'order_id' : 'contact'); setSearchValue(''); setOrders(null); setSearched(false) }}
                   className="px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-white bg-[#0a0f0d] hover:bg-[#141d1a]"
                 >
-                  Use {searchType === 'phone' ? 'Email Address' : 'Phone Number'}
+                  Search by {searchType === 'contact' ? 'Order ID' : 'mobile or email'} instead
                 </button>
               </div>
             ) : (
               <>
                 <p className="text-[10px] font-black uppercase tracking-widest text-center text-gray-400">
-                  Found {orders.length} Active Shipment{orders.length > 1 ? 's' : ''}
+                  {orders.length} order{orders.length > 1 ? 's' : ''} found
                 </p>
                 {orders.map(order => (
                   <OrderCard key={order.id} order={order} />

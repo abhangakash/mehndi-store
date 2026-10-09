@@ -7,6 +7,7 @@ import {
   RefreshCw, Send, Download, X, ExternalLink, AlertTriangle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import AdminTrackingInput from '@/components/AdminTrackingInput'
 
 const STATUS_OPTIONS = ['all', 'pending', 'confirmed', 'shipped', 'delivered', 'cancelled']
 const STATUS_CONFIG = {
@@ -39,7 +40,7 @@ function ShiprocketBadge({ order, onPush, pushing }) {
   )
 }
 
-function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, pushingId }) {
+function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSaveTracking, pushingId }) {
   const [expanded, setExpanded] = useState(false)
   const [updating, setUpdating] = useState(false)
   const [currentStatus, setCurrentStatus] = useState(order.order_status || 'pending')
@@ -151,6 +152,13 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, pushin
               <ChevronDown size={12} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
             </button>
           </div>
+
+          {/* India Post consignment number */}
+          <AdminTrackingInput order={order} onSave={async (id, payload) => {
+            const ok = await onSaveTracking(id, payload)
+            if (ok) setCurrentStatus('shipped')
+            return ok
+          }} />
         </div>
       </div>
 
@@ -268,6 +276,32 @@ export default function AdminOrdersPage() {
     } catch { toast.error('Email failed') }
   }
 
+  const handleSaveTracking = async (orderId, { trackingNumber, courier, sendEmail }) => {
+    try {
+      const res = await fetch('/api/admin/set-tracking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, trackingNumber, courier, sendEmail }),
+      })
+      const data = await res.json()
+      if (!res.ok || data.error) {
+        toast.error(data.error || 'Failed to save tracking number')
+        return false
+      }
+      toast.success('Tracking saved — order marked as shipped')
+      if (sendEmail) {
+        if (data.email?.skipped) toast.error('This order has no email address, so no email was sent')
+        else if (data.email?.success) toast.success('Shipped email sent!')
+        else if (data.email?.error) toast.error('Email failed: ' + data.email.error)
+      }
+      fetchOrders()
+      return true
+    } catch (err) {
+      toast.error('Save failed — ' + err.message)
+      return false
+    }
+  }
+
   const handlePushShiprocket = async (order) => {
     setPushingId(order.id)
     try {
@@ -378,6 +412,7 @@ export default function AdminOrdersPage() {
               onStatusChange={handleStatusChange}
               onSendEmail={handleSendEmail}
               onPushShiprocket={handlePushShiprocket}
+              onSaveTracking={handleSaveTracking}
               pushingId={pushingId} />
           ))}
         </div>
