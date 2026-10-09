@@ -11,7 +11,7 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 import Image from 'next/image'
 
-const STEPS = ['Ordered', 'Shipped', 'Out for delivery', 'Delivered']
+const STEPS = ['Ordered', 'Shipped', 'In transit', 'Delivered']
 
 function getProgress(order) {
   const s = order.order_status
@@ -21,11 +21,14 @@ function getProgress(order) {
   if (s === 'cancelled') return { step: -1, title: 'Cancelled', note: 'This order has been cancelled.', color: '#b91c1c' }
   if (s === 'delivered' || t === 'delivered') return { step: 3, title: 'Delivered', note: 'Your order has been delivered.', color: '#15803d' }
   if (s === 'shipped') {
+    const moving = ['in_transit', 'out_for_delivery', 'available_for_pickup', 'failed_attempt', 'exception'].includes(t)
+    const hasScans = (order.tracking?.events?.length || 0) > 0 && t !== 'info_received'
     if (t === 'out_for_delivery') return { step: 2, title: 'Out for delivery', note: 'Your order is with the delivery staff and should reach you today.', color: '#0a0f0d' }
     if (t === 'available_for_pickup') return { step: 2, title: 'Ready for pickup', note: 'Your order is waiting at your local post office.', color: '#0a0f0d' }
     if (t === 'failed_attempt') return { step: 2, title: 'Delivery attempted', note: 'India Post could not deliver on the last attempt. They will try again.', color: '#b45309' }
-    if (t === 'exception') return { step: 1, title: 'Shipment update', note: 'India Post reported an issue with this shipment. Message us on WhatsApp if it continues.', color: '#b45309' }
-    return { step: 1, title: 'Shipped', note: latest || 'Your order is on its way. It usually arrives in 3–7 business days.', color: '#0a0f0d' }
+    if (t === 'exception') return { step: 2, title: 'Shipment update', note: 'India Post reported an issue with this shipment.', color: '#b45309' }
+    if (moving || hasScans) return { step: 2, title: 'In transit', note: latest || 'Your order is on its way to you.', color: '#0a0f0d' }
+    return { step: 1, title: 'Shipped', note: 'Your order has been handed over to India Post. It usually arrives in 3–7 business days.', color: '#0a0f0d' }
   }
   if (s === 'confirmed') return { step: 0, title: 'Preparing your order', note: 'Your order is confirmed and is being packed.', color: '#0a0f0d' }
   return { step: 0, title: 'Order placed', note: 'We have received your order.', color: '#0a0f0d' }
@@ -39,34 +42,34 @@ function OrderCard({ order }) {
   const shortId = order.id.slice(0, 8).toUpperCase()
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-black/10 w-full">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-black/10 w-full transition-all">
 
       {/* Order summary band */}
-      <div className="grid grid-cols-3 gap-3 px-4 sm:px-6 py-3.5 bg-slate-100 border-b border-black/5">
+      <div className="grid grid-cols-3 gap-3 px-5 py-3.5 bg-slate-50 border-b border-black/5">
         <div>
-          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-500">Order placed</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Order placed</p>
           <p className="text-xs font-bold text-[#0a0f0d] mt-0.5">
             {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
           </p>
         </div>
         <div>
-          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-500">Total</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Total</p>
           <p className="text-xs font-bold text-[#0a0f0d] mt-0.5">₹{Number(order.total_amount).toFixed(0)}</p>
         </div>
         <div className="text-right">
-          <p className="text-[9px] font-bold uppercase tracking-widest text-gray-500">Order #</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Order #</p>
           <p className="text-xs font-bold font-mono text-[#0a0f0d] mt-0.5">{shortId}</p>
         </div>
       </div>
 
       {/* Status headline and progress */}
-      <div className="px-4 sm:px-6 pt-5 pb-6">
-        <h3 className="text-lg sm:text-xl font-black tracking-tight" style={{ color: p.color }}>{p.title}</h3>
+      <div className="px-5 pt-5 pb-6">
+        <h3 className="text-lg font-black tracking-tight" style={{ color: p.color }}>{p.title}</h3>
         <p className="text-xs text-gray-500 font-medium mt-1 leading-relaxed">{p.note}</p>
 
         {!isCancelled && (
           <div className="relative flex items-start justify-between mt-6">
-            <div className="absolute left-[12.5%] right-[12.5%] top-[10px] h-[3px] rounded-full bg-slate-200">
+            <div className="absolute left-[12.5%] right-[12.5%] top-[10px] h-[3px] rounded-full bg-slate-100">
               <div className="h-full rounded-full transition-all duration-700"
                 style={{ width: `${(p.step / 3) * 100}%`, backgroundColor: p.step === 3 ? '#15803d' : '#93731e' }} />
             </div>
@@ -82,7 +85,7 @@ function OrderCard({ order }) {
                     }}>
                     {done ? '✓' : ''}
                   </div>
-                  <span className="text-[10px] sm:text-[11px] text-center leading-tight font-semibold"
+                  <span className="text-[10px] text-center leading-tight font-semibold"
                     style={{ color: done ? '#0a0f0d' : '#94a3b8' }}>
                     {label}
                   </span>
@@ -106,10 +109,9 @@ function OrderCard({ order }) {
         {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
       </button>
 
-
       {/* Expanded details */}
       {expanded && (
-        <div className="px-4 sm:px-6 pb-5 pt-4 border-t border-gray-100 flex flex-col gap-4 animate-fadeIn">
+        <div className="px-5 pb-5 pt-4 border-t border-gray-100 flex flex-col gap-4">
           {/* Items */}
           <div>
             <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-gray-400">Items Ordered</p>
@@ -183,14 +185,6 @@ function OrderCard({ order }) {
               {order.payment_method === 'cod' ? 'Cash on Delivery' : 'Paid Online'}
             </span>
           </div>
-
-          {/* Help button */}
-          <a href={`https://wa.me/919921297518?text=Hi! I need help with my order #${order.id.slice(0,8).toUpperCase()}`}
-            target="_blank" rel="noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all hover:opacity-95 shadow-sm"
-            style={{ backgroundColor: '#25D366' }}>
-            <Phone size={13} fill="currentColor" /> Need Help? WhatsApp Us
-          </a>
         </div>
       )}
     </div>
@@ -198,13 +192,12 @@ function OrderCard({ order }) {
 }
 
 export default function TrackOrderPage() {
-  const [searchType, setSearchType] = useState('order_id')
+  const [searchType, setSearchType] = useState('contact')
   const [searchValue, setSearchValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [orders, setOrders] = useState(null)
   const [searched, setSearched] = useState(false)
 
-  // Opened from the shipped email link: /track-order?order=A1B2C3D4
   useEffect(() => {
     const o = new URLSearchParams(window.location.search).get('order')
     if (o && /^[0-9a-fA-F]{8}$/.test(o.trim())) {
@@ -213,7 +206,6 @@ export default function TrackOrderPage() {
       setSearchValue(v)
       runSearch('order_id', v)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSearch = (e) => {
@@ -270,34 +262,27 @@ export default function TrackOrderPage() {
   }
 
   return (
-    <div className="bg-slate-50 min-h-screen text-[#0a0f0d] antialiased pb-12">
-
-      {/* ===== HEADER ===== */}
-      <div className="max-w-7xl mx-auto px-4 pt-10 pb-6 text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#93731e]/10 border border-[#93731e]/20 mb-3">
-          <Sparkles size={12} className="text-[#93731e] animate-pulse" />
-          <span className="text-[#0a0f0d] text-[10px] font-black tracking-[0.2em] uppercase">Order Tracking</span>
-        </div>
-        <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">
-          TRACK YOUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#93731e] to-[#a48434]">ORDER</span>
-        </h1>
-        <p className="text-gray-500 text-xs md:text-sm mt-2 max-w-md mx-auto font-medium">
-          Enter your Order ID, or the mobile number or email you used at checkout.
-        </p>
-      </div>
-
-      {/* ===== SEARCH CARD GRID BOX ===== */}
+    <div className="bg-slate-50 min-h-screen text-[#0a0f0d] antialiased pb-16 pt-8">
       <div className="max-w-xl mx-auto px-4">
-        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 shadow-md border-2 border-black/5">
-          <p className="text-[10px] font-black uppercase tracking-widest mb-3 text-gray-400">
-            Find your order
-          </p>
 
-          {/* Toggle buttons styled exactly like premium packs layout */}
+        {/* ===== HEADER ===== */}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase">
+            Track Your <span className="text-[#93731e]">Order</span>
+          </h1>
+          <p className="text-gray-500 text-xs mt-1.5 font-medium">
+            Look up your active shipment status instantly.
+          </p>
+        </div>
+
+        {/* ===== SEARCH CARD ===== */}
+        <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-black/10">
+          
+          {/* Toggle buttons: Mobile / Email on left, Order ID on right */}
           <div className="grid grid-cols-2 gap-2 mb-4 p-1 rounded-xl bg-slate-100">
             {[
-              { key: 'order_id', label: 'Order ID' },
               { key: 'contact', label: 'Mobile / Email' },
+              { key: 'order_id', label: 'Order ID' },
             ].map(t => (
               <button key={t.key}
                 type="button"
@@ -305,14 +290,14 @@ export default function TrackOrderPage() {
                 className="py-2.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all duration-200"
                 style={{
                   backgroundColor: searchType === t.key ? '#0a0f0d' : 'transparent',
-                  color: searchType === t.key ? 'white' : 'rgba(10,15,13,0.4)',
+                  color: searchType === t.key ? 'white' : 'rgba(10,15,13,0.5)',
                 }}>
                 {t.label}
               </button>
             ))}
           </div>
 
-          {/* Input Field Elements */}
+          {/* Input Form */}
           <form onSubmit={handleSearch} className="flex flex-col gap-3">
             <div className="relative w-full">
               {searchType === 'order_id'
@@ -328,8 +313,8 @@ export default function TrackOrderPage() {
                     ? e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 8).toUpperCase()
                     : e.target.value
                 )}
-                placeholder={searchType === 'order_id' ? 'Order ID, for example A1B2C3D4' : 'Mobile number or email address'}
-                className="w-full py-3.5 pr-4 rounded-xl text-xs font-bold outline-none border transition-all bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#93731e]/20"
+                placeholder={searchType === 'order_id' ? 'Order ID, e.g. A1B2C3D4' : 'Mobile number or email address'}
+                className="w-full py-3 pr-4 rounded-xl text-xs font-bold outline-none border transition-all bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#93731e]/20"
                 style={{
                   paddingLeft: '2.8rem',
                   borderColor: 'rgba(15,26,14,0.08)',
@@ -339,21 +324,17 @@ export default function TrackOrderPage() {
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.99] bg-[#0a0f0d] hover:bg-[#141d1a] disabled:opacity-40 shadow-sm">
+              className="w-full py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white flex items-center justify-center gap-2 transition-all active:scale-[0.99] bg-[#0a0f0d] hover:bg-[#141d1a] disabled:opacity-40 shadow-sm">
               {loading ? 'Searching...' : <><Search size={13} /> Track order</>}
             </button>
           </form>
-
-          <p className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-4">
-            Use the same mobile number or email you entered at checkout. Your Order ID is in your confirmation email.
-          </p>
         </div>
 
         {/* ===== LOGIN HISTORY NUDGE ===== */}
         <div className="mt-3">
           <Link href="/login"
-            className="flex items-center justify-between px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all bg-white border border-black/5 shadow-xs group">
-            <span className="text-gray-400 group-hover:text-gray-600 transition-colors">
+            className="flex items-center justify-between px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all bg-white border border-black/10 shadow-xs group">
+            <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
               🔐 View dashboard order history
             </span>
             <ArrowRight size={13} className="text-[#93731e] group-hover:translate-x-0.5 transition-transform" />
@@ -362,9 +343,9 @@ export default function TrackOrderPage() {
 
         {/* ===== LIVE RESULTS CONTAINER ===== */}
         {searched && orders !== null && (
-          <div className="mt-6 flex flex-col gap-4 w-full">
+          <div className="mt-5 flex flex-col gap-4 w-full">
             {orders.length === 0 ? (
-              <div className="rounded-2xl sm:rounded-[2rem] p-6 text-center bg-white border border-black/5 shadow-xs">
+              <div className="rounded-2xl p-6 text-center bg-white border border-black/10 shadow-xs">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 bg-slate-50 border border-gray-100">
                   <ShoppingBag size={20} className="text-gray-300" />
                 </div>
@@ -394,22 +375,22 @@ export default function TrackOrderPage() {
             )}
           </div>
         )}
-      </div>
 
-      {/* ===== MINI TRUST BAR ===== */}
-      <div className="max-w-xl mx-auto px-4 mt-6">
-        <div className="grid grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-black/5 shadow-xs">
-          <div className="flex items-center gap-2 px-1">
-            <ShieldCheck size={16} className="text-[#93731e] shrink-0" />
-            <span className="text-[10px] font-black tracking-tight text-gray-700 uppercase">100% Ayurvedic Purity</span>
-          </div>
-          <div className="flex items-center gap-2 px-1 border-l border-gray-100">
-            <Zap size={16} className="text-[#93731e] shrink-0" />
-            <span className="text-[10px] font-black tracking-tight text-gray-700 uppercase">Fast Delivery India</span>
+        {/* ===== MINI TRUST BAR ===== */}
+        <div className="mt-5">
+          <div className="grid grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-black/10 shadow-xs">
+            <div className="flex items-center gap-2 px-1">
+              <ShieldCheck size={16} className="text-[#93731e] shrink-0" />
+              <span className="text-[10px] font-black tracking-tight text-gray-700 uppercase">100% Ayurvedic Purity</span>
+            </div>
+            <div className="flex items-center gap-2 px-1 border-l border-gray-100">
+              <Zap size={16} className="text-[#93731e] shrink-0" />
+              <span className="text-[10px] font-black tracking-tight text-gray-700 uppercase">Fast Delivery India</span>
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   )
 }

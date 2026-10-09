@@ -1,7 +1,31 @@
 'use client'
-import { ExternalLink } from 'lucide-react'
 
 const TZ = 'Asia/Kolkata'
+
+// Scans at these places are not shown to customers (case-insensitive; matches the scan's place or text).
+const HIDE_SCANS_AT = [
+  'anjandoh',
+  'awati',
+  'borgaon (kml)',
+  'devlali',
+  'gulsade (gulsadi)',
+  'jategaon',
+  'jinti',
+  'karanje',
+  'kolegaon (e)',
+  'korti',
+  'kumbhargaon',
+  'mangi',
+  'pande',
+  'phisare',
+  'pothare',
+  'rajuri',
+  'raogaon (ravgaon)',
+  'sawadi',
+  'takli rasin',
+  'veet',
+  'vihal'
+];
 
 const dayKey = (d) => d.toLocaleDateString('en-CA', { timeZone: TZ })
 const dayLabel = (d) =>
@@ -17,9 +41,12 @@ export default function TrackingTimeline({ order }) {
   const t = order.tracking
   const courierName = order.courier === 'india_post' ? 'India Post' : 'the courier'
 
-  const carrierEvents = (t?.events || []).map(e => ({
-    date: e.date, title: e.detail, place: e.location,
-  }))
+  const carrierEvents = (t?.events || [])
+    .filter(e => {
+      const text = `${e.location || ''} ${e.detail || ''}`.toLowerCase()
+      return !HIDE_SCANS_AT.some(name => text.includes(name))
+    })
+    .map(e => ({ date: e.date, title: e.detail, place: e.location }))
   const ownEvents = []
   if (order.shipped_at) {
     ownEvents.push({ date: order.shipped_at, title: `Shipped from CrabVeda and handed over to ${courierName}`, place: '' })
@@ -46,19 +73,15 @@ export default function TrackingTimeline({ order }) {
   const latest = all[0]
 
   return (
-    <div className="px-4 sm:px-6 py-5 border-t border-gray-100">
+    <div className="px-5 py-5 border-t border-gray-100">
       <p className="text-sm font-bold text-[#0a0f0d]">Shipment updates</p>
-      <p className="text-[11px] text-gray-500 mt-0.5">
-        {courierName === 'India Post' ? 'India Post (Speed Post)' : 'Courier'} · Tracking ID{' '}
-        <span className="font-mono text-gray-700">{order.tracking_number}</span>
-      </p>
 
       {!t?.available && (
         <p className="mt-3 text-[11px] text-amber-800 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
           Live updates from {courierName} are temporarily unavailable. Please check again in a little while.
         </p>
       )}
-      {t?.available && carrierEvents.length === 0 && (
+      {t?.available && (t?.events?.length || 0) === 0 && (
         <p className="mt-3 text-[11px] text-gray-600 bg-slate-50 border border-black/5 rounded-lg px-3 py-2">
           {courierName} has not shown a scan yet. The first update usually appears within a day of dispatch.
         </p>
@@ -94,16 +117,6 @@ export default function TrackingTimeline({ order }) {
           </ol>
         </div>
       ))}
-
-      {order.courier === 'india_post' && (
-        <a
-          href="https://www.indiapost.gov.in/_layouts/15/dop.portal.tracking/trackconsignment.aspx"
-          target="_blank" rel="noreferrer"
-          className="mt-5 inline-flex items-center gap-1 text-[11px] font-semibold text-[#93731e] hover:underline"
-        >
-          Check on the India Post website <ExternalLink size={11} />
-        </a>
-      )}
     </div>
   )
 }
