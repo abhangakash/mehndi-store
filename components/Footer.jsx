@@ -30,7 +30,7 @@ export default function Footer() {
               </div>
               <div>
                 <h2 className="text-lg font-black tracking-tight uppercase leading-none">
-                  CRABVEDA<span className="text-[#93731e]">.</span>
+                  CRABVEDA<span className="text-[#93731e]"></span>
                 </h2>
                 <span className="text-[9px] text-gray-400 tracking-widest uppercase font-black block mt-1">
                   Ayurvedic Pain Relief Oil

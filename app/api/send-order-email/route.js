@@ -259,10 +259,9 @@ function buildShippedEmail(order) {
     <tr>
       <td style="padding: 36px 40px 24px;">
         <p style="margin: 0; font-size: 15px; font-weight: 700; color: #0f1a0e;">Hello ${order.customer_name || 'Customer'},</p>
-        <p style="margin: 10px 0 0; font-size: 14px; color: #404040; line-height: 1.6;">Your order has been handed over to India Post (Speed Post) and is on its way. It usually arrives within 3–7 business days. You can follow its progress at any time using the button below.</p>
+        <p style="margin: 10px 0 0; font-size: 14px; color: #404040; line-height: 1.6;">Your order has been shipped and is on its way. It usually arrives within 3–7 business days. You can follow its progress at any time using the button below.</p>
       </td>
     </tr>
-
 
     <tr>
       <td style="padding: 0 40px 32px;">

@@ -14,7 +14,7 @@ export async function POST(req) {
       reviewer_name: reviewer_name.trim(),
       rating: Number(rating),
       comment: comment?.trim() || null,
-      is_approved: false, // Admin must approve in Supabase before it shows
+      is_approved: true, // Automatically approved instantly
     })
 
     if (error) throw new Error(error.message)

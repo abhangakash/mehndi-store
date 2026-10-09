@@ -26,7 +26,7 @@ export default function ReviewForm({ productId }) {
       const { success, error } = await res.json()
       if (error) throw new Error(error)
       setSubmitted(true)
-      toast.success('Review submitted! It will appear after approval.')
+      toast.success('Review published successfully!')
     } catch (err) {
       toast.error(err.message || 'Failed to submit review')
     }
@@ -39,7 +39,7 @@ export default function ReviewForm({ productId }) {
         <CheckCircle size={28} className="mx-auto mb-2" style={{ color: '#15803d' }} />
         <p className="font-black text-sm" style={{ color: '#15803d' }}>Thank you for your review!</p>
         <p className="text-xs mt-1" style={{ color: 'rgba(15,26,14,0.5)' }}>
-          Your review will appear once approved. We usually approve within 24 hours.
+          Your review has been posted successfully and is now live.
         </p>
       </div>
     )
@@ -121,7 +121,7 @@ export default function ReviewForm({ productId }) {
         </button>
 
         <p className="text-center text-xs" style={{ color: 'rgba(15,26,14,0.3)' }}>
-          Reviews are approved within 24 hours
+          Your review will be posted instantly
         </p>
       </form>
     </div>

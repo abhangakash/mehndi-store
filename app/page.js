@@ -6,7 +6,7 @@ import BuyNowButton from '@/components/BuyNowButton'
 import {
   Truck, Shield, Leaf, Star, ArrowRight, Phone,
   Sparkles, Heart, Award, Users, MapPin, CheckCircle,
-  Palette, Camera, ChevronRight, ShoppingCart
+  Palette, Camera, ChevronRight, ShoppingCart, ShieldCheck 
 } from 'lucide-react'
 
 async function getFeaturedProducts() {
@@ -196,13 +196,13 @@ export default async function HomePage() {
   </div>
   
   <div className="w-1/2 lg:w-full lg:h-[35%] relative rounded-2xl border border-[#8B6B12]/30 bg-white flex flex-col items-center justify-center p-4 text-center shadow-md">
-    <div className="w-10 h-10 rounded-full bg-[#8B6B12]/10 flex items-center justify-center mb-2">
-      <Leaf size={20} className="text-[#8B6B16]" />
-    </div>
-    <p className="text-[#0a0f0d] font-black text-[10px] md:text-xs uppercase tracking-wider leading-tight">
-      100% Organic<br />
-    </p>
+  <div className="w-10 h-10 rounded-full bg-[#8B6B12]/10 flex items-center justify-center mb-2">
+    <ShieldCheck size={20} className="text-[#8B6B16]" />
   </div>
+  <p className="text-[#0a0f0d] font-black text-[10px] md:text-xs uppercase tracking-wider leading-tight">
+    100% Organic<br />
+  </p>
+</div>
 </div>
           
         </div>
@@ -213,9 +213,8 @@ export default async function HomePage() {
 
   {/* Badge */}
   <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#8B6B12]/10 border border-[#8B6B12]/20 self-center lg:self-start">
-    <Sparkles size={12} className="text-[#8B6B16]" />
-    <span className="text-[#7A5D0A] text-[10px] font-black tracking-widest uppercase">Traditional Ayurvedic Wisdom</span>
-  </div>
+  <span className="text-[#7A5D0A] text-[10px] font-black tracking-widest uppercase">Traditional Ayurvedic Wisdom</span>
+</div>
 
   {/* Friendly, Clear Headline */}
   <div className="flex flex-col gap-3">
@@ -236,17 +235,17 @@ export default async function HomePage() {
   </p>
 
   {/* Quick trust checklist for peace of mind (Desktop view booster) */}
-  <div className="hidden lg:flex items-center gap-4 py-2 border-y border-black/5 text-gray-500 text-xs font-medium">
-    <div className="flex items-center gap-1.5">
-      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Fast Absorbing
-    </div>
-    <div className="flex items-center gap-1.5">
-      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> No Side Effects
-    </div>
-    <div className="flex items-center gap-1.5">
-      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> 100% Cruelty-Free
-    </div>
+  <div className="hidden lg:flex items-center gap-6 py-2.5 border-y border-black/5 text-gray-700 text-xs font-black uppercase tracking-wider">
+  <div className="flex items-center gap-1.5">
+    <span className="text-[#93731e]">✓</span> Fast Absorbing
   </div>
+  <div className="flex items-center gap-1.5">
+    <span className="text-[#93731e]">✓</span> No Side Effects
+  </div>
+  <div className="flex items-center gap-1.5">
+    <span className="text-[#93731e]">✓</span> 100% Cruelty-Free
+  </div>
+</div>
 
   {/* ===== DESKTOP ONLY: PRICING & ACTION BLOCK ===== */}
   <div className="hidden lg:flex flex-col gap-4">
@@ -613,7 +612,8 @@ export default async function HomePage() {
       {/* Right Grid Content */}
       <div className="lg:col-span-8 grid sm:grid-cols-2 gap-8">
         {[
-          { icon: <Leaf size={32} />, title: 'Pure & Ayurvedic', desc: '100% natural compounds with zero side effects. Safe, authentic, and completely toxin-free.' },
+{ icon: <ShieldCheck size={32} style={{ color: '#93731e' }} />, title: 'Pure & Ayurvedic', desc: '100% natural compounds with zero side effects. Safe, authentic, and completely toxin-free.' },
+        
           { icon: <Palette size={32} />, title: 'Deep Absorption', desc: 'Fast-acting formula engineered for rapid, target-deep penetration into stiff joints.' },
           { icon: <Truck size={32} />, title: 'Free Pan-India Delivery', desc: 'Enjoy reliable, completely free shipping right to your doorstep anywhere in India.' },
           { icon: <Award size={32} />, title: '98% Recovery Rate', desc: 'Clinically tested efficacy backed by thousands of verified clinical relief success stories.' },
@@ -675,11 +675,11 @@ export default async function HomePage() {
         <div className="flex -space-x-2">
           {[1,2,3].map(i => (
             <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[8px] font-bold">
-              {i === 3 ? '4.9★' : ''}
+              {i === 3 ? '4.7★' : ''}
             </div>
           ))}
         </div>
-        <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Trusted by 5000+ Verified Users</p>
+        <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Trusted by 500+ Verified Users</p>
       </div>
       
       <a 

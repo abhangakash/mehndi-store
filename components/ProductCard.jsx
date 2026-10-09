@@ -1,11 +1,36 @@
 'use client'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ShoppingCart, Star } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
+import { supabase } from '@/lib/supabase'
 import toast from 'react-hot-toast'
 
 export default function ProductCard({ product, displayName, displayDescription, hideDiscountBadge }) {
   const addItem = useCartStore(s => s.addItem)
+  const [ratingStats, setRatingStats] = useState({ avg: 0, count: 0 })
+
+  // Fetch real review ratings for this specific product
+  useEffect(() => {
+    async function fetchProductReviews() {
+      if (!product?.id) return
+      try {
+        const { data, error } = await supabase
+          .from('reviews')
+          .select('rating')
+          .eq('product_id', product.id)
+
+        if (!error && data && data.length > 0) {
+          const total = data.reduce((acc, r) => acc + (r.rating || 0), 0)
+          const avg = (total / data.length).toFixed(1)
+          setRatingStats({ avg, count: data.length })
+        }
+      } catch (err) {
+        console.error('Error fetching product rating stats:', err)
+      }
+    }
+    fetchProductReviews()
+  }, [product?.id])
   
   const discount = product.original_price
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100) : null
@@ -36,7 +61,7 @@ export default function ProductCard({ product, displayName, displayDescription, 
             <div className="w-full h-full flex items-center justify-center text-3xl sm:text-5xl">🦀</div>
           )}
           
-          {/* Badges - ONLY SHOWS ON COMBO PACK TO AVOID DUPED LABELS */}
+          {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
             {discount && !hideDiscountBadge && (
               <span className="badge badge-brown text-[10px] sm:text-xs px-2 py-0.5 shadow-sm">
@@ -72,14 +97,24 @@ export default function ProductCard({ product, displayName, displayDescription, 
             {displayDescription || product.short_description}
           </p>
 
+          {/* Real Dynamic Ratings */}
           <div className="flex items-center gap-1 mb-3">
             <div className="flex">
-               {[1,2,3,4,5].map(s => <Star key={s} size={10} fill="#93731e" color="#93731e" />)}
+               {[1,2,3,4,5].map(s => (
+                 <Star 
+                   key={s} 
+                   size={10} 
+                   fill={s <= Math.round(ratingStats.avg) ? '#93731e' : 'none'} 
+                   color="#93731e" 
+                 />
+               ))}
             </div>
-            <span className="text-[10px] sm:text-xs ml-1" style={{ color: 'var(--brand-muted)' }}>(4.8)</span>
+            <span className="text-[10px] sm:text-xs ml-1 font-bold" style={{ color: 'var(--brand-text)' }}>
+              {ratingStats.count > 0 ? `${ratingStats.avg} (${ratingStats.count})` : 'No reviews'}
+            </span>
           </div>
 
-          {/* Pricing & Button - Side-by-side on desktop, stacked or compact on mobile */}
+          {/* Pricing & Button */}
           <div className="flex items-center justify-between mt-auto gap-2">
             <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-1.5">
               <span className="font-bold text-sm sm:text-base" style={{ color: 'var(--brand-brown)' }}>₹{product.price}</span>

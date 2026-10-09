@@ -43,14 +43,14 @@ export default function ProductsClient({ products = [] }) {
                 {/* Header Strip inside Card */}
                 <div className="px-3 py-2.5 sm:px-5 sm:py-3.5 flex items-center justify-between border-b border-gray-50 bg-gray-50/50">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <Sparkles size={12} style={{ color: isCombo ? '#93731e' : '#9ca3af' }} className="shrink-0" />
-                    <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-gray-500 truncate">
-                      {isCombo ? 'Recommended Deal' : 'Starter Option'}
-                    </p>
-                  </div>
-                  <span className="text-[8px] sm:text-[10px] font-black text-gray-300 uppercase tracking-wider shrink-0">
-                    0{idx + 1}
-                  </span>
+  <span className="text-[10px]" style={{ color: isCombo ? '#93731e' : '#9ca3af' }}>◆</span>
+  <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-gray-500 truncate">
+    {isCombo ? 'Recommended Deal' : 'Starter Option'}
+  </p>
+</div>
+<span className="text-[8px] sm:text-[10px] font-black text-gray-300 uppercase tracking-wider shrink-0">
+  0{idx + 1}
+</span>
                 </div>
 
                 {/* Main Product Component Wrapper Frame */}

@@ -10,7 +10,7 @@ import {
   ShoppingCart, Zap, Star, ChevronDown, ChevronUp,
   Truck, RefreshCw, Shield, Phone, Package,
   CheckCircle, Leaf, Plus, Minus, Heart, Share2,
-  Tag, Clock, Award, CreditCard, Wallet, Landmark
+  Tag, Clock, Award, CreditCard, Wallet, Landmark, ShieldCheck
 } from 'lucide-react'
 
 function StarRating({ rating, size = 16, interactive = false, onRate }) {
@@ -364,29 +364,29 @@ export default function ProductDetail({ product, reviews, related }) {
         <div>
           <h2 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-3 pl-1">Product Specifications</h2>
           <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
-            <Accordion title="Usage Instructions" icon={<Leaf size={14} />} defaultOpen>
-              <div className="flex flex-col gap-3">
-                {(product.usage_instructions || 'Apply sufficient oil on affected area. Massage gently for 10–15 minutes. Use twice daily.')
-                  .split('. ')
-                  .filter(Boolean)
-                  .map((step, i) => (
-                    <div key={i} className="flex items-start gap-2.5">
-                      <span className="leading-relaxed">{step.trim()}{step.trim().endsWith('.') ? '' : '.'}</span>
-                    </div>
-                  ))
-                }
-              </div>
-            </Accordion>
+            <Accordion title="Usage Instructions" icon={<ShieldCheck size={14} className="text-[#93731e]" />} defaultOpen>
+  <div className="flex flex-col gap-3">
+    {(product.usage_instructions || 'Apply sufficient oil on affected area. Massage gently for 10–15 minutes. Use twice daily.')
+      .split('. ')
+      .filter(Boolean)
+      .map((step, i) => (
+        <div key={i} className="flex items-start gap-2.5">
+          <span className="text-[#93731e] font-bold mt-0.5"></span>
+          <span className="leading-relaxed text-gray-700">{step.trim()}{step.trim().endsWith('.') ? '' : '.'}</span>
+        </div>
+      ))
+    }
+  </div>
+</Accordion>
 
-            {product.ingredients && (
-              <Accordion title="Ingredients" icon={<Leaf size={14} />}>
-                <div className="flex items-start gap-2">
-                  <Leaf size={12} className="mt-0.5 flex-shrink-0 text-[#93731e]" />
-                  <span>{product.ingredients}</span>
-                </div>
-              </Accordion>
-            )}
-
+{product.ingredients && (
+  <Accordion title="Ingredients" icon={<ShieldCheck size={14} className="text-[#93731e]" />}>
+    <div className="flex items-start gap-2">
+      <span className="text-xs text-[#93731e] font-black mt-0.5 flex-shrink-0">◆</span>
+      <span className="text-gray-700 leading-relaxed">{product.ingredients}</span>
+    </div>
+  </Accordion>
+)}
             <Accordion title="Delivery Information" icon={<Truck size={14} />}>
               <div className="flex flex-col gap-2.5">
                 {[
