@@ -162,7 +162,7 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
           <label className="flex items-center gap-2.5 cursor-pointer select-none">
             <div onClick={() => set('is_active', !form.is_active)}
               className="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 cursor-pointer"
-              style={{ backgroundColor: form.is_active ? '#047857' : '#cbd5e1' }}>
+              style={{ backgroundColor: form.is_active ? '#0f172a' : '#cbd5e1' }}>
               <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-xs"
                 style={{ left: form.is_active ? '24px' : '4px' }} />
             </div>
@@ -174,7 +174,7 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
           <label className="flex items-center gap-2.5 cursor-pointer select-none">
             <div onClick={() => set('is_featured', !form.is_featured)}
               className="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 cursor-pointer"
-              style={{ backgroundColor: form.is_featured ? '#047857' : '#cbd5e1' }}>
+              style={{ backgroundColor: form.is_featured ? '#0f172a' : '#cbd5e1' }}>
               <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all shadow-xs"
                 style={{ left: form.is_featured ? '24px' : '4px' }} />
             </div>
@@ -187,7 +187,7 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
         {/* Save / Cancel */}
         <div className="sm:col-span-2 flex gap-3 pt-3">
           <button onClick={onSave} disabled={saving}
-            className="flex-1 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-300">
+            className="flex-1 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300">
             <Save size={14} /> {saving ? 'Saving File...' : isEdit ? 'Commit Changes' : 'Append to Store'}
           </button>
           <button onClick={onCancel}
@@ -332,7 +332,7 @@ export default function AdminProductsPage() {
             <button
               onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(EMPTY_PRODUCT) }}
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-xs"
-              style={{ backgroundColor: showForm ? '#e2e8f0' : '#047857', color: showForm ? '#475569' : '#ffffff' }}>
+              style={{ backgroundColor: showForm ? '#e2e8f0' : '#0f172a', color: showForm ? '#475569' : '#ffffff' }}>
               {showForm ? <X size={14} /> : <Plus size={14} />}
               {showForm ? 'Close Form' : 'Add New Item'}
             </button>
@@ -357,7 +357,7 @@ export default function AdminProductsPage() {
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Filter items by product name, catalog tag properties..."
-            className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 text-slate-800 placeholder-slate-400 outline-none focus:border-emerald-600/40 focus:ring-1 focus:ring-emerald-600/10 shadow-xs" />
+            className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 text-slate-800 placeholder-slate-400 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/10 shadow-xs" />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
               <X size={14} />
@@ -382,7 +382,7 @@ export default function AdminProductsPage() {
         {/* Product list */}
         {loading ? (
           <div className="text-center py-24">
-            <div className="w-9 h-9 border-2 border-slate-200 border-t-emerald-700 rounded-full animate-spin mx-auto" />
+            <div className="w-9 h-9 border-2 border-slate-200 border-t-slate-900 rounded-full animate-spin mx-auto" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl p-16 text-center bg-white border border-slate-200 shadow-sm">
@@ -422,7 +422,7 @@ export default function AdminProductsPage() {
                       {product.categories?.name || 'No catalog assignment'}
                     </p>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-bold text-sm text-emerald-800">₹{product.price}</span>
+                      <span className="font-bold text-sm text-slate-900">₹{product.price}</span>
                       {product.original_price && (
                         <span className="text-xs line-through text-slate-400">₹{product.original_price}</span>
                       )}
@@ -452,7 +452,7 @@ export default function AdminProductsPage() {
                       className="p-2 rounded-xl transition-colors hover:bg-slate-50"
                       title={product.is_active ? 'Hide from store channel' : 'Publish to store channel'}>
                       {product.is_active
-                        ? <Eye size={14} className="text-emerald-700" />
+                        ? <Eye size={14} className="text-slate-900" />
                         : <EyeOff size={14} className="text-slate-300" />
                       }
                     </button>

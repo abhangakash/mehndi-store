@@ -13,8 +13,8 @@ const STATUS_OPTIONS = ['all', 'pending', 'confirmed', 'shipped', 'delivered', '
 const STATUS_CONFIG = {
   pending:   { label: 'Pending',   color: '#b45309', bg: '#fef3c7', icon: Clock },
   confirmed: { label: 'Confirmed', color: '#1d4ed8', bg: '#dbeafe', icon: CheckCircle },
-  shipped:   { label: 'Shipped',   color: '#6d28d9', bg: '#ede9fe', icon: Truck },
-  delivered: { label: 'Delivered', color: '#047857', bg: '#dcfce7', icon: CheckCircle },
+  shipped:   { label: 'Shipped',   color: '#4f46e5', bg: '#e0e7ff', icon: Truck },
+  delivered: { label: 'Delivered', color: '#0f172a', bg: '#f1f5f9', icon: CheckCircle },
   cancelled: { label: 'Cancelled', color: '#b91c1c', bg: '#fee2e2', icon: XCircle },
 }
 
@@ -23,7 +23,7 @@ function ShiprocketBadge({ order, onPush, pushing }) {
 
   if (hasShipment) {
     return (
-      <span className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-teal-200 bg-teal-50 text-teal-700">
+      <span className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700">
         <Truck size={11} /> Shiprocket #{order.shiprocket_order_id}
         {order.shiprocket_status && (
           <span className="opacity-60 font-medium normal-case">· {order.shiprocket_status}</span>
@@ -75,7 +75,7 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSave
               </p>
             </div>
             <div className="text-right flex-shrink-0">
-              <p className="font-bold text-base text-emerald-700">
+              <p className="font-bold text-base text-slate-900">
                 ₹{Number(order.total_amount).toFixed(0)}
               </p>
               <p className="text-xs text-slate-400">
@@ -85,11 +85,11 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSave
           </div>
 
           <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3 text-xs text-slate-500">
-            <a href={`tel:${order.phone}`} className="flex items-center gap-1 hover:text-emerald-700 transition-colors">
+            <a href={`tel:${order.phone}`} className="flex items-center gap-1 hover:text-slate-900 transition-colors">
               <Phone size={11} /> {order.phone}
             </a>
             {order.email && (
-              <a href={`mailto:${order.email}`} className="flex items-center gap-1 hover:text-emerald-700 transition-colors">
+              <a href={`mailto:${order.email}`} className="flex items-center gap-1 hover:text-slate-900 transition-colors">
                 <Mail size={11} /> {order.email}
               </a>
             )}
@@ -129,13 +129,13 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSave
             </div>
 
             <button onClick={() => onSendEmail(order.id, 'shipped')}
-              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-blue-200 text-blue-700 hover:bg-blue-50 transition-colors">
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors">
               <Send size={11} /> Shipped Email
             </button>
 
             <a href={`https://wa.me/91${order.phone}?text=Hi ${order.customer_name}! Your order %23${order.id.slice(0,8).toUpperCase()} from Crabveda Pain Relief Oil is now ${currentStatus}. 🌿`}
               target="_blank" rel="noreferrer"
-              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition-colors">
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors">
               <Phone size={11} /> WhatsApp
             </a>
 
@@ -147,7 +147,7 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSave
             <ShiprocketBadge order={order} onPush={onPushShiprocket} pushing={isPushing} />
 
             <button onClick={() => setExpanded(!expanded)}
-              className="flex items-center gap-1 text-xs font-bold ml-auto text-emerald-700 hover:text-emerald-800 transition-colors">
+              className="flex items-center gap-1 text-xs font-bold ml-auto text-slate-900 hover:text-slate-700 transition-colors">
               {expanded ? 'Hide' : 'Details'}
               <ChevronDown size={12} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
             </button>
@@ -175,7 +175,7 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSave
               ))}
               <div className="border-t border-slate-200 mt-1.5 pt-1.5 flex justify-between text-xs font-bold text-slate-900">
                 <span>Total</span>
-                <span className="text-emerald-700">₹{Number(order.total_amount).toFixed(0)}</span>
+                <span className="text-slate-900">₹{Number(order.total_amount).toFixed(0)}</span>
               </div>
             </div>
             <div>
@@ -203,7 +203,7 @@ function OrderRow({ order, onStatusChange, onSendEmail, onPushShiprocket, onSave
                   <span>Status: <span className="font-semibold text-slate-800">{order.shiprocket_status}</span></span>
                 )}
                 <a href="https://app.shiprocket.in/seller/orders/new" target="_blank" rel="noreferrer"
-                  className="flex items-center gap-1 font-bold text-teal-700 hover:text-teal-800">
+                  className="flex items-center gap-1 font-bold text-slate-900 hover:text-slate-700">
                   Open in Shiprocket <ExternalLink size={11} />
                 </a>
               </div>
@@ -359,7 +359,7 @@ export default function AdminOrdersPage() {
         <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
         <input value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search by customer details, contact profile, or token ID..."
-          className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 outline-none focus:border-emerald-600/40 focus:ring-1 focus:ring-emerald-600/10 text-slate-800 placeholder-slate-400 shadow-xs" />
+          className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/10 text-slate-800 placeholder-slate-400 shadow-xs" />
         {search && (
           <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
             <X size={14} />
@@ -376,8 +376,8 @@ export default function AdminOrdersPage() {
             <button key={s} onClick={() => setStatusFilter(s)}
               className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wide transition-all border shadow-xs"
               style={{
-                backgroundColor: isSelected ? (config?.bg || '#dcfce7') : '#ffffff',
-                color: isSelected ? (config?.color || '#047857') : '#64748b',
+                backgroundColor: isSelected ? (config?.bg || '#f1f5f9') : '#ffffff',
+                color: isSelected ? (config?.color || '#0f172a') : '#64748b',
                 borderColor: isSelected ? 'transparent' : '#e2e8f0',
               }}>
               {s === 'all' ? 'All Ledger' : config?.label}
@@ -397,7 +397,7 @@ export default function AdminOrdersPage() {
 
       {loading ? (
         <div className="text-center py-24">
-          <div className="w-9 h-9 border-2 border-slate-200 border-t-emerald-700 rounded-full animate-spin mx-auto" />
+          <div className="w-9 h-9 border-2 border-slate-200 border-t-slate-900 rounded-full animate-spin mx-auto" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="rounded-2xl p-16 text-center bg-white border border-slate-200 shadow-sm">

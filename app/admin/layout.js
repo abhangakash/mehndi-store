@@ -1,10 +1,11 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard, ShoppingBag, Package,
-  LogOut, Menu, X, Leaf, ExternalLink
+  LogOut, Menu, X, ExternalLink
 } from 'lucide-react'
 
 const NAV = [
@@ -36,8 +37,14 @@ export default function AdminLayout({ children }) {
         {/* Logo */}
         <div className="px-5 py-5 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 bg-emerald-600/10 text-emerald-700 shadow-sm">
-              <Leaf size={16} className="fill-emerald-600/5" />
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center bg-white relative flex-shrink-0">
+              <Image 
+                src="/logo.jpeg" 
+                alt="CrabVeda Logo" 
+                fill 
+                className="object-cover"
+                priority
+              />
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-900 leading-tight">Crabveda</p>
@@ -58,8 +65,8 @@ export default function AdminLayout({ children }) {
               <Link key={item.href} href={item.href}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
                 style={{
-                  backgroundColor: active ? '#dcfce7' : 'transparent',
-                  color: active ? '#047857' : '#64748b',
+                  backgroundColor: active ? '#f1f5f9' : 'transparent',
+                  color: active ? '#0f172a' : '#64748b',
                 }}>
                 <Icon size={16} />
                 {item.label}
@@ -85,9 +92,15 @@ export default function AdminLayout({ children }) {
       {/* ===== MOBILE TOP BAR ===== */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-white"
         style={{ borderBottom: '1px solid #e2e8f0' }}>
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-emerald-600/10 text-emerald-700">
-            <Leaf size={13} />
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center bg-white relative flex-shrink-0">
+            <Image 
+              src="/logo.jpeg" 
+              alt="CrabVeda Logo" 
+              fill 
+              className="object-cover"
+              priority
+            />
           </div>
 
           <p className="text-xs font-bold uppercase tracking-widest text-slate-900">
@@ -111,8 +124,14 @@ export default function AdminLayout({ children }) {
 
             <div className="px-5 py-5 border-b border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-emerald-600/10 text-emerald-700">
-                  <Leaf size={16} />
+                <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center bg-white relative flex-shrink-0">
+                  <Image 
+                    src="/logo.jpeg" 
+                    alt="CrabVeda Logo" 
+                    fill 
+                    className="object-cover"
+                    priority
+                  />
                 </div>
 
                 <div>
@@ -142,8 +161,8 @@ export default function AdminLayout({ children }) {
                     onClick={() => setSidebarOpen(false)}
                     className="flex items-center gap-3 px-3 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
                     style={{
-                      backgroundColor: active ? '#dcfce7' : 'transparent',
-                      color: active ? '#047857' : '#64748b',
+                      backgroundColor: active ? '#f1f5f9' : 'transparent',
+                      color: active ? '#0f172a' : '#64748b',
                     }}>
                     <Icon size={16} /> {item.label}
                   </Link>
