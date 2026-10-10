@@ -163,8 +163,8 @@ export default function ProfileContent() {
   const { user, profile, loading, signOut, fetchProfile } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const initialTab = searchParams.get('tab') || 'profile'
-  const [tab, setTab] = useState(['profile','orders','addresses'].includes(initialTab) ? initialTab : 'profile')
+  const initialTab = searchParams.get('tab') || 'orders'
+  const [tab, setTab] = useState(['orders','addresses','profile'].includes(initialTab) ? initialTab : 'orders')
 
   const [orders, setOrders] = useState([])
   const [ordersLoading, setOrdersLoading] = useState(false)
@@ -249,70 +249,64 @@ export default function ProfileContent() {
   )
   if (!user) return null
 
-  const initials = (profile?.full_name || user.email || 'U').slice(0, 2).toUpperCase()
+  // Single initial letter extraction
+  const initial = (profile?.full_name || user.email || 'U').slice(0, 1).toUpperCase()
+  
+  // Tabs arranged: Orders (left), Addresses (middle), Profile (right)
   const TABS = [
-    { key: 'profile', label: 'Profile', icon: <User size={14} /> },
     { key: 'orders', label: 'Orders', icon: <Package size={14} /> },
     { key: 'addresses', label: 'Addresses', icon: <MapPin size={14} /> },
+    { key: 'profile', label: 'Profile', icon: <User size={14} /> },
   ]
 
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       
       {/* Top Banner Header Block */}
-      <div className="px-4 pt-8 pb-4 text-center">
+      <div className="px-4 pt-4 pb-4 text-center">
         <h1 className="text-2xl font-black uppercase tracking-tight text-black">My Account</h1>
-        <p className="text-xs font-bold uppercase tracking-widest mt-1 style-title max-w-md mx-auto" style={{ color: '#93731e' }}>
-          Manage your personal records, profiles & secure dynamic settings
-        </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 pb-4">
-        {/* Profile Card Header Block */}
-        <div className="rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4 mb-5 border border-gray-100 bg-white shadow-sm">
-          <div className="w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-black flex-shrink-0 bg-[#0f1a0e] mx-auto sm:mx-0">
-            {initials}
+      <div className="max-w-3xl mx-auto px-4 pb-2">
+        {/* Compact Mobile-Friendly Profile & Quick Header */}
+        <div className="rounded-2xl px-4 py-3 flex items-center justify-between gap-3 mb-4 border border-gray-100 bg-white shadow-xs">
+          
+          {/* Left: Avatar & User Info */}
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-black flex-shrink-0 bg-[#0f1a0e]">
+              {initial}
+            </div>
+            <div className="min-w-0">
+              <h2 className="font-black text-xs sm:text-sm truncate text-black">
+                {profile?.full_name || 'User Account'}
+              </h2>
+              <p className="text-[11px] truncate text-gray-400 font-medium">{user.email}</p>
+            </div>
           </div>
-          <div className="flex-1 min-w-0 text-center sm:text-left">
-            <h2 className="font-black text-base truncate text-black">
-              {profile?.full_name || 'User Account'}
-            </h2>
-            <p className="text-xs truncate text-gray-400 font-medium mt-0.5">{user.email}</p>
-            {profile?.phone && (
-              <p className="text-xs text-gray-400 font-medium mt-0.5">📞 {profile.phone}</p>
-            )}
-          </div>
-          <button onClick={handleSignOut}
-            className="flex items-center justify-center gap-1.5 text-xs font-black uppercase tracking-widest px-4 py-3 rounded-xl border border-red-200 bg-red-50/20 hover:bg-red-50 text-red-500 transition-all active:scale-[0.98] sm:w-auto w-full mt-2 sm:mt-0">
-            <LogOut size={13} /> Sign out
-          </button>
-        </div>
 
-        {/* Quick actions dynamic grids */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
-          {[
-            { href: '/track-order', icon: <MapPin size={18} />, label: 'Track Order', color: '#7c3aed', bg: '#ede9fe' },
-            { href: '/products', icon: <ShoppingBag size={18} />, label: 'Shop Now', color: '#15803d', bg: '#dcfce7' },
-            { href: 'https://wa.me/919921297518', icon: <Phone size={18} />, label: 'Get Help', color: '#1d4ed8', bg: '#dbeafe', external: true },
-          ].map(a => (
-            <Link key={a.label} href={a.href} target={a.external ? '_blank' : undefined} rel={a.external ? 'noreferrer' : undefined}
-              className="flex flex-col items-center gap-2 p-2.5 sm:p-3 rounded-2xl border border-gray-100 bg-white transition-all hover:shadow-md active:scale-[0.98]">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: a.bg, color: a.color }}>
-                {a.icon}
-              </div>
-              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-center text-gray-500 break-words line-clamp-1">
-                {a.label}
-              </span>
+          {/* Right: Compact Action Buttons (Quick links + Sign out) */}
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <Link href="/track-order" 
+              className="p-2 rounded-xl border border-gray-100 bg-purple-50/50 text-[#7c3aed] hover:bg-purple-50 transition" title="Track Order">
+              <MapPin size={15} />
             </Link>
-          ))}
+            <Link href="/products" 
+              className="p-2 rounded-xl border border-gray-100 bg-green-50/50 text-[#15803d] hover:bg-green-50 transition" title="Shop Now">
+              <ShoppingBag size={15} />
+            </Link>
+            <button onClick={handleSignOut}
+              className="p-2 rounded-xl border border-red-200 bg-red-50/30 hover:bg-red-50 text-red-500 transition active:scale-95" title="Sign out">
+              <LogOut size={15} />
+            </button>
+          </div>
+
         </div>
 
         {/* Dynamic Nav Tabs Group */}
-        <div className="flex gap-1.5 p-1 border border-gray-100 rounded-2xl bg-gray-50/50 mb-6">
+        <div className="flex gap-1.5 p-1 border border-gray-100 rounded-2xl bg-gray-50/50 mb-4">
           {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className="flex-1 flex items-center justify-center gap-1.5 py-3 px-1 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200"
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-1 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200"
               style={{
                 backgroundColor: tab === t.key ? '#0f1a0e' : 'transparent',
                 color: tab === t.key ? 'white' : '#6b7280',
@@ -324,49 +318,6 @@ export default function ProfileContent() {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 pb-12">
-
-        {/* PROFILE TAB */}
-        {tab === 'profile' && (
-          <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
-            <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 bg-gray-50/50">
-              <p className="text-xs font-black uppercase tracking-widest text-gray-500">Account Details</p>
-              {!editing
-                ? <button onClick={() => setEditing(true)}
-                    className="flex items-center justify-center gap-1.5 text-xs font-black uppercase tracking-widest w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-black transition-all active:scale-[0.98]">
-                    <Edit2 size={12} /> Edit Profile
-                  </button>
-                : <div className="flex gap-2 w-full sm:w-auto">
-                    <button onClick={() => setEditing(false)} className="flex-1 sm:flex-none text-center text-xs font-black uppercase tracking-widest px-3.5 py-2.5 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition-all active:scale-[0.98]">
-                      Cancel
-                    </button>
-                    <button onClick={handleSaveProfile} disabled={saving}
-                      className="flex-1 sm:flex-none flex items-center justify-center gap-1 text-xs font-black uppercase tracking-widest px-4 py-2.5 rounded-xl text-white transition-all active:scale-[0.98] bg-[#0f1a0e]">
-                      <Save size={12} /> {saving ? 'Saving...' : 'Save'}
-                    </button>
-                  </div>
-              }
-            </div>
-            <div className="p-5 flex flex-col gap-4">
-              {[
-                { label: 'Full Name', value: profile?.full_name, field: 'full_name', type: 'text', placeholder: 'Your name' },
-                { label: 'Email Address', value: user.email, readonly: true },
-                { label: 'Phone Number', value: profile?.phone || user.phone, field: 'phone', type: 'tel', placeholder: '9876543210' },
-              ].map(f => (
-                <div key={f.label}>
-                  <label className="block text-xs font-black uppercase tracking-widest mb-1.5 text-gray-400">{f.label}</label>
-                  {editing && !f.readonly && f.field
-                    ? <input type={f.type} value={form[f.field]} placeholder={f.placeholder}
-                        className="w-full text-sm font-semibold p-3 border border-gray-200 rounded-xl focus:outline-none focus:border-black transition-colors bg-white text-black"
-                        onChange={e => setForm(fm => ({ ...fm, [f.field]: e.target.value }))} />
-                    : <p className="text-sm font-semibold py-3 px-4 rounded-xl border border-gray-50 bg-gray-50/50 text-black break-words">
-                        {f.value || '—'}
-                      </p>
-                  }
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* ORDERS TAB */}
         {tab === 'orders' && (
@@ -541,6 +492,50 @@ export default function ProfileContent() {
             )}
           </div>
         )}
+
+        {/* PROFILE TAB */}
+        {tab === 'profile' && (
+          <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
+            <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 bg-gray-50/50">
+              <p className="text-xs font-black uppercase tracking-widest text-gray-500">Account Details</p>
+              {!editing
+                ? <button onClick={() => setEditing(true)}
+                    className="flex items-center justify-center gap-1.5 text-xs font-black uppercase tracking-widest w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-black transition-all active:scale-[0.98]">
+                    <Edit2 size={12} /> Edit Profile
+                  </button>
+                : <div className="flex gap-2 w-full sm:w-auto">
+                    <button onClick={() => setEditing(false)} className="flex-1 sm:flex-none text-center text-xs font-black uppercase tracking-widest px-3.5 py-2.5 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition-all active:scale-[0.98]">
+                      Cancel
+                    </button>
+                    <button onClick={handleSaveProfile} disabled={saving}
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-1 text-xs font-black uppercase tracking-widest px-4 py-2.5 rounded-xl text-white transition-all active:scale-[0.98] bg-[#0f1a0e]">
+                      <Save size={12} /> {saving ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+              }
+            </div>
+            <div className="p-5 flex flex-col gap-4">
+              {[
+                { label: 'Full Name', value: profile?.full_name, field: 'full_name', type: 'text', placeholder: 'Your name' },
+                { label: 'Email Address', value: user.email, readonly: true },
+                { label: 'Phone Number', value: profile?.phone || user.phone, field: 'phone', type: 'tel', placeholder: '9876543210' },
+              ].map(f => (
+                <div key={f.label}>
+                  <label className="block text-xs font-black uppercase tracking-widest mb-1.5 text-gray-400">{f.label}</label>
+                  {editing && !f.readonly && f.field
+                    ? <input type={f.type} value={form[f.field]} placeholder={f.placeholder}
+                        className="w-full text-sm font-semibold p-3 border border-gray-200 rounded-xl focus:outline-none focus:border-black transition-colors bg-white text-black"
+                        onChange={e => setForm(fm => ({ ...fm, [f.field]: e.target.value }))} />
+                    : <p className="text-sm font-semibold py-3 px-4 rounded-xl border border-gray-50 bg-gray-50/50 text-black break-words">
+                        {f.value || '—'}
+                      </p>
+                  }
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   )

@@ -687,7 +687,7 @@ export default function CheckoutPage() {
                   {/* Compact trust bar — reassurance for cold ad traffic at the point of decision */}
                   <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-3 text-center">
                     <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500">
-                      5000+ Happy Customers
+                      500+ Happy Customers
                     </span>
                     <span className="text-gray-200">•</span>
                     <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500">
