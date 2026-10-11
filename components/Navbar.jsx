@@ -66,7 +66,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-[100] w-full border-b border-gray-100 bg-white/90 backdrop-blur-xl shadow-xs">
       <div className="mx-auto max-w-7xl w-full px-3 sm:px-6 lg:px-8">
-        <div className="flex h-10 sm:h-14 items-center justify-between">
+        <div className="flex h-11 sm:h-14 items-center justify-between">
 
           {/* Mobile toggle */}
           <button onClick={toggleMenu} className="lg:hidden p-1.5 text-gray-500 hover:text-black rounded-xl transition-colors">
