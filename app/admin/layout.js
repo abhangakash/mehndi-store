@@ -83,17 +83,16 @@ export default function AdminLayout({ children }) {
           </Link>
 
           <button onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all hover:bg-red-50 text-red-600/80 w-full text-left">
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all hover:bg-red-50 text-red-600/80 w-full text-left cursor-pointer">
             <LogOut size={14} /> Logout
           </button>
         </div>
       </aside>
 
-      {/* ===== MOBILE TOP BAR ===== */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-white rounded-b-3xl shadow-sm"
-        style={{ borderBottom: '1px solid #e2e8f0' }}>
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center bg-white relative flex-shrink-0">
+      {/* ===== MOBILE TOP BAR (Slim & Professional) ===== */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-3.5 py-2 bg-white/95 backdrop-blur-md rounded-b-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border-b border-slate-200/80">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center bg-white relative flex-shrink-0">
             <Image 
               src="/logo.jpeg" 
               alt="CrabVeda Logo" 
@@ -103,14 +102,14 @@ export default function AdminLayout({ children }) {
             />
           </div>
 
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-900">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-900">
             Crabveda Admin
           </p>
         </div>
 
         <button onClick={() => setSidebarOpen(true)}
-          className="p-2 rounded-xl text-slate-500 hover:bg-slate-50">
-          <Menu size={20} />
+          className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+          <Menu size={18} />
         </button>
       </div>
 
@@ -120,7 +119,7 @@ export default function AdminLayout({ children }) {
           <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/30 backdrop-blur-xs"
             onClick={() => setSidebarOpen(false)} />
 
-          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-64 z-50 flex flex-col bg-white shadow-xl">
+          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-64 z-50 flex flex-col bg-white shadow-xl pb-16 overflow-y-auto">
 
             <div className="px-5 py-5 border-b border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -178,7 +177,7 @@ export default function AdminLayout({ children }) {
               </Link>
 
               <button onClick={handleLogout}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-left text-red-600/80 hover:bg-red-50">
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-left text-red-600/80 hover:bg-red-50 cursor-pointer">
                 <LogOut size={14} /> Logout
               </button>
             </div>
@@ -187,7 +186,8 @@ export default function AdminLayout({ children }) {
       )}
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1 min-w-0 lg:pt-0 pt-16 overflow-x-hidden">
+      {/* Adjusted top padding to pt-14 to match the slimmer mobile top bar */}
+      <main className="flex-1 min-w-0 lg:pt-0 pt-14 pb-20 lg:pb-0 overflow-x-hidden">
         {children}
       </main>
     </div>

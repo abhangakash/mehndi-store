@@ -34,15 +34,15 @@ export default function AdminLoginPage() {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center p-4 sm:p-6"
+      className="min-h-[100dvh] flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
       style={{ backgroundColor: 'var(--brand-surface, #f4f5f7)' }}
     >
-      {/* Enterprise Split Card Container */}
-      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl border border-gray-200/80 overflow-hidden grid md:grid-cols-12">
+      {/* Expanded Split Card Container */}
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl border border-gray-200/80 overflow-hidden grid md:grid-cols-12 my-auto">
         
         {/* Left Institutional Panel (Brand Identity & Trust) */}
         <div 
-          className="md:col-span-5 p-8 sm:p-10 flex flex-col justify-between text-white relative overflow-hidden"
+          className="md:col-span-5 p-6 sm:p-8 flex flex-col justify-between text-white relative overflow-hidden"
           style={{ backgroundColor: 'var(--brand-brown, #2c221e)' }}
         >
           {/* Subtle background decoration */}
@@ -50,7 +50,7 @@ export default function AdminLoginPage() {
 
           {/* Top Brand Logo Section */}
           <div className="flex items-center gap-3 relative z-10">
-            <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-white/20 shadow-md bg-white flex items-center justify-center shrink-0">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-white/20 shadow-md bg-white flex items-center justify-center shrink-0">
               <Image 
                 src="/logo.jpeg" 
                 alt="Crabveda Logo" 
@@ -60,39 +60,35 @@ export default function AdminLoginPage() {
               />
             </div>
             <div>
-              <span className="text-xs uppercase tracking-widest text-emerald-300 font-semibold block">
-                Enterprise
-              </span>
-              <span className="text-sm font-bold tracking-tight text-white">
+              <span className="text-lg sm:text-sm font-bold tracking-tight text-white block">
                 Crabveda
               </span>
             </div>
           </div>
 
-          {/* Middle/Bottom Information */}
-          <div className="my-12 md:my-0 relative z-10">
-            
-            <h2 className="text-2xl sm:text-3xl font-light tracking-tight leading-snug">
+          {/* Middle Information */}
+          <div className="my-6 md:my-0 relative z-10">
+            <h2 className="text-xl sm:text-2xl font-light tracking-tight leading-snug">
               Secure Management <span className="font-semibold block text-emerald-300">Workspace</span>
             </h2>
-            <p className="text-xs text-gray-300 mt-3 font-light leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-gray-300 mt-2 font-light leading-relaxed">
               Authorized access only. Monitor orders, inventory, and clinical pain relief formulations under strict compliance.
             </p>
           </div>
 
           {/* Bottom Security Notice */}
-          <div className="relative z-10 text-[11px] text-gray-400 font-mono">
+          <div className="relative z-10 text-[10px] sm:text-[11px] text-gray-400 font-mono hidden md:block">
             Mumbai, MH
           </div>
         </div>
 
         {/* Right Authentication Form Panel */}
-        <div className="md:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-white">
-          <div className="mb-8">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4 border border-emerald-100">
-              <Lock size={20} />
+        <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-center bg-white">
+          <div className="mb-5 sm:mb-6">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3 border border-emerald-100">
+              <Lock size={18} />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
               Administrative Login
             </h1>
             <p className="text-xs text-gray-500 mt-1">
@@ -100,13 +96,13 @@ export default function AdminLoginPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-700">
                 Password
               </label>
-              <div className="relative group flex items-center bg-gray-50/50 border border-gray-300 rounded-xl px-4 py-3 focus-within:bg-white focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/10 transition-all">
-                <KeyRound size={18} className="text-gray-400 group-focus-within:text-emerald-600 mr-3 transition-colors shrink-0" />
+              <div className="relative group flex items-center bg-gray-50/50 border border-gray-300 rounded-xl px-3.5 py-2.5 focus-within:bg-white focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/10 transition-all">
+                <KeyRound size={16} className="text-gray-400 group-focus-within:text-emerald-600 mr-3 transition-colors shrink-0" />
                 <input
                   type="password"
                   value={password}
@@ -122,7 +118,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-brown rounded-xl py-3.5 text-xs font-bold tracking-widest uppercase text-white shadow-md hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full btn-brown rounded-xl py-3 text-xs font-bold tracking-widest uppercase text-white shadow-md hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer mt-2"
             >
               {loading ? (
                 <span className="flex items-center gap-1.5 py-0.5">
@@ -133,15 +129,16 @@ export default function AdminLoginPage() {
               ) : (
                 <>
                   Sign In
-                  <ArrowRight size={16} />
+                  <ArrowRight size={15} />
                 </>
               )}
             </button>
           </form>
 
           {/* Footer Assistance */}
-          <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+          <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
             <span>Crabveda Internal Systems</span>
+            <span className="md:hidden font-mono">Mumbai, MH</span>
           </div>
         </div>
 
