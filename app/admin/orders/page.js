@@ -340,7 +340,7 @@ export default function AdminOrdersPage() {
   }, {})
 
   return (
-    <div className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
+    <div className="px-3 sm:px-6 py-3 max-w-5xl mx-auto relative z-10">
       <div className="flex items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Order Registers</h1>
@@ -355,20 +355,33 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Search Input Bar */}
-      <div className="relative mb-5">
-        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-        <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Search by customer details, contact profile, or token ID..."
-          className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/10 text-slate-800 placeholder-slate-400 shadow-xs" />
-        {search && (
-          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-            <X size={14} />
-          </button>
-        )}
-      </div>
+      <div className="relative mb-5 w-full">
+  <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+    <Search size={15} className="text-slate-400" />
+  </div>
+
+  <input
+    type="text"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    placeholder="Search by customer details, contact profile, or token ID..."
+    style={{ paddingLeft: "40px", paddingRight: "40px" }}
+    className="block w-full box-border py-2 rounded-xl text-sm bg-white border border-slate-200 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/10 text-slate-800 placeholder-slate-400 shadow-xs"
+  />
+
+  {search && (
+    <button
+      type="button"
+      onClick={() => setSearch("")}
+      className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600"
+    >
+      <X size={14} />
+    </button>
+  )}
+</div>
 
       {/* Status filter tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-none">
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-none">
         {STATUS_OPTIONS.map(s => {
           const config = STATUS_CONFIG[s]
           const isSelected = statusFilter === s

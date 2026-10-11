@@ -3,8 +3,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import {
   Plus, Edit2, Eye, EyeOff, Trash2, Search,
-  Package, Tag, AlertCircle, X, Star, Save,
-  ChevronDown, Image, RefreshCw
+  Package, AlertCircle, X, Star, Save,
+  ChevronDown, RefreshCw
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -31,14 +31,14 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
 
   return (
     <div className="rounded-2xl overflow-hidden mb-5 bg-white border border-slate-200 shadow-sm">
-      <div className="px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
+      <div className="px-4 sm:px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
         <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
           {isEdit ? 'Modify Product File' : 'Register New Wellness Product'}
         </p>
         <button onClick={onCancel}><X size={16} className="text-slate-400 hover:text-slate-600" /></button>
       </div>
 
-      <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Name */}
         <div className="sm:col-span-2">
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Product Name *</label>
@@ -51,7 +51,7 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
         {/* Slug */}
         <div className="sm:col-span-2">
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-            URL Slug * <span className="text-slate-400 font-normal normal-case">(auto-generated, edit if needed)</span>
+            URL Slug * <span className="text-slate-400 font-normal normal-case">(auto-generated)</span>
           </label>
           <input className={inputCls} style={inputStyle}
             value={form.slug} onChange={e => set('slug', e.target.value)} placeholder="crabveda-ortho-healing-oil-premium" />
@@ -65,10 +65,10 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-            Original Price ₹ <span className="text-slate-400 font-normal normal-case">(for showing discount tag)</span>
+            Original Price ₹ <span className="text-slate-400 font-normal normal-case">(optional)</span>
           </label>
           <input className={inputCls} style={inputStyle}
-            type="number" value={form.original_price} onChange={e => set('original_price', e.target.value)} placeholder="799 (optional)" />
+            type="number" value={form.original_price} onChange={e => set('original_price', e.target.value)} placeholder="799" />
         </div>
 
         {/* Stock + Weight */}
@@ -100,14 +100,14 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Short Description</label>
           <input className={inputCls} style={inputStyle}
-            value={form.short_description} onChange={e => set('short_description', e.target.value)} placeholder="One line summary for product showcase cards" />
+            value={form.short_description} onChange={e => set('short_description', e.target.value)} placeholder="One line summary for product cards" />
         </div>
 
         {/* Full description */}
         <div className="sm:col-span-2">
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Therapeutic Description</label>
           <textarea className={inputCls} style={inputStyle} rows={3}
-            value={form.description} onChange={e => set('description', e.target.value)} placeholder="Detailed formulation benefits, herbal base notes..." />
+            value={form.description} onChange={e => set('description', e.target.value)} placeholder="Detailed formulation benefits..." />
         </div>
 
         {/* Main image URL */}
@@ -117,7 +117,7 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
           </label>
           <input className={inputCls} style={inputStyle}
             value={form.image_url} onChange={e => set('image_url', e.target.value)}
-            placeholder="https://your-supabase.co/storage/v1/object/public/product-images/..." />
+            placeholder="https://..." />
           {form.image_url ? (
             <div className="mt-2.5 w-16 h-16 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
               <img 
@@ -133,32 +133,29 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
         {/* Extra images */}
         <div className="sm:col-span-2">
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-            Secondary Gallery Assets <span className="text-slate-400 font-normal normal-case">(one URL per line, max 4 total)</span>
+            Secondary Gallery Assets <span className="text-slate-400 font-normal normal-case">(one URL per line)</span>
           </label>
           <textarea className={inputCls} style={inputStyle} rows={3}
             value={form.images} onChange={e => set('images', e.target.value)}
             placeholder={"https://...image2.jpg\nhttps://...image3.jpg"} />
-          <p className="text-xs mt-1 text-slate-400">
-            These render inside thumbnails on the active marketplace layout.
-          </p>
         </div>
 
         {/* Ingredients */}
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Active Ingredients / Herbs</label>
           <input className={inputCls} style={inputStyle}
-            value={form.ingredients} onChange={e => set('ingredients', e.target.value)} placeholder="Mahanarayan Taila, Eucalyptus Extract, Wintergreen..." />
+            value={form.ingredients} onChange={e => set('ingredients', e.target.value)} placeholder="Mahanarayan Taila..." />
         </div>
 
         {/* Usage instructions */}
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Usage Application Instructions</label>
           <input className={inputCls} style={inputStyle}
-            value={form.usage_instructions} onChange={e => set('usage_instructions', e.target.value)} placeholder="Massage gently over the affected area 2-3 times daily..." />
+            value={form.usage_instructions} onChange={e => set('usage_instructions', e.target.value)} placeholder="Massage gently..." />
         </div>
 
         {/* Toggles */}
-        <div className="sm:col-span-2 flex flex-wrap gap-6 pt-2">
+        <div className="sm:col-span-2 flex flex-col sm:flex-row sm:flex-wrap gap-4 pt-2">
           <label className="flex items-center gap-2.5 cursor-pointer select-none">
             <div onClick={() => set('is_active', !form.is_active)}
               className="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 cursor-pointer"
@@ -167,7 +164,7 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
                 style={{ left: form.is_active ? '24px' : '4px' }} />
             </div>
             <span className="text-sm font-semibold text-slate-800">
-              {form.is_active ? 'Active (Listed live on store)' : 'Hidden (Draft archiving state)'}
+              {form.is_active ? 'Active (Listed live)' : 'Hidden (Draft)'}
             </span>
           </label>
 
@@ -179,19 +176,19 @@ function ProductForm({ form, setForm, categories, onSave, onCancel, saving, isEd
                 style={{ left: form.is_featured ? '24px' : '4px' }} />
             </div>
             <span className="text-sm font-semibold text-slate-800">
-              {form.is_featured ? 'Featured Collection' : 'Standard Catalog Grid'}
+              {form.is_featured ? 'Featured Collection' : 'Standard Grid'}
             </span>
           </label>
         </div>
 
         {/* Save / Cancel */}
-        <div className="sm:col-span-2 flex gap-3 pt-3">
+        <div className="sm:col-span-2 flex flex-col sm:flex-row gap-3 pt-3">
           <button onClick={onSave} disabled={saving}
-            className="flex-1 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300">
+            className="w-full sm:flex-1 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300">
             <Save size={14} /> {saving ? 'Saving File...' : isEdit ? 'Commit Changes' : 'Append to Store'}
           </button>
           <button onClick={onCancel}
-            className="px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-slate-200 text-slate-500 bg-white hover:bg-slate-50 transition-all">
+            className="w-full sm:w-auto px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-slate-200 text-slate-500 bg-white hover:bg-slate-50 transition-all">
             Cancel
           </button>
         </div>
@@ -315,17 +312,17 @@ export default function AdminProductsPage() {
   const lowStockProducts = products.filter(p => p.stock < 5 && p.is_active)
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f8faf9' }}>
+    <div className="min-h-screen pb-16" style={{ backgroundColor: '#f8faf9' }}>
       {/* Header */}
-      <div className="px-4 sm:px-6 pt-8 pb-5 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between gap-3 mb-6">
+      <div className="px-3 sm:px-6 pt-3 sm:pt-8 pb-4 max-w-6xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Inventory Index</h1>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Inventory</h1>
             <p className="text-xs font-semibold uppercase tracking-wider mt-1 text-slate-400">
               {products.length} catalog items · {products.filter(p => p.is_active).length} active visibility
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-start sm:self-auto">
             <button onClick={fetchAll} className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 transition-colors shadow-sm">
               <RefreshCw size={15} />
             </button>
@@ -353,20 +350,32 @@ export default function AdminProductsPage() {
         )}
 
         {/* Search */}
-        <div className="relative">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Filter items by product name, catalog tag properties..."
-            className="w-full pl-10 pr-10 py-3 rounded-xl text-sm bg-white border border-slate-200 text-slate-800 placeholder-slate-400 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/10 shadow-xs" />
-          {search && (
-            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              <X size={14} />
-            </button>
-          )}
-        </div>
+        <div className="relative w-full">
+  <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+    <Search size={15} className="text-slate-400" />
+  </div>
+
+  <input
+    value={search}
+    onChange={e => setSearch(e.target.value)}
+    placeholder="Filter items by product name..."
+    style={{ paddingLeft: "40px", paddingRight: "40px" }}
+    className="block w-full box-border py-3 rounded-xl text-sm bg-white border border-slate-200 text-slate-800 placeholder-slate-400 outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/10 shadow-xs"
+  />
+
+  {search && (
+    <button
+      type="button"
+      onClick={() => setSearch('')}
+      className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600"
+    >
+      <X size={14} />
+    </button>
+  )}
+</div>
       </div>
 
-      <div className="px-4 sm:px-6 pb-12 max-w-6xl mx-auto">
+      <div className="px-3 sm:px-6 pb-12 max-w-6xl mx-auto">
         {/* Add/Edit form */}
         {showForm && (
           <ProductForm
@@ -387,7 +396,7 @@ export default function AdminProductsPage() {
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl p-16 text-center bg-white border border-slate-200 shadow-sm">
             <Package size={40} className="mx-auto mb-3 text-slate-300" />
-            <p className="font-bold text-sm text-slate-700">No matching products matching parameters</p>
+            <p className="font-bold text-sm text-slate-700">No matching products found</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -398,22 +407,34 @@ export default function AdminProductsPage() {
 
               return (
                 <div key={product.id}
-                  className="rounded-2xl p-4 flex items-center gap-4 transition-all bg-white border shadow-xs"
+                  className="rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-all bg-white border shadow-xs"
                   style={{
                     borderColor: !product.is_active ? '#e2e8f0' : isLow ? '#fee2e2' : '#e2e8f0',
                     opacity: product.is_active ? 1 : 0.65,
                   }}>
 
-                  {/* Image */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center bg-slate-50 border border-slate-100">
-                    {product.image_url
-                      ? <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
-                      : <Package size={20} className="text-slate-300" />
-                    }
+                  {/* Image & Main Info row for Mobile */}
+                  <div className="flex items-center gap-3.5 w-full sm:w-auto">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center bg-slate-50 border border-slate-100">
+                      {product.image_url
+                        ? <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                        : <Package size={20} className="text-slate-300" />
+                      }
+                    </div>
+
+                    <div className="flex-1 min-w-0 sm:hidden">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <p className="font-bold text-sm text-slate-800 truncate">{product.name}</p>
+                        {product.is_featured && <Star size={12} fill="#b45309" className="text-amber-500 flex-shrink-0" />}
+                      </div>
+                      <p className="text-xs truncate text-slate-400">
+                        {product.categories?.name || 'No category'}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
+                  {/* Info for Desktop */}
+                  <div className="flex-1 min-w-0 hidden sm:block">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="font-bold text-sm text-slate-800 truncate">{product.name}</p>
                       {product.is_featured && <Star size={12} fill="#b45309" className="text-amber-500 flex-shrink-0" />}
@@ -442,8 +463,45 @@ export default function AdminProductsPage() {
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-1">
+                  {/* Price/Stock badges for Mobile layout row */}
+                  <div className="flex items-center justify-between sm:hidden pt-2 border-t border-slate-100">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-bold text-sm text-slate-900">₹{product.price}</span>
+                      {product.original_price && (
+                        <span className="text-xs line-through text-slate-400">₹{product.original_price}</span>
+                      )}
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-md font-bold border"
+                        style={{
+                          backgroundColor: isLow ? '#fef2f2' : product.stock === 0 ? '#fef2f2' : '#f0fdf4',
+                          color: isLow || product.stock === 0 ? '#b91c1c' : '#166534',
+                          borderColor: isLow || product.stock === 0 ? '#fee2e2' : '#dcfce7',
+                        }}>
+                        {product.stock === 0 ? 'OUT OF STOCK' : isLow ? `${product.stock} left` : `${product.stock} ready`}
+                      </span>
+                    </div>
+
+                    {/* Actions for Mobile */}
+                    <div className="flex items-center gap-1">
+                      <button onClick={() => handleEdit(product)}
+                        className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors">
+                        <Edit2 size={15} />
+                      </button>
+                      <button onClick={() => handleToggleActive(product.id, product.is_active)}
+                        className="p-2 rounded-xl transition-colors hover:bg-slate-50">
+                        {product.is_active
+                          ? <Eye size={15} className="text-slate-900" />
+                          : <EyeOff size={15} className="text-slate-300" />
+                        }
+                      </button>
+                      <button onClick={() => handleDelete(product.id, product.name)}
+                        className="p-2 rounded-xl text-slate-400 hover:text-red-700 hover:bg-red-50 transition-colors">
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Actions for Desktop */}
+                  <div className="hidden sm:flex items-center gap-1">
                     <button onClick={() => handleEdit(product)}
                       className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors" title="Edit Properties">
                       <Edit2 size={14} />

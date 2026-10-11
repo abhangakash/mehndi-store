@@ -20,7 +20,7 @@ const POPUP_CONTENT = {
   subtitle: 'Relieve Pain, Reclaim Life',
   highlight: 'BUY 2 GET 1',
   highlightSub: 'FREE on all bottles',
-  description: 'Pure, fast-absorbing Ayurvedic Crab Oil clinically tested for joint mobility, arthritis, and chronic knee pain. Free Pan-India Delivery included!',
+  description: 'Pure, fast-absorbing Ayurvedic Oil clinically tested for joint mobility, arthritis, and chronic knee pain. Free Pan-India Delivery included!',
   ctaPrimary: { label: 'Order via WhatsApp', href: 'https://wa.me/919921297518?text=Hi! I want to order Crabveda Pain Relief Oil with the Buy 2 Get 1 Free offer' },
   ctaSecondary: { label: 'Shop Online', href: '/products' },
   features: ['100% Ayurvedic Formula', 'Deep Target Absorption', 'Relieves Joint Stiffness', '5000+ Verified Users'],

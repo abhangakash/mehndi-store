@@ -39,7 +39,7 @@ export default function Footer() {
             </div>
             
             <p className="text-gray-400 font-medium text-xs leading-relaxed max-w-sm">
-              Bringing you the power of classical Ayurvedic wisdom. Our specially formulated crab oil penetrates deep to relieve joint pain, reduce muscle stiffness, and restore natural flexibility.
+              Bringing you the power of classical Ayurvedic wisdom. Our specially formulated oilpenetrates deep to relieve joint pain, reduce muscle stiffness, and restore natural flexibility.
             </p>
             
             {/* BRIGHT, BEAUTIFUL COLORED SOCIAL ICONS */}

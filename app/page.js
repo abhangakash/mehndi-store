@@ -74,8 +74,8 @@ const TESTIMONIALS = [
 
 export const metadata = {
   title: 'CrabVeda',
-  description: 'Premium Ayurvedic Crab Oil to relieve joint pain, stiffness, and inflammation. Natural healing for improved mobility and flexibility. Shop CrabVeda 200ml bottles online.',
-  keywords: 'CrabVeda, crab oil, Ayurvedic oil, joint pain relief, muscle care, inflammation remedy, natural healing, stiffness relief, mobility',
+  description: 'Premium Ayurvedic Oil to relieve joint pain, stiffness, and inflammation. Natural healing for improved mobility and flexibility. Shop CrabVeda 200ml bottles online.',
+  keywords: 'CrabVeda, oil, Ayurvedic oil, joint pain relief, muscle care, inflammation remedy, natural healing, stiffness relief, mobility',
 }
 
 export default async function HomePage() {
@@ -92,7 +92,7 @@ export default async function HomePage() {
     price: 449,
     original_price: 499,
     image_url: '/img14.webp',
-    short_description: 'Ayurvedic Crab Oil for Joint & Muscle Relief',
+    short_description: 'Ayurvedic Oil for Joint & Muscle Relief',
   }
   const discountPct = hero.original_price
     ? Math.round(((hero.original_price - hero.price) / hero.original_price) * 100)
@@ -225,7 +225,7 @@ export default async function HomePage() {
       </span>
     </h1>
     <p className="text-gray-500 text-xs md:text-sm font-semibold uppercase tracking-wider text-[#8B6B16]">
-      Authentic Crab Oil Formulation
+      Authentic Oil Formulation
     </p>
   </div>
 
@@ -558,7 +558,7 @@ export default async function HomePage() {
       {[
         { name: "Ramesh Patil", location: "Pune, MH", rating: 5, text: "I have been suffering from knee pain for 5 years. After using CrabVeda for just 3 weeks, the difference is unbelievable. I can walk without pain now.", condition: "Knee Pain" },
         { name: "Sunita Deshpande", location: "Nashik, MH", rating: 5, text: "My husband has severe arthritis. We tried many oils but nothing worked as well as CrabVeda. The relief is fast and long-lasting. Bahut accha product hai!", condition: "Arthritis" },
-        { name: "Anil Sharma", location: "Mumbai, MH", rating: 5, text: "As a gym trainer, muscle soreness is a daily issue. CrabVeda Crab Oil has become my go-to recovery product. Natural, effective and smells great too.", condition: "Muscle Soreness" },
+        { name: "Anil Sharma", location: "Mumbai, MH", rating: 5, text: "As a gym trainer, muscle soreness is a daily issue. CrabVeda Oil has become my go-to recovery product. Natural, effective and smells great too.", condition: "Muscle Soreness" },
         { name: "Meena Joshi", location: "Kolhapur, MH", rating: 5, text: "My mother-in-law was unable to move her shoulder properly. After regular use of CrabVeda oil, her mobility has improved so much. We ordered 2 more bottles!", condition: "Joint Mobility" }
       ].map((t, i) => (
         <div key={i} className="group p-8 rounded-[2rem] bg-[#fcfaf2] border border-[#0a0f0d]/5 hover:bg-[#0a0f0d] transition-all duration-500">

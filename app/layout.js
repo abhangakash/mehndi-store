@@ -1,10 +1,7 @@
 import { Toaster } from 'react-hot-toast'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import LayoutShell from '@/components/LayoutShell'
 import { AuthProvider } from '@/context/AuthContext'
 //import PromoPopup from '@/components/PromoPopup'
-import CartAbandonmentWidget from '@/components/CartAbandonmentWidget'
-import FloatingButtons from '@/components/FloatingButtons'
 
 // analytics component imports 📁
 import GoogleAnalytics from '@/components/GoogleAnalytics'
@@ -16,15 +13,15 @@ import './globals.css'
 export const metadata = {
   metadataBase: new URL('https://crabveda.com'),
   title: {
-    default: 'CrabVeda Ayurvedic Crab Oil',
+    default: 'CrabVeda Ayurvedic',
     template: '%s — CrabVeda',
   },
   description:
-    'CrabVeda Ayurvedic Crab Oil is a premium Ayurvedic formulation for joint and muscle care. Enriched with Crab Extract, Mahanarayan Taila, Ashwagandha, Shallaki, Nirgundi, Rasna, Erand Mool, Devdar, Guggul, Til Taila, and other Ayurvedic herbs to help relieve joint pain, stiffness, inflammation, and support mobility and natural healing.',
+    'CrabVeda Ayurvedic oil is a premium Ayurvedic formulation for joint and muscle care. Enriched with Crab Extract, Mahanarayan Taila, Ashwagandha, Shallaki, Nirgundi, Rasna, Erand Mool, Devdar, Guggul, Til Taila, and other Ayurvedic herbs to help relieve joint pain, stiffness, inflammation, and support mobility and natural healing.',
   keywords: [
     'CrabVeda',
-    'Ayurvedic Crab Oil',
-    'Crab Oil',
+    'Ayurvedic Oil',
+    'Oil',
     'Joint Pain Relief Oil',
     'Muscle Pain Relief',
     'Ayurvedic Pain Relief',
@@ -56,23 +53,23 @@ export const metadata = {
     locale: 'en_IN',
     url: 'https://crabveda.com',
     siteName: 'CrabVeda',
-    title: 'CrabVeda Ayurvedic Crab Oil',
+    title: 'CrabVeda Ayurvedic oil',
     description:
-      'Premium Ayurvedic Crab Oil formulated with Crab Extract and traditional Ayurvedic herbs for joint and muscle care.',
+      'Premium Ayurvedic Oil formulated with Crab Extract and traditional Ayurvedic herbs for joint and muscle care.',
     images: [
       {
         url: '/logo.jpeg',
         width: 1200,
         height: 630,
-        alt: 'CrabVeda Ayurvedic Crab Oil',
+        alt: 'CrabVeda Ayurvedic Oil',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CrabVeda Ayurvedic Crab Oil',
+    title: 'CrabVeda Ayurvedic Oil',
     description:
-      'Premium Ayurvedic Crab Oil for joint and muscle care.',
+      'Premium Ayurvedic Oil for joint and muscle care.',
     images: ['/logo.jpeg'],
   },
   robots: {
@@ -95,11 +92,7 @@ export default function RootLayout({ children }) {
         <MicrosoftClarity />
 
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <CartAbandonmentWidget />
-          <FloatingButtons />
+          <LayoutShell>{children}</LayoutShell>
           <Toaster
             position="top-right"
             toastOptions={{

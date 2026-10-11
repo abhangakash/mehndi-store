@@ -1,101 +1,116 @@
 'use client'
 
 import ProductCard from './ProductCard'
-import { Sparkles, ShieldCheck, Check, ShoppingBag } from 'lucide-react'
+import { ShieldCheck, Truck, Lock, RotateCcw, BadgeCheck, Check } from 'lucide-react'
+
+const GOLD = '#93731e'
+
+// Mobile: full width. Desktop: centered, limited width.
+const CONTAINER = 'w-full mx-auto lg:max-w-4xl'
 
 export default function ProductsClient({ products = [] }) {
-  // Pull exactly 2 options for an instant zero-scroll side-by-side compare
   const productList = products.slice(0, 2)
 
   return (
-    <div className="bg-white min-h-screen text-black antialiased pb-12">
-      
-      {/* ===== HEADER (MATCHES CART PAGE HEADER STYLE) ===== */}
-      <header className="px-4 pt-8 pb-4 text-center">
-        <h1 className="text-2xl font-black uppercase tracking-tight text-black flex items-center justify-center gap-2">
-          <ShoppingBag size={20} className="sm:hidden" style={{ color: '#93731e' }} />
-          Official Store
-        </h1>
-        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#93731e' }}>
-          Select your wellness regimen below
-        </p>
-      </header>
+    <div className="bg-[#f3f4f6] min-h-screen text-gray-900 antialiased pb-10">
 
-      {/* ===== TWO-COLUMN HIGH-IMPACT PRODUCT GRID ===== */}
-      <main className="max-w-5xl mx-auto px-4 pb-6">
-        <div className="grid grid-cols-2 gap-3 sm:gap-6 items-stretch">
+      {/* ===== HEADER ===== */}
+      <div className="bg-white border-b border-gray-200">
+        <div className={`${CONTAINER} px-3 lg:px-0 py-3 lg:py-5 flex items-end justify-between gap-3`}>
+          <div className="min-w-0">
+            <p className="text-[11px] lg:text-xs text-gray-500">Home › Pain Relief Oils</p>
+            <h1 className="text-lg lg:text-2xl font-bold leading-tight mt-0.5">
+              CrabVeda Official Store
+            </h1>
+          </div>
+          <span className="shrink-0 text-[11px] lg:text-sm text-gray-500">
+            {productList.length} results
+          </span>
+        </div>
+
+        <div className="border-t border-gray-100 bg-[#fafafa]">
+          <div className={`${CONTAINER} px-3 lg:px-0 py-2 lg:py-2.5 flex items-center justify-between lg:justify-start lg:gap-10 gap-2 text-[10px] sm:text-[11px] lg:text-xs text-gray-600`}>
+            {[
+              { icon: Truck, label: 'Free Delivery' },
+              { icon: ShieldCheck, label: '100% Pure' },
+              { icon: Lock, label: 'Secure Checkout' },
+            ].map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-1 whitespace-nowrap">
+                <Icon size={13} style={{ color: GOLD }} /> {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ===== 2-COLUMN GRID ===== */}
+      <main className="px-1.5 sm:px-3 lg:px-4 pt-2 lg:pt-6">
+        <div className={`${CONTAINER} grid grid-cols-2 gap-1.5 sm:gap-3 lg:gap-6 items-stretch`}>
           {productList.map((product, idx) => {
-            
-            // SWAPPED CONDITION TO MATCH YOUR PRODUCTION DATA ARRAY:
-            // Index 0 (First Item) is the ₹999 Combo Pack
-            // Index 1 (Second Item) is the ₹360 Single Bottle
             const isCombo = idx === 0
 
             return (
-              <div 
-                key={product?.id || idx} 
-                className={`rounded-2xl border overflow-hidden bg-white flex flex-col justify-between relative transition-all duration-200 ${
-                  isCombo 
-                    ? 'border-[#93731e] shadow-md shadow-[#93731e]/5' 
-                    : 'border-gray-100 shadow-sm'
+              <article
+                key={product?.id || idx}
+                className={`flex flex-col h-full bg-white rounded-lg lg:rounded-xl overflow-hidden transition-shadow lg:hover:shadow-lg ${
+                  isCombo ? 'ring-2 ring-[#93731e]' : 'ring-1 ring-gray-200'
                 }`}
               >
-                {/* Header Strip inside Card */}
-                <div className="px-3 py-2.5 sm:px-5 sm:py-3.5 flex items-center justify-between border-b border-gray-50 bg-gray-50/50">
-                  <div className="flex items-center gap-1.5 min-w-0">
-  <span className="text-[10px]" style={{ color: isCombo ? '#93731e' : '#9ca3af' }}>◆</span>
-  <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-gray-500 truncate">
-    {isCombo ? 'Recommended Deal' : 'Starter Option'}
-  </p>
-</div>
-<span className="text-[8px] sm:text-[10px] font-black text-gray-300 uppercase tracking-wider shrink-0">
-  0{idx + 1}
-</span>
-                </div>
+                {isCombo ? (
+                  <div
+                    className="flex items-center justify-center gap-1 py-1 lg:py-1.5 text-[10px] sm:text-xs font-bold text-white"
+                    style={{ backgroundColor: GOLD }}
+                  >
+                    <BadgeCheck size={12} /> BEST VALUE
+                  </div>
+                ) : (
+                  <div className="py-1 lg:py-1.5 text-center text-[10px] sm:text-xs font-semibold text-gray-500 bg-gray-100">
+                    STARTER PACK
+                  </div>
+                )}
 
-                {/* Main Product Component Wrapper Frame */}
-                <div className="flex-1 w-full p-3 sm:p-5 min-h-0">
-                  <ProductCard 
-                    product={product} 
-                    displayName={isCombo ? 'Advanced Recovery Combo' : 'Pain Relief Oil'} 
-                    displayDescription={isCombo ? 'Complete 2-bottle therapy for intensive recovery.' : 'Standard 1-bottle pack for targeted relief.'}
+                <div className="flex-1 p-1.5 sm:p-3 lg:p-4 [&>*]:!border-0 [&>*]:!shadow-none [&>*]:!w-full">
+                  <ProductCard
+                    product={product}
+                    displayName={isCombo ? 'Advanced Recovery Combo' : 'Pain Relief Oil'}
+                    displayDescription={
+                      isCombo
+                        ? 'Complete 2-bottle therapy for intensive recovery.'
+                        : 'Standard 1-bottle pack for targeted relief.'
+                    }
                     hideDiscountBadge={!isCombo}
                   />
                 </div>
 
-                {/* Card footer */}
-                <div className="px-3 py-3 sm:px-5 sm:py-4 border-t border-gray-50 bg-gray-50/20 flex items-center justify-between">
-                  <div className={`text-[8px] sm:text-[11px] font-black uppercase tracking-widest flex items-center gap-1 ${
-                    isCombo ? 'text-emerald-600' : 'text-gray-400'
-                  }`}>
-                    <Check size={12} strokeWidth={3} className={isCombo ? 'text-emerald-600' : 'text-gray-300'} />
-                    <span>{isCombo ? 'Max Savings' : 'Standard'}</span>
-                  </div>
+                <div className="px-2 lg:px-4 pb-2 lg:pb-4 flex items-center gap-1 text-[10px] sm:text-xs whitespace-nowrap overflow-hidden">
+                  <Check size={11} strokeWidth={3} className="text-emerald-600 shrink-0" />
+                  <span className="font-semibold text-emerald-700">In stock</span>
+                  <span className="text-gray-300">•</span>
+                  <span className="text-gray-600 truncate">Free delivery</span>
                 </div>
-              </div>
+              </article>
             )
           })}
         </div>
+
+        {/* ===== TRUST PANEL ===== */}
+        <section className={`${CONTAINER} mt-2 lg:mt-6 bg-white ring-1 ring-gray-200 rounded-lg lg:rounded-xl`}>
+          <div className="grid grid-cols-3 divide-x divide-gray-100">
+            {[
+              { icon: ShieldCheck, label: '100% Verified Pure' },
+              { icon: Truck, label: 'Free Express Delivery' },
+              { icon: RotateCcw, label: 'Easy Support' },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex flex-col lg:flex-row lg:justify-center items-center gap-1 lg:gap-2 py-3 lg:py-4 px-1 text-center">
+                <Icon size={18} style={{ color: GOLD }} />
+                <span className="text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-700 leading-tight">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
-
-      {/* ===== OPTIMIZED TRUST INFOBAR ===== */}
-      <footer className="max-w-5xl mx-auto px-4 mt-2">
-        <div className="grid grid-cols-2 gap-2 p-3 rounded-2xl border border-gray-100 bg-white shadow-xs">
-          <div className="flex items-center justify-center gap-1.5 py-1">
-            <ShieldCheck size={14} style={{ color: '#93731e' }} className="shrink-0" />
-            <span className="text-[9px] sm:text-xs font-black tracking-widest text-gray-500 uppercase text-center">
-              100% Verified Pure
-            </span>
-          </div>
-          <div className="flex items-center justify-center gap-1.5 py-1 border-l border-gray-100">
-            <Check size={14} style={{ color: '#93731e' }} className="shrink-0" />
-            <span className="text-[9px] sm:text-xs font-black tracking-widest text-gray-500 uppercase text-center">
-              Free Express Delivery
-            </span>
-          </div>
-        </div>
-      </footer>
-
     </div>
   )
 }

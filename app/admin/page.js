@@ -73,7 +73,7 @@ export default async function AdminDashboard() {
     {
       label: 'Active Inventory',
       value: data.totalProducts,
-      sub: data.lowStock > 0 ? `⚠️ ${data.lowStock} low stock lines` : 'All inventory healthy',
+      sub: data.lowStock > 0 ? `⚠️ ${data.lowStock} low stock lines` : 'All products in stock',
       icon: Package,
       color: '#0f172a',
       bg: '#f1f5f9',
@@ -94,7 +94,7 @@ export default async function AdminDashboard() {
     <div className="min-h-screen text-slate-800 antialiased" style={{ backgroundColor: '#f8faf9' }}>
       
       {/* Main Header Row */}
-      <div className="px-4 sm:px-6 pt-6 pb-4 max-w-6xl mx-auto">
+      <div className="px-4 sm:px-6 pt-3 pb-4 max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Management Hub</h1>
@@ -112,37 +112,52 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 pb-12 max-w-6xl mx-auto flex flex-col gap-5">
+      <div className="px-2 sm:px-6 pb-12 max-w-6xl mx-auto flex flex-col gap-4">
 
         {/* Crisp Analytics Dashboard Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {STAT_CARDS.map(s => {
-            const Icon = s.icon
-            return (
-              <div key={s.label} className="rounded-2xl p-4 border border-slate-200 bg-white shadow-xs transition-all hover:shadow-sm relative group">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center border border-slate-100"
-                    style={{ backgroundColor: s.bg }}>
-                    <Icon size={16} style={{ color: s.color }} />
-                  </div>
-                  {s.alert && (
-                    <span className="flex h-2 w-2 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                    </span>
-                  )}
-                </div>
-                <p className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">{s.value}</p>
-                <p className="text-[10px] font-bold uppercase tracking-wider mt-0.5 text-slate-400">
-                  {s.label}
-                </p>
-                <p className="text-[11px] mt-1.5 font-medium truncate" style={{ color: s.alert ? '#dc2626' : '#64748b' }}>
-                  {s.sub}
-                </p>
-              </div>
-            )
-          })}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+  {STAT_CARDS.map(s => {
+    const Icon = s.icon
+
+    return (
+      <div
+        key={s.label}
+        className="min-w-0 rounded-xl border border-slate-200/80 bg-white p-3 sm:rounded-2xl sm:p-4 shadow-xs"
+      >
+        {/* Icon + label */}
+        <div className="flex min-w-0 items-center gap-2">
+          <div
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
+            style={{ backgroundColor: s.bg }}
+          >
+            <Icon size={16} style={{ color: s.color }} />
+          </div>
+
+          <p className="min-w-0 truncate text-[11px] sm:text-xs font-semibold text-slate-500">
+            {s.label}
+          </p>
+
+          {s.alert && (
+            <span className="ml-auto h-2 w-2 shrink-0 rounded-full bg-red-500" />
+          )}
         </div>
+
+        {/* Main value */}
+        <p className="mt-3 text-2xl sm:text-3xl font-bold leading-none tracking-tight text-slate-900">
+          {s.value}
+        </p>
+
+        {/* Supporting detail */}
+        <p
+          className="mt-2 truncate text-[11px] font-medium"
+          style={{ color: s.alert ? '#dc2626' : '#64748b' }}
+        >
+          {s.sub}
+        </p>
+      </div>
+    )
+  })}
+</div>
 
         {/* Refined Quick Action Links */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

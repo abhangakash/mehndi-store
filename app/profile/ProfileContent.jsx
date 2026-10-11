@@ -11,153 +11,11 @@ import {
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
-
-const STATUS_CONFIG = {
-  pending:   { label: 'Pending',   color: '#d97706', bg: '#fef3c7', icon: Clock },
-  confirmed: { label: 'Confirmed', color: '#1d4ed8', bg: '#dbeafe', icon: CheckCircle },
-  shipped:   { label: 'Shipped',   color: '#7c3aed', bg: '#ede9fe', icon: Truck },
-  delivered: { label: 'Delivered', color: '#15803d', bg: '#dcfce7', icon: CheckCircle },
-  cancelled: { label: 'Cancelled', color: '#dc2626', bg: '#fee2e2', icon: XCircle },
-}
-
-const STEPS = ['pending', 'confirmed', 'shipped', 'delivered']
-const STEP_LABELS = ['Placed', 'Confirmed', 'Shipped', 'Delivered']
+import OrderTrackingCard from '@/components/OrderTrackingCard'
 
 const LABEL_ICONS = { Home, Office: Briefcase, Other: MapPin }
 const LABEL_OPTIONS = ['Home', 'Office', 'Other']
 const EMPTY_ADDR = { label: 'Home', full_name: '', phone: '', address: '', city: '', state: '', pincode: '', is_default: false }
-
-function OrderCard({ order }) {
-  const [expanded, setExpanded] = useState(false)
-  const status = STATUS_CONFIG[order.order_status] || STATUS_CONFIG.pending
-  const StatusIcon = status.icon
-  const stepIdx = STEPS.indexOf(order.order_status)
-  const isCancelled = order.order_status === 'cancelled'
-
-  return (
-    <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
-      <div className="p-4 flex items-start justify-between gap-3">
-        <div className="flex items-start gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ backgroundColor: status.bg }}>
-            <StatusIcon size={16} style={{ color: status.color }} />
-          </div>
-          <div className="min-w-0">
-            <p className="text-xs font-black uppercase tracking-wider text-gray-400">
-              #{order.id.slice(0, 8).toUpperCase()}
-            </p>
-            <p className="font-black text-base text-[#93731e]">₹{Number(order.total_amount).toFixed(0)}</p>
-            <p className="text-xs text-gray-400">
-              {new Date(order.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col items-end gap-2 flex-shrink-0">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black"
-            style={{ backgroundColor: status.bg, color: status.color }}>
-            <StatusIcon size={11} /> {status.label}
-          </span>
-          <button onClick={() => setExpanded(!expanded)}
-            className="text-xs font-bold flex items-center gap-1 text-[#93731e] hover:opacity-80 transition-opacity">
-            {expanded ? 'Hide' : 'Details'}
-            {expanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Progress Line container */}
-      {!isCancelled && (
-        <div className="px-4 py-4 border-t border-gray-50 bg-gray-50/20">
-          {/* Responsive Stepper Container */}
-          <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-0">
-            
-            {/* Desktop Horizontal Line */}
-            <div className="hidden sm:block absolute left-0 right-0 top-3.5 h-0.5 z-0 mx-4 bg-gray-100">
-              <div className="h-full transition-all duration-700 rounded-full"
-                style={{
-                  width: stepIdx >= 0 ? `${(stepIdx / 3) * 100}%` : '0%',
-                  background: 'linear-gradient(90deg, #0f1a0e, #3a5a40)',
-                }} />
-            </div>
-
-            {/* Mobile Vertical Line */}
-            <div className="sm:hidden absolute left-3.5 top-3.5 bottom-3.5 w-0.5 z-0 bg-gray-100">
-              <div className="w-full transition-all duration-700 rounded-full"
-                style={{
-                  height: stepIdx >= 0 ? `${(stepIdx / 3) * 100}%` : '0%',
-                  background: 'linear-gradient(180deg, #0f1a0e, #3a5a40)',
-                }} />
-            </div>
-
-            {/* Render Stepper Nodes */}
-            {STEP_LABELS.map((label, i) => {
-              const done = i <= stepIdx
-              return (
-                <div key={label} className="flex flex-row sm:flex-col items-center gap-3 sm:gap-1.5 z-10 sm:flex-1">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-all flex-shrink-0"
-                    style={{
-                      backgroundColor: done ? '#0f1a0e' : 'white',
-                      color: done ? 'white' : 'rgba(15,26,14,0.25)',
-                      border: `2px solid ${done ? '#0f1a0e' : '#f3f4f6'}`,
-                    }}>
-                    {done ? '✓' : i + 1}
-                  </div>
-                  <span className="text-[10px] sm:text-[9px] uppercase tracking-widest font-bold"
-                    style={{ color: done ? '#0f1a0e' : 'rgba(15,26,14,0.3)' }}>
-                    {label}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-
-          <div className="mt-5 px-3 py-2 rounded-xl text-xs font-black text-center uppercase tracking-wide"
-            style={{ backgroundColor: status.bg, color: status.color }}>
-            {order.order_status === 'pending' && '⏳ Processing your order'}
-            {order.order_status === 'confirmed' && '✅ Confirmed — preparing to ship'}
-            {order.order_status === 'shipped' && '🚚 On the way! 2–3 days'}
-            {order.order_status === 'delivered' && '🎉 Delivered! Enjoy your purchase'}
-          </div>
-        </div>
-      )}
-
-      {/* Expanded details */}
-      {expanded && (
-        <div className="px-4 pb-4 border-t border-gray-100 flex flex-col gap-3">
-          <div className="mt-3 divide-y divide-gray-50">
-            {order.order_items?.map(item => (
-              <div key={item.id} className="flex justify-between items-start py-2 text-xs gap-4">
-                <span className="text-gray-700 font-medium break-words">{item.product_name} × {item.quantity}</span>
-                <span className="font-black text-[#93731e] flex-shrink-0">₹{Number(item.total_price).toFixed(0)}</span>
-              </div>
-            ))}
-            <div className="pt-2.5 flex justify-between text-sm font-black mt-1">
-              <span className="text-black">Total</span>
-              <span className="text-[#93731e]">₹{Number(order.total_amount).toFixed(0)}</span>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2 text-xs text-gray-400">
-            <MapPin size={13} className="mt-0.5 flex-shrink-0 text-[#93731e]" />
-            <span className="break-words">{order.address}, {order.city} — {order.pincode}</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-2 mt-1">
-            <a href={`/api/send-invoice?orderId=${order.id}`} target="_blank" rel="noreferrer"
-              className="w-full sm:flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all active:scale-[0.98] bg-[#0f1a0e] shadow-md shadow-black/5">
-              <Download size={12} /> Invoice
-            </a>
-            <a href={`https://wa.me/919921297518?text=Hi! I need help with my order %23${order.id.slice(0,8).toUpperCase()}`}
-              target="_blank" rel="noreferrer"
-              className="w-full sm:flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-white transition-all active:scale-[0.98] bg-[#25D366] shadow-md shadow-black/5">
-              <Phone size={12} /> Help
-            </a>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
 export default function ProfileContent() {
   const { user, profile, loading, signOut, fetchProfile } = useAuth()
@@ -185,9 +43,21 @@ export default function ProfileContent() {
   const loadOrders = useCallback(async () => {
     if (!user) return
     setOrdersLoading(true)
+    // 1) Show the orders straight away
     const { data } = await supabase.from('orders').select('*, order_items(*)').eq('user_id', user.id).order('created_at', { ascending: false })
-    setOrders(data || [])
+    const list = data || []
+    setOrders(list)
     setOrdersLoading(false)
+    // 2) Then fill in live courier scans (only if some order has a tracking number)
+    try {
+      if (list.some(o => o.tracking_number)) {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session?.access_token) {
+          const res = await fetch('/api/my-orders', { headers: { Authorization: `Bearer ${session.access_token}` } })
+          if (res.ok) setOrders((await res.json()).orders)
+        }
+      }
+    } catch {}
   }, [user])
 
   const loadAddresses = useCallback(async () => {
@@ -336,7 +206,7 @@ export default function ProfileContent() {
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {orders.map(order => <OrderCard key={order.id} order={order} />)}
+                {orders.map((order, i) => <OrderTrackingCard key={order.id} order={order} showInvoice defaultOpen={i === 0} />)}
               </div>
             )}
           </div>

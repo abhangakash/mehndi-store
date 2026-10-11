@@ -14,7 +14,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-white">
+      <div className="min-h-screen flex items-center justify-center px-3 bg-white">
         <div className="text-center">
           <ShoppingBag size={48} className="mx-auto mb-4 text-black/10" />
           <p className="font-black text-black mb-4 uppercase tracking-widest">Cart is empty</p>
@@ -29,14 +29,14 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="px-4 pt-8 pb-4 text-center">
+      <div className="px-3 pt-4 pb-4 text-center">
         <h1 className="text-2xl font-black uppercase tracking-tight text-black">Your Cart</h1>
         <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: '#93731e' }}>
           Review your items before secure checkout
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 pb-10">
+      <div className="max-w-5xl mx-auto px-3 pb-10">
         {/* Top bar with secondary actions */}
         <div className="flex justify-end mb-4">
           <button 

@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 
 const TZ = 'Asia/Kolkata'
 
@@ -36,6 +37,7 @@ const timeLabel = (d) => {
 }
 
 export default function TrackingTimeline({ order }) {
+  const [showAll, setShowAll] = useState(false)
   if (!order.tracking_number) return null
 
   const t = order.tracking
@@ -60,8 +62,11 @@ export default function TrackingTimeline({ order }) {
     .filter(e => e.date && !isNaN(e.d))
     .sort((a, b) => b.d - a.d)
 
+  const PREVIEW_COUNT = 4
+  const visible = showAll ? all : all.slice(0, PREVIEW_COUNT)
+
   const groups = []
-  for (const e of all) {
+  for (const e of visible) {
     const key = dayKey(e.d)
     let g = groups[groups.length - 1]
     if (!g || g.key !== key) {
@@ -76,7 +81,7 @@ export default function TrackingTimeline({ order }) {
     <div className="px-5 py-5 border-t border-gray-100">
       <p className="text-sm font-bold text-[#0a0f0d]">Shipment updates</p>
 
-      {!t?.available && (
+      {t && !t.available && (
         <p className="mt-3 text-[11px] text-amber-800 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
           Live updates from {courierName} are temporarily unavailable. Please check again in a little while.
         </p>
@@ -117,6 +122,16 @@ export default function TrackingTimeline({ order }) {
           </ol>
         </div>
       ))}
+
+      {all.length > PREVIEW_COUNT && (
+        <button
+          type="button"
+          onClick={() => setShowAll(!showAll)}
+          className="mt-4 text-[11px] font-bold text-[#93731e] hover:underline"
+        >
+          {showAll ? 'Show fewer updates' : `Show all ${all.length} updates`}
+        </button>
+      )}
     </div>
   )
 }

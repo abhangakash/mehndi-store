@@ -49,7 +49,7 @@ export default function AdminLayout({ children }) {
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-900 leading-tight">Crabveda</p>
               <p className="text-[9px] font-bold uppercase tracking-wider leading-tight text-slate-400 mt-0.5">
-                Ayurveda & Pain Relief
+                Ayurveda
               </p>
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function AdminLayout({ children }) {
       </aside>
 
       {/* ===== MOBILE TOP BAR ===== */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-white"
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-white rounded-b-3xl shadow-sm"
         style={{ borderBottom: '1px solid #e2e8f0' }}>
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-full overflow-hidden border border-slate-200 shadow-sm flex items-center justify-center bg-white relative flex-shrink-0">
@@ -140,7 +140,7 @@ export default function AdminLayout({ children }) {
                   </p>
 
                   <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
-                    Ayurveda & Pain Relief
+                    Ayurveda
                   </p>
                 </div>
               </div>

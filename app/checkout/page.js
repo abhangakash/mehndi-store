@@ -635,7 +635,7 @@ export default function CheckoutPage() {
             {/* ===== RIGHT: Order summary ===== */}
             <div className="lg:col-span-1">
               <div className="rounded-2xl border border-gray-100 overflow-hidden lg:sticky lg:top-24 bg-white shadow-lg">
-                <div className="px-5 py-4 border-b border-gray-50 bg-gray-50/50">
+                <div className="px-4 py-4 border-b border-gray-50 bg-gray-50/50">
                   <p className="text-xs font-black uppercase tracking-widest text-gray-500">Order Summary</p>
                 </div>
                 <div className="p-5">

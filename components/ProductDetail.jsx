@@ -37,7 +37,7 @@ function Accordion({ title, icon, children, defaultOpen = false, badge }) {
   return (
     <div className="border-b last:border-0 border-gray-100 bg-white">
       <button onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-4 px-4 text-left gap-3">
+        className="w-full flex items-center justify-between py-4 px-3 text-left gap-3">
         <div className="flex items-center gap-2.5">
           {icon && <span style={{ color: '#93731e' }}>{icon}</span>}
           <span className="text-xs font-black uppercase tracking-widest text-gray-500">{title}</span>
@@ -52,7 +52,7 @@ function Accordion({ title, icon, children, defaultOpen = false, badge }) {
           : <ChevronDown size={14} className="text-gray-400 flex-shrink-0" />}
       </button>
       {open && (
-        <div className="px-4 pb-5 text-xs font-semibold leading-relaxed text-gray-400 border-t border-gray-50/50 pt-3">
+        <div className="px-3 pb-5 text-xs font-semibold leading-relaxed text-gray-400 border-t border-gray-50/50 pt-3">
           {children}
         </div>
       )}
@@ -161,7 +161,7 @@ export default function ProductDetail({ product, reviews, related }) {
     <div className="bg-white min-h-screen text-black antialiased pb-16">
       
       {/* ===== BREADCRUMB (MATCHES CART HEADER COPY SUBTEXT) ===== */}
-      <div className="max-w-5xl mx-auto px-4 pt-6 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400 flex-wrap">
+      <div className="max-w-5xl mx-auto px-3 pt-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400 flex-wrap">
         <Link href="/" className="hover:text-black">Home</Link>
         <span>/</span>
         <Link href="/products" className="hover:text-black">Shop</Link>
@@ -177,7 +177,7 @@ export default function ProductDetail({ product, reviews, related }) {
         <span className="text-black truncate max-w-[120px]">{product.name}</span>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-10">
+      <div className="max-w-5xl mx-auto px-4 pt-4 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-10">
         
         {/* ===== LEFT: MASTER CONTRAST IMAGE BLOCK ===== */}
         <div className="flex flex-col gap-3">
@@ -203,7 +203,7 @@ export default function ProductDetail({ product, reviews, related }) {
 
             {product.stock === 0 && (
               <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center">
-                <span className="text-xs font-black uppercase tracking-widest text-gray-400 border border-gray-100 bg-white px-4 py-2 rounded-xl shadow-xs">
+                <span className="text-xs font-black uppercase tracking-widest text-gray-400 border border-gray-100 bg-white px-3 py-2 rounded-xl shadow-xs">
                   Out of Stock
                 </span>
               </div>
@@ -324,22 +324,35 @@ export default function ProductDetail({ product, reviews, related }) {
           )}
 
           {/* ===== CALL TO ACTION FOOTER DECK (MATCHES CART BUTTON FRAMEWORDS) ===== */}
-          <div className="flex flex-col sm:flex-row gap-2 max-w-xl">
-            <button onClick={handleAddToCart} disabled={product.stock === 0}
-              className="flex-1 inline-flex items-center justify-center py-3.5 px-4 rounded-xl border border-gray-100 font-black text-xs uppercase tracking-widest text-gray-500 hover:text-black hover:bg-gray-50 transition-all active:scale-[0.99] disabled:opacity-50 gap-2">
-              <ShoppingCart size={13} /> Add to Cart
-            </button>
-            <button onClick={handleBuyNow} disabled={product.stock === 0}
-              className="flex-1 inline-flex items-center justify-center py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all active:scale-[0.98] bg-[#0f1a0e] shadow-xs shadow-black/10 disabled:opacity-50 gap-2">
-              <Zap size={13} /> Buy Now
-            </button>
-          </div>
+          <div className="flex flex-col gap-2 w-full max-w-xl">
+  {/* Row 1: Add to Cart & Buy Now */}
+  <div className="flex flex-row gap-2">
+    <button 
+      onClick={handleAddToCart} 
+      disabled={product.stock === 0}
+      className="flex-1 inline-flex items-center justify-center py-3.5 px-3 rounded-xl border border-gray-200 font-black text-xs uppercase tracking-widest text-gray-700 hover:text-black hover:bg-gray-50 transition-all active:scale-[0.99] disabled:opacity-50 gap-2 bg-white"
+    >
+      <ShoppingCart size={13} /> Add to Cart
+    </button>
+    <button 
+      onClick={handleBuyNow} 
+      disabled={product.stock === 0}
+      className="flex-1 inline-flex items-center justify-center py-3.5 px-3 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all active:scale-[0.98] bg-[#0f1a0e] shadow-xs shadow-black/10 disabled:opacity-50 gap-2"
+    >
+      <Zap size={13} /> Buy Now
+    </button>
+  </div>
 
-          <a href={`https://wa.me/919921297518?text=Hi! I want to order: ${product.name} (₹${product.price}) — Qty: ${qty}`}
-            target="_blank" rel="noreferrer"
-            className="flex items-center justify-center gap-1.5 max-w-xl py-3 rounded-xl text-xs font-black uppercase tracking-widest border border-emerald-100 bg-emerald-50/40 text-emerald-700 transition-colors hover:bg-emerald-50">
-            <Phone size={13} /> Order via WhatsApp
-          </a>
+  {/* Row 2: WhatsApp Order Button Below */}
+  <a 
+    href={`https://wa.me/919921297518?text=Hi! I want to order: ${product.name} (₹${product.price}) — Qty: ${qty}`}
+    target="_blank" 
+    rel="noreferrer"
+    className="flex items-center justify-center gap-1.5 w-full py-3.5 rounded-xl text-xs font-black uppercase tracking-widest border border-emerald-200 bg-emerald-50 text-emerald-800 transition-colors hover:bg-emerald-100"
+  >
+    <Phone size={13} /> Order via WhatsApp
+  </a>
+</div>
 
           <div className="grid grid-cols-2 gap-2 pt-1 max-w-xl">
             {[
@@ -360,7 +373,7 @@ export default function ProductDetail({ product, reviews, related }) {
       </div>
 
       {/* ===== LOWER ACCORDION & EDITORIAL SPECIFICATION AREA ===== */}
-      <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-10">
+      <div className="max-w-5xl mx-auto px-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-10">
         <div>
           <h2 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-3 pl-1">Product Specifications</h2>
           <div className="rounded-2xl border border-gray-100 overflow-hidden bg-white shadow-sm">
@@ -497,7 +510,7 @@ export default function ProductDetail({ product, reviews, related }) {
 
       {/* ===== FOOTER: RELATED CROSS-SELL INTERFACES ===== */}
       {related.length > 0 && (
-        <footer className="max-w-5xl mx-auto px-4 border-t border-gray-100 pt-8">
+        <footer className="max-w-5xl mx-auto px-3 border-t border-gray-100 pt-8">
           <div className="flex items-center justify-between mb-4 pl-1">
             <h2 className="text-xs font-black uppercase tracking-widest text-gray-500">You May Also Like</h2>
             <Link href="/products" className="text-xs font-black uppercase tracking-widest text-[#93731e] hover:underline">

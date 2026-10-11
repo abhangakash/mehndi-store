@@ -17,7 +17,7 @@ async function getCategories() {
 
 export const metadata = {
   title: 'Shop CrabVeda — Ayurvedic Joint & Muscle Care Oil',
-  description: 'Experience natural relief with CrabVeda Ayurvedic Crab Oil. Formulated with authentic herbs to reduce inflammation, relieve stiffness, and improve joint mobility.',
+  description: 'Experience natural relief with CrabVeda Ayurvedic Oil. Formulated with authentic herbs to reduce inflammation, relieve stiffness, and improve joint mobility.',
 }
 
 export default async function ProductsPage({ searchParams }) {
