@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  LayoutDashboard, ShoppingBag, Package,
+  LayoutDashboard, ShoppingBag, Package, Store, Users, Boxes,
   LogOut, Menu, X, ExternalLink
 } from 'lucide-react'
 
@@ -12,6 +12,9 @@ const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingBag },
   { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '/admin/offline-orders', label: 'Offline Sales', icon: Store },
+  { href: '/admin/offline-customers', label: 'Offline Customers', icon: Users },
+  { href: '/admin/offline-stock', label: 'Offline Stock', icon: Boxes },
 ]
 
 export default function AdminLayout({ children }) {

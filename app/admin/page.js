@@ -1,7 +1,7 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import Link from 'next/link'
 import {
-  Package, ShoppingBag, TrendingUp, Users,
+  Package, ShoppingBag, TrendingUp, Users, Store,
   ArrowRight, Clock, CheckCircle, Truck, XCircle,
   AlertCircle, IndianRupee
 } from 'lucide-react'
@@ -160,12 +160,14 @@ export default async function AdminDashboard() {
 </div>
 
         {/* Refined Quick Action Links */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {[
             { href: '/admin/orders', label: 'Order Books', icon: ShoppingBag, color: '#1d4ed8' },
             { href: '/admin/products', label: 'Product Inventory', icon: Package, color: '#0f172a' },
             { href: '/admin/orders?status=pending', label: 'Pending Queue', icon: Clock, color: '#b45309', badge: data.pendingOrders },
             { href: '/admin/orders?status=confirmed', label: 'Awaiting Packing', icon: Truck, color: '#4f46e5', badge: data.confirmedOrders },
+            { href: '/admin/offline-orders', label: 'Offline Sales', icon: Store, color: '#047857' },
+            { href: '/admin/offline-stock', label: 'Offline Stock', icon: Package, color: '#0f172a' },
           ].map(a => {
             const Icon = a.icon
             return (
